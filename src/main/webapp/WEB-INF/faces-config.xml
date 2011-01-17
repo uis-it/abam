@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+
+	<application>
+		<locale-config>
+			<default-locale>nb_NO</default-locale>
+			<supported-locale>en_GB</supported-locale>
+			<supported-locale>nb_NO</supported-locale>
+		</locale-config>
+		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
+	</application>
+	<factory>
+		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>
+	</factory>
+	<managed-bean>
+		<managed-bean-name>dataBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.DataBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+</faces-config>
