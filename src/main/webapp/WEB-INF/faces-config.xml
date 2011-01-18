@@ -14,9 +14,25 @@
 	<factory>
 		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>
 	</factory>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>createAssignment</from-outcome>
+			<to-view-id>/createAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>backToView</from-outcome>
+			<to-view-id>/view.jspx</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 	<managed-bean>
 		<managed-bean-name>dataBean</managed-bean-name>
 		<managed-bean-class>no.uis.portal.employee.DataBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>assignmentBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.AssignmentBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	

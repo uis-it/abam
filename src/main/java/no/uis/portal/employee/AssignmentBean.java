@@ -1,6 +1,13 @@
 package no.uis.portal.employee;
 
+import java.util.Map;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import com.icesoft.faces.context.DisposableBean;
+import com.liferay.portal.service.ServiceContext;
 
 public class AssignmentBean implements DisposableBean {
 
@@ -16,6 +23,19 @@ public class AssignmentBean implements DisposableBean {
 	
 	private boolean master;
 	private boolean bachelor;
+	
+	public AssignmentBean(){
+	}
+	
+	public void listen(ActionEvent event) {
+		UIComponent comp = event.getComponent();
+		FacesContext context = FacesContext.getCurrentInstance();
+		String clientId = event.getComponent().getClientId(context);
+		clientId = clientId.replaceAll("CreateButton", "");
+		Map test = context.getExternalContext().getRequestParameterMap();
+		System.out.println("title: "+test.get(clientId+"title"));
+		System.out.println("Ins: "+test.get(clientId+"instructor"));
+	}
 	
 	public void dispose() throws Exception {
 	}

@@ -1,12 +1,31 @@
-<f:view 
-	xmlns:f="http://java.sun.com/jsf/core"
+<f:view xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
-	<ice:portlet styleClass="ephorte-portlet">
-		<ice:form partialSubmit="true">
-			<h:outputText value="#{dataBean.counter}"/>
-			<h:commandButton value="inc" action="#{dataBean.incCounter}"/>
+	<ice:portlet>
+		<ice:form>
+			<ice:panelGrid columns="2" border="1">
+				<ice:panelGroup id="menu">
+					<h:commandLink action="createAssignment">Create Assignment</h:commandLink>
+					<br />
+					<h:commandLink action="createAssignment">menu2</h:commandLink>
+				</ice:panelGroup>
+				<ice:panelGroup id="content">
+					<h:outputText value="Welcome" />
+				</ice:panelGroup>
+			</ice:panelGrid>
 		</ice:form>
+		<!--
+		
+		<ice:form partialSubmit="true">
+
+		
+				<h:commandLink action="createAssignment">menu1</h:commandLink>
+				<h:commandLink action="createAssignment">menu2</h:commandLink>
+				<h:outputText value="#{dataBean.counter}"/>
+				<h:commandButton value="inc" action="#{dataBean.incCounter}"/>
+		</ice:form>
+	-->
 	</ice:portlet>
 </f:view>

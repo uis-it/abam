@@ -14,11 +14,11 @@
 		<version>3.0.4</version>
 	</parent>
 
-	<!--scm>
-		<connection>scm:svn:http://source01.uis.no/repos/portal/portlet/ephorte/trunk</connection>
-		<developerConnection>scm:svn:https://source01.uis.no/repos/portal/portlet/ephorte/trunk</developerConnection>
-		<url>http://source01.uis.no/repos/portal/portlet/ephorte/trunk</url>
-	</scm-->
+	<scm>
+		<connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</connection>
+		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</developerConnection>
+		<url>https://abam.googlecode.com/svn/abam_employee/trunk</url>
+	</scm>
 
 	<properties>
 		<icefaces.version>1.8.2</icefaces.version>
