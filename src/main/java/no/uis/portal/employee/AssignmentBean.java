@@ -43,7 +43,7 @@ public class AssignmentBean implements DisposableBean {
 		
 		log.setLevel(Level.DEBUG);
 		if (log.isDebugEnabled()) {
-			log.debug("Title2: "+parameterMap.get(clientId+"title"));
+			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
 			log.debug("Instructor: "+parameterMap.get(clientId+"instructor"));
 			log.debug("TechRes: "+parameterMap.get(clientId+"technicalResponsible"));

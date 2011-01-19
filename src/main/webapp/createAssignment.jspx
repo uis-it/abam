@@ -4,44 +4,52 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
+	<f:loadBundle basename="message" var="errorMsgs" />
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
 			<h:outputText value="Create a new Assignment"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="1000">
+			<table border="0" width="800">
 				<tr>
 					<td><h:outputText value="Title: "/></td>
-					<td><h:inputText id="title" size="100"></h:inputText></td>
+					<td><h:inputText id="title" size="100" required="true"></h:inputText></td>
+					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Description: "/> </td>
-					<td><h:inputTextarea id="description" cols="96" rows="6"></h:inputTextarea></td>
+					<td><h:inputTextarea id="description" cols="96" rows="6" required="true"></h:inputTextarea></td>
+					<td><h:message for="description" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Instructor: "/> </td>
-					<td><h:inputText id="instructor" size="100"></h:inputText></td>
+					<td><h:inputText id="instructor" size="100" required="true"></h:inputText></td>
+					<td><h:message for="instructor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Technical Responsible: "/> </td>
-					<td><h:inputText id="technicalResponsible" size="100"></h:inputText></td>
+					<td><h:inputText id="technicalResponsible" size="100" required="true"></h:inputText></td>
+					<td><h:message for="technicalResponsible" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Institute: "/> </td>
-					<td><h:inputText id="institute"></h:inputText></td>
+					<td><h:inputText id="institute" required="true"></h:inputText></td>
+					<td><h:message for="institute" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Study Program: "/> </td>
-					<td><h:inputText id="studyProgram"></h:inputText></td>
+					<td><h:inputText id="studyProgram" required="true"></h:inputText></td>
+					<td><h:message for="studyProgram" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Number of students: "/> </td>
-					<td><h:inputText id="numberOfStudents"></h:inputText></td>
+					<td><h:inputText id="numberOfStudents" required="true"></h:inputText></td>
+					<td><h:message for="numberOfStudents" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Type: "/> </td>
 				<td>
-					<h:selectOneRadio id="type" value="bachelor">
+					<h:selectOneRadio id="type" value="bachelor" required="true">
 						<f:selectItem itemValue="bachelor" itemLabel="Bachelor"/>
 						<f:selectItem itemValue="master" itemLabel="Master" />
 					</h:selectOneRadio>
