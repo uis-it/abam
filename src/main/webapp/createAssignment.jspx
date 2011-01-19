@@ -4,7 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
-	<f:loadBundle basename="message" var="errorMsgs" />
+
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
 			<h:outputText value="Create a new Assignment"/><br/>

@@ -25,7 +25,8 @@
 				<h:commandLink action="createAssignment">menu2</h:commandLink>
 				<h:outputText value="#{dataBean.counter}"/>
 				<h:commandButton value="inc" action="#{dataBean.incCounter}"/>
-		</ice:form>
+		
+			</ice:form>
 	-->
 	</ice:portlet>
 </f:view>
