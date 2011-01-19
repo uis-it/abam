@@ -1,0 +1,17 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:form partialSubmit="true" >
+			<h:outputText value="Create Address Labels"/><br/>
+			<br/>
+			<br/>
+			<table border="0">
+				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

@@ -4,16 +4,20 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
-
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
-			<h:outputText value="Create a new Assignment"/><br/>
+			<h:outputText value="Edit information"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">
+			<table border="0">
+				<tr>
+					<td><h:outputText value="Id: "/></td>
+					<td><h:inputText id="id" size="5" required="true" readonly="true" tabindex="-1" disabled="true"></h:inputText></td>
+					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
+				</tr>
 				<tr>
 					<td><h:outputText value="Title: "/></td>
-					<td><h:inputText id="title" size="100" required="true"></h:inputText></td>
+					<td><h:inputText id="title" size="100" required="true" tabindex="1" ></h:inputText></td>
 					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
 				</tr>
 				<tr>
@@ -56,13 +60,10 @@
 				</td>
 				</tr>
 				<tr>
-					<td></td>
-					<td></td>
-					<td>
-						<h:commandButton type="submit" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
-						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
-					</td>
-				</tr>				
+					<td></td><td></td>
+					<td><h:commandButton type="submit" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
+					<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+				</tr>
 			</table>
 		</ice:form>
 	</ice:portlet>

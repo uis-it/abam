@@ -5,28 +5,22 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:form>
-			<ice:panelGrid columns="2" border="1">
+			<ice:panelGrid columns="2" border="0" width="500">
 				<ice:panelGroup id="menu">
-					<h:commandLink action="createAssignment">Create Assignment</h:commandLink>
-					<br />
-					<h:commandLink action="createAssignment">menu2</h:commandLink>
+				<table>
+					<tr><td><h:commandLink action="createAssignment">Create Assignment</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="assignAssignment">Assign Assignment</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="editInformation">Edit Information</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="myStudentAssignments">My Student Assignments</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="addExternalExaminer">Add External Examiner</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="createAddressLabels">Create Address Labels</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="searchArchive">Search</h:commandLink></td></tr>
+				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">
 					<h:outputText value="Welcome" />
 				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>
-		<!--
-		
-		<ice:form partialSubmit="true">
-
-		
-				<h:commandLink action="createAssignment">menu1</h:commandLink>
-				<h:commandLink action="createAssignment">menu2</h:commandLink>
-				<h:outputText value="#{dataBean.counter}"/>
-				<h:commandButton value="inc" action="#{dataBean.incCounter}"/>
-		
-			</ice:form>
-	-->
 	</ice:portlet>
 </f:view>

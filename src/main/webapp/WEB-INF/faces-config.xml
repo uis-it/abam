@@ -21,6 +21,30 @@
 			<to-view-id>/createAssignment.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>assignAssignment</from-outcome>
+			<to-view-id>/assignAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>addExternalExaminer</from-outcome>
+			<to-view-id>/addExternalExaminer.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>createAddressLabels</from-outcome>
+			<to-view-id>/createAddressLabels.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editInformation</from-outcome>
+			<to-view-id>/editInformation.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>myStudentAssignments</from-outcome>
+			<to-view-id>/myStudentAssignments.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>searchArchive</from-outcome>
+			<to-view-id>/searchArchive.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>backToView</from-outcome>
 			<to-view-id>/view.jspx</to-view-id>
 		</navigation-case>
