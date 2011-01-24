@@ -3,10 +3,10 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />
-
+	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:form partialSubmit="true" >
+-		<ice:form partialSubmit="true" >
+		
 			<h:outputText value="Create a new Assignment"/><br/>
 			<br/>
 			<br/>
@@ -43,12 +43,12 @@
 				</tr>
 				<tr>
 					<td><h:outputText value="Number of students: "/> </td>
-					<td><h:inputText id="numberOfStudents" required="true"></h:inputText></td>
+					<td><h:inputText id="numberOfStudents" required="true" disabled="false"></h:inputText></td>
 					<td><h:message for="numberOfStudents" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Type: "/> </td>
-				<td>
+				<td>				
 				<h:selectOneRadio id="type" value="bachelor" required="true">
 					<f:selectItem itemValue="bachelor" itemLabel="Bachelor"/>
 					<f:selectItem itemValue="master" itemLabel="Master" />
@@ -60,7 +60,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
+						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
 						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
 					</td>
 				</tr>				

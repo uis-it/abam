@@ -1,0 +1,65 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />	
+	<ice:portlet>
+-		<ice:form partialSubmit="true" >
+		
+			<h:outputText value="Assignment summary"/><br/>
+			<br/>
+			<br/>
+			<table border="0" width="800">
+				<tr>
+					<td><h:outputText value="Title: "/></td>
+					<td><h:outputText value="#{assignmentBean.title}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Description: "/> </td>
+					<td><h:outputText value="#{assignmentBean.description}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Supervisor: "/> </td>
+					<td><h:outputText value="#{assignmentBean.supervisor}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Faculty Supervisor: "/> </td>
+					<td><h:outputText value="#{assignmentBean.facultySupervisor}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Institute: "/> </td>
+					<td><h:outputText value="#{assignmentBean.institute}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Study Program: "/> </td>
+					<td><h:outputText value="#{assignmentBean.studyProgram}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Number of students: "/> </td>
+					<td><h:outputText value="#{assignmentBean.numberOfStudents}"></h:outputText></td>
+					<td><h:outputText value="#{assignmentBean.numberOfStudentsError}"></h:outputText></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Type: "/> </td>
+					<td><h:outputText value="#{assignmentBean.type}"></h:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td>
+						<h:commandButton type="submit" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
+						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
+					</td>
+				</tr>				
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>
