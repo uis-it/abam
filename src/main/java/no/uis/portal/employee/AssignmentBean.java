@@ -10,6 +10,8 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.icesoft.faces.component.inputfile.FileInfo;
+import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 import com.liferay.portal.service.ServiceContext;
 
@@ -24,21 +26,24 @@ public class AssignmentBean implements DisposableBean {
 	private String description;
 	private String studyProgram;
 	private String institute;
-	public String getNumberOfStudentsError() {
-		return numberOfStudentsError;
-	}
-
-	public void setNumberOfStudentsError(String numberOfStudentsError) {
-		this.numberOfStudentsError = numberOfStudentsError;
-	}
-
 	private String numberOfStudentsError;
+	private String fileUploadErrorMessage;
+	
 	private boolean master;
 	private boolean bachelor;
 	
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
+		fileUploadErrorMessage = "";
+	}
+		
+	public String getNumberOfStudentsError() {
+		return numberOfStudentsError;
+	}
+
+	public void setNumberOfStudentsError(String numberOfStudentsError) {
+		this.numberOfStudentsError = numberOfStudentsError;
 	}
 	
 	public String getType() {
@@ -90,8 +95,30 @@ public class AssignmentBean implements DisposableBean {
 				numberOfStudents = "1";
 			}
 		}
-		
-		
+	}
+	
+	public void fileUploadListen(ActionEvent event){
+		InputFile inputFile =(InputFile) event.getSource();
+        FileInfo fileInfo = inputFile.getFileInfo();
+        //file has been saved
+        if (fileInfo.isSaved()) {
+            fileUploadErrorMessage = "The attachment " +fileInfo.getFileName() +" was saved.";
+        }
+        //upload failed, generate custom messages
+        if (fileInfo.isFailed()) {
+            if(fileInfo.getStatus() == FileInfo.INVALID){
+                fileUploadErrorMessage = "The attachment could not be uploaded.";
+            }
+            if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
+                fileUploadErrorMessage = "The attachment exceeded the size limit.";
+            }
+            if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
+                fileUploadErrorMessage = "The attachment could not be uploaded.";
+            }
+            if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
+                fileUploadErrorMessage = "The attachment can only be a pdf file.";
+            }
+        }
 	}
 
 	public void dispose() throws Exception {
@@ -175,6 +202,14 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setBachelor(boolean bachelor) {
 		this.bachelor = bachelor;
+	}
+
+	public String getFileUploadErrorMessage() {
+		return fileUploadErrorMessage;
+	}
+
+	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
+		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
 
 }
