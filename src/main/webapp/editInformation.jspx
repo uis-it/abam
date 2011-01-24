@@ -17,7 +17,7 @@
 				</tr>
 				<tr>
 					<td><h:outputText value="Title: "/></td>
-					<td><h:inputText id="title" size="100" required="true" tabindex="1" ></h:inputText></td>
+					<td><h:inputText id="title" size="100" required="true" tabindex="1" value="#{assignmentBean.title }"></h:inputText></td>
 					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
 				</tr>
 				<tr>
@@ -26,14 +26,14 @@
 					<td><h:message for="description" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Instructor: "/> </td>
-					<td><h:inputText id="instructor" size="100" required="true"></h:inputText></td>
-					<td><h:message for="instructor" showSummary="true" showDetail="false"></h:message></td>
+					<td><h:outputText value="Supervisor: "/> </td>
+					<td><h:inputText id="supervisor" size="100" required="true"></h:inputText></td>
+					<td><h:message for="supervisor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Technical Responsible: "/> </td>
-					<td><h:inputText id="technicalResponsible" size="100" required="true"></h:inputText></td>
-					<td><h:message for="technicalResponsible" showSummary="true" showDetail="false"></h:message></td>
+					<td><h:outputText value="Faculty Supervisor: "/> </td>
+					<td><h:inputText id="facultySupervisor" size="100" required="true"></h:inputText></td>
+					<td><h:message for="facultySupervisor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Institute: "/> </td>
@@ -47,7 +47,7 @@
 				</tr>
 				<tr>
 					<td><h:outputText value="Number of students: "/> </td>
-					<td><h:inputText id="numberOfStudents" required="true"></h:inputText></td>
+					<td><h:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.master }"></h:inputText></td>
 					<td><h:message for="numberOfStudents" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>

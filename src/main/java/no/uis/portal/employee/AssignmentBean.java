@@ -16,7 +16,7 @@ import com.liferay.portal.service.ServiceContext;
 public class AssignmentBean implements DisposableBean {
 
 	private int id;
-	
+	private static int lastId = 0; //todo: sync against database. 
 	private String numberOfStudents;
 	private String title;
 	private String supervisor; //Change this to a seperate class later?
@@ -66,7 +66,7 @@ public class AssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		
+		id = ++lastId;
 		title = (String)parameterMap.get(clientId+"title");
 		description = (String)parameterMap.get(clientId+"description");
 		supervisor = (String)parameterMap.get(clientId+"supervisor");

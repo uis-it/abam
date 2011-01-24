@@ -5,7 +5,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
--		<ice:form partialSubmit="true" >
+		<ice:form partialSubmit="true" >
 		
 			<h:outputText value="Create a new Assignment"/><br/>
 			<br/>
@@ -60,7 +60,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
+						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Preview Summary" id="CreateButton" ></h:commandButton>
 						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
 					</td>
 				</tr>				

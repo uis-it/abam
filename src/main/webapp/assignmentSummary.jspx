@@ -5,12 +5,17 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
--		<ice:form partialSubmit="true" >
+		<ice:form partialSubmit="true" >
 		
 			<h:outputText value="Assignment summary"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">
+				<tr>
+					<td><h:outputText value="Id: "/></td>
+					<td><h:outputText value="#{assignmentBean.id}"></h:outputText></td>
+					<td></td>
+				</tr>
 				<tr>
 					<td><h:outputText value="Title: "/></td>
 					<td><h:outputText value="#{assignmentBean.title}"></h:outputText></td>
@@ -55,8 +60,9 @@
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" actionListener="#{assignmentBean.listen}" value="Create" id="CreateButton"></h:commandButton>
-						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
+						<h:commandButton type="submit" action="assignmentSavedConfirmation" value="Save" id="SaveButton"></h:commandButton>
+						<h:commandButton type="submit" action="editInformation" value="Edit" id="EditButton" immediate="true"></h:commandButton>
+						<h:commandButton type="submit" action="backToView" value="Cancel" id="BackButton" immediate="true"></h:commandButton>
 					</td>
 				</tr>				
 			</table>
