@@ -57,6 +57,11 @@
 					<td></td>
 				</tr>
 				<tr>
+					<td><h:outputText value="Attachment: "/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf" actionListener="#{assignmentBean.fileUploadListen}"></ice:inputFile> </td>
+					<td><h:outputText value="#{assignmentBean.fileUploadErrorMessage}"/> </td>
+				</tr>
+				<tr>
 					<td></td>
 					<td></td>
 					<td>

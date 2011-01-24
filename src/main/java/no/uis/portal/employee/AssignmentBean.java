@@ -17,8 +17,13 @@ import com.liferay.portal.service.ServiceContext;
 
 public class AssignmentBean implements DisposableBean {
 
-	private int id;
 	private static int lastId = 0; //todo: sync against database. 
+		
+	private int id;
+	
+	private boolean master;
+	private boolean bachelor;
+	
 	private String numberOfStudents;
 	private String title;
 	private String supervisor; //Change this to a seperate class later?
@@ -29,26 +34,10 @@ public class AssignmentBean implements DisposableBean {
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
 	
-	private boolean master;
-	private boolean bachelor;
-	
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
 		fileUploadErrorMessage = "";
-	}
-		
-	public String getNumberOfStudentsError() {
-		return numberOfStudentsError;
-	}
-
-	public void setNumberOfStudentsError(String numberOfStudentsError) {
-		this.numberOfStudentsError = numberOfStudentsError;
-	}
-	
-	public String getType() {
-		if(master) return "Master";
-		else return "Bachelor";
 	}
 	
 	public void listen(ActionEvent event) {
@@ -80,6 +69,7 @@ public class AssignmentBean implements DisposableBean {
 		studyProgram = (String)parameterMap.get(clientId+"studyProgram");
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
 		numberOfStudentsError = "";
+		fileUploadErrorMessage = "";
 		
 		if(parameterMap.get(clientId+"type").equals("master")){
 			master = true;
@@ -124,6 +114,11 @@ public class AssignmentBean implements DisposableBean {
 	public void dispose() throws Exception {
 	}
 
+	public String getType() {
+		if(master) return "Master";
+		else return "Bachelor";
+	}
+		
 	public int getId() {
 		return id;
 	}
@@ -211,5 +206,12 @@ public class AssignmentBean implements DisposableBean {
 	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
 		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
+	
+	public String getNumberOfStudentsError() {
+		return numberOfStudentsError;
+	}
 
+	public void setNumberOfStudentsError(String numberOfStudentsError) {
+		this.numberOfStudentsError = numberOfStudentsError;
+	}
 }

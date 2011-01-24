@@ -57,15 +57,10 @@
 				</td>
 				</tr>
 				<tr>
-				<td><h:outputText value="Attachment: "/> </td>
-				<td> <ice:inputFile fileNamePattern=".+\.pdf" actionListener="#{assignmentBean.fileUploadListen}"></ice:inputFile> </td>
-				<td><h:outputText value="#{assignmentBean.fileUploadErrorMessage}"/> </td>
-				</tr>
-				<tr>
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Preview Summary" id="CreateButton" ></h:commandButton>
+						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Next" id="CreateButton" ></h:commandButton>
 						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
 					</td>
 				</tr>				
