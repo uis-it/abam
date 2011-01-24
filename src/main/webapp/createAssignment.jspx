@@ -13,7 +13,7 @@
 			<table border="0" width="800">
 				<tr>
 					<td><h:outputText value="Title: "/></td>
-					<td><h:inputText id="title" size="100" required="true"></h:inputText></td>
+					<td><h:inputText id="title" size="100" required="true" value="#{assignmentBean.title }"></h:inputText></td>
 					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
 				</tr>
 				<tr>

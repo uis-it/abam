@@ -33,7 +33,7 @@ public class AssignmentBean implements DisposableBean {
 	private String institute;
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
-	
+	private String attachedFilePath;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
@@ -49,7 +49,7 @@ public class AssignmentBean implements DisposableBean {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.DEBUG);
+		log.setLevel(Level.ERROR);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
@@ -93,6 +93,7 @@ public class AssignmentBean implements DisposableBean {
         //file has been saved
         if (fileInfo.isSaved()) {
             fileUploadErrorMessage = "The attachment " +fileInfo.getFileName() +" was saved.";
+            attachedFilePath = fileInfo.getPhysicalPath();
         }
         //upload failed, generate custom messages
         if (fileInfo.isFailed()) {
@@ -213,5 +214,13 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setNumberOfStudentsError(String numberOfStudentsError) {
 		this.numberOfStudentsError = numberOfStudentsError;
+	}
+
+	public String getAttachedFilePath() {
+		return attachedFilePath;
+	}
+
+	public void setAttachedFilePath(String attachedFilePath) {
+		this.attachedFilePath = attachedFilePath;
 	}
 }
