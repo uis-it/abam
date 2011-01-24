@@ -22,14 +22,14 @@
 					<td><h:message for="description" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Instructor: "/> </td>
-					<td><h:inputText id="instructor" size="100" required="true"></h:inputText></td>
-					<td><h:message for="instructor" showSummary="true" showDetail="false"></h:message></td>
+					<td><h:outputText value="Supervisor: "/> </td>
+					<td><h:inputText id="supervisor" size="100" required="true"></h:inputText></td>
+					<td><h:message for="supervisor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Technical Responsible: "/> </td>
-					<td><h:inputText id="technicalResponsible" size="100" required="true"></h:inputText></td>
-					<td><h:message for="technicalResponsible" showSummary="true" showDetail="false"></h:message></td>
+					<td><h:outputText value="Faculty Supervisor: "/> </td>
+					<td><h:inputText id="facultySupervisor" size="100" required="true"></h:inputText></td>
+					<td><h:message for="facultySupervisor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Institute: "/> </td>
@@ -49,10 +49,11 @@
 				<tr>
 					<td><h:outputText value="Type: "/> </td>
 				<td>
-					<h:selectOneRadio id="type" value="bachelor" required="true">
-						<f:selectItem itemValue="bachelor" itemLabel="Bachelor"/>
-						<f:selectItem itemValue="master" itemLabel="Master" />
-					</h:selectOneRadio>
+				<h:selectOneRadio id="type" value="bachelor" required="true">
+					<f:selectItem itemValue="bachelor" itemLabel="Bachelor"/>
+					<f:selectItem itemValue="master" itemLabel="Master" />
+				</h:selectOneRadio>
+			
 				</td>
 				</tr>
 				<tr>

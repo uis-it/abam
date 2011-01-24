@@ -15,11 +15,11 @@ import com.liferay.portal.service.ServiceContext;
 public class AssignmentBean implements DisposableBean {
 
 	private int id;
-	private int numberOfStudents;
 	
+	private String numberOfStudents;
 	private String title;
-	private String instructor; //Change this to a seperate class later?
-	private String technicalResponsible;
+	private String supervisor; //Change this to a seperate class later?
+	private String facultySupervisor;
 	private String description;
 	private String studyProgram;
 	private String institute;
@@ -45,8 +45,8 @@ public class AssignmentBean implements DisposableBean {
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
-			log.debug("Instructor: "+parameterMap.get(clientId+"instructor"));
-			log.debug("TechRes: "+parameterMap.get(clientId+"technicalResponsible"));
+			log.debug("Supervisor: "+parameterMap.get(clientId+"supervisor"));
+			log.debug("FacultySupervisor: "+parameterMap.get(clientId+"facultySupervisor"));
 			log.debug("Institute: "+parameterMap.get(clientId+"institute"));
 			log.debug("StudyProgram: "+parameterMap.get(clientId+"studyProgram"));
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
@@ -73,22 +73,6 @@ public class AssignmentBean implements DisposableBean {
 		this.title = title;
 	}
 
-	public String getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(String instructor) {
-		this.instructor = instructor;
-	}
-
-	public String getTechnicalResponsible() {
-		return technicalResponsible;
-	}
-
-	public void setTechnicalResponsible(String technicalResponsible) {
-		this.technicalResponsible = technicalResponsible;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -97,12 +81,28 @@ public class AssignmentBean implements DisposableBean {
 		this.description = description;
 	}
 
-	public int getNumberOfStudents() {
+	public String getNumberOfStudents() {
 		return numberOfStudents;
 	}
 
-	public void setNumberOfStudents(int numberOfStudents) {
+	public void setNumberOfStudents(String numberOfStudents) {
 		this.numberOfStudents = numberOfStudents;
+	}
+
+	public String getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(String supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public String getFacultySupervisor() {
+		return facultySupervisor;
+	}
+
+	public void setFacultySupervisor(String facultySupervisor) {
+		this.facultySupervisor = facultySupervisor;
 	}
 
 	public String getStudyProgram() {
