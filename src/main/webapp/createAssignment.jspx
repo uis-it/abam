@@ -62,7 +62,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></ice:commandButton>
+						<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
 						<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Next" id="CreateButton" />
 					</td>
 				</tr>				
@@ -82,7 +82,8 @@
 						<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
 						<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
-						<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add new"  />
+						<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row"  />
+						<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row"  />
 					</ice:column>
 				</ice:dataTable>
 		</ice:form>

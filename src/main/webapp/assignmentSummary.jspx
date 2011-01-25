@@ -7,62 +7,79 @@
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
 		
-			<h:outputText value="Assignment summary"/><br/>
+			<ice:outputText value="Assignment summary"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">
 				<tr>
-					<td><h:outputText value="Id: "/></td>
-					<td><h:outputText value="#{assignmentBean.id}"></h:outputText></td>
+					<td><ice:outputText value="Id: "/></td>
+					<td><ice:outputText value="#{assignmentBean.id}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Title: "/></td>
-					<td><h:outputText value="#{assignmentBean.title}"></h:outputText></td>
+					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText value="#{assignmentBean.title}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Description: "/> </td>
-					<td><h:outputText value="#{assignmentBean.description}"></h:outputText></td>
+					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.description}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Faculty Supervisor: "/> </td>
-					<td><h:outputText value="#{assignmentBean.facultySupervisor}"></h:outputText></td>
+					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.facultySupervisor}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Institute: "/> </td>
-					<td><h:outputText value="#{assignmentBean.institute}"></h:outputText></td>
+					<td><ice:outputText value="Institute: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.institute}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Study Program: "/> </td>
-					<td><h:outputText value="#{assignmentBean.studyProgram}"></h:outputText></td>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.studyProgram}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Number of students: "/> </td>
-					<td><h:outputText value="#{assignmentBean.numberOfStudents}"></h:outputText></td>
-					<td><h:outputText value="#{assignmentBean.numberOfStudentsError}"></h:outputText></td>
+					<td><ice:outputText value="Number of students: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.numberOfStudents}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.numberOfStudentsError}"></ice:outputText></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Type: "/> </td>
-					<td><h:outputText value="#{assignmentBean.type}"></h:outputText></td>
+					<td><ice:outputText value="Type: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.type}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Attachment: "/> </td>
-					<td> <ice:inputFile fileNamePattern=".+\.pdf" actionListener="#{assignmentBean.fileUploadListen}"></ice:inputFile> </td>
-					<td><h:outputText value="#{assignmentBean.fileUploadErrorMessage}"/> </td>
+					<ice:dataTable var="supervisor" value="#{assignmentBean.supervisorList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Supervisor"/>
+					</f:facet>
+						<ice:outputText id="name" value="Name: "/>
+						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
+						<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Attachment: "/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf" actionListener="#{assignmentBean.fileUploadListen}"/> </td>
+					<td><ice:outputText value="#{assignmentBean.fileUploadErrorMessage}"/> </td>
 				</tr>
 				<tr>
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" action="assignmentSavedConfirmation" value="Save" id="SaveButton"></h:commandButton>
-						<h:commandButton type="submit" action="editInformation" value="Edit" id="EditButton" immediate="true"></h:commandButton>
-						<h:commandButton type="submit" action="backToView" value="Cancel" id="BackButton" immediate="true"></h:commandButton>
+						<ice:commandButton type="submit" action="assignmentSavedConfirmation" value="Save" id="SaveButton"/>
+						<ice:commandButton type="submit" action="editInformation" value="Edit" id="EditButton" immediate="true"/>
+						<ice:commandButton type="submit" action="backToView" value="Cancel" id="BackButton" immediate="true"/>
 					</td>
 				</tr>				
 			</table>

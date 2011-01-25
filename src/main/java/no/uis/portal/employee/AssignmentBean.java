@@ -11,6 +11,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
@@ -54,6 +55,13 @@ public class AssignmentBean implements DisposableBean {
 		supervisorList.add(new Supervisor());
 	}
 	
+	public void actionRemoveSupervisor(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		supervisorList.remove(table.getRowData());		
+	}
+	
 	public void listen(ActionEvent event) {
 		UIComponent comp = event.getComponent();
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -85,8 +93,7 @@ public class AssignmentBean implements DisposableBean {
 		numberOfStudentsError = "";
 		fileUploadErrorMessage = "";
 
-		
-		if(parameterMap.get(clientId+"type").equals("Master")){
+		if(parameterMap.get(clientId+"type").equals("false")){
 			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
 				numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
 				numberOfStudents = "1";
