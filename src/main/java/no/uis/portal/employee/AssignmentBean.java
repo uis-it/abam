@@ -28,7 +28,6 @@ public class AssignmentBean implements DisposableBean {
 	
 	private String numberOfStudents;
 	private String title;
-	private ArrayList<Supervisor> supervisorList;
 	private String facultySupervisor;
 	private String description;
 	private String studyProgram;
@@ -37,6 +36,9 @@ public class AssignmentBean implements DisposableBean {
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
 	private String type;
+
+	private ArrayList<Supervisor> supervisorList;
+	
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
@@ -44,6 +46,23 @@ public class AssignmentBean implements DisposableBean {
 		supervisorList.add(new Supervisor());
 		
 		bachelor = true;		
+	}
+	
+	public void actionCreateNewAssignment(ActionEvent event) {
+		numberOfStudents = "";
+		title = "";
+		facultySupervisor = "";
+		description = "";
+		studyProgram = "";
+		institute = "";
+		numberOfStudentsError = "";
+		fileUploadErrorMessage = "";
+		attachedFilePath = "";
+		type = "";
+		bachelor = true;
+		
+		supervisorList.clear();
+		supervisorList.add(new Supervisor());
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {

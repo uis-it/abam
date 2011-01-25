@@ -5,7 +5,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:form partialSubmit="true" >
+		<ice:form>
 		
 			<ice:outputText value="Create a new Assignment"/><br/>
 			<br/>
@@ -72,9 +72,9 @@
 						<ice:outputText value="Supervisor"/>
 				</f:facet>
 					<ice:outputText id="name" value="Name: "/>
-					<ice:inputText id="nameInput" value="#{supervisor.name}"/>
+					<ice:inputText id="nameInput" value="#{supervisor.name}" required="true"/>
 					<ice:outputText value="External:" />
-					<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}"/>
+					<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}" partialSubmit="true"/>
 					<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
 					<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
 					<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
@@ -82,6 +82,7 @@
 					<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
 					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
 					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row"  />
+					<td><ice:message for="nameInput" showSummary="true" showDetail="false"></ice:message> </td>
 				</ice:column>										
 			</ice:dataTable>
 			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row"/>
