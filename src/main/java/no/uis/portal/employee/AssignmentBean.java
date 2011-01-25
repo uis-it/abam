@@ -1,5 +1,6 @@
 package no.uis.portal.employee;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -26,7 +27,7 @@ public class AssignmentBean implements DisposableBean {
 	
 	private String numberOfStudents;
 	private String title;
-	private String supervisor; //Change this to a seperate class later?
+	private ArrayList<Supervisor> supervisorList;
 	private String facultySupervisor;
 	private String description;
 	private String studyProgram;
@@ -37,7 +38,17 @@ public class AssignmentBean implements DisposableBean {
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
-		fileUploadErrorMessage = "";
+		//fileUploadErrorMessage = "";
+		supervisorList = new ArrayList<Supervisor>();
+		Supervisor hei = new Supervisor();
+		hei.setName("heihaa");
+		hei.setEmail("a@b.com");
+		hei.setExternal(true);
+		supervisorList.add(hei);
+	}
+	
+	public void actionAddSupervisor(ActionEvent event) {
+		supervisorList.add(new Supervisor());
 	}
 	
 	public void listen(ActionEvent event) {
@@ -63,7 +74,7 @@ public class AssignmentBean implements DisposableBean {
 		id = ++lastId;
 		title = (String)parameterMap.get(clientId+"title");
 		description = (String)parameterMap.get(clientId+"description");
-		supervisor = (String)parameterMap.get(clientId+"supervisor");
+		//supervisorList = (String)parameterMap.get(clientId+"supervisor");
 		facultySupervisor = (String)parameterMap.get(clientId+"facultySupervisor");
 		institute = (String)parameterMap.get(clientId+"institute");
 		studyProgram = (String)parameterMap.get(clientId+"studyProgram");
@@ -152,12 +163,12 @@ public class AssignmentBean implements DisposableBean {
 		this.numberOfStudents = numberOfStudents;
 	}
 
-	public String getSupervisor() {
-		return supervisor;
+	public ArrayList<Supervisor> getSupervisorList() {
+		return supervisorList;
 	}
 
-	public void setSupervisor(String supervisor) {
-		this.supervisor = supervisor;
+	public void setSupervisorList(ArrayList<Supervisor> supervisorList) {
+		this.supervisorList = supervisorList;
 	}
 
 	public String getFacultySupervisor() {

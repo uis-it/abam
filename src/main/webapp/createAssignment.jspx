@@ -13,37 +13,39 @@
 			<table border="0" width="800">
 				<tr>
 					<td><h:outputText value="Title: "/></td>
-					<td><h:inputText id="title" size="100" required="true" value="#{assignmentBean.title }"></h:inputText></td>
+					<td><h:inputText id="title" size="100" required="true" value="#{assignmentBean.title}"></h:inputText></td>
 					<td><h:message for="title" showSummary="true" showDetail="false" ></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Description: "/> </td>
-					<td><h:inputTextarea id="description" cols="96" rows="6" required="true"></h:inputTextarea></td>
+					<td><h:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.description}"></h:inputTextarea></td>
 					<td><h:message for="description" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
+				<!--
 					<td><h:outputText value="Supervisor: "/> </td>
-					<td><h:inputText id="supervisor" size="100" required="true"></h:inputText></td>
+					<td><h:inputText id="supervisor" size="100" required="true" value="#{assignmentBean.supervisor}"></h:inputText></td>
 					<td><h:message for="supervisor" showSummary="true" showDetail="false"></h:message></td>
+				-->
 				</tr>
 				<tr>
 					<td><h:outputText value="Faculty Supervisor: "/> </td>
-					<td><h:inputText id="facultySupervisor" size="100" required="true"></h:inputText></td>
+					<td><h:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.facultySupervisor}"></h:inputText></td>
 					<td><h:message for="facultySupervisor" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Institute: "/> </td>
-					<td><h:inputText id="institute" required="true"></h:inputText></td>
+					<td><h:inputText id="institute" required="true" value="#{assignmentBean.institute}"></h:inputText></td>
 					<td><h:message for="institute" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Study Program: "/> </td>
-					<td><h:inputText id="studyProgram" required="true"></h:inputText></td>
+					<td><h:inputText id="studyProgram" required="true" value="#{assignmentBean.studyProgram}"></h:inputText></td>
 					<td><h:message for="studyProgram" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
 					<td><h:outputText value="Number of students: "/> </td>
-					<td><h:inputText id="numberOfStudents" required="true" disabled="false"></h:inputText></td>
+					<td><h:inputText id="numberOfStudents" required="true" disabled="false" value="#{assignmentBean.numberOfStudents}"></h:inputText></td>
 					<td><h:message for="numberOfStudents" showSummary="true" showDetail="false"></h:message></td>
 				</tr>
 				<tr>
@@ -60,11 +62,29 @@
 					<td></td>
 					<td></td>
 					<td>
-						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Next" id="CreateButton" ></h:commandButton>
 						<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton>
+						<h:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Next" id="CreateButton" ></h:commandButton>
 					</td>
 				</tr>				
 			</table>
+			<ice:dataTable var="supervisor" value="#{assignmentBean.supervisorList }">
+					<ice:column>
+					<f:facet name="header">
+							<ice:outputText value="Supervisor"/>
+					</f:facet>
+						<ice:outputText id="name" value="Name: "/>
+						<ice:inputText id="nameInput" value="#{supervisor.name}"/>
+						<ice:outputText value="External:" />
+						<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}"/>
+						<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+						<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+						<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+						<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+						<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add new"  />
+					</ice:column>
+				</ice:dataTable>
 		</ice:form>
 	</ice:portlet>
 </f:view>
