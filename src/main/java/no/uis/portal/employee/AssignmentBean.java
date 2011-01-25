@@ -7,6 +7,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -19,6 +20,8 @@ import com.liferay.portal.service.ServiceContext;
 
 public class AssignmentBean implements DisposableBean {
 
+	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
+	
 	private static int lastId = 0; //todo: sync against database. 
 		
 	private int id;
@@ -36,7 +39,9 @@ public class AssignmentBean implements DisposableBean {
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
 	private String type;
-
+	
+	private int instituteNumber;
+	
 	private ArrayList<Supervisor> supervisorList;
 	
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
@@ -45,7 +50,11 @@ public class AssignmentBean implements DisposableBean {
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
-		bachelor = true;		
+		instituteList.add(new SelectItem(new Integer(0), "IDE"));
+		instituteList.add(new SelectItem(new Integer(1), "TEKNAT"));
+		
+		bachelor = true;
+				
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {
@@ -77,6 +86,7 @@ public class AssignmentBean implements DisposableBean {
 	}
 	
 	public void listen(ActionEvent event) {
+		System.out.println("Test");
 		UIComponent comp = event.getComponent();
 		FacesContext context = FacesContext.getCurrentInstance();
 		
@@ -262,5 +272,21 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setAttachedFilePath(String attachedFilePath) {
 		this.attachedFilePath = attachedFilePath;
+	}
+
+	public ArrayList<SelectItem> getInstituteList() {
+		return instituteList;
+	}
+
+	public void setInstituteList(ArrayList<SelectItem> instituteList) {
+		this.instituteList = instituteList;
+	}
+
+	public int getInstituteNumber() {
+		return instituteNumber;
+	}
+
+	public void setInstituteNumber(int instituteNumber) {
+		this.instituteNumber = instituteNumber;
 	}
 }
