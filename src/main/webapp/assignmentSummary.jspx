@@ -27,11 +27,6 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td><h:outputText value="Supervisor: "/> </td>
-					<td><h:outputText value="#{assignmentBean.supervisor}"></h:outputText></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td><h:outputText value="Faculty Supervisor: "/> </td>
 					<td><h:outputText value="#{assignmentBean.facultySupervisor}"></h:outputText></td>
 					<td></td>

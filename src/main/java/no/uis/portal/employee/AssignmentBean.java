@@ -35,6 +35,7 @@ public class AssignmentBean implements DisposableBean {
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
+	private String type;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
@@ -45,6 +46,8 @@ public class AssignmentBean implements DisposableBean {
 		hei.setEmail("a@b.com");
 		hei.setExternal(true);
 		supervisorList.add(hei);
+		bachelor = true;
+		type = "Bachelor";
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
@@ -81,16 +84,9 @@ public class AssignmentBean implements DisposableBean {
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
 		numberOfStudentsError = "";
 		fileUploadErrorMessage = "";
+
 		
-		if(parameterMap.get(clientId+"type").equals("master")){
-			master = true;
-			bachelor = false;
-		} else {
-			master = false;
-			bachelor = true;
-		}
-		
-		if(parameterMap.get(clientId+"type").equals("master")){
+		if(parameterMap.get(clientId+"type").equals("Master")){
 			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
 				numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
 				numberOfStudents = "1";
@@ -122,13 +118,25 @@ public class AssignmentBean implements DisposableBean {
             }
         }
 	}
+	
+	public void radioListener(ValueChangeEvent event){
+		if (event.getNewValue().equals(false)){
+			master = true;
+			bachelor = false;
+			type = "Master";
+		} else {
+			master = false;
+			bachelor = true;
+			type = "Bachelor";
+		}
+		//System.out.println("m: "+master +" b: "+bachelor);
+	}
 
 	public void dispose() throws Exception {
 	}
 
 	public String getType() {
-		if(master) return "Master";
-		else return "Bachelor";
+		return type;
 	}
 		
 	public int getId() {
