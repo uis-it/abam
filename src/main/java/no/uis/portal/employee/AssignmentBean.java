@@ -40,15 +40,10 @@ public class AssignmentBean implements DisposableBean {
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
-		//fileUploadErrorMessage = "";
-		supervisorList = new ArrayList<Supervisor>();
-		Supervisor hei = new Supervisor();
-		hei.setName("heihaa");
-		hei.setEmail("a@b.com");
-		hei.setExternal(true);
-		supervisorList.add(hei);
-		bachelor = true;
-		type = "Bachelor";
+		supervisorList = new ArrayList<Supervisor>();		
+		supervisorList.add(new Supervisor());
+		
+		bachelor = true;		
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
