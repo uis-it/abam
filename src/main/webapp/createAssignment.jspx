@@ -85,11 +85,11 @@
 					<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
 					<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
 					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
-					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row"  />
+					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row" immediate="true"/>
 					<td><ice:message for="nameInput" showSummary="true" showDetail="false"></ice:message> </td>
 				</ice:column>										
 			</ice:dataTable>
-			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row"/>
+			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row" immediate="true"/>
 			<br/><br/>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
 			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.listen}" value="Next" id="CreateButton" />
