@@ -56,6 +56,10 @@
 			<from-outcome>assignmentSavedConfirmation</from-outcome>
 			<to-view-id>/assignmentSavedConfirmation.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>editLists</from-outcome>
+			<to-view-id>/editLists.jspx</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	<managed-bean>
@@ -66,6 +70,11 @@
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>
 		<managed-bean-class>no.uis.portal.employee.AssignmentBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+		<managed-bean>
+		<managed-bean-name>editBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.EditBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	

@@ -52,11 +52,11 @@ public class AssignmentBean implements DisposableBean {
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
-		instituteList.add(new SelectItem(new Integer(0), "IDE"));
-		instituteList.add(new SelectItem(new Integer(1), "TEKNAT"));
+		instituteList.add(new EditableSelectItem(new Integer(0), "IDE"));
+		instituteList.add(new EditableSelectItem(new Integer(1), "TEKNAT"));
 		
-		studyProgramList.add(new SelectItem(new Integer(0), "B-DATA"));
-		studyProgramList.add(new SelectItem(new Integer(1), "B-ELEKTRO"));
+		studyProgramList.add(new EditableSelectItem(new Integer(0), "B-DATA"));
+		studyProgramList.add(new EditableSelectItem(new Integer(1), "B-ELEKTRO"));
 		bachelor = true;
 		type = "Bachelor";		
 	}
