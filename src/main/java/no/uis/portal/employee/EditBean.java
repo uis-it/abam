@@ -1,9 +1,11 @@
 package no.uis.portal.employee;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -12,11 +14,6 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class EditBean implements DisposableBean {
 
-	private ArrayList<SelectItem> instituteList;
-	private ArrayList<SelectItem> studyProgramList;
-	
-	private ArrayList<SelectItem> selectedList;
- 	
 	private Logger log = Logger.getLogger(EditBean.class); 
 	
 	public EditBean(){
@@ -36,30 +33,26 @@ public class EditBean implements DisposableBean {
 	
 	}
 	
+	public void actionAddNewInstitute(ActionEvent event){
+		UIComponent uic = event.getComponent();
+		HtmlForm form = (HtmlForm)uic.getParent();
+		
+		List<UIComponent> children = form.getChildren();
+		HtmlDataTable table = new HtmlDataTable();
+		
+		for (UIComponent child : children) {
+			if(child.getId().equals("instituteTable")){
+				table = (HtmlDataTable)child;
+				ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
+				EditableSelectItem newItem = new EditableSelectItem(new Integer(list.size()), "");
+				newItem.setEditable(true);
+				list.add(newItem);
+			}
+		}		
+	}
+	
 	public void dispose() throws Exception {
 		
 	}
-	public ArrayList<SelectItem> getInstituteList() {
-		return instituteList;
-	}
 
-	public void setInstituteList(ArrayList<SelectItem> instituteList) {
-		this.instituteList = instituteList;
-	}
-
-	public ArrayList<SelectItem> getStudyProgramList() {
-		return studyProgramList;
-	}
-
-	public void setStudyProgramList(ArrayList<SelectItem> studyProgramList) {
-		this.studyProgramList = studyProgramList;
-	}
-
-	public ArrayList<SelectItem> getSelectedList() {
-		return selectedList;
-	}
-
-	public void setSelectedList(ArrayList<SelectItem> selectedList) {
-		this.selectedList = selectedList;
-	}
 }

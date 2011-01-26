@@ -10,7 +10,7 @@
 			<br/>
 			<br/>
 			
-			<ice:dataTable var="item" value="#{assignmentBean.instituteList}">
+			<ice:dataTable id="instituteTable" var="item" value="#{assignmentBean.instituteList}">
 				<ice:column>
 					<f:facet name="header">
 						<ice:outputText value="First name"/>
@@ -20,7 +20,7 @@
 					<ice:commandButton id="setEditable" value="Edit row" actionListener="#{editBean.setEditableAction}"/>
 				</ice:column>
 			</ice:dataTable>
-			
+			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewInstitute}"/>
 			<table border="0">
 				<tr>
 					<td></td><td></td>
