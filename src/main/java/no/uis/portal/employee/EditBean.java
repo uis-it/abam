@@ -51,6 +51,15 @@ public class EditBean implements DisposableBean {
 		}		
 	}
 	
+	public void actionRemoveInstitute(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
+		
+		list.remove(table.getRowData());			
+	}
+	
 	public void dispose() throws Exception {
 		
 	}
