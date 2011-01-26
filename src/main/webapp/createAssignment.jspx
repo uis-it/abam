@@ -29,11 +29,6 @@
 				-->
 				</tr>
 				<tr>
-					<td><ice:outputText value="Faculty Supervisor: "/> </td>
-					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.facultySupervisor}"></ice:inputText></td>
-					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
-				</tr>
-				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
 					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.instituteNumber}">
 						<f:selectItems id="instituteInputContent" value="#{assignmentBean.instituteList}"/>
@@ -50,27 +45,25 @@
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:inputText id="numberOfStudents" required="true" disabled="false" value="#{assignmentBean.numberOfStudents}"></ice:inputText></td>
-					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
-				</tr>
-				<tr>
 					<td><ice:outputText value="Type: "/> </td>
 				<td>				
-				<h:selectOneRadio id="type" required="false" value="#{assignmentBean.bachelor}" valueChangeListener="#{assignmentBean.radioListener}">
+				<ice:selectOneRadio id="type" required="false" value="#{assignmentBean.bachelor}" valueChangeListener="#{assignmentBean.radioListener}" partialSubmit="true">
 					<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
 					<f:selectItem itemValue="#{false}" itemLabel="Master" />
-				</h:selectOneRadio>
+				</ice:selectOneRadio>
 			
 				</td>
 				</tr>
 				<tr>
-					<td></td>
-					<td></td>
-					<td>
-						
-					</td>
-				</tr>				
+					<td><ice:outputText value="Number of students: "/> </td>
+					<td><ice:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.master}" value="#{assignmentBean.numberOfStudents}"></ice:inputText></td>
+					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.facultySupervisor}"></ice:inputText></td>
+					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>			
 			</table>
 			<ice:dataTable var="supervisor" value="#{assignmentBean.supervisorList }">
 				<ice:column>

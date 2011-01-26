@@ -27,11 +27,6 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Faculty Supervisor: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.facultySupervisor}"></ice:outputText></td>
-					<td></td>
-				</tr>
-				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
 					<td><ice:outputText value="#{assignmentBean.institute}"></ice:outputText></td>
 					<td></td>
@@ -43,12 +38,17 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.numberOfStudents}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.numberOfStudents}" ></ice:outputText></td>
 					<td><ice:outputText value="#{assignmentBean.numberOfStudentsError}"></ice:outputText></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Type: "/> </td>
 					<td><ice:outputText value="#{assignmentBean.type}"></ice:outputText></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.facultySupervisor}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>

@@ -58,7 +58,7 @@ public class AssignmentBean implements DisposableBean {
 		studyProgramList.add(new SelectItem(new Integer(0), "B-DATA"));
 		studyProgramList.add(new SelectItem(new Integer(1), "B-ELEKTRO"));
 		bachelor = true;
-				
+		type = "Bachelor";		
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {
@@ -73,7 +73,7 @@ public class AssignmentBean implements DisposableBean {
 		attachedFilePath = "";
 		type = "";
 		bachelor = true;
-		
+		master = false;
 		supervisorList.clear();
 		supervisorList.add(new Supervisor());
 	}
@@ -90,7 +90,6 @@ public class AssignmentBean implements DisposableBean {
 	}
 	
 	public void listen(ActionEvent event) {
-		System.out.println("Test");
 		UIComponent comp = event.getComponent();
 		FacesContext context = FacesContext.getCurrentInstance();
 		
@@ -99,7 +98,7 @@ public class AssignmentBean implements DisposableBean {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.ERROR);
+		log.setLevel(Level.DEBUG);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
@@ -114,16 +113,15 @@ public class AssignmentBean implements DisposableBean {
 		title = (String)parameterMap.get(clientId+"title");
 		description = (String)parameterMap.get(clientId+"description");
 		facultySupervisor = (String)parameterMap.get(clientId+"facultySupervisor");
-		//institute = (String)parameterMap.get(clientId+"institute");
 		institute = instituteList.get(instituteNumber).getLabel();
 		studyProgram = studyProgramList.get(studyProgramNumber).getLabel();
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
-		numberOfStudentsError = "";
+		//numberOfStudentsError = "";
 		fileUploadErrorMessage = "";
 
 		if(parameterMap.get(clientId+"type").equals("false")){
 			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
-				numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
+				if(!parameterMap.get(clientId+"numberOfStudents").equals(""))numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
 				numberOfStudents = "1";
 			}
 		}
@@ -163,8 +161,8 @@ public class AssignmentBean implements DisposableBean {
 			master = false;
 			bachelor = true;
 			type = "Bachelor";
+			numberOfStudentsError = "";
 		}
-		//System.out.println("m: "+master +" b: "+bachelor);
 	}
 
 	public void dispose() throws Exception {
