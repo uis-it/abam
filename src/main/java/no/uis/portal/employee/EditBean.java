@@ -2,6 +2,8 @@ package no.uis.portal.employee;
 
 import java.util.ArrayList;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -10,25 +12,28 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class EditBean implements DisposableBean {
 
-	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
-	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
+	private ArrayList<SelectItem> instituteList;
+	private ArrayList<SelectItem> studyProgramList;
 	
 	private ArrayList<SelectItem> selectedList;
  	
 	private Logger log = Logger.getLogger(EditBean.class); 
 	
 	public EditBean(){
+		
 	}
 
-	public void buttonListener(ActionEvent event) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		String buttonId = event.getComponent().getClientId(context);
-
-		if(buttonId.contains("editStudyProgram")) {
-			selectedList = studyProgramList;
-		}else if(buttonId.contains("editInstitutes")) {
-			selectedList = instituteList;
+	public void setEditableAction(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		EditableSelectItem editItem = (EditableSelectItem)table.getRowData();
+		if (editItem.isEditable()){
+			editItem.setEditable(false);
+		} else {
+			editItem.setEditable(true);
 		}
+	
 	}
 	
 	public void dispose() throws Exception {

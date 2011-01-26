@@ -57,8 +57,8 @@
 			<to-view-id>/assignmentSavedConfirmation.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>editLists</from-outcome>
-			<to-view-id>/editLists.jspx</to-view-id>
+			<from-outcome>editInstitutes</from-outcome>
+			<to-view-id>/editInstitutes.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	

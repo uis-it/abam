@@ -12,8 +12,8 @@
 			<table border="0">
 				<tr>
 					<td><ice:commandButton value="Edit assignment"/>
-					<ice:commandButton value="Edit study programs" actionListener="#{editBean.buttonListener}" action="editLists" id="editStudyProgram" />
-					<ice:commandButton value="Edit institutes"  actionListener="#{editBean.buttonListener}" action="editLists" id="editInstitutes"/>
+					<ice:commandButton value="Edit study programs" action="editLists" id="editStudyProgram" />
+					<ice:commandButton value="Edit institutes" action="editInstitutes" id="editInstitutes"/>
 					</td>
 				</tr>
 				<tr>
