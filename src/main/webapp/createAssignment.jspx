@@ -44,8 +44,10 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:inputText id="studyProgram" required="true" value="#{assignmentBean.studyProgram}"></ice:inputText></td>
-					<td><ice:message for="studyProgram" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.studyProgramNumber}">
+						<f:selectItems id="studyProgramContent" value="#{assignmentBean.studyProgramList}"/>
+					</ice:selectOneMenu></td>
+					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Number of students: "/> </td>

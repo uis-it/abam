@@ -21,6 +21,7 @@ import com.liferay.portal.service.ServiceContext;
 public class AssignmentBean implements DisposableBean {
 
 	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
+	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
 	
 	private static int lastId = 0; //todo: sync against database. 
 		
@@ -41,6 +42,7 @@ public class AssignmentBean implements DisposableBean {
 	private String type;
 	
 	private int instituteNumber;
+	private int studyProgramNumber;
 	
 	private ArrayList<Supervisor> supervisorList;
 	
@@ -53,6 +55,8 @@ public class AssignmentBean implements DisposableBean {
 		instituteList.add(new SelectItem(new Integer(0), "IDE"));
 		instituteList.add(new SelectItem(new Integer(1), "TEKNAT"));
 		
+		studyProgramList.add(new SelectItem(new Integer(0), "B-DATA"));
+		studyProgramList.add(new SelectItem(new Integer(1), "B-ELEKTRO"));
 		bachelor = true;
 				
 	}
@@ -109,10 +113,10 @@ public class AssignmentBean implements DisposableBean {
 		id = ++lastId;
 		title = (String)parameterMap.get(clientId+"title");
 		description = (String)parameterMap.get(clientId+"description");
-		//supervisorList = (String)parameterMap.get(clientId+"supervisor");
 		facultySupervisor = (String)parameterMap.get(clientId+"facultySupervisor");
-		institute = (String)parameterMap.get(clientId+"institute");
-		studyProgram = (String)parameterMap.get(clientId+"studyProgram");
+		//institute = (String)parameterMap.get(clientId+"institute");
+		institute = instituteList.get(instituteNumber).getLabel();
+		studyProgram = studyProgramList.get(studyProgramNumber).getLabel();
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
 		numberOfStudentsError = "";
 		fileUploadErrorMessage = "";
@@ -288,5 +292,21 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setInstituteNumber(int instituteNumber) {
 		this.instituteNumber = instituteNumber;
+	}
+
+	public ArrayList<SelectItem> getStudyProgramList() {
+		return studyProgramList;
+	}
+
+	public void setStudyProgramList(ArrayList<SelectItem> studyProgramList) {
+		this.studyProgramList = studyProgramList;
+	}
+
+	public int getStudyProgramNumber() {
+		return studyProgramNumber;
+	}
+
+	public void setStudyProgramNumber(int studyProgramNumber) {
+		this.studyProgramNumber = studyProgramNumber;
 	}
 }
