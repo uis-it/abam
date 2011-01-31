@@ -80,6 +80,7 @@
 						<ice:outputText value="Uploaded attachments"/>
 					</f:facet>
 						<ice:outputText id="nameInput" value="#{attachment}"/>
+						<ice:commandButton type="submit" value="Remove" actionListener="#{assignmentBean.actionRemoveAttachment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>	

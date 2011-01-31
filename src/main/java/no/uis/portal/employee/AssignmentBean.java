@@ -84,7 +84,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
-		System.out.println("actionSetSelectedAssignment");
 		UIComponent uic = event.getComponent();
 
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
@@ -182,6 +181,13 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			type = "Bachelor";
 			numberOfStudentsError = "";
 		}
+	}
+	
+	public void actionRemoveAttachment(ActionEvent event){
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+	    attachedFileList.remove(table.getRowData());		
 	}
 
 	public void dispose() throws Exception {
