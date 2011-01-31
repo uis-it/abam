@@ -20,7 +20,7 @@ import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 import com.liferay.portal.service.ServiceContext;
 
-public class AssignmentBean implements DisposableBean {
+public class AssignmentBean implements DisposableBean, Comparable {
 
 	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
@@ -48,9 +48,25 @@ public class AssignmentBean implements DisposableBean {
 	
 	private ArrayList<Supervisor> supervisorList;
 	
+	private PortletRequest pr;
+	private PortletSession ps;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 	
 	public AssignmentBean(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		pr = (PortletRequest)context.getExternalContext().getRequest();
+		ps = pr.getPortletSession();
+		
+		Controller controller = (Controller)ps.getAttribute("controller");
+		if(controller == null){
+			System.out.println("Controller er null");
+			ps.setAttribute("controller", new Controller());
+			controller = (Controller)ps.getAttribute("controller");
+			controller.createTestData();
+		} else {
+			System.out.println("Controller er ikke null");
+		}
+		id = controller.getNextId();
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
@@ -63,14 +79,25 @@ public class AssignmentBean implements DisposableBean {
 		type = "Bachelor";		
 	}
 	
+	public void actionClear(ActionEvent event) {
+		
+		ps.setAttribute("assignmentBean", new AssignmentBean());
+	}
+	
 	public void actionSetSelectedAssignment(ActionEvent event){
 		System.out.println("actionSetSelectedAssignment");
 		UIComponent uic = event.getComponent();
 
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		FacesContext context = FacesContext.getCurrentInstance();
+		PortletRequest pr = (PortletRequest)context.getExternalContext().getRequest();
+		PortletSession ps = pr.getPortletSession();
 		
-		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();	
-		setAllFields(selectedAssignment);
+		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
+		
+		ps.setAttribute("assignmentBean", selectedAssignment);
+		
+		//setAllFields(selectedAssignment);
 	}
 	
 	private void setAllFields(AssignmentBean assignment){
@@ -89,23 +116,6 @@ public class AssignmentBean implements DisposableBean {
 		setType(assignment.getType());
 
 		supervisorList = assignment.getSupervisorList();
-	}
-	
-	public void actionCreateNewAssignment(ActionEvent event) {
-		numberOfStudents = "";
-		title = "";
-		facultySupervisor = "";
-		description = "";
-		studyProgram = "";
-		institute = "";
-		numberOfStudentsError = "";
-		fileUploadErrorMessage = "";
-		attachedFilePath = "";
-		type = "";
-		bachelor = true;
-		master = false;
-		supervisorList.clear();
-		supervisorList.add(new Supervisor());
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
@@ -139,7 +149,6 @@ public class AssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		id = ++lastId;
 		title = (String)parameterMap.get(clientId+"title");
 		description = (String)parameterMap.get(clientId+"description");
 		facultySupervisor = (String)parameterMap.get(clientId+"facultySupervisor");
@@ -198,6 +207,10 @@ public class AssignmentBean implements DisposableBean {
 	public void dispose() throws Exception {
 	}
 
+	public boolean equals (AssignmentBean ab) {
+		return ab.getId() == this.getId();
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -340,5 +353,21 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setStudyProgramNumber(int studyProgramNumber) {
 		this.studyProgramNumber = studyProgramNumber;
+	}
+
+	public static int getLastId() {
+		return lastId;
+	}
+
+	public static void setLastId(int lastId) {
+		AssignmentBean.lastId = lastId;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		AssignmentBean inputAssignment = (AssignmentBean)arg0;
+		if (inputAssignment.getId() > this.getId()) return -1;
+		else if (inputAssignment.getId() < this.getId()) return 1;
+		else return 0;
 	}
 }

@@ -10,7 +10,7 @@
 			<h:outputText value="Assignment successfully saved"/><br/>
 			<br/>
 			<br/>
-			<h:commandButton type="submit" actionListener="#{assignmentBean.actionCreateNewAssignment }" action="createAssignment" value="Create new"></h:commandButton>						
+			<h:commandButton type="submit" actionListener="#{assignmentBean.actionClear }" action="createAssignment" value="Create new"></h:commandButton>						
 			<h:commandButton type="submit" action="backToView" value="Main menu"></h:commandButton>
 		</ice:form>
 	</ice:portlet>
