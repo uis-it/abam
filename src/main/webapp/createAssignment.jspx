@@ -7,10 +7,15 @@
 	<ice:portlet>
 		<ice:form>
 		
-			<ice:outputText value="Create a new Assignment"/><br/>
+			<ice:outputText value="Create/edit an assignment"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">
+				<tr>
+					<td><ice:outputText value="Id: "/></td>
+					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.id}"></ice:inputText></td>
+					<td><ice:message for="id" showSummary="true" showDetail="false" ></ice:message></td>
+				</tr>
 				<tr>
 					<td><ice:outputText value="Title: "/></td>
 					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.title}"></ice:inputText></td>

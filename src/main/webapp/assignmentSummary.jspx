@@ -77,7 +77,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="assignmentSavedConfirmation" value="Save" id="SaveButton"/>
+						<ice:commandButton type="submit" action="assignmentSavedConfirmation" actionListener="#{controller.actionSaveAssignment}" value="Save" id="SaveButton"/>
 						<ice:commandButton type="submit" action="editInformation" value="Edit" id="EditButton" immediate="true"/>
 						<ice:commandButton type="submit" action="backToView" value="Cancel" id="BackButton" immediate="true"/>
 					</td>

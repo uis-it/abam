@@ -60,7 +60,25 @@
 			<from-outcome>editInstitutes</from-outcome>
 			<to-view-id>/editInstitutes.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>editStudyPrograms</from-outcome>
+			<to-view-id>/editStudyPrograms.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editAssignment</from-outcome>
+			<to-view-id>/editAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>displayAssignment</from-outcome>
+			<to-view-id>/displayAssignment.jspx</to-view-id>
+		</navigation-case>
 	</navigation-rule>
+	
+	<managed-bean>
+		<managed-bean-name>controller</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.Controller</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 	
 	<managed-bean>
 		<managed-bean-name>dataBean</managed-bean-name>

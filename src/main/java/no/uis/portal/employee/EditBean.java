@@ -20,7 +20,7 @@ public class EditBean implements DisposableBean {
 		
 	}
 
-	public void setEditableAction(ActionEvent event) {
+	public void actionSetEditable(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
@@ -52,6 +52,33 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionRemoveInstitute(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
+		
+		list.remove(table.getRowData());			
+	}
+	
+	public void actionAddNewStudyProgram(ActionEvent event){
+		UIComponent uic = event.getComponent();
+		HtmlForm form = (HtmlForm)uic.getParent();
+		
+		List<UIComponent> children = form.getChildren();
+		HtmlDataTable table = new HtmlDataTable();
+		
+		for (UIComponent child : children) {
+			if(child.getId().equals("studyProgramTable")){
+				table = (HtmlDataTable)child;
+				ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
+				EditableSelectItem newItem = new EditableSelectItem(new Integer(list.size()), "");
+				newItem.setEditable(true);
+				list.add(newItem);
+			}
+		}		
+	}
+	
+	public void actionRemoveStudyProgram(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		

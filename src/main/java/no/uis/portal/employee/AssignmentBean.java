@@ -8,6 +8,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -61,6 +63,34 @@ public class AssignmentBean implements DisposableBean {
 		type = "Bachelor";		
 	}
 	
+	public void actionSetSelectedAssignment(ActionEvent event){
+		System.out.println("actionSetSelectedAssignment");
+		UIComponent uic = event.getComponent();
+
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();	
+		setAllFields(selectedAssignment);
+	}
+	
+	private void setAllFields(AssignmentBean assignment){
+		setId(assignment.getId());
+		setNumberOfStudents(assignment.getNumberOfStudents());
+		setTitle(assignment.getTitle());
+		setFacultySupervisor(assignment.getFacultySupervisor());
+		setDescription(assignment.getDescription());
+		setStudyProgram(assignment.getStudyProgram());
+		setInstitute(assignment.getInstitute());
+		setNumberOfStudentsError(assignment.getNumberOfStudentsError());
+		setFileUploadErrorMessage(assignment.getFileUploadErrorMessage());
+		setAttachedFilePath(assignment.getAttachedFilePath());
+		setBachelor(assignment.isBachelor());
+		setMaster(assignment.isMaster());
+		setType(assignment.getType());
+
+		supervisorList = assignment.getSupervisorList();
+	}
+	
 	public void actionCreateNewAssignment(ActionEvent event) {
 		numberOfStudents = "";
 		title = "";
@@ -98,7 +128,7 @@ public class AssignmentBean implements DisposableBean {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.DEBUG);
+		log.setLevel(Level.ERROR);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
@@ -172,6 +202,10 @@ public class AssignmentBean implements DisposableBean {
 		return type;
 	}
 		
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public int getId() {
 		return id;
 	}

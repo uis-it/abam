@@ -11,8 +11,8 @@
 			<br/>
 			<table border="0">
 				<tr>
-					<td><ice:commandButton value="Edit assignment"/>
-					<ice:commandButton value="Edit study programs" action="editLists" id="editStudyProgram" />
+					<td><ice:commandButton value="Edit assignment" action="displayAssignment"/>
+					<ice:commandButton value="Edit study programs" action="editStudyPrograms" id="editStudyProgram" />
 					<ice:commandButton value="Edit institutes" action="editInstitutes" id="editInstitutes"/>
 					</td>
 				</tr>
