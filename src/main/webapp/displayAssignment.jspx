@@ -17,7 +17,7 @@
 						</f:facet>
 						<ice:outputText id="itemId" value="#{item.id}"/>
 						<ice:outputText id="itemTitle" value="#{item.title}"/>
-						
+						<ice:outputText id="itemAddedDate" value="#{item.addedDateString}"/>
 						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment"/>
 						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}"/>
 					</ice:column>

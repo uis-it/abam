@@ -1,6 +1,10 @@
 package no.uis.portal.employee;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -42,6 +46,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private String fileUploadErrorMessage;
 	private String type;
 	private String attachedFilePath;
+	private GregorianCalendar addedDate;
+	private String addedDateString;
 	
 	private int instituteNumber;
 	private int studyProgramNumber;
@@ -134,7 +140,10 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		studyProgram = studyProgramList.get(studyProgramNumber).getLabel();
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
 		fileUploadErrorMessage = "";
-
+		
+		addedDate = new GregorianCalendar();
+		addedDateString = getFormatedDate();
+		
 		if(parameterMap.get(clientId+"type").equals("false")){
 			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
 				if(!parameterMap.get(clientId+"numberOfStudents").equals(""))numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
@@ -143,6 +152,11 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		}
 	}
 	
+	private String getFormatedDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		return sdf.format(addedDate.getTime());
+	}
+
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -372,4 +386,21 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	public void setAttachedFileList(ArrayList<String> attachedFileList) {
 		this.attachedFileList = attachedFileList;
 	}
+
+	public GregorianCalendar getAddedDate() {
+		return addedDate;
+	}
+
+	public void setAddedDate(GregorianCalendar addedDate) {
+		this.addedDate = addedDate;
+	}
+
+	public String getAddedDateString() {
+		return addedDateString;
+	}
+
+	public void setAddedDateString(String addedDateString) {
+		this.addedDateString = addedDateString;
+	}
+
 }
