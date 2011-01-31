@@ -40,13 +40,14 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private String institute;
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
-	private String attachedFilePath;
 	private String type;
+	private String attachedFilePath;
 	
 	private int instituteNumber;
 	private int studyProgramNumber;
 	
 	private ArrayList<Supervisor> supervisorList;
+	private ArrayList<String> attachedFileList;
 	
 	private PortletRequest pr;
 	private PortletSession ps;
@@ -65,6 +66,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		}
 		
 		id = controller.getNextId();
+		attachedFileList = new ArrayList<String>();
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
@@ -74,7 +76,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		studyProgramList.add(new EditableSelectItem(new Integer(0), "B-DATA"));
 		studyProgramList.add(new EditableSelectItem(new Integer(1), "B-ELEKTRO"));
 		bachelor = true;
-		type = "Bachelor";		
+		type = "Bachelor";
 	}
 	
 	public void actionClear(ActionEvent event) {		
@@ -107,7 +109,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	}
 	
 	public void listen(ActionEvent event) {
-		UIComponent comp = event.getComponent();
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		String clientId = event.getComponent().getClientId(context);
@@ -147,8 +149,10 @@ public class AssignmentBean implements DisposableBean, Comparable {
         FileInfo fileInfo = inputFile.getFileInfo();
         //file has been saved
         if (fileInfo.isSaved()) {
-            fileUploadErrorMessage = "The attachment " +fileInfo.getFileName() +" was saved.";
+            fileUploadErrorMessage = "";
+            attachedFileList.add(fileInfo.getFileName());
             attachedFilePath = fileInfo.getPhysicalPath();
+            attachedFilePath.replace(fileInfo.getFileName(), "");
         }
         //upload failed, generate custom messages
         if (fileInfo.isFailed()) {
@@ -162,7 +166,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
                 fileUploadErrorMessage = "The attachment could not be uploaded.";
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-                fileUploadErrorMessage = "The attachment can only be a pdf file.";
+                fileUploadErrorMessage = "The attachment can only be a pdf, zip, gif, png, jpeg, jpg, doc or docx file.";
             }
         }
 	}
@@ -291,12 +295,12 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		this.numberOfStudentsError = numberOfStudentsError;
 	}
 
-	public String getAttachedFilePath() {
-		return attachedFilePath;
+	public ArrayList<String> getAttachedFilePathList() {
+		return attachedFileList;
 	}
 
-	public void setAttachedFilePath(String attachedFilePath) {
-		this.attachedFilePath = attachedFilePath;
+	public void setAttachedFilePath(ArrayList<String> attachedFilePathList) {
+		this.attachedFileList = attachedFilePathList;
 	}
 
 	public ArrayList<SelectItem> getInstituteList() {
@@ -345,5 +349,21 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		if (inputAssignment.getId() > this.getId()) return -1;
 		else if (inputAssignment.getId() < this.getId()) return 1;
 		else return 0;
+	}
+
+	public String getAttachedFilePath() {
+		return attachedFilePath;
+	}
+
+	public void setAttachedFilePath(String attachedFilePath) {
+		this.attachedFilePath = attachedFilePath;
+	}
+
+	public ArrayList<String> getAttachedFileList() {
+		return attachedFileList;
+	}
+
+	public void setAttachedFileList(ArrayList<String> attachedFileList) {
+		this.attachedFileList = attachedFileList;
 	}
 }
