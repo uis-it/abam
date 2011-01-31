@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.portlet.PortletRequest;
@@ -18,11 +19,13 @@ public class Controller {
 	private TreeSet<AssignmentBean> assignmentList = new TreeSet<AssignmentBean>(); 
 	private AssignmentBean selectedAssignment;
 	
+	private PortletRequest pr;
+	private PortletSession ps;
 	
 	public Controller() {
-		System.out.println("Controller constructor");
-
-		//AssignmentBean.setLastId(assignmentList.size());
+		FacesContext context = FacesContext.getCurrentInstance();
+		pr = (PortletRequest)context.getExternalContext().getRequest();
+		ps = pr.getPortletSession();
 	}
 	
 	public void createTestData(){
@@ -50,21 +53,17 @@ public class Controller {
 	}
 	
 	public void actionSaveAssignment(ActionEvent event) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		PortletRequest pr = (PortletRequest)context.getExternalContext().getRequest();
-		PortletSession ps = pr.getPortletSession();
 		AssignmentBean ab = (AssignmentBean)ps.getAttribute("assignmentBean");
-		System.out.println("Ab sin id: "+ab.getId());
-		boolean addedToList = false;
+		assignmentList.add(ab);
+	}
+	
+	public void actionRemoveAssignment(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
-//			if(assignmentList.get(i).getId() == ab.getId()) {
-//				assignmentList.remove(i);
-//				assignmentList.add(i, ab);
-//				addedToList = true;
-//				break;
-//			}
-		System.out.println(assignmentList.add(ab));
-					
+		AssignmentBean assignment = (AssignmentBean)table.getRowData();
+		
+		assignmentList.remove(assignment);
 	}
 	
 	public TreeSet<AssignmentBean> getAssignmentList() {

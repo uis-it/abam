@@ -59,13 +59,11 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		
 		Controller controller = (Controller)ps.getAttribute("controller");
 		if(controller == null){
-			System.out.println("Controller er null");
-			ps.setAttribute("controller", new Controller());
-			controller = (Controller)ps.getAttribute("controller");
+			controller = new Controller();
+			ps.setAttribute("controller", controller);
 			controller.createTestData();
-		} else {
-			System.out.println("Controller er ikke null");
 		}
+		
 		id = controller.getNextId();
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
@@ -79,8 +77,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		type = "Bachelor";		
 	}
 	
-	public void actionClear(ActionEvent event) {
-		
+	public void actionClear(ActionEvent event) {		
 		ps.setAttribute("assignmentBean", new AssignmentBean());
 	}
 	
@@ -96,28 +93,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
 		
 		ps.setAttribute("assignmentBean", selectedAssignment);
+	}
 		
-		//setAllFields(selectedAssignment);
-	}
-	
-	private void setAllFields(AssignmentBean assignment){
-		setId(assignment.getId());
-		setNumberOfStudents(assignment.getNumberOfStudents());
-		setTitle(assignment.getTitle());
-		setFacultySupervisor(assignment.getFacultySupervisor());
-		setDescription(assignment.getDescription());
-		setStudyProgram(assignment.getStudyProgram());
-		setInstitute(assignment.getInstitute());
-		setNumberOfStudentsError(assignment.getNumberOfStudentsError());
-		setFileUploadErrorMessage(assignment.getFileUploadErrorMessage());
-		setAttachedFilePath(assignment.getAttachedFilePath());
-		setBachelor(assignment.isBachelor());
-		setMaster(assignment.isMaster());
-		setType(assignment.getType());
-
-		supervisorList = assignment.getSupervisorList();
-	}
-	
 	public void actionAddSupervisor(ActionEvent event) {
 		supervisorList.add(new Supervisor());
 	}
@@ -155,7 +132,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		institute = instituteList.get(instituteNumber).getLabel();
 		studyProgram = studyProgramList.get(studyProgramNumber).getLabel();
 		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
-		//numberOfStudentsError = "";
 		fileUploadErrorMessage = "";
 
 		if(parameterMap.get(clientId+"type").equals("false")){

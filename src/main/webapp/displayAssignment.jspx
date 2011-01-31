@@ -19,7 +19,7 @@
 						<ice:outputText id="itemTitle" value="#{item.title}"/>
 						
 						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment"/>
-						<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveInstitute}"/>
+						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
