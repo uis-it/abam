@@ -29,11 +29,13 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
 	
-	private int id;
-	
 	private boolean master;
 	private boolean bachelor;
 	
+	private int instituteNumber;
+	private int studyProgramNumber;
+	private int id;
+		
 	private String numberOfStudents;
 	private String title;
 	private String facultySupervisor;
@@ -44,29 +46,28 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private String fileUploadErrorMessage;
 	private String type;
 	private String attachedFilePath;
+	
 	private GregorianCalendar addedDate;
 	private GregorianCalendar expireDate;
-	
-	private int instituteNumber;
-	private int studyProgramNumber;
 	
 	private ArrayList<Supervisor> supervisorList;
 	private ArrayList<String> attachedFileList;
 	
-	private PortletRequest pr;
-	private PortletSession ps;
+	private FacesContext context;
+	private PortletRequest portletRequest;
+	private PortletSession portletSession;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+	private SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public AssignmentBean(){
-		FacesContext context = FacesContext.getCurrentInstance();
-		pr = (PortletRequest)context.getExternalContext().getRequest();
-		ps = pr.getPortletSession();
+		context = FacesContext.getCurrentInstance();
+		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
+		portletSession = portletRequest.getPortletSession();
 		
-		Controller controller = (Controller)ps.getAttribute("controller");
+		Controller controller = (Controller)portletSession.getAttribute("controller");
 		if(controller == null){
 			controller = new Controller();
-			ps.setAttribute("controller", controller);
+			portletSession.setAttribute("controller", controller);
 			controller.createTestData();
 		}
 		
@@ -85,7 +86,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	}
 	
 	public void actionClear(ActionEvent event) {		
-		ps.setAttribute("assignmentBean", new AssignmentBean());
+		portletSession.setAttribute("assignmentBean", new AssignmentBean());
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
@@ -112,10 +113,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		supervisorList.remove(table.getRowData());		
 	}
 	
-	public void listen(ActionEvent event) {
-
-		FacesContext context = FacesContext.getCurrentInstance();
-		
+	public void actionCreateAssignment(ActionEvent event) {
 		String clientId = event.getComponent().getClientId(context);
 		clientId = clientId.replaceAll("CreateButton", "");
 		
@@ -132,32 +130,34 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		title = (String)parameterMap.get(clientId+"title");
-		description = (String)parameterMap.get(clientId+"description");
-		facultySupervisor = (String)parameterMap.get(clientId+"facultySupervisor");
-		institute = instituteList.get(instituteNumber).getLabel();
-		studyProgram = studyProgramList.get(studyProgramNumber).getLabel();
-		numberOfStudents = (String)parameterMap.get(clientId+"numberOfStudents");
-		fileUploadErrorMessage = "";
 		
-		addedDate = new GregorianCalendar();
-		expireDate = new GregorianCalendar();
+		setTitle((String)parameterMap.get(clientId+"title"));
+		setDescription((String)parameterMap.get(clientId+"description"));
+		setFacultySupervisor((String)parameterMap.get(clientId+"facultySupervisor"));
+		setInstitute(instituteList.get(instituteNumber).getLabel());
+		setStudyProgram(studyProgramList.get(studyProgramNumber).getLabel());
+		setNumberOfStudents((String)parameterMap.get(clientId+"numberOfStudents"));
+		setFileUploadErrorMessage("");
+		setAddedDate(new GregorianCalendar());
+		setExpireDate(new GregorianCalendar());
 		expireDate.add(Calendar.MONTH, ACTIVE_MONTHS);
 		
+		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents"); 
 		if(parameterMap.get(clientId+"type").equals("false")){
-			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
-				if(!parameterMap.get(clientId+"numberOfStudents").equals(""))numberOfStudentsError = "Maximum number of students on a master assignment is 1.";
+			if(!numberOfStudentsInput.equals("1")){
 				numberOfStudents = "1";
+				if(!numberOfStudentsInput.equals(""))
+					numberOfStudentsError = "Maximum number of students on a master assignment is 1.";				
 			}
 		}
 	}
 	
 	public String getAddedDateAsString() {		
-		return sdf.format(addedDate.getTime());
+		return simpleDateFormatter.format(addedDate.getTime());
 	}
 	
 	public String getExpireDateAsString() {		
-		return sdf.format(expireDate.getTime());
+		return simpleDateFormatter.format(expireDate.getTime());
 	}
 	
 	public void fileUploadListen(ActionEvent event){
