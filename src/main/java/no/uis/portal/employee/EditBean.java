@@ -9,6 +9,9 @@ import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+
 import org.apache.log4j.Logger;
 import com.icesoft.faces.context.DisposableBean;
 
@@ -16,8 +19,13 @@ public class EditBean implements DisposableBean {
 
 	private Logger log = Logger.getLogger(EditBean.class); 
 	
+	private PortletRequest portletRequest;
+	private PortletSession portletSession;
+	
 	public EditBean(){
-		
+		FacesContext context = FacesContext.getCurrentInstance();
+		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
+		portletSession = portletRequest.getPortletSession();
 	}
 
 	public void actionSetEditable(ActionEvent event) {
@@ -61,7 +69,15 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		UIComponent uic = event.getComponent();
+		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
+		ArrayList<SelectItem> studyProgramList = ab.getStudyProgramList();
+		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
+		newItem.setEditable(true);
+		System.out.println("Before add: "+studyProgramList.size());
+		System.out.println("Before add ab: "+ab.getStudyProgramList().size());
+		studyProgramList.add(newItem);
+		System.out.println("after add: "+studyProgramList.size());
+	/*	UIComponent uic = event.getComponent();
 		HtmlForm form = (HtmlForm)uic.getParent();
 		
 		List<UIComponent> children = form.getChildren();
@@ -74,8 +90,9 @@ public class EditBean implements DisposableBean {
 				EditableSelectItem newItem = new EditableSelectItem(new Integer(list.size()), "");
 				newItem.setEditable(true);
 				list.add(newItem);
+				
 			}
-		}		
+		}		*/
 	}
 	
 	public void actionRemoveStudyProgram(ActionEvent event) {

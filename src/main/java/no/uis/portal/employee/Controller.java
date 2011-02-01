@@ -21,13 +21,13 @@ public class Controller {
 	private TreeSet<AssignmentBean> assignmentList = new TreeSet<AssignmentBean>(); 
 	private AssignmentBean selectedAssignment;
 	
-	private PortletRequest pr;
-	private PortletSession ps;
+	private PortletRequest portletRequest;
+	private PortletSession portletSession;
 	
 	public Controller() {
 		FacesContext context = FacesContext.getCurrentInstance();
-		pr = (PortletRequest)context.getExternalContext().getRequest();
-		ps = pr.getPortletSession();
+		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
+		portletSession = portletRequest.getPortletSession();
 	}
 	
 	public void createTestData(){
@@ -62,7 +62,7 @@ public class Controller {
 	}
 	
 	public void actionSaveAssignment(ActionEvent event) {
-		AssignmentBean ab = (AssignmentBean)ps.getAttribute("assignmentBean");
+		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
 		assignmentList.add(ab);
 	}
 	

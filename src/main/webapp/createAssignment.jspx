@@ -35,7 +35,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.instituteNumber}">
+					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.instituteNumber}" valueChangeListener="#{assignmentBean.actionUpdateStudyProgramList}" partialSubmit="true">
 						<f:selectItems id="instituteInputContent" value="#{assignmentBean.instituteList}"/>
 					</ice:selectOneMenu>
 					</td>

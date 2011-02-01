@@ -10,6 +10,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -26,8 +27,9 @@ public class AssignmentBean implements DisposableBean, Comparable {
 
 	private final int ACTIVE_MONTHS = 12;
 	
-	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
+	private ArrayList<SelectItem> instituteList;
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
+	private ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList;
 	
 	private boolean master;
 	private boolean bachelor;
@@ -64,6 +66,15 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
 		
+		instituteList = (ArrayList<SelectItem>)portletSession.getAttribute("instituteList");
+		allStudyProgramsByInstitutesList = (ArrayList<ArrayList<SelectItem>>)portletSession.getAttribute("allStudyProgramsByInstitutesList");
+		studyProgramList = (ArrayList<SelectItem>)portletSession.getAttribute("studyProgramList");
+		
+		if(instituteList == null) {
+			initializeInsituteAndStudyProgramLists();
+			System.out.println("Kaller initialize-metoden");
+		}
+		
 		Controller controller = (Controller)portletSession.getAttribute("controller");
 		if(controller == null){
 			controller = new Controller();
@@ -76,30 +87,67 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
-		instituteList.add(new EditableSelectItem(new Integer(0), "IDE"));
-		instituteList.add(new EditableSelectItem(new Integer(1), "TEKNAT"));
 		
-		studyProgramList.add(new EditableSelectItem(new Integer(0), "B-DATA"));
-		studyProgramList.add(new EditableSelectItem(new Integer(1), "B-ELEKTRO"));
+
 		bachelor = true;
 		type = "Bachelor";
+	}
+	
+	private void initializeInsituteAndStudyProgramLists(){
+		instituteList = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList = new ArrayList<ArrayList<SelectItem>>();
+		
+		instituteList.add(new EditableSelectItem(new Integer(0), "Institutt for industriell økonomi, risikostyring og planlegging"));
+		instituteList.add(new EditableSelectItem(new Integer(1), "Petroleumsteknologi"));
+		instituteList.add(new EditableSelectItem(new Integer(2), "Data- og elektroteknikk"));
+		instituteList.add(new EditableSelectItem(new Integer(3), "Institutt for konstruksjonsteknikk og materialteknologi"));
+		instituteList.add(new EditableSelectItem(new Integer(4), "Matematikk og naturvitskap"));
+		
+		ArrayList<SelectItem> listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), "Industriell økonomi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), "Boreteknologi"));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "Petroleumsgeologi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), "Data"));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "Elektro"));
+		listToAdd.add(new EditableSelectItem(new Integer(2), "Informasjonsteknologi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		studyProgramList = allStudyProgramsByInstitutesList.get(0);
+		portletSession.setAttribute("instituteList", instituteList);
+		portletSession.setAttribute("allStudyProgramsByInstitutesList", allStudyProgramsByInstitutesList);
+		portletSession.setAttribute("studyProgramList", studyProgramList);
 	}
 	
 	public void actionClear(ActionEvent event) {		
 		portletSession.setAttribute("assignmentBean", new AssignmentBean());
 	}
 	
+	public void actionUpdateStudyProgramList(ValueChangeEvent event){
+		System.out.println(event.getNewValue());
+		//System.out.println("Number: "+instituteNumber);
+		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
+		//System.out.println(studyProgramList.get(0).getLabel());
+	}
+	
 	public void actionSetSelectedAssignment(ActionEvent event){
 		UIComponent uic = event.getComponent();
 
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		FacesContext context = FacesContext.getCurrentInstance();
-		PortletRequest pr = (PortletRequest)context.getExternalContext().getRequest();
-		PortletSession ps = pr.getPortletSession();
 		
 		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
 		
-		ps.setAttribute("assignmentBean", selectedAssignment);
+		portletSession.setAttribute("assignmentBean", selectedAssignment);
 	}
 		
 	public void actionAddSupervisor(ActionEvent event) {
@@ -142,14 +190,19 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		setExpireDate(new GregorianCalendar());
 		expireDate.add(Calendar.MONTH, ACTIVE_MONTHS);
 		
-		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents"); 
-		if(parameterMap.get(clientId+"type").equals("false")){
-			if(!numberOfStudentsInput.equals("1")){
-				numberOfStudents = "1";
-				if(!numberOfStudentsInput.equals(""))
-					numberOfStudentsError = "Maximum number of students on a master assignment is 1.";				
-			}
-		}
+		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
+		System.out.println("numberOfStudentsInput; " +numberOfStudentsInput);
+		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
+		
+		System.out.println("numberOfStudentsInput; " +numberOfStudentsInput);
+		System.out.println("Type: "+parameterMap.get(clientId+"type"));
+//		if(parameterMap.get(clientId+"type").equals("false")){
+//			if(!numberOfStudentsInput.equals("1")){
+//				numberOfStudents = "1";
+//				if(!numberOfStudentsInput.equals(""))
+//					numberOfStudentsError = "Maximum number of students on a master assignment is 1.";				
+//			}
+//		}
 	}
 	
 	public String getAddedDateAsString() {		
@@ -396,6 +449,15 @@ public class AssignmentBean implements DisposableBean, Comparable {
 
 	public void setExpireDate(GregorianCalendar expireDate) {
 		this.expireDate = expireDate;
+	}
+
+	public ArrayList<ArrayList<SelectItem>> getAllStudyProgramsByInstitutesList() {
+		return allStudyProgramsByInstitutesList;
+	}
+
+	public void setAllStudyProgramsByInstitutesList(
+			ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesListIn) {
+		  allStudyProgramsByInstitutesList = allStudyProgramsByInstitutesListIn;
 	}
 
 }
