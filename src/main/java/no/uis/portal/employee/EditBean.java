@@ -1,24 +1,17 @@
 package no.uis.portal.employee;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
-import javax.faces.component.html.HtmlForm;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
-
-import org.apache.log4j.Logger;
 import com.icesoft.faces.context.DisposableBean;
 
 public class EditBean implements DisposableBean {
 
-	private Logger log = Logger.getLogger(EditBean.class); 
-	
 	private PortletRequest portletRequest;
 	private PortletSession portletSession;
 	
@@ -42,30 +35,23 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionAddNewInstitute(ActionEvent event){
-		UIComponent uic = event.getComponent();
-		HtmlForm form = (HtmlForm)uic.getParent();
+		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
+		ArrayList<SelectItem> instituteList = ab.getInstituteList();
+		EditableSelectItem newItem = new EditableSelectItem(new Integer(instituteList.size()), "");
+		newItem.setEditable(true);
+		instituteList.add(newItem);
 		
-		List<UIComponent> children = form.getChildren();
-		HtmlDataTable table = new HtmlDataTable();
+		ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList = ab.getAllStudyProgramsByInstitutesList();
+		allStudyProgramsByInstitutesList.add(new ArrayList<SelectItem>());
 		
-		for (UIComponent child : children) {
-			if(child.getId().equals("instituteTable")){
-				table = (HtmlDataTable)child;
-				ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
-				EditableSelectItem newItem = new EditableSelectItem(new Integer(list.size()), "");
-				newItem.setEditable(true);
-				list.add(newItem);
-			}
-		}		
 	}
 	
 	public void actionRemoveInstitute(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		ArrayList<EditableSelectItem> list = (ArrayList<EditableSelectItem>)table.getValue();
-		
-		list.remove(table.getRowData());			
+
+		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
+		ab.getInstituteList().remove(table.getRowData());	
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
