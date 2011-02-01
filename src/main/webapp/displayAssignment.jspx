@@ -27,7 +27,7 @@
 				<tr>
 					<td></td><td></td>
 					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionClear }" value="Create new" id="CreateButton"></h:commandButton>
-					<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+					<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
 				</tr>
 			</table>
 		</ice:form>
