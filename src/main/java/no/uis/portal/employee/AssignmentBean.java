@@ -3,7 +3,6 @@ package no.uis.portal.employee;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
@@ -22,15 +21,14 @@ import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
-import com.liferay.portal.service.ServiceContext;
 
 public class AssignmentBean implements DisposableBean, Comparable {
 
+	private final int ACTIVE_MONTHS = 12;
+	
 	private ArrayList<SelectItem> instituteList = new ArrayList<SelectItem>();
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
 	
-	private static int lastId = 0; //todo: sync against database. 
-		
 	private int id;
 	
 	private boolean master;
@@ -47,7 +45,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private String type;
 	private String attachedFilePath;
 	private GregorianCalendar addedDate;
-	private String addedDateString;
+	private GregorianCalendar expireDate;
 	
 	private int instituteNumber;
 	private int studyProgramNumber;
@@ -58,6 +56,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private PortletRequest pr;
 	private PortletSession ps;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public AssignmentBean(){
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -142,7 +141,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		fileUploadErrorMessage = "";
 		
 		addedDate = new GregorianCalendar();
-		addedDateString = getFormatedDate();
+		expireDate = new GregorianCalendar();
+		expireDate.add(Calendar.MONTH, ACTIVE_MONTHS);
 		
 		if(parameterMap.get(clientId+"type").equals("false")){
 			if(!parameterMap.get(clientId+"numberOfStudents").equals("1")){
@@ -152,11 +152,14 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		}
 	}
 	
-	private String getFormatedDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+	public String getAddedDateAsString() {		
 		return sdf.format(addedDate.getTime());
 	}
-
+	
+	public String getExpireDateAsString() {		
+		return sdf.format(expireDate.getTime());
+	}
+	
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -355,14 +358,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		this.studyProgramNumber = studyProgramNumber;
 	}
 
-	public static int getLastId() {
-		return lastId;
-	}
-
-	public static void setLastId(int lastId) {
-		AssignmentBean.lastId = lastId;
-	}
-
 	@Override
 	public int compareTo(Object arg0) {
 		AssignmentBean inputAssignment = (AssignmentBean)arg0;
@@ -395,12 +390,12 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		this.addedDate = addedDate;
 	}
 
-	public String getAddedDateString() {
-		return addedDateString;
+	public GregorianCalendar getExpireDate() {
+		return expireDate;
 	}
 
-	public void setAddedDateString(String addedDateString) {
-		this.addedDateString = addedDateString;
+	public void setExpireDate(GregorianCalendar expireDate) {
+		this.expireDate = expireDate;
 	}
 
 }

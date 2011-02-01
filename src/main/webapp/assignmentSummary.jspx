@@ -94,9 +94,9 @@
 						<ice:commandButton type="submit" action="backToView" value="Cancel" id="CancelButton" immediate="true"/>
 					</td>
 				</tr>
-		
+			
 			</table>
-			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px" rendered="false">
+			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
 				<f:facet name="header">
 					<ice:outputText value="Confirmation"/>
 				</f:facet>

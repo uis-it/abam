@@ -1,8 +1,10 @@
 package no.uis.portal.employee;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -35,6 +37,10 @@ public class Controller {
 		test1.setDescription("Beskrivelse av test1");
 		test1.setNumberOfStudents("2-3");
 		test1.setId(1);
+		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
+		GregorianCalendar dato = test1.getAddedDate();
+		dato.add(Calendar.MONTH, 6);
+		test1.setExpireDate(dato);
 		
 		AssignmentBean test2 = new AssignmentBean();
 		test2.setTitle("Test2 webutviklings oppgave");
@@ -43,7 +49,10 @@ public class Controller {
 		test2.setDescription("Beskrivelse av test2");
 		test2.setNumberOfStudents("1");
 		test2.setId(2);
-		
+		test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
+		dato = test2.getAddedDate();
+		dato.add(Calendar.MONTH, 6);
+		test2.setExpireDate(dato);
 		assignmentList.add(test1);
 		assignmentList.add(test2);
 	}
