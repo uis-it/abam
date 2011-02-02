@@ -29,6 +29,7 @@ public class Controller {
 	private int instituteNumber;
 	private int studyProgramNumber;
 	
+	private String selectedInstitute;
 	public Controller() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
@@ -153,10 +154,11 @@ public class Controller {
 	
 	public void actionUpdateStudyProgramList(ValueChangeEvent event){
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
-		String selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
+		selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
 		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
 		for (AssignmentBean assignmentBean : assignmentList) {
-			if (assignmentBean.getInstitute().equals(selectedInstitute)) 
+			if (assignmentBean.getInstitute().equals(selectedInstitute)
+				|| selectedInstitute.equals("")) 
 				assignmentBean.setDisplayAssignment(true);
 			else assignmentBean.setDisplayAssignment(false);
 		}
@@ -165,13 +167,19 @@ public class Controller {
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
 		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
 		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
+		if (selectedInstitute == null) setSelectedInstitute("");
 		for (AssignmentBean assignmentBean : assignmentList) {
-			if (assignmentBean.getStudyProgram().equals(selectedStudyProgram)
-				|| selectedStudyProgram.equals("")) 
+			if (checkIfAssignmentShouldBeDisplayed(assignmentBean, selectedStudyProgram)) 
 				assignmentBean.setDisplayAssignment(true);
 			else assignmentBean.setDisplayAssignment(false);
 		}
 	}
+	
+	private boolean checkIfAssignmentShouldBeDisplayed(AssignmentBean abIn, String selectedStudyProgram) {
+		return (selectedStudyProgram.equals("") && abIn.getInstitute().equals(selectedInstitute)) 
+		|| abIn.getStudyProgram().equals(selectedStudyProgram);
+	}
+	
 	public ArrayList<SelectItem> getInstituteList() {
 		return instituteList;
 	}
@@ -216,5 +224,13 @@ public class Controller {
 	}
 	public String getInstitute() {
 		return  instituteList.get(instituteNumber).getLabel();
+	}
+
+	public String getSelectedInstitute() {
+		return selectedInstitute;
+	}
+
+	public void setSelectedInstitute(String selectedInstitute) {
+		this.selectedInstitute = selectedInstitute;
 	}
 }
