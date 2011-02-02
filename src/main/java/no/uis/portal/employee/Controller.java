@@ -26,10 +26,27 @@ public class Controller {
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
 	private ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList;
 	
-	private int instituteNumber;
-	private int studyProgramNumber;
+	private int selectedInstituteNumber;
+	private int selectedStudyProgramNumber;
 	
+	public int getSelectedInstituteNumber() {
+		return selectedInstituteNumber;
+	}
+
+	public void setSelectedInstituteNumber(int selectedInstituteNumber) {
+		this.selectedInstituteNumber = selectedInstituteNumber;
+	}
+
+	public int getSelectedStudyProgramNumber() {
+		return selectedStudyProgramNumber;
+	}
+
+	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
+		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
+	}
+
 	private String selectedInstitute;
+	
 	public Controller() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
@@ -54,6 +71,7 @@ public class Controller {
 		
 		ArrayList<SelectItem> listToAdd = new ArrayList<SelectItem>();
 		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "banan"));
 		allStudyProgramsByInstitutesList.add(listToAdd);
 		
 		listToAdd = new ArrayList<SelectItem>();
@@ -75,9 +93,11 @@ public class Controller {
 		allStudyProgramsByInstitutesList.add(listToAdd);
 		
 		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
 		allStudyProgramsByInstitutesList.add(listToAdd);
 		
 		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
 		allStudyProgramsByInstitutesList.add(listToAdd);
 		studyProgramList = allStudyProgramsByInstitutesList.get(0);
 		portletSession.setAttribute("instituteList", instituteList);
@@ -153,13 +173,14 @@ public class Controller {
 	}
 	
 	public void actionClearStudyProgramAndInstituteNumber(ActionEvent event){
-		setStudyProgramNumber(0);
-		setInstituteNumber(0);
+		setSelectedStudyProgramNumber(0);
+		setSelectedInstituteNumber(0);
 	}
 	
 	public void actionUpdateStudyProgramList(ValueChangeEvent event){
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
 		selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
+		selectedInstituteNumber = Integer.parseInt(event.getNewValue().toString());
 		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
 		for (AssignmentBean assignmentBean : assignmentList) {
 			if (assignmentBean.getInstitute().equals(selectedInstitute)
@@ -172,6 +193,7 @@ public class Controller {
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
 		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
 		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
+		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
 		if (selectedInstitute == null) setSelectedInstitute("");
 		for (AssignmentBean assignmentBean : assignmentList) {
 			if (checkIfAssignmentShouldBeDisplayed(assignmentBean, selectedStudyProgram)) 
@@ -208,27 +230,12 @@ public class Controller {
 			ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesListIn) {
 		  allStudyProgramsByInstitutesList = allStudyProgramsByInstitutesListIn;
 	}
-	public int getInstituteNumber() {
-		return instituteNumber;
-	}
 
-	public void setInstituteNumber(int instituteNumber) {
-		this.instituteNumber = instituteNumber;
+	public String getStudyProgram(int index) {
+		return studyProgramList.get(index).getLabel();
 	}
-
-	public int getStudyProgramNumber() {
-		return studyProgramNumber;
-	}
-
-	public void setStudyProgramNumber(int studyProgramNumber) {
-		this.studyProgramNumber = studyProgramNumber;
-	}
-	
-	public String getStudyProgram() {
-		return studyProgramList.get(studyProgramNumber).getLabel();
-	}
-	public String getInstitute() {
-		return  instituteList.get(instituteNumber).getLabel();
+	public String getInstitute(int index) {
+		return  instituteList.get(index).getLabel();
 	}
 
 	public String getSelectedInstitute() {

@@ -30,6 +30,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	private boolean displayAssignment = true;
 	
 	private int id;
+	private int instituteNumber;
+	private int studyProgramNumber;
 		
 	private String numberOfStudents;
 	private String title;
@@ -86,7 +88,13 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
-		
+		System.out.println("Title: "+ selectedAssignment.getTitle() + " studyProg: "+selectedAssignment.getStudyProgram());
+		System.out.println("studyProgNo: "+ selectedAssignment.getStudyProgramNumber());
+		System.out.println("instNo: " + selectedAssignment.getInstituteNumber());
+		controller.setStudyProgramList(
+				controller.getAllStudyProgramsByInstitutesList().
+					get(selectedAssignment.getInstituteNumber())
+				);
 		portletSession.setAttribute("assignmentBean", selectedAssignment);
 	}
 		
@@ -107,7 +115,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.ERROR);
+		log.setLevel(Level.DEBUG);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
@@ -118,9 +126,14 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		
-		setInstitute(controller.getInstitute());
-		setStudyProgram(controller.getStudyProgram());
+		System.out.println("controller.getInstitute(instituteNumber): "+ controller.getInstitute(instituteNumber));
+		System.out.println("instituteNumber: "+instituteNumber);
+		System.out.println("controller.getStudyProgram(studyProgramNumber): "+ controller.getStudyProgram(studyProgramNumber));
+		System.out.println("studyProgramNumber: "+studyProgramNumber);
+		setInstitute(controller.getInstitute(instituteNumber));
+		setInstituteNumber(controller.getSelectedInstituteNumber());
+		setStudyProgram(controller.getStudyProgram(studyProgramNumber));
+		//setStudyProgramNumber(controller.getSelectedStudyProgramNumber());
 		setFileUploadErrorMessage("");
 		setAddedDate(new GregorianCalendar());
 		setExpireDate(new GregorianCalendar());
@@ -360,6 +373,22 @@ public class AssignmentBean implements DisposableBean, Comparable {
 
 	public void setDisplayAssignment(boolean displayAssignment) {
 		this.displayAssignment = displayAssignment;
+	}
+
+	public int getInstituteNumber() {
+		return instituteNumber;
+	}
+
+	public void setInstituteNumber(int instituteNumber) {
+		this.instituteNumber = instituteNumber;
+	}
+
+	public int getStudyProgramNumber() {
+		return studyProgramNumber;
+	}
+
+	public void setStudyProgramNumber(int studyProgramNumber) {
+		this.studyProgramNumber = studyProgramNumber;
 	}
 
 }

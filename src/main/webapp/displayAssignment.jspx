@@ -11,7 +11,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:selectOneMenu id="instituteInput" value="#{controller.instituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramList}" partialSubmit="true">
+					<td><ice:selectOneMenu id="instituteInput" value="#{controller.selectedInstituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramList}" partialSubmit="true">
 						<f:selectItems id="instituteInputContent" value="#{controller.instituteList}"/>
 					</ice:selectOneMenu>
 					</td>
@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{controller.studyProgramNumber}" valueChangeListener="#{controller.actionSetDisplayAssignment}" partialSubmit="true">
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{controller.selectedStudyProgramNumber}" valueChangeListener="#{controller.actionSetDisplayAssignment}" partialSubmit="true">
 						<f:selectItems id="studyProgramContent" value="#{controller.studyProgramList}"/>
 					</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
