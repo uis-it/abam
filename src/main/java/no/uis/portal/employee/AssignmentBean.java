@@ -10,7 +10,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -25,7 +24,7 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class AssignmentBean implements DisposableBean, Comparable {
 
-	private final int ACTIVE_MONTHS = 12;
+	private final int ACTIVE_MONTHS = 6;
 	
 	private ArrayList<SelectItem> instituteList;
 	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
@@ -66,9 +65,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
 		
-		instituteList = (ArrayList<SelectItem>)portletSession.getAttribute("instituteList");
-		allStudyProgramsByInstitutesList = (ArrayList<ArrayList<SelectItem>>)portletSession.getAttribute("allStudyProgramsByInstitutesList");
-		studyProgramList = (ArrayList<SelectItem>)portletSession.getAttribute("studyProgramList");
+		setListsFromSession();
 		
 		if(instituteList == null) {
 			initializeInsituteAndStudyProgramLists();
@@ -87,10 +84,14 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
-		
-
 		bachelor = true;
 		type = "Bachelor";
+	}
+	
+	private void setListsFromSession(){
+			instituteList = (ArrayList<SelectItem>)portletSession.getAttribute("instituteList");
+			allStudyProgramsByInstitutesList = (ArrayList<ArrayList<SelectItem>>)portletSession.getAttribute("allStudyProgramsByInstitutesList");
+			studyProgramList = (ArrayList<SelectItem>)portletSession.getAttribute("studyProgramList");
 	}
 	
 	private void initializeInsituteAndStudyProgramLists(){
@@ -135,9 +136,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 	
 	public void actionUpdateStudyProgramList(ValueChangeEvent event){
 		System.out.println(event.getNewValue());
-		//System.out.println("Number: "+instituteNumber);
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
-		//System.out.println(studyProgramList.get(0).getLabel());
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
@@ -179,30 +178,25 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
 		
-		setTitle((String)parameterMap.get(clientId+"title"));
-		setDescription((String)parameterMap.get(clientId+"description"));
-		setFacultySupervisor((String)parameterMap.get(clientId+"facultySupervisor"));
 		setInstitute(instituteList.get(instituteNumber).getLabel());
 		setStudyProgram(studyProgramList.get(studyProgramNumber).getLabel());
-		setNumberOfStudents((String)parameterMap.get(clientId+"numberOfStudents"));
 		setFileUploadErrorMessage("");
 		setAddedDate(new GregorianCalendar());
 		setExpireDate(new GregorianCalendar());
 		expireDate.add(Calendar.MONTH, ACTIVE_MONTHS);
+		setType("Bachelor");
 		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
-		System.out.println("numberOfStudentsInput; " +numberOfStudentsInput);
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
-		
-		System.out.println("numberOfStudentsInput; " +numberOfStudentsInput);
-		System.out.println("Type: "+parameterMap.get(clientId+"type"));
-//		if(parameterMap.get(clientId+"type").equals("false")){
-//			if(!numberOfStudentsInput.equals("1")){
-//				numberOfStudents = "1";
-//				if(!numberOfStudentsInput.equals(""))
-//					numberOfStudentsError = "Maximum number of students on a master assignment is 1.";				
-//			}
-//		}
+		String typeAssignment = (String)parameterMap.get(clientId+"type");
+		if(typeAssignment != null && typeAssignment.equals("false")){
+			if(!numberOfStudentsInput.equals("1")){
+				numberOfStudents = "1";
+				setType("Master");
+				if(!numberOfStudentsInput.equals(""))
+					numberOfStudentsError = "Maximum number of students on a master assignment is 1.";				
+			}
+		}
 	}
 	
 	public String getAddedDateAsString() {		

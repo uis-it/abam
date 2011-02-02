@@ -76,15 +76,15 @@
 						<ice:outputText value="Supervisor"/>
 				</f:facet>
 					<ice:outputText id="name" value="Name: "/>
-					<ice:inputText id="nameInput" value="#{supervisor.name}" required="true"/>
+					<ice:inputText id="nameInput" value="#{supervisor.name}" required="true" partialSubmit="true"/>
 					<ice:outputText value="External:" />
 					<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}" partialSubmit="true"/>
 					<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
-					<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
+					<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}" partialSubmit="true"/>
 					<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
-					<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
+					<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"  partialSubmit="true"/>
 					<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
-					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"  partialSubmit="true"/>
 					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row" immediate="true"/>
 					<td><ice:message for="nameInput" showSummary="true" showDetail="false"></ice:message> </td>
 				</ice:column>										
