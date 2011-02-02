@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Map;
-import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
@@ -27,16 +25,10 @@ public class AssignmentBean implements DisposableBean, Comparable {
 
 	private final int ACTIVE_MONTHS = 6;
 	
-	private ArrayList<SelectItem> instituteList;
-	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
-	private ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList;
-	
 	private boolean master;
 	private boolean bachelor;
 	private boolean displayAssignment = true;
 	
-	private int instituteNumber;
-	private int studyProgramNumber;
 	private int id;
 		
 	private String numberOfStudents;
@@ -68,12 +60,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
 		
-		setListsFromSession();
-		
-		if(instituteList == null) {
-			initializeInsituteAndStudyProgramLists();
-		}
-		
 		controller = (Controller)portletSession.getAttribute("controller");
 		if(controller == null){
 			controller = new Controller();
@@ -90,80 +76,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		type = "Bachelor";
 	}
 	
-	private void setListsFromSession(){
-			instituteList = (ArrayList<SelectItem>)portletSession.getAttribute("instituteList");
-			allStudyProgramsByInstitutesList = (ArrayList<ArrayList<SelectItem>>)portletSession.getAttribute("allStudyProgramsByInstitutesList");
-			studyProgramList = (ArrayList<SelectItem>)portletSession.getAttribute("studyProgramList");
-	}
-	
-	private void initializeInsituteAndStudyProgramLists(){
-		instituteList = new ArrayList<SelectItem>();
-		allStudyProgramsByInstitutesList = new ArrayList<ArrayList<SelectItem>>();
-		
-		instituteList.add(new EditableSelectItem(new Integer(0), ""));
-		instituteList.add(new EditableSelectItem(new Integer(1), "Institutt for industriell økonomi, risikostyring og planlegging"));
-		instituteList.add(new EditableSelectItem(new Integer(2), "Petroleumsteknologi"));
-		instituteList.add(new EditableSelectItem(new Integer(3), "Data- og elektroteknikk"));
-		instituteList.add(new EditableSelectItem(new Integer(4), "Institutt for konstruksjonsteknikk og materialteknologi"));
-		instituteList.add(new EditableSelectItem(new Integer(5), "Matematikk og naturvitskap"));
-		
-		ArrayList<SelectItem> listToAdd = new ArrayList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		
-		listToAdd = new ArrayList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Industriell økonomi"));
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		
-		listToAdd = new ArrayList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Boreteknologi"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Petroleumsgeologi"));
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		
-		listToAdd = new ArrayList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Data"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Elektro"));
-		listToAdd.add(new EditableSelectItem(new Integer(3), "Informasjonsteknologi"));
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		
-		listToAdd = new ArrayList<SelectItem>();
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		
-		listToAdd = new ArrayList<SelectItem>();
-		allStudyProgramsByInstitutesList.add(listToAdd);
-		studyProgramList = allStudyProgramsByInstitutesList.get(0);
-		portletSession.setAttribute("instituteList", instituteList);
-		portletSession.setAttribute("allStudyProgramsByInstitutesList", allStudyProgramsByInstitutesList);
-		portletSession.setAttribute("studyProgramList", studyProgramList);
-	}
-	
 	public void actionClear(ActionEvent event) {		
 		portletSession.setAttribute("assignmentBean", new AssignmentBean());
-	}
-	
-	public void actionUpdateStudyProgramList(ValueChangeEvent event){
-		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
-		String selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
-		TreeSet<AssignmentBean> assignmentList = controller.getAssignmentList();
-		for (AssignmentBean assignmentBean : assignmentList) {
-			if (assignmentBean.getInstitute().equals(selectedInstitute)) 
-				assignmentBean.setDisplayAssignment(true);
-			else assignmentBean.setDisplayAssignment(false);
-		}
-	}
-	
-	public void actionSetDisplayAssignment(ValueChangeEvent event){
-		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
-		TreeSet<AssignmentBean> assignmentList = controller.getAssignmentList();
-		for (AssignmentBean assignmentBean : assignmentList) {
-			if (assignmentBean.getStudyProgram().equals(selectedStudyProgram)
-				|| selectedStudyProgram.equals("")) 
-				assignmentBean.setDisplayAssignment(true);
-			else assignmentBean.setDisplayAssignment(false);
-		}
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
@@ -205,8 +119,8 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
 		
-		setInstitute(instituteList.get(instituteNumber).getLabel());
-		setStudyProgram(studyProgramList.get(studyProgramNumber).getLabel());
+		setInstitute(controller.getInstitute());
+		setStudyProgram(controller.getStudyProgram());
 		setFileUploadErrorMessage("");
 		setAddedDate(new GregorianCalendar());
 		setExpireDate(new GregorianCalendar());
@@ -400,38 +314,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		this.attachedFileList = attachedFilePathList;
 	}
 
-	public ArrayList<SelectItem> getInstituteList() {
-		return instituteList;
-	}
-
-	public void setInstituteList(ArrayList<SelectItem> instituteList) {
-		this.instituteList = instituteList;
-	}
-
-	public int getInstituteNumber() {
-		return instituteNumber;
-	}
-
-	public void setInstituteNumber(int instituteNumber) {
-		this.instituteNumber = instituteNumber;
-	}
-
-	public ArrayList<SelectItem> getStudyProgramList() {
-		return studyProgramList;
-	}
-
-	public void setStudyProgramList(ArrayList<SelectItem> studyProgramList) {
-		this.studyProgramList = studyProgramList;
-	}
-
-	public int getStudyProgramNumber() {
-		return studyProgramNumber;
-	}
-
-	public void setStudyProgramNumber(int studyProgramNumber) {
-		this.studyProgramNumber = studyProgramNumber;
-	}
-
 	@Override
 	public int compareTo(Object arg0) {
 		AssignmentBean inputAssignment = (AssignmentBean)arg0;
@@ -470,15 +352,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 
 	public void setExpireDate(GregorianCalendar expireDate) {
 		this.expireDate = expireDate;
-	}
-
-	public ArrayList<ArrayList<SelectItem>> getAllStudyProgramsByInstitutesList() {
-		return allStudyProgramsByInstitutesList;
-	}
-
-	public void setAllStudyProgramsByInstitutesList(
-			ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesListIn) {
-		  allStudyProgramsByInstitutesList = allStudyProgramsByInstitutesListIn;
 	}
 
 	public boolean isDisplayAssignment() {

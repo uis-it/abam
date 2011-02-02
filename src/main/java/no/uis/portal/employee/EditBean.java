@@ -14,11 +14,12 @@ public class EditBean implements DisposableBean {
 
 	private PortletRequest portletRequest;
 	private PortletSession portletSession;
-	
+	private Controller controller;
 	public EditBean(){
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
+		controller = (Controller)portletSession.getAttribute("controller");
 	}
 
 	public void actionSetEditable(ActionEvent event) {
@@ -35,13 +36,13 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionAddNewInstitute(ActionEvent event){
-		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
-		ArrayList<SelectItem> instituteList = ab.getInstituteList();
+		
+		ArrayList<SelectItem> instituteList = controller.getInstituteList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(instituteList.size()), "");
 		newItem.setEditable(true);
 		instituteList.add(newItem);
 		
-		ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList = ab.getAllStudyProgramsByInstitutesList();
+		ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList = controller.getAllStudyProgramsByInstitutesList();
 		allStudyProgramsByInstitutesList.add(new ArrayList<SelectItem>());
 		
 	}
@@ -49,14 +50,11 @@ public class EditBean implements DisposableBean {
 	public void actionRemoveInstitute(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-
-		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
-		ab.getInstituteList().remove(table.getRowData());	
+		controller.getInstituteList().remove(table.getRowData());	
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
-		ArrayList<SelectItem> studyProgramList = ab.getStudyProgramList();
+		ArrayList<SelectItem> studyProgramList = controller.getStudyProgramList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
 		newItem.setEditable(true);
 		studyProgramList.add(newItem);
@@ -65,9 +63,7 @@ public class EditBean implements DisposableBean {
 	public void actionRemoveStudyProgram(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
-		ab.getStudyProgramList().remove(table.getRowData());			
+		controller.getStudyProgramList().remove(table.getRowData());			
 	}
 	
 	public void dispose() throws Exception {

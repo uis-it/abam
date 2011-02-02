@@ -2,17 +2,15 @@ package no.uis.portal.employee;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
@@ -24,10 +22,72 @@ public class Controller {
 	private PortletRequest portletRequest;
 	private PortletSession portletSession;
 	
+	private ArrayList<SelectItem> instituteList;
+	private ArrayList<SelectItem> studyProgramList = new ArrayList<SelectItem>();
+	private ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList;
+	
+	private int instituteNumber;
+	private int studyProgramNumber;
+	
 	public Controller() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
+		setListsFromSession();
+		
+		if(instituteList == null) {
+			initializeInsituteAndStudyProgramLists();
+		}
+	}
+	
+	private void initializeInsituteAndStudyProgramLists(){
+		instituteList = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList = new ArrayList<ArrayList<SelectItem>>();
+		
+		instituteList.add(new EditableSelectItem(new Integer(0), ""));
+		instituteList.add(new EditableSelectItem(new Integer(1), "Institutt for industriell økonomi, risikostyring og planlegging"));
+		instituteList.add(new EditableSelectItem(new Integer(2), "Petroleumsteknologi"));
+		instituteList.add(new EditableSelectItem(new Integer(3), "Data- og elektroteknikk"));
+		instituteList.add(new EditableSelectItem(new Integer(4), "Institutt for konstruksjonsteknikk og materialteknologi"));
+		instituteList.add(new EditableSelectItem(new Integer(5), "Matematikk og naturvitskap"));
+		
+		ArrayList<SelectItem> listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "Industriell økonomi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "Boreteknologi"));
+		listToAdd.add(new EditableSelectItem(new Integer(2), "Petroleumsgeologi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		listToAdd.add(new EditableSelectItem(new Integer(1), "Data"));
+		listToAdd.add(new EditableSelectItem(new Integer(2), "Elektro"));
+		listToAdd.add(new EditableSelectItem(new Integer(3), "Informasjonsteknologi"));
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		
+		listToAdd = new ArrayList<SelectItem>();
+		allStudyProgramsByInstitutesList.add(listToAdd);
+		studyProgramList = allStudyProgramsByInstitutesList.get(0);
+		portletSession.setAttribute("instituteList", instituteList);
+		portletSession.setAttribute("allStudyProgramsByInstitutesList", allStudyProgramsByInstitutesList);
+		portletSession.setAttribute("studyProgramList", studyProgramList);
+	}
+	
+	private void setListsFromSession(){
+		instituteList = (ArrayList<SelectItem>)portletSession.getAttribute("instituteList");
+		allStudyProgramsByInstitutesList = (ArrayList<ArrayList<SelectItem>>)portletSession.getAttribute("allStudyProgramsByInstitutesList");
+		studyProgramList = (ArrayList<SelectItem>)portletSession.getAttribute("studyProgramList");
 	}
 	
 	public void createTestData(){
@@ -90,5 +150,71 @@ public class Controller {
 	public void setSelectedAssignment(AssignmentBean selectedAssignment) {
 		this.selectedAssignment = selectedAssignment;
 	}
-		
+	
+	public void actionUpdateStudyProgramList(ValueChangeEvent event){
+		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
+		String selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
+		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
+		for (AssignmentBean assignmentBean : assignmentList) {
+			if (assignmentBean.getInstitute().equals(selectedInstitute)) 
+				assignmentBean.setDisplayAssignment(true);
+			else assignmentBean.setDisplayAssignment(false);
+		}
+	}
+	
+	public void actionSetDisplayAssignment(ValueChangeEvent event){
+		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
+		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
+		for (AssignmentBean assignmentBean : assignmentList) {
+			if (assignmentBean.getStudyProgram().equals(selectedStudyProgram)
+				|| selectedStudyProgram.equals("")) 
+				assignmentBean.setDisplayAssignment(true);
+			else assignmentBean.setDisplayAssignment(false);
+		}
+	}
+	public ArrayList<SelectItem> getInstituteList() {
+		return instituteList;
+	}
+
+	public void setInstituteList(ArrayList<SelectItem> instituteList) {
+		this.instituteList = instituteList;
+	}
+	public ArrayList<SelectItem> getStudyProgramList() {
+		return studyProgramList;
+	}
+
+	public void setStudyProgramList(ArrayList<SelectItem> studyProgramList) {
+		this.studyProgramList = studyProgramList;
+	}
+	
+	public ArrayList<ArrayList<SelectItem>> getAllStudyProgramsByInstitutesList() {
+		return allStudyProgramsByInstitutesList;
+	}
+
+	public void setAllStudyProgramsByInstitutesList(
+			ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesListIn) {
+		  allStudyProgramsByInstitutesList = allStudyProgramsByInstitutesListIn;
+	}
+	public int getInstituteNumber() {
+		return instituteNumber;
+	}
+
+	public void setInstituteNumber(int instituteNumber) {
+		this.instituteNumber = instituteNumber;
+	}
+
+	public int getStudyProgramNumber() {
+		return studyProgramNumber;
+	}
+
+	public void setStudyProgramNumber(int studyProgramNumber) {
+		this.studyProgramNumber = studyProgramNumber;
+	}
+	
+	public String getStudyProgram() {
+		return studyProgramList.get(studyProgramNumber).getLabel();
+	}
+	public String getInstitute() {
+		return  instituteList.get(instituteNumber).getLabel();
+	}
 }
