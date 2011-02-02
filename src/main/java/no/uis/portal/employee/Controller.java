@@ -37,6 +37,8 @@ public class Controller {
 		test1.setDescription("Beskrivelse av test1");
 		test1.setNumberOfStudents("2-3");
 		test1.setId(1);
+		test1.setInstitute("Petroleumsteknologi");
+		test1.setStudyProgram("Boreteknologi");
 		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
 		GregorianCalendar dato = test1.getAddedDate();
 		dato.add(Calendar.MONTH, 6);
@@ -48,6 +50,8 @@ public class Controller {
 		test2.setMaster(true);
 		test2.setDescription("Beskrivelse av test2");
 		test2.setNumberOfStudents("1");
+		test2.setInstitute("Data- og elektroteknikk");
+		test2.setStudyProgram("Elektro");
 		test2.setId(2);
 		test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
 		dato = test2.getAddedDate();

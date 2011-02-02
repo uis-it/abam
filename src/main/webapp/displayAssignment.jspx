@@ -7,20 +7,37 @@
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
 			<br/>
-			<br/>
+			
 			<table border="0">
+				<tr>
+					<td><ice:outputText value="Institute: "/> </td>
+					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.instituteNumber}" valueChangeListener="#{assignmentBean.actionUpdateStudyProgramList}" partialSubmit="true">
+						<f:selectItems id="instituteInputContent" value="#{assignmentBean.instituteList}"/>
+					</ice:selectOneMenu>
+					</td>
+					
+					<td><ice:message for="instituteInput" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.studyProgramNumber}" valueChangeListener="#{assignmentBean.actionSetDisplayAssignment}" partialSubmit="true">
+						<f:selectItems id="studyProgramContent" value="#{assignmentBean.studyProgramList}"/>
+					</ice:selectOneMenu></td>
+					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
+				
+				</tr>
 				<tr>
 				<ice:dataTable id="instituteTable" var="item" value="#{controller.assignmentList}">
 					<ice:column>
 						<f:facet name="header">
 							<ice:outputText value="Assignments:"/>
 						</f:facet>
-						<ice:outputText id="itemId" value="#{item.id}"/>
-						<ice:outputText id="itemTitle" value="#{item.title}"/>
-						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}"/>
-						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}"/>							
-						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment"/>
-						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}"/>
+						<ice:outputText id="itemId" value="#{item.id}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
+						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
