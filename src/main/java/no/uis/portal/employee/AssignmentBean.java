@@ -88,13 +88,11 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
-		System.out.println("Title: "+ selectedAssignment.getTitle() + " studyProg: "+selectedAssignment.getStudyProgram());
-		System.out.println("studyProgNo: "+ selectedAssignment.getStudyProgramNumber());
-		System.out.println("instNo: " + selectedAssignment.getInstituteNumber());
-		controller.setStudyProgramList(
-				controller.getAllStudyProgramsByInstitutesList().
-					get(selectedAssignment.getInstituteNumber())
-				);
+		
+		controller.setStudyProgramList(controller.getAllStudyProgramsByInstitutesList().
+			get(selectedAssignment.getInstituteNumber()));
+		controller.setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
+		controller.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 		portletSession.setAttribute("assignmentBean", selectedAssignment);
 	}
 		
@@ -126,14 +124,9 @@ public class AssignmentBean implements DisposableBean, Comparable {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		System.out.println("controller.getInstitute(instituteNumber): "+ controller.getInstitute(instituteNumber));
-		System.out.println("instituteNumber: "+instituteNumber);
-		System.out.println("controller.getStudyProgram(studyProgramNumber): "+ controller.getStudyProgram(studyProgramNumber));
-		System.out.println("studyProgramNumber: "+studyProgramNumber);
 		setInstitute(controller.getInstitute(instituteNumber));
 		setInstituteNumber(controller.getSelectedInstituteNumber());
 		setStudyProgram(controller.getStudyProgram(studyProgramNumber));
-		//setStudyProgramNumber(controller.getSelectedStudyProgramNumber());
 		setFileUploadErrorMessage("");
 		setAddedDate(new GregorianCalendar());
 		setExpireDate(new GregorianCalendar());

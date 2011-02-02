@@ -1,6 +1,8 @@
 package no.uis.portal.employee;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
@@ -37,13 +39,13 @@ public class EditBean implements DisposableBean {
 	
 	public void actionAddNewInstitute(ActionEvent event){
 		
-		ArrayList<SelectItem> instituteList = controller.getInstituteList();
+		LinkedList<SelectItem> instituteList = controller.getInstituteList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(instituteList.size()), "");
 		newItem.setEditable(true);
 		instituteList.add(newItem);
 		
-		ArrayList<ArrayList<SelectItem>> allStudyProgramsByInstitutesList = controller.getAllStudyProgramsByInstitutesList();
-		allStudyProgramsByInstitutesList.add(new ArrayList<SelectItem>());
+		LinkedList<LinkedList<SelectItem>> allStudyProgramsByInstitutesList = controller.getAllStudyProgramsByInstitutesList();
+		allStudyProgramsByInstitutesList.add(new LinkedList<SelectItem>());
 		
 	}
 	
@@ -54,7 +56,7 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		ArrayList<SelectItem> studyProgramList = controller.getStudyProgramList();
+		LinkedList<SelectItem> studyProgramList = controller.getStudyProgramList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
 		newItem.setEditable(true);
 		studyProgramList.add(newItem);
