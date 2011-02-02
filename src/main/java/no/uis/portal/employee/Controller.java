@@ -152,6 +152,11 @@ public class Controller {
 		this.selectedAssignment = selectedAssignment;
 	}
 	
+	public void actionClearStudyProgramAndInstituteNumber(ActionEvent event){
+		setStudyProgramNumber(0);
+		setInstituteNumber(0);
+	}
+	
 	public void actionUpdateStudyProgramList(ValueChangeEvent event){
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
 		selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();

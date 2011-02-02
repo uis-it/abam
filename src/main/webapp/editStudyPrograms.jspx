@@ -15,15 +15,15 @@
 			<ice:dataTable id="studyProgramTable" var="item" value="#{controller.studyProgramList}">
 				<ice:column>
 					<f:facet name="header">
-						<ice:outputText value="Study programs:"/>
+						<ice:outputText value="Study programs:" rendered="#{!empty controller.selectedInstitute}"/>
 					</f:facet>
 					<ice:outputText id="itemName" value="#{item.label}" rendered="#{!item.editable}"/>
 					<ice:inputText id="itemNameInput" value="#{item.label}" rendered="#{item.editable}"/>
-					<ice:commandButton id="setEditable" value="Edit row" actionListener="#{editBean.actionSetEditable}"/>
-					<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveStudyProgram}"/>
+					<ice:commandButton id="setEditable" value="Edit row" actionListener="#{editBean.actionSetEditable}" rendered="#{!empty item.label}"/>
+					<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveStudyProgram}" rendered="#{!empty item.label}"/>
 				</ice:column>
 			</ice:dataTable>
-			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewStudyProgram}"/>
+			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewStudyProgram}" rendered="#{!empty controller.selectedInstitute}"/>
 			<table border="0">
 				<tr>
 					<td></td><td></td>

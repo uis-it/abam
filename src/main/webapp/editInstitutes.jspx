@@ -17,8 +17,8 @@
 					</f:facet>
 					<ice:outputText id="itemName" value="#{item.label}" rendered="#{!item.editable}"/>
 					<ice:inputText id="itemNameInput" value="#{item.label}" rendered="#{item.editable}"/>
-					<ice:commandButton id="setEditable" value="Edit row" actionListener="#{editBean.actionSetEditable}"/>
-					<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveInstitute}"/>
+					<ice:commandButton id="setEditable" value="Edit row" actionListener="#{editBean.actionSetEditable}" rendered="#{!empty item.label}"/>
+					<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveInstitute}" rendered="#{!empty item.label}"/>
 				</ice:column>
 			</ice:dataTable>
 			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewInstitute}"/>
