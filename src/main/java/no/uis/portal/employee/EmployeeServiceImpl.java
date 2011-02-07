@@ -1,13 +1,9 @@
 package no.uis.portal.employee;
 
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.TreeSet;
-
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -34,7 +30,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private int selectedStudyProgramNumber;
 	
 	public EmployeeServiceImpl() {
-		System.out.println("EmployeeService constructor");
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();

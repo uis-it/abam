@@ -1,7 +1,5 @@
 package no.uis.portal.employee;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Map;
@@ -10,8 +8,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
 
 import no.uis.portal.employee.domain.Assignment;
 import no.uis.portal.employee.domain.Supervisor;
@@ -27,8 +23,6 @@ import com.icesoft.faces.context.DisposableBean;
 public class AssignmentBean implements DisposableBean {
 
 	private FacesContext context;
-	private PortletRequest portletRequest;
-	private PortletSession portletSession;
 	private EmployeeService employeeService;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
 
@@ -36,27 +30,16 @@ public class AssignmentBean implements DisposableBean {
 	private Assignment currentAssignment;
 	
 	public AssignmentBean(){
-		System.out.println("AssignmentBean konstruktør ");
-		//setEmployeeService(employeeService);
 	}
 	
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
 		context = FacesContext.getCurrentInstance();
-		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
-		portletSession = portletRequest.getPortletSession();
-//		employeeInterface = (EmployeeService)portletSession.getAttribute("controller");
-//		if(employeeInterface == null){
-//			employeeInterface = new Controller();
-//			portletSession.setAttribute("controller", employeeInterface);
-//			employeeInterface.createTestData();
-//		}
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {		
 		setCurrentAssignment(new Assignment());
 		currentAssignment.setId(employeeService.getNextId());
-		//portletSession.setAttribute("assignmentBean", new AssignmentBean());
 	}
 	
 	public void actionSaveAssignment(ActionEvent event) {
@@ -74,8 +57,6 @@ public class AssignmentBean implements DisposableBean {
 			get(selectedAssignment.getInstituteNumber()));
 		employeeService.setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
-		//portletSession.setAttribute("assignmentBean", selectedAssignment);
-		
 	}
 	
 	public void actionRemoveAssignment(ActionEvent event) {

@@ -4,6 +4,7 @@ import javax.faces.model.SelectItem;
 
 public class EditableSelectItem extends SelectItem {
 
+	private static final long serialVersionUID = 1L;
 	private boolean editable;
 	
 	public EditableSelectItem(Integer value, String label) {

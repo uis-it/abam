@@ -1,6 +1,5 @@
 package no.uis.portal.employee;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.faces.component.UIComponent;
