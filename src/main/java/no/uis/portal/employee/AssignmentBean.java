@@ -82,20 +82,6 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		portletSession.setAttribute("assignmentBean", new AssignmentBean());
 	}
 	
-	public void actionSetSelectedAssignment(ActionEvent event){
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
-		
-		controller.setStudyProgramList(controller.getAllStudyProgramsByInstitutesList().
-			get(selectedAssignment.getInstituteNumber()));
-		controller.setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
-		controller.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
-		portletSession.setAttribute("assignmentBean", selectedAssignment);
-	}
-		
 	public void actionAddSupervisor(ActionEvent event) {
 		supervisorList.add(new Supervisor());
 	}
@@ -113,7 +99,7 @@ public class AssignmentBean implements DisposableBean, Comparable {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.DEBUG);
+		log.setLevel(Level.ERROR);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));

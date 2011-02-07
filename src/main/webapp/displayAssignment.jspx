@@ -36,7 +36,7 @@
 						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
-						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{item.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{controller.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
 						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
 					</ice:column>
 				</ice:dataTable>

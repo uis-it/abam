@@ -214,6 +214,20 @@ public class Controller {
 		|| abIn.getStudyProgram().equals(selectedStudyProgram);
 	}
 	
+	public void actionSetSelectedAssignment(ActionEvent event){
+		UIComponent uic = event.getComponent();
+
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
+		
+		setStudyProgramList(getAllStudyProgramsByInstitutesList().
+			get(selectedAssignment.getInstituteNumber()));
+		setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
+		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		portletSession.setAttribute("assignmentBean", selectedAssignment);
+	}
+	
 	public LinkedList<SelectItem> getInstituteList() {
 		return instituteList;
 	}

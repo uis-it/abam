@@ -9,7 +9,7 @@
 			<ice:outputText value="Edit study program"/><br/>
 			<br/>
 			<ice:outputText value="Institute: "/> 
-				<ice:selectOneMenu id="instituteInput" value="#{controller.instituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramList}" partialSubmit="true">
+				<ice:selectOneMenu id="instituteInput" value="#{controller.selectedInstituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramList}" partialSubmit="true">
 					<f:selectItems id="instituteInputContent" value="#{controller.instituteList}"/>
 				</ice:selectOneMenu>
 			<ice:dataTable id="studyProgramTable" var="item" value="#{controller.studyProgramList}">
