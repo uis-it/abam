@@ -11,7 +11,7 @@
 			<br/>
 			<table border="0">
 				<tr>
-					<td><ice:commandButton value="Edit assignment" action="displayAssignment" actionListener="#{controller.actionClearStudyProgramAndInstituteNumber}"/>
+					<td><ice:commandButton value="Edit assignment" action="displayAssignment" actionListener="#{employeeService.actionClearStudyProgramAndInstituteNumber}"/>
 					<ice:commandButton value="Edit study programs" action="editStudyPrograms" id="editStudyProgram" />
 					<ice:commandButton value="Edit institutes" action="editInstitutes" id="editInstitutes"/>
 					</td>

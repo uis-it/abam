@@ -1,4 +1,4 @@
-package no.uis.portal.employee;
+package no.uis.portal.employee.domain;
 
 public class Supervisor {
 	private String name;

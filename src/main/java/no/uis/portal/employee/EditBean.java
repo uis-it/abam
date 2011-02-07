@@ -16,12 +16,12 @@ public class EditBean implements DisposableBean {
 
 	private PortletRequest portletRequest;
 	private PortletSession portletSession;
-	private Controller controller;
+	private EmployeeService controller;
 	public EditBean(){
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
-		controller = (Controller)portletSession.getAttribute("controller");
+		controller = (EmployeeService)portletSession.getAttribute("controller");
 	}
 
 	public void actionSetEditable(ActionEvent event) {

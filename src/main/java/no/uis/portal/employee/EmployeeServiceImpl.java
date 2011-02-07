@@ -1,7 +1,7 @@
 package no.uis.portal.employee;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.TreeSet;
@@ -15,10 +15,13 @@ import javax.faces.model.SelectItem;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
-public class Controller {
+import no.uis.portal.employee.domain.AssigmentIdComparator;
+import no.uis.portal.employee.domain.Assignment;
 
-	private TreeSet<AssignmentBean> assignmentList = new TreeSet<AssignmentBean>(); 
-	private AssignmentBean selectedAssignment;
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>(new AssigmentIdComparator()); 
+	private EmployeeService selectedAssignment;
 	
 	private PortletRequest portletRequest;
 	private PortletSession portletSession;
@@ -30,25 +33,8 @@ public class Controller {
 	private int selectedInstituteNumber;
 	private int selectedStudyProgramNumber;
 	
-	public int getSelectedInstituteNumber() {
-		return selectedInstituteNumber;
-	}
-
-	public void setSelectedInstituteNumber(int selectedInstituteNumber) {
-		this.selectedInstituteNumber = selectedInstituteNumber;
-	}
-
-	public int getSelectedStudyProgramNumber() {
-		return selectedStudyProgramNumber;
-	}
-
-	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
-		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
-	}
-
-	private String selectedInstitute;
-	
-	public Controller() {
+	public EmployeeServiceImpl() {
+		System.out.println("EmployeeService constructor");
 		FacesContext context = FacesContext.getCurrentInstance();
 		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
 		portletSession = portletRequest.getPortletSession();
@@ -58,6 +44,28 @@ public class Controller {
 			initializeInsituteAndStudyProgramLists();
 		}
 	}
+	
+	@Override
+	public int getSelectedInstituteNumber() {
+		return selectedInstituteNumber;
+	}
+
+	@Override
+	public void setSelectedInstituteNumber(int selectedInstituteNumber) {
+		this.selectedInstituteNumber = selectedInstituteNumber;
+	}
+
+	@Override
+	public int getSelectedStudyProgramNumber() {
+		return selectedStudyProgramNumber;
+	}
+
+	@Override
+	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
+		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
+	}
+
+	private String selectedInstitute;
 	
 	private void initializeInsituteAndStudyProgramLists(){
 		instituteList = new LinkedList<SelectItem>();
@@ -112,8 +120,9 @@ public class Controller {
 		studyProgramList = (LinkedList<SelectItem>)portletSession.getAttribute("studyProgramList");
 	}
 	
+	@Override
 	public void createTestData(){
-		AssignmentBean test1 = new AssignmentBean();
+		Assignment test1 = new Assignment();
 		test1.setTitle("Test1 webutviklings oppgave");
 		test1.setBachelor(true);
 		test1.setDescription("Beskrivelse av test1");
@@ -126,7 +135,7 @@ public class Controller {
 		dato.add(Calendar.MONTH, 6);
 		test1.setExpireDate(dato);
 		
-		AssignmentBean test2 = new AssignmentBean();
+		Assignment test2 = new Assignment();
 		test2.setTitle("Test2 webutviklings oppgave");
 		test2.setBachelor(false);
 		test2.setMaster(true);
@@ -143,127 +152,127 @@ public class Controller {
 		assignmentList.add(test2);
 	}
 
+	@Override
 	public int getNextId(){
 		return assignmentList.size()+1;
 	}
 	
-	public void actionSaveAssignment(ActionEvent event) {
-		AssignmentBean ab = (AssignmentBean)portletSession.getAttribute("assignmentBean");
-		assignmentList.add(ab);
+	@Override
+	public void saveAssignment(Assignment assignment) {
+		assignmentList.add(assignment);
 	}
 	
-	public void actionRemoveAssignment(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		AssignmentBean assignment = (AssignmentBean)table.getRowData();
-		
-		assignmentList.remove(assignment);
-	}
-	
-	public TreeSet<AssignmentBean> getAssignmentList() {
+	@Override
+	public TreeSet<Assignment> getAssignmentList() {
 		return assignmentList;
 	}
 
-	public AssignmentBean getSelectedAssignment() {
+	@Override
+	public EmployeeService getSelectedAssignment() {
 		return selectedAssignment;
 	}
 
-	public void setSelectedAssignment(AssignmentBean selectedAssignment) {
+	@Override
+	public void setSelectedAssignment(EmployeeService selectedAssignment) {
 		this.selectedAssignment = selectedAssignment;
 	}
 	
+	@Override
 	public void actionClearStudyProgramAndInstituteNumber(ActionEvent event){
 		setSelectedStudyProgramNumber(0);
 		setSelectedInstituteNumber(0);
 	}
 	
+	@Override
 	public void actionUpdateStudyProgramList(ValueChangeEvent event){
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
 		selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
 		selectedInstituteNumber = Integer.parseInt(event.getNewValue().toString());
-		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
-		for (AssignmentBean assignmentBean : assignmentList) {
-			if (assignmentBean.getInstitute().equals(selectedInstitute)
+		TreeSet<Assignment> assignmentList = getAssignmentList();
+		for (Assignment assignment : assignmentList) {
+			if (assignment.getInstitute().equals(selectedInstitute)
 				|| selectedInstitute.equals("")) 
-				assignmentBean.setDisplayAssignment(true);
-			else assignmentBean.setDisplayAssignment(false);
+				assignment.setDisplayAssignment(true);
+			else assignment.setDisplayAssignment(false);
 		}
 	}
 	
+	@Override
 	public void actionUpdateStudyProgramListFromCreateAssignment(ValueChangeEvent event){
 		studyProgramList = allStudyProgramsByInstitutesList.get(Integer.parseInt(event.getNewValue().toString()));
 		//selectedInstitute = (String) instituteList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
 		selectedInstituteNumber = Integer.parseInt(event.getNewValue().toString());
 	}
 	
+	@Override
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
 		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
-		TreeSet<AssignmentBean> assignmentList = getAssignmentList();
+		TreeSet<Assignment> assignmentList = getAssignmentList();
 		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
 		if (selectedInstitute == null) setSelectedInstitute("");
-		for (AssignmentBean assignmentBean : assignmentList) {
-			if (checkIfAssignmentShouldBeDisplayed(assignmentBean, selectedStudyProgram)) 
-				assignmentBean.setDisplayAssignment(true);
-			else assignmentBean.setDisplayAssignment(false);
+		for (Assignment assignment : assignmentList) {
+			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)) 
+				assignment.setDisplayAssignment(true);
+			else assignment.setDisplayAssignment(false);
 		}
 	}
 	
-	private boolean checkIfAssignmentShouldBeDisplayed(AssignmentBean abIn, String selectedStudyProgram) {
+	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
 		return (selectedStudyProgram.equals("") && abIn.getInstitute().equals(selectedInstitute)) 
 		|| abIn.getStudyProgram().equals(selectedStudyProgram);
 	}
 	
-	public void actionSetSelectedAssignment(ActionEvent event){
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		AssignmentBean selectedAssignment = (AssignmentBean)table.getRowData();
-		
-		setStudyProgramList(getAllStudyProgramsByInstitutesList().
-			get(selectedAssignment.getInstituteNumber()));
-		setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
-		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
-		portletSession.setAttribute("assignmentBean", selectedAssignment);
-	}
-	
+	@Override
 	public LinkedList<SelectItem> getInstituteList() {
 		return instituteList;
 	}
 
+	@Override
 	public void setInstituteList(LinkedList<SelectItem> instituteList) {
 		this.instituteList = instituteList;
 	}
+	@Override
 	public LinkedList<SelectItem> getStudyProgramList() {
 		return studyProgramList;
 	}
 
+	@Override
 	public void setStudyProgramList(LinkedList<SelectItem> studyProgramList) {
 		this.studyProgramList = studyProgramList;
 	}
 	
+	@Override
 	public LinkedList<LinkedList<SelectItem>> getAllStudyProgramsByInstitutesList() {
 		return allStudyProgramsByInstitutesList;
 	}
 
+	@Override
 	public void setAllStudyProgramsByInstitutesList(
 			LinkedList<LinkedList<SelectItem>> allStudyProgramsByInstitutesListIn) {
 		  allStudyProgramsByInstitutesList = allStudyProgramsByInstitutesListIn;
 	}
 
+	@Override
 	public String getStudyProgram(int index) {
 		return studyProgramList.get(index).getLabel();
 	}
+	@Override
 	public String getInstitute(int index) {
 		return  instituteList.get(index).getLabel();
 	}
 
+	@Override
 	public String getSelectedInstitute() {
 		return selectedInstitute;
 	}
 
+	@Override
 	public void setSelectedInstitute(String selectedInstitute) {
 		this.selectedInstitute = selectedInstitute;
+	}
+
+	@Override
+	public void removeAssignment(Assignment assignment) {
+		assignmentList.remove(assignment);
 	}
 }

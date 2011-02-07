@@ -11,8 +11,8 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:selectOneMenu id="instituteInput" value="#{controller.selectedInstituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramList}" partialSubmit="true">
-						<f:selectItems id="instituteInputContent" value="#{controller.instituteList}"/>
+					<td><ice:selectOneMenu id="instituteInput" value="#{employeeService.selectedInstituteNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+						<f:selectItems id="instituteInputContent" value="#{employeeService.instituteList}"/>
 					</ice:selectOneMenu>
 					</td>
 					
@@ -20,14 +20,14 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{controller.selectedStudyProgramNumber}" valueChangeListener="#{controller.actionSetDisplayAssignment}" partialSubmit="true">
-						<f:selectItems id="studyProgramContent" value="#{controller.studyProgramList}"/>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true">
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
 					</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				
 				</tr>
 				<tr>
-				<ice:dataTable id="instituteTable" var="item" value="#{controller.assignmentList}">
+				<ice:dataTable id="instituteTable" var="item" value="#{employeeService.assignmentList}">
 					<ice:column>
 						<f:facet name="header">
 							<ice:outputText value="Assignments:"/>
@@ -36,14 +36,14 @@
 						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
-						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{controller.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
-						<ice:commandButton id="remove" value="Remove" actionListener="#{controller.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="remove" value="Remove" actionListener="#{assignmentBean.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
 				<tr>
 					<td></td><td></td>
-					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionClear }" value="Create new" id="CreateButton"></h:commandButton>
+					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
 					<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
 				</tr>
 			</table>

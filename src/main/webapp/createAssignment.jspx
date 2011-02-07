@@ -13,17 +13,17 @@
 			<table border="0" width="800">
 				<tr>
 					<td><ice:outputText value="Id: "/></td>
-					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.id}"></ice:inputText></td>
+					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
 					<td><ice:message for="id" showSummary="true" showDetail="false" ></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Title: "/></td>
-					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.title}"></ice:inputText></td>
+					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
 					<td><ice:message for="title" showSummary="true" showDetail="false" ></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Description: "/> </td>
-					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.description}"></ice:inputTextarea></td>
+					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.currentAssignment.description}"></ice:inputTextarea></td>
 					<td><ice:message for="description" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
@@ -35,8 +35,8 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.instituteNumber}" valueChangeListener="#{controller.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
-						<f:selectItems id="instituteInputContent" value="#{controller.instituteList}"/>
+					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.currentAssignment.instituteNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
+						<f:selectItems id="instituteInputContent" value="#{employeeService.instituteList}"/>
 					</ice:selectOneMenu>
 					</td>
 					
@@ -44,15 +44,15 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.studyProgramNumber}">
-						<f:selectItems id="studyProgramContent" value="#{controller.studyProgramList}"/>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.currentAssignment.studyProgramNumber}">
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
 					</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Type: "/> </td>
 				<td>				
-				<ice:selectOneRadio id="type" required="false" value="#{assignmentBean.bachelor}" valueChangeListener="#{assignmentBean.radioListener}" partialSubmit="true">
+				<ice:selectOneRadio id="type" required="false" value="#{assignmentBean.currentAssignment.bachelor}" valueChangeListener="#{assignmentBean.radioListener}" partialSubmit="true">
 					<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
 					<f:selectItem itemValue="#{false}" itemLabel="Master" />
 				</ice:selectOneRadio>
@@ -61,16 +61,16 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.master}" value="#{assignmentBean.numberOfStudents}"></ice:inputText></td>
+					<td><ice:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
 					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Faculty Supervisor: "/> </td>
-					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.facultySupervisor}"></ice:inputText></td>
+					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:inputText></td>
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>			
 			</table>
-			<ice:dataTable var="supervisor" value="#{assignmentBean.supervisorList }">
+			<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }">
 				<ice:column>
 				<f:facet name="header">
 						<ice:outputText value="Supervisor"/>
@@ -92,7 +92,7 @@
 			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row" immediate="true"/>
 			<br/><br/>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionCreateAssignment}" value="Next" id="CreateButton" />
+			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
 		</ice:form>
 	</ice:portlet>
 </f:view>
