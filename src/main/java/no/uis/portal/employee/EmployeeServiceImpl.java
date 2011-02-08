@@ -212,6 +212,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		|| abIn.getStudyProgram().equals(selectedStudyProgram);
 	}
 	
+	public void setAllEditExternalExaminerToFalse() {
+		for (Assignment assignment : assignmentList) {
+			assignment.setEditExternalExaminer(false);
+		}
+	}
+	
 	@Override
 	public LinkedList<SelectItem> getDepartmentList() {
 		return departmentList;

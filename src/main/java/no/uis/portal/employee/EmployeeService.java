@@ -21,6 +21,8 @@ public interface EmployeeService {
 
 	public abstract void actionSetDisplayAssignment(ValueChangeEvent event);
 
+	public abstract void setAllEditExternalExaminerToFalse();
+	
 	public abstract void saveAssignment(Assignment assignment);
 	
 	public abstract void removeAssignment(Assignment assignment);

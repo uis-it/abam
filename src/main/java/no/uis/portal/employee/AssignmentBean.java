@@ -44,17 +44,21 @@ public class AssignmentBean implements DisposableBean {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		Assignment selectedAssignment = (Assignment)table.getRowData();
-		setCurrentAssignment(selectedAssignment);
+		if(selectedAssignment != currentAssignment) currentAssignment.setEditExternalExaminer(false);
 		
+		setCurrentAssignment(selectedAssignment);
+				
 		if(currentAssignment.getExternalExaminer() == null) {
 			currentAssignment.setExternalExaminer(new ExternalExaminer());
 		}
 		
 		if(currentAssignment.isEditExternalExaminer()) {
-			currentAssignment.setEditExternalExaminer(false);
-		} else {
-			currentAssignment.setEditExternalExaminer(true);
-		}
+				currentAssignment.setEditExternalExaminer(false);
+		} else currentAssignment.setEditExternalExaminer(true);
+	}
+	
+	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
+		employeeService.setAllEditExternalExaminerToFalse();
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {		
