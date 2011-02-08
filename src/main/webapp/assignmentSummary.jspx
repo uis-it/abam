@@ -27,8 +27,8 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.institute}"></ice:outputText></td>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.department}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>

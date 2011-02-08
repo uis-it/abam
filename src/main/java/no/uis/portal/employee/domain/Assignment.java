@@ -14,7 +14,7 @@ public class Assignment {
 	private boolean displayAssignment = true;
 	
 	private int id;
-	private int instituteNumber;
+	private int departmentNumber;
 	private int studyProgramNumber;
 		
 	private String numberOfStudents;
@@ -22,7 +22,7 @@ public class Assignment {
 	private String facultySupervisor;
 	private String description;
 	private String studyProgram;
-	private String institute;
+	private String department;
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
 	private String type;
@@ -77,12 +77,12 @@ public class Assignment {
 		this.id = id;
 	}
 
-	public int getInstituteNumber() {
-		return instituteNumber;
+	public int getDepartmentNumber() {
+		return departmentNumber;
 	}
 
-	public void setInstituteNumber(int instituteNumber) {
-		this.instituteNumber = instituteNumber;
+	public void setDepartmentNumber(int departmentNumber) {
+		this.departmentNumber = departmentNumber;
 	}
 
 	public int getStudyProgramNumber() {
@@ -133,12 +133,12 @@ public class Assignment {
 		this.studyProgram = studyProgram;
 	}
 
-	public String getInstitute() {
-		return institute;
+	public String getDepartment() {
+		return department;
 	}
 
-	public void setInstitute(String institute) {
-		this.institute = institute;
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
 	public String getNumberOfStudentsError() {

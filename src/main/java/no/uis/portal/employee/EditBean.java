@@ -4,23 +4,15 @@ import java.util.LinkedList;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletSession;
 import com.icesoft.faces.context.DisposableBean;
 
 public class EditBean implements DisposableBean {
 
-	private PortletRequest portletRequest;
-	private PortletSession portletSession;
-	private EmployeeService controller;
+	private EmployeeService employeeService;
+	
 	public EditBean(){
-		FacesContext context = FacesContext.getCurrentInstance();
-		portletRequest = (PortletRequest)context.getExternalContext().getRequest();
-		portletSession = portletRequest.getPortletSession();
-		controller = (EmployeeService)portletSession.getAttribute("controller");
 	}
 
 	public void actionSetEditable(ActionEvent event) {
@@ -36,26 +28,26 @@ public class EditBean implements DisposableBean {
 	
 	}
 	
-	public void actionAddNewInstitute(ActionEvent event){
+	public void actionAddNewDepartment(ActionEvent event){
 		
-		LinkedList<SelectItem> instituteList = controller.getInstituteList();
-		EditableSelectItem newItem = new EditableSelectItem(new Integer(instituteList.size()), "");
+		LinkedList<SelectItem> departmentList = employeeService.getDepartmentList();
+		EditableSelectItem newItem = new EditableSelectItem(new Integer(departmentList.size()), "");
 		newItem.setEditable(true);
-		instituteList.add(newItem);
+		departmentList.add(newItem);
 		
-		LinkedList<LinkedList<SelectItem>> allStudyProgramsByInstitutesList = controller.getAllStudyProgramsByInstitutesList();
-		allStudyProgramsByInstitutesList.add(new LinkedList<SelectItem>());
+		LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentsList = employeeService.getAllStudyProgramsByDepartmentsList();
+		allStudyProgramsByDepartmentsList.add(new LinkedList<SelectItem>());
 		
 	}
 	
-	public void actionRemoveInstitute(ActionEvent event) {
+	public void actionRemoveDepartment(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		controller.getInstituteList().remove(table.getRowData());	
+		employeeService.getDepartmentList().remove(table.getRowData());	
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		LinkedList<SelectItem> studyProgramList = controller.getStudyProgramList();
+		LinkedList<SelectItem> studyProgramList = employeeService.getStudyProgramList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
 		newItem.setEditable(true);
 		studyProgramList.add(newItem);
@@ -64,11 +56,15 @@ public class EditBean implements DisposableBean {
 	public void actionRemoveStudyProgram(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		controller.getStudyProgramList().remove(table.getRowData());			
+		employeeService.getStudyProgramList().remove(table.getRowData());			
 	}
 	
 	public void dispose() throws Exception {
 		
+	}
+
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 
 }

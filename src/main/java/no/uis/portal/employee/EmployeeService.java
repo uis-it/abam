@@ -11,29 +11,7 @@ import no.uis.portal.employee.domain.Assignment;
 
 public interface EmployeeService {
 
-	public abstract int getSelectedInstituteNumber();
-
-	public abstract void setSelectedInstituteNumber(int selectedInstituteNumber);
-
-	public abstract int getSelectedStudyProgramNumber();
-
-	public abstract void setSelectedStudyProgramNumber(
-			int selectedStudyProgramNumber);
-
-	public abstract void createTestData();
-
-	public abstract int getNextId();
-
-	public abstract void saveAssignment(Assignment assignment);
-
-	public abstract TreeSet<Assignment> getAssignmentList();
-
-	public abstract EmployeeService getSelectedAssignment();
-
-	public abstract void setSelectedAssignment(
-			EmployeeService selectedAssignment);
-
-	public abstract void actionClearStudyProgramAndInstituteNumber(
+	public abstract void actionClearStudyProgramAndDepartmentNumber(
 			ActionEvent event);
 
 	public abstract void actionUpdateStudyProgramList(ValueChangeEvent event);
@@ -43,28 +21,49 @@ public interface EmployeeService {
 
 	public abstract void actionSetDisplayAssignment(ValueChangeEvent event);
 
-	public abstract LinkedList<SelectItem> getInstituteList();
+	public abstract void saveAssignment(Assignment assignment);
+	
+	public abstract void removeAssignment(Assignment assignment);
 
-	public abstract void setInstituteList(LinkedList<SelectItem> instituteList);
+	public abstract TreeSet<Assignment> getAssignmentList();
 
+	public abstract EmployeeService getSelectedAssignment();
+
+	public abstract void setSelectedAssignment(EmployeeService selectedAssignment);
+	
+	public abstract LinkedList<SelectItem> getDepartmentList();
+
+	public abstract void setDepartmentList(LinkedList<SelectItem> instituteList);
+
+	public abstract int getSelectedDepartmentNumber();
+
+	public abstract void setSelectedDepartmentNumber(int selectedInstituteNumber);
+
+	public abstract int getSelectedStudyProgramNumber();
+
+	public abstract void setSelectedStudyProgramNumber(
+			int selectedStudyProgramNumber);
+	
 	public abstract LinkedList<SelectItem> getStudyProgramList();
 
-	public abstract void setStudyProgramList(
-			LinkedList<SelectItem> studyProgramList);
+	public abstract void setStudyProgramList(LinkedList<SelectItem> studyProgramList);
 
-	public abstract LinkedList<LinkedList<SelectItem>> getAllStudyProgramsByInstitutesList();
+	public abstract LinkedList<LinkedList<SelectItem>> getAllStudyProgramsByDepartmentsList();
 
-	public abstract void setAllStudyProgramsByInstitutesList(
+	public abstract void setAllStudyProgramsByDepartmentList(
 			LinkedList<LinkedList<SelectItem>> allStudyProgramsByInstitutesListIn);
 
 	public abstract String getStudyProgram(int index);
 
-	public abstract String getInstitute(int index);
+	public abstract String getDepartment(int index);
 
-	public abstract String getSelectedInstitute();
+	public abstract String getSelectedDepartment();
 
-	public abstract void setSelectedInstitute(String selectedInstitute);
+	public abstract void setSelectedDepartment(String selectedInstitute);
 
-	public abstract void removeAssignment(Assignment assignment);
+	public abstract void setStudyProgramListFromDepartmentNumber(
+			int instituteNumber);
+
+	public abstract int getNextId();
 
 }

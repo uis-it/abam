@@ -34,13 +34,13 @@
 				-->
 				</tr>
 				<tr>
-					<td><ice:outputText value="Institute: "/> </td>
-					<td><ice:selectOneMenu id="instituteInput" value="#{assignmentBean.currentAssignment.instituteNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
-						<f:selectItems id="instituteInputContent" value="#{employeeService.instituteList}"/>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:selectOneMenu id="departmentInput" value="#{assignmentBean.currentAssignment.departmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
+						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
 					</ice:selectOneMenu>
 					</td>
 					
-					<td><ice:message for="instituteInput" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>

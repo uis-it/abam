@@ -9,7 +9,11 @@ public class Supervisor {
 	
 	public Supervisor() {
 	}
-
+	
+	public Supervisor(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

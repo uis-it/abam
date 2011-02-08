@@ -8,14 +8,14 @@
 		<ice:form partialSubmit="true" >
 			<ice:outputText value="Edit study program"/><br/>
 			<br/>
-			<ice:outputText value="Institute: "/> 
-				<ice:selectOneMenu id="instituteInput" value="#{employeeService.selectedInstituteNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
-					<f:selectItems id="instituteInputContent" value="#{employeeService.instituteList}"/>
+			<ice:outputText value="Department: "/> 
+				<ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+					<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
 				</ice:selectOneMenu>
 			<ice:dataTable id="studyProgramTable" var="item" value="#{employeeService.studyProgramList}">
 				<ice:column>
 					<f:facet name="header">
-						<ice:outputText value="Study programs:" rendered="#{!empty employeeService.selectedInstitute}"/>
+						<ice:outputText value="Study programs:" rendered="#{!empty employeeService.selectedDepartment}"/>
 					</f:facet>
 					<ice:outputText id="itemName" value="#{item.label}" rendered="#{!item.editable}"/>
 					<ice:inputText id="itemNameInput" value="#{item.label}" rendered="#{item.editable}"/>
@@ -23,7 +23,7 @@
 					<ice:commandButton id="remove" value="Remove" actionListener="#{editBean.actionRemoveStudyProgram}" rendered="#{!empty item.label}"/>
 				</ice:column>
 			</ice:dataTable>
-			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewStudyProgram}" rendered="#{!empty employeeService.selectedInstitute}"/>
+			<ice:commandButton id="addNewRow" value="Add row" actionListener="#{editBean.actionAddNewStudyProgram}" rendered="#{!empty employeeService.selectedDepartment}"/>
 			<table border="0">
 				<tr>
 					<td></td><td></td>

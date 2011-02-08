@@ -53,9 +53,9 @@ public class AssignmentBean implements DisposableBean {
 		
 		Assignment selectedAssignment = (Assignment)table.getRowData();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setStudyProgramList(employeeService.getAllStudyProgramsByInstitutesList().
-			get(selectedAssignment.getInstituteNumber()));
-		employeeService.setSelectedInstituteNumber(selectedAssignment.getInstituteNumber());
+		employeeService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		
+		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
@@ -91,12 +91,12 @@ public class AssignmentBean implements DisposableBean {
 			log.debug("Des: "+parameterMap.get(clientId+"description"));
 			log.debug("Supervisor: "+parameterMap.get(clientId+"supervisor"));
 			log.debug("FacultySupervisor: "+parameterMap.get(clientId+"facultySupervisor"));
-			log.debug("Institute: "+parameterMap.get(clientId+"institute"));
+			log.debug("Department: "+parameterMap.get(clientId+"department"));
 			log.debug("StudyProgram: "+parameterMap.get(clientId+"studyProgram"));
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		currentAssignment.setInstitute(employeeService.getInstitute(currentAssignment.getInstituteNumber()));
+		currentAssignment.setDepartment(employeeService.getDepartment(currentAssignment.getDepartmentNumber()));
 		currentAssignment.setStudyProgram(employeeService.getStudyProgram(currentAssignment.getStudyProgramNumber()));
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();
