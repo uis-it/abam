@@ -6,11 +6,61 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
-			<h:outputText value="Add external examiner"/><br/>
+			<ice:outputText value="Add and edit external examiner"/>
 			<br/>
 			<br/>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+				<tr>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
+					</ice:selectOneMenu>
+					</td>
+					
+					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true">
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
+					</ice:selectOneMenu></td>
+					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
+				
+				</tr>
+				<tr>
+				<ice:dataTable id="departmentTable" var="item" value="#{employeeService.assignmentList}">
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="Assignments:"/>
+						</f:facet>
+						<ice:outputText id="itemId" value="#{item.id}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="editExternalExaminer" value="Add/Edit Examiner" actionListener="#{assignmentBean.actionEditExternalExaminer}" rendered="#{item.displayAssignment}"/>
+						<ice:panelGrid rendered="#{item.editExternalExaminer}" columns="2">
+							<ice:outputText id="examinerName" value="Name:" />
+							<ice:inputText id="examinerNameValue" value="#{item.externalExaminer.name}"/>
+							<ice:outputText id="examinerTitle" value="Title:" />
+							<ice:inputText id="examinerTitleValue" value="#{item.externalExaminer.title}"/>
+							<ice:outputText id="examinerStreetAddress" value="Street address:" />
+							<ice:inputText id="examinerStreetAddressValue" value="#{item.externalExaminer.streetAddress}"/>
+							<ice:outputText id="examinerPostalCodeAndPlace" value="Postal code and place:" />
+							<ice:inputText id="examinerPostalCodeAndPlaceValue" value="#{item.externalExaminer.postalCodeAndPlace}"/>
+							<ice:outputText id="examinerPlaceOfEmployment" value="Place of employment:" />
+							<ice:inputText id="examinerPlaceOfEmploymentValue" value="#{item.externalExaminer.placeOfEmployment}"/>
+							<ice:outputText id="examinerEmail" value="E-mail:" />
+							<ice:inputText id="examinerEmailValue" value="#{item.externalExaminer.email}"/>
+							<ice:outputText id="examinerPhoneNumber" value="Phone number:" />
+							<ice:inputText id="examinerPhoneNumberValue" value="#{item.externalExaminer.phoneNumber}"/>
+						</ice:panelGrid>
+					</ice:column>
+
+				</ice:dataTable>
+				</tr>			
+				<tr>
+					<td></td><td></td>
+					<td>
+					<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+				</tr>
 			</table>
 		</ice:form>
 	</ice:portlet>

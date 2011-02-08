@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 
 import no.uis.portal.employee.domain.AssigmentIdComparator;
 import no.uis.portal.employee.domain.Assignment;
+import no.uis.portal.employee.domain.ExternalExaminer;
 
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -115,6 +116,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		test1.setStudyProgramNumber(1);
 		test1.setFacultySupervisor("Louis Lane");
 		test1.getSupervisorList().get(0).setName("Superman");
+		test1.setExternalExaminer(new ExternalExaminer("tester"));
 		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
 		GregorianCalendar dato = test1.getAddedDate();
 		dato.add(Calendar.MONTH, 6);

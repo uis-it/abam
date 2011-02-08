@@ -2,7 +2,6 @@ package no.uis.portal.employee.domain;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Assignment {
@@ -12,6 +11,7 @@ public class Assignment {
 	private boolean master;
 	private boolean bachelor;
 	private boolean displayAssignment = true;
+	private boolean editExternalExaminer = false;
 	
 	private int id;
 	private int departmentNumber;
@@ -33,6 +33,8 @@ public class Assignment {
 	
 	private ArrayList<Supervisor> supervisorList;
 	private ArrayList<String> attachedFileList;
+	
+	private ExternalExaminer externalExaminer;
 	
 	private SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
@@ -215,5 +217,21 @@ public class Assignment {
 	
 	public String getExpireDateAsString() {		
 		return simpleDateFormatter.format(getExpireDate().getTime());
+	}
+
+	public ExternalExaminer getExternalExaminer() {
+		return externalExaminer;
+	}
+
+	public void setExternalExaminer(ExternalExaminer externalExaminer) {
+		this.externalExaminer = externalExaminer;
+	}
+
+	public boolean isEditExternalExaminer() {
+		return editExternalExaminer;
+	}
+
+	public void setEditExternalExaminer(boolean editExternalExaminer) {
+		this.editExternalExaminer = editExternalExaminer;
 	}
 }

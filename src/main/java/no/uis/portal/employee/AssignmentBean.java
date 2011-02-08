@@ -10,6 +10,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.portal.employee.domain.Assignment;
+import no.uis.portal.employee.domain.ExternalExaminer;
 import no.uis.portal.employee.domain.Supervisor;
 
 import org.apache.log4j.Level;
@@ -35,6 +36,25 @@ public class AssignmentBean implements DisposableBean {
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
 		context = FacesContext.getCurrentInstance();
+	}
+	
+	public void actionEditExternalExaminer(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		Assignment selectedAssignment = (Assignment)table.getRowData();
+		setCurrentAssignment(selectedAssignment);
+		
+		if(currentAssignment.getExternalExaminer() == null) {
+			currentAssignment.setExternalExaminer(new ExternalExaminer());
+		}
+		
+		if(currentAssignment.isEditExternalExaminer()) {
+			currentAssignment.setEditExternalExaminer(false);
+		} else {
+			currentAssignment.setEditExternalExaminer(true);
+		}
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {		
