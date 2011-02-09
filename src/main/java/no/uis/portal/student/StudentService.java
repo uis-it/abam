@@ -8,8 +8,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import no.uis.portal.student.domain.Assignment;
+import no.uis.portal.student.domain.Student;
 
-public interface EmployeeService {
+public interface StudentService {
 
 	public abstract void actionClearStudyProgramAndDepartmentNumber(
 			ActionEvent event);
@@ -29,9 +30,9 @@ public interface EmployeeService {
 
 	public abstract TreeSet<Assignment> getAssignmentList();
 
-	public abstract EmployeeService getSelectedAssignment();
+	public abstract StudentService getSelectedAssignment();
 
-	public abstract void setSelectedAssignment(EmployeeService selectedAssignment);
+	public abstract void setSelectedAssignment(StudentService selectedAssignment);
 	
 	public abstract LinkedList<SelectItem> getDepartmentList();
 
@@ -67,5 +68,9 @@ public interface EmployeeService {
 			int instituteNumber);
 
 	public abstract int getNextId();
+	
+	public abstract Student getCurrentStudent();
+	
+	public abstract void setCurrentStudent(Student currentStudent);
 
 }

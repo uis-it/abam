@@ -1,4 +1,3 @@
-
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,11 +5,11 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
-			<h:outputText value="Create Address Labels"/><br/>
+			<ice:outputText value="acceptAssignment"/><br/>
 			<br/>
 			<br/>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"></ice:commandButton>
 			</table>
 		</ice:form>
 	</ice:portlet>

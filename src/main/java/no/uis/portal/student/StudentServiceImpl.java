@@ -12,12 +12,14 @@ import javax.faces.model.SelectItem;
 import no.uis.portal.student.domain.AssigmentIdComparator;
 import no.uis.portal.student.domain.Assignment;
 import no.uis.portal.student.domain.ExternalExaminer;
+import no.uis.portal.student.domain.Student;
 
-public class EmployeeServiceImpl implements EmployeeService {
+public class StudentServiceImpl implements StudentService {
 
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>(new AssigmentIdComparator()); 
-	private EmployeeService selectedAssignment;
+	private StudentService selectedAssignment;
 	
+	private Student currentStudent;
 
 	private LinkedList<SelectItem> departmentList;
 	private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
@@ -28,33 +30,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 	
-	public EmployeeServiceImpl() {
+	public StudentServiceImpl() {
 		if(departmentList == null) {
 			initializeDepartmentAndStudyProgramLists();
 			createTestData();
+			setCurrentStudentFromLoggedInUser();
 		}
 	}
 	
-	@Override
-	public int getSelectedDepartmentNumber() {
-		return selectedDepartmentNumber;
-	}
-
-	@Override
-	public void setSelectedDepartmentNumber(int selectedDepartmentNumber) {
-		this.selectedDepartmentNumber = selectedDepartmentNumber;
-	}
-
-	@Override
-	public int getSelectedStudyProgramNumber() {
-		return selectedStudyProgramNumber;
-	}
-
-	@Override
-	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
-		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
-	}
-
 	private void initializeDepartmentAndStudyProgramLists(){
 		departmentList = new LinkedList<SelectItem>();
 		allStudyProgramsByDepartmentList = new LinkedList<LinkedList<SelectItem>>();
@@ -142,6 +125,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		assignmentList.add(test1);
 		assignmentList.add(test2);
 	}
+	
+	public void setCurrentStudentFromLoggedInUser(){
+		currentStudent = new Student();
+		currentStudent.setName("Studenten");
+		currentStudent.setDepartment("Data- og elektroteknikk");
+		currentStudent.setStudyProgram("Elektro");
+		currentStudent.setType("Master");
+	}
 
 	@Override
 	public int getNextId(){
@@ -150,7 +141,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Override
 	public void saveAssignment(Assignment assignment) {
-		assignmentList.add(assignment);
+		currentStudent.setCustomAssignment(assignment);
 	}
 	
 	@Override
@@ -159,12 +150,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeService getSelectedAssignment() {
+	public StudentService getSelectedAssignment() {
 		return selectedAssignment;
 	}
 
 	@Override
-	public void setSelectedAssignment(EmployeeService selectedAssignment) {
+	public void setSelectedAssignment(StudentService selectedAssignment) {
 		this.selectedAssignment = selectedAssignment;
 	}
 	
@@ -279,4 +270,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 		setStudyProgramList(getAllStudyProgramsByDepartmentsList().
 				get(departmentNumber));
 	}
+	
+	@Override
+	public int getSelectedDepartmentNumber() {
+		return selectedDepartmentNumber;
+	}
+
+	@Override
+	public void setSelectedDepartmentNumber(int selectedDepartmentNumber) {
+		this.selectedDepartmentNumber = selectedDepartmentNumber;
+	}
+
+	@Override
+	public int getSelectedStudyProgramNumber() {
+		return selectedStudyProgramNumber;
+	}
+
+	@Override
+	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
+		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
+	}
+
+	public Student getCurrentStudent() {
+		return currentStudent;
+	}
+
+	public void setCurrentStudent(Student currentStudent) {
+		this.currentStudent = currentStudent;
+	}
+
+
 }

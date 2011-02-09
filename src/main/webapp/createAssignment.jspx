@@ -7,15 +7,10 @@
 	<ice:portlet>
 		<ice:form>
 		
-			<ice:outputText value="Create/edit an assignment"/><br/>
+			<ice:outputText value="Create/edit your custom assignment"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">
-				<tr>
-					<td><ice:outputText value="Id: "/></td>
-					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
-					<td><ice:message for="id" showSummary="true" showDetail="false" ></ice:message></td>
-				</tr>
+			<table border="0" width="800">				
 				<tr>
 					<td><ice:outputText value="Title: "/></td>
 					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
@@ -27,36 +22,21 @@
 					<td><ice:message for="description" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-				<!--
-					<td><ice:outputText value="Supervisor: "/> </td>
-					<td><ice:inputText id="supervisor" size="100" required="true" value="#{assignmentBean.supervisor}"></ice:inputText></td>
-					<td><ice:message for="supervisor" showSummary="true" showDetail="false"></ice:message></td>
-				-->
 				</tr>
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:selectOneMenu id="departmentInput" value="#{assignmentBean.currentAssignment.departmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
-						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
-					</ice:selectOneMenu>
-					</td>
-					
-					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:outputText value="#{studentService.currentStudent.department}"/></td>					
+					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.currentAssignment.studyProgramNumber}">
-						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
-					</ice:selectOneMenu></td>
-					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:outputText value="#{studentService.currentStudent.studyProgram}"/></td>
+					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Type: "/> </td>
 				<td>				
-				<ice:selectOneRadio id="type" required="false" value="#{assignmentBean.currentAssignment.bachelor}" valueChangeListener="#{assignmentBean.radioListener}" partialSubmit="true">
-					<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
-					<f:selectItem itemValue="#{false}" itemLabel="Master" />
-				</ice:selectOneRadio>
-			
+					<ice:outputText value="#{studentService.currentStudent.type}"/>
 				</td>
 				</tr>
 				<tr>

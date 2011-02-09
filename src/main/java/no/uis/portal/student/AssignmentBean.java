@@ -24,18 +24,12 @@ import com.icesoft.faces.context.DisposableBean;
 public class AssignmentBean implements DisposableBean {
 
 	private FacesContext context;
-	private EmployeeService employeeService;
+	private StudentService studentService;
 	private Logger log = Logger.getLogger(AssignmentBean.class); 
-
 	
 	private Assignment currentAssignment;
 	
 	public AssignmentBean(){
-	}
-	
-	public void setEmployeeService(EmployeeService employeeService) {
-		this.employeeService = employeeService;
-		context = FacesContext.getCurrentInstance();
 	}
 	
 	public void actionEditExternalExaminer(ActionEvent event) {
@@ -58,16 +52,22 @@ public class AssignmentBean implements DisposableBean {
 	}
 	
 	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
-		employeeService.setAllEditExternalExaminerToFalse();
+		studentService.setAllEditExternalExaminerToFalse();
+	}
+	
+	public void actionGetCustomAssignment(ActionEvent event) {
+		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
+		if(assignment == null) assignment = new Assignment();
+		setCurrentAssignment(assignment);
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {		
 		setCurrentAssignment(new Assignment());
-		currentAssignment.setId(employeeService.getNextId());
+		currentAssignment.setId(studentService.getNextId());
 	}
 	
 	public void actionSaveAssignment(ActionEvent event) {
-		employeeService.saveAssignment(currentAssignment);
+		studentService.saveAssignment(currentAssignment);
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
@@ -77,10 +77,10 @@ public class AssignmentBean implements DisposableBean {
 		
 		Assignment selectedAssignment = (Assignment)table.getRowData();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		studentService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
-		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
-		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		studentService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		studentService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
 	public void actionRemoveAssignment(ActionEvent event) {
@@ -89,7 +89,7 @@ public class AssignmentBean implements DisposableBean {
 		
 		Assignment assignment = (Assignment)table.getRowData();
 		
-		employeeService.removeAssignment(assignment);
+		studentService.removeAssignment(assignment);
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
@@ -120,26 +120,17 @@ public class AssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		currentAssignment.setDepartment(employeeService.getDepartment(currentAssignment.getDepartmentNumber()));
-		currentAssignment.setStudyProgram(employeeService.getStudyProgram(currentAssignment.getStudyProgramNumber()));
+		currentAssignment.setDepartment(studentService.getCurrentStudent().getDepartment());
+		currentAssignment.setStudyProgram(studentService.getCurrentStudent().getStudyProgram());
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();
 		currentAssignment.setAddedDate(calendar);
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
-		currentAssignment.setType("Bachelor");
+		currentAssignment.setType(studentService.getCurrentStudent().getType());
 		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
-		String typeAssignment = (String)parameterMap.get(clientId+"type");
-		if(typeAssignment != null && typeAssignment.equals("false")){
-			if(!numberOfStudentsInput.equals("1")){
-				currentAssignment.setNumberOfStudents("1");
-				currentAssignment.setType("Master");
-				if(!numberOfStudentsInput.equals(""))
-					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
-			}
-		}
 	}
 	
 	public void fileUploadListen(ActionEvent event){
@@ -198,5 +189,14 @@ public class AssignmentBean implements DisposableBean {
 
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
+	}
+
+	public StudentService getStudentService() {
+		return studentService;
+	}
+
+	public void setStudentService(StudentService studentService) {
+		this.studentService = studentService;
+		context = FacesContext.getCurrentInstance();
 	}
 }
