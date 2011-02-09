@@ -18,7 +18,7 @@
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">
-					<h:outputText value="Welcome" />
+					<h:outputText value="Welcome employee" />
 				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>

@@ -186,6 +186,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				assignment.setDisplayAssignment(true);
 			else assignment.setDisplayAssignment(false);
 		}
+		setAllEditExternalExaminerToFalse();
 	}
 	
 	@Override
@@ -205,6 +206,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				assignment.setDisplayAssignment(true);
 			else assignment.setDisplayAssignment(false);
 		}
+		setAllEditExternalExaminerToFalse();
 	}
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
