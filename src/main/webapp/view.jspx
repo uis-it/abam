@@ -1,0 +1,26 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:form>
+			<ice:panelGrid columns="2" border="0" width="500">
+				<ice:panelGroup id="menu">
+				<table>
+					<tr><td><h:commandLink action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment}">Create Assignment</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="assignAssignment">Assign Assignment</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="editInformation">Edit Information</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="myStudentAssignments">My Student Assignments</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="addExternalExaminer" actionListener="#{assignmentBean.actionEditExternalExaminerSetAllFalse}">Add External Examiner</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="createAddressLabels">Create Address Labels</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="searchArchive">Search</h:commandLink></td></tr>
+				</table>
+				</ice:panelGroup>
+				<ice:panelGroup id="content">
+					<h:outputText value="Welcome Student" />
+				</ice:panelGroup>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

@@ -1,0 +1,52 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:form partialSubmit="true" >
+			<br/>
+			
+			<table border="0">
+				<tr>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
+					</ice:selectOneMenu>
+					</td>
+					
+					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true">
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
+					</ice:selectOneMenu></td>
+					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
+				
+				</tr>
+				<tr>
+				<ice:dataTable id="departmentTable" var="item" value="#{employeeService.assignmentList}">
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="Assignments:"/>
+						</f:facet>
+						<ice:outputText id="itemId" value="#{item.id}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
+						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
+						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="remove" value="Remove" actionListener="#{assignmentBean.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+				<tr>
+					<td></td><td></td>
+					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
+					<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+				</tr>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

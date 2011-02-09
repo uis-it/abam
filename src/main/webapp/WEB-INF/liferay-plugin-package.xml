@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE plugin-package PUBLIC "-//Liferay//DTD Plugin Package 5.1.0//EN" "http://www.liferay.com/dtd/liferay-plugin-package_5_1_0.dtd">
+
+<plugin-package>
+	<name>Ephorte Portlet</name>
+	<module-id>no.uis.portal.portlet/abam_student/${project.version}/war</module-id>
+	<types>
+		<type>portlet</type>
+	</types>
+	<tags>
+		<tag>UiS</tag>
+	</tags>
+	<short-description>
+		${project.description}
+	</short-description>
+	<change-log>
+		
+	</change-log>
+	<page-url>http://www.uis.no</page-url>
+	<author>University of Stavanger</author>
+	<licenses>
+		<license osi-approved="true">${portlet.license}</license>
+	</licenses>
+	<liferay-versions>
+		<liferay-version>${liferay.version}</liferay-version>
+	</liferay-versions>
+</plugin-package>
