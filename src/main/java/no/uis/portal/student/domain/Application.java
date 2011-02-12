@@ -6,6 +6,8 @@ public class Application {
 
 	private Assignment assignment;
 	
+	private int priority;
+	
 	private Student applicant;
 	
 	private String coStudentName1;
@@ -56,4 +58,14 @@ public class Application {
 	public void setApplicationDate(GregorianCalendar applicationDate) {
 		this.applicationDate = applicationDate;
 	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
+	
 }

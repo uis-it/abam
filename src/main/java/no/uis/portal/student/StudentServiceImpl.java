@@ -20,7 +20,7 @@ import no.uis.portal.student.domain.Student;
 public class StudentServiceImpl implements StudentService {
 
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>(new AssigmentIdComparator()); 
-	private StudentService selectedAssignment;
+	private Assignment selectedAssignment;
 	
 	private Student currentStudent;
 
@@ -148,18 +148,26 @@ public class StudentServiceImpl implements StudentService {
 		currentStudent.setCustomAssignment(assignment);
 	}
 	
+	public void setApplicationToStudent(Application application){
+		currentStudent.addApplication(application);
+	}
+	
+	public void setApplicationToAssignment(Application application){
+		//TODO: implement this.
+	}
+	
 	@Override
 	public TreeSet<Assignment> getAssignmentList() {
 		return assignmentList;
 	}
 
 	@Override
-	public StudentService getSelectedAssignment() {
+	public Assignment getSelectedAssignment() {
 		return selectedAssignment;
 	}
 
 	@Override
-	public void setSelectedAssignment(StudentService selectedAssignment) {
+	public void setSelectedAssignment(Assignment selectedAssignment) {
 		this.selectedAssignment = selectedAssignment;
 	}
 	

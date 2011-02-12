@@ -29,12 +29,16 @@ public interface StudentService {
 	public abstract void saveAssignment(Assignment assignment);
 	
 	public abstract void removeAssignment(Assignment assignment);
+	
+	public abstract void setApplicationToStudent(Application application);
+	
+	public abstract void setApplicationToAssignment(Application application);
 
 	public abstract TreeSet<Assignment> getAssignmentList();
 
-	public abstract StudentService getSelectedAssignment();
+	public abstract Assignment getSelectedAssignment();
 
-	public abstract void setSelectedAssignment(StudentService selectedAssignment);
+	public abstract void setSelectedAssignment(Assignment selectedAssignment);
 	
 	public abstract LinkedList<SelectItem> getDepartmentList();
 
