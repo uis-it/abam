@@ -21,15 +21,15 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 
-public class AssignmentBean implements DisposableBean {
+public class StudentAssignmentBean implements DisposableBean {
 
 	private FacesContext context;
 	private StudentService studentService;
-	private Logger log = Logger.getLogger(AssignmentBean.class); 
+	private Logger log = Logger.getLogger(StudentAssignmentBean.class); 
 	
 	private Assignment currentAssignment;
 	
-	public AssignmentBean(){
+	public StudentAssignmentBean(){
 	}
 	
 	public void actionEditExternalExaminer(ActionEvent event) {

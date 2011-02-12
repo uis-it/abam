@@ -61,7 +61,7 @@
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>
-		<managed-bean-class>no.uis.portal.student.AssignmentBean</managed-bean-class>
+		<managed-bean-class>no.uis.portal.student.StudentAssignmentBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>studentService</property-name>
