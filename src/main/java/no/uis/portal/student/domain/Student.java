@@ -33,6 +33,10 @@ public abstract class Student extends Person {
 	public void setStudyProgram(String studyProgram) {
 		this.studyProgram = studyProgram;
 	}
+	
+	public boolean isMasterStudent(){
+		return this.getType().equals("Master");
+	}
 
 	public abstract String getType();
 }

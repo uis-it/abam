@@ -1,5 +1,6 @@
 package no.uis.portal.student;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -7,6 +8,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import no.uis.portal.student.domain.Application;
 import no.uis.portal.student.domain.Assignment;
 import no.uis.portal.student.domain.Student;
 
@@ -72,5 +74,8 @@ public interface StudentService {
 	public abstract Student getCurrentStudent();
 	
 	public abstract void setCurrentStudent(Student currentStudent);
-
+	
+	public abstract void setApplicationList(ArrayList<Application> applicationList);
+	
+	public abstract ArrayList<Application> getApplicationList();
 }

@@ -40,11 +40,6 @@
 				</td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
-					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
-				</tr>
-				<tr>
 					<td><ice:outputText value="Faculty Supervisor: "/> </td>
 					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:inputText></td>
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
@@ -71,6 +66,26 @@
 			</ice:dataTable>
 			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row" immediate="true"/>
 			<br/><br/>
+
+			<table>
+			<tr>
+					<td><ice:outputText value="Attachment: "/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" actionListener="#{assignmentBean.fileUploadListen}"/> </td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.fileUploadErrorMessage}"/> </td>
+				</tr>
+				<tr>
+					<ice:dataTable var="attachment" value="#{assignmentBean.currentAssignment.attachedFileList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Uploaded attachments"/>
+					</f:facet>
+						<ice:outputText id="nameInput" value="#{attachment}"/>
+						<ice:commandButton type="submit" value="Remove" actionListener="#{assignmentBean.actionRemoveAttachment}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>	
+			</table>
+
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
 			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
 		</ice:form>

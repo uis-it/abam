@@ -18,7 +18,7 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>createAssignment</from-outcome>
-			<to-view-id>/createAssignment.jspx</to-view-id>
+			<to-view-id>/createCustomAssignment.jspx</to-view-id>
 		</navigation-case>
 	<navigation-case>
 			<from-outcome>availableAssignment</from-outcome>
@@ -62,6 +62,15 @@
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>
 		<managed-bean-class>no.uis.portal.student.StudentAssignmentBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>studentService</property-name>
+			<value>#{studentService}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>applicationBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.student.ApplicationBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>studentService</property-name>

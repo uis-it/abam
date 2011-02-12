@@ -57,7 +57,10 @@ public class StudentAssignmentBean implements DisposableBean {
 	
 	public void actionGetCustomAssignment(ActionEvent event) {
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
-		if(assignment == null) assignment = new Assignment();
+		if(assignment == null) {
+			assignment = new Assignment();
+			studentService.getCurrentStudent().setCustomAssignment(assignment);
+		}
 		setCurrentAssignment(assignment);
 	}
 	

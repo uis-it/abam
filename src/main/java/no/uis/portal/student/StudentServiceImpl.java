@@ -1,5 +1,6 @@
 package no.uis.portal.student;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 
+import no.uis.portal.student.domain.Application;
 import no.uis.portal.student.domain.AssigmentIdComparator;
 import no.uis.portal.student.domain.Assignment;
 import no.uis.portal.student.domain.BachelorStudent;
@@ -25,6 +27,8 @@ public class StudentServiceImpl implements StudentService {
 	private LinkedList<SelectItem> departmentList;
 	private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
 	private LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentList;
+	
+	private ArrayList<Application> applicationList = new ArrayList<Application>();
 	
 	private String selectedDepartment;
 	
@@ -297,6 +301,14 @@ public class StudentServiceImpl implements StudentService {
 
 	public void setCurrentStudent(Student currentStudent) {
 		this.currentStudent = currentStudent;
+	}
+
+	public ArrayList<Application> getApplicationList() {
+		return applicationList;
+	}
+
+	public void setApplicationList(ArrayList<Application> applicationList) {
+		this.applicationList = applicationList;
 	}
 
 
