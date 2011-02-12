@@ -77,7 +77,7 @@
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>
-		<managed-bean-class>no.uis.portal.employee.AssignmentBean</managed-bean-class>
+		<managed-bean-class>no.uis.portal.employee.EmployeeAssignmentBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>employeeService</property-name>

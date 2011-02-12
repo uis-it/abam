@@ -21,16 +21,16 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 
-public class AssignmentBean implements DisposableBean {
+public class EmployeeAssignmentBean implements DisposableBean {
 
 	private FacesContext context;
 	private EmployeeService employeeService;
-	private Logger log = Logger.getLogger(AssignmentBean.class); 
+	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class); 
 
 	
 	private Assignment currentAssignment;
 	
-	public AssignmentBean(){
+	public EmployeeAssignmentBean(){
 	}
 	
 	public void setEmployeeService(EmployeeService employeeService) {
