@@ -1,11 +1,10 @@
 package no.uis.portal.student.domain;
 
-public class Student extends Person {
+public abstract class Student extends Person {
 
 	private Assignment customAssignment;
 	private String department;
 	private String studyProgram;
-	private String type; 
 	
 	public Student(){
 		
@@ -35,12 +34,5 @@ public class Student extends Person {
 		this.studyProgram = studyProgram;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-	
+	public abstract String getType();
 }

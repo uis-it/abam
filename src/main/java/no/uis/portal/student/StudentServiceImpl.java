@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 
 import no.uis.portal.student.domain.AssigmentIdComparator;
 import no.uis.portal.student.domain.Assignment;
+import no.uis.portal.student.domain.BachelorStudent;
 import no.uis.portal.student.domain.ExternalExaminer;
 import no.uis.portal.student.domain.Student;
 
@@ -127,11 +128,10 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	public void setCurrentStudentFromLoggedInUser(){
-		currentStudent = new Student();
+		currentStudent = new BachelorStudent();
 		currentStudent.setName("Studenten");
 		currentStudent.setDepartment("Data- og elektroteknikk");
 		currentStudent.setStudyProgram("Elektro");
-		currentStudent.setType("Master");
 	}
 
 	@Override
