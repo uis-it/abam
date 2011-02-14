@@ -81,6 +81,43 @@ public abstract class Student extends Person {
 				(applicationPriorityArray[2] != null);
 	}
 	
+	public void removeApplication(Application application) {
+		for (int index = 0; index < applicationPriorityArray.length; index++) {
+			if(applicationPriorityArray[index] == application) 
+				applicationPriorityArray[index] = null;
+		}
+	}
+	
+	public void moveApplicationHigher(Application selectedApplication) {
+		int selectedApplicationIndex = findApplicationIndex(selectedApplication);
+		if(selectedApplicationIndex != 0) {
+			int higherApplicationIndex = selectedApplicationIndex - 1;
+			Application higherApplication = applicationPriorityArray[higherApplicationIndex];
+			higherApplication.setPriority(selectedApplicationIndex + 1);
+			selectedApplication.setPriority(higherApplicationIndex + 1);
+			applicationPriorityArray[higherApplicationIndex] = selectedApplication;
+			applicationPriorityArray[selectedApplicationIndex] = higherApplication;
+		}
+	}
+	public void moveApplicationLower(Application selectedApplication) {
+		int selectedApplicationIndex = findApplicationIndex(selectedApplication);
+		if(selectedApplicationIndex != 2) {
+			int lowerApplicationIndex = selectedApplicationIndex + 1;
+			Application lowerApplication = applicationPriorityArray[lowerApplicationIndex];
+			lowerApplication.setPriority(selectedApplicationIndex + 1);
+			selectedApplication.setPriority(lowerApplicationIndex + 1);
+			applicationPriorityArray[lowerApplicationIndex] = selectedApplication;
+			applicationPriorityArray[selectedApplicationIndex] = lowerApplication;
+		}
+	}
+	
+	
+	private int findApplicationIndex(Application application) {
+		for (int index = 0; index < applicationPriorityArray.length; index++) {
+			if(applicationPriorityArray[index] == application) return index;
+		}
+		return -1;
+	}
 	public Application getApplicationFromAssignment(Assignment selectedAssignment){
 		for(int index = 0; index < applicationPriorityArray.length; index++){
 			if(applicationPriorityArray[index].getAssignment() == selectedAssignment){

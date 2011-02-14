@@ -18,9 +18,9 @@
 					<ice:outputText id="title" value="-"/>
 					<ice:outputText id="titleOutput" value="#{application.assignment.title}"/>
 					
-					<ice:commandButton type="submit" value="Up" id="UpButton" immediate="true"/>
-					<ice:commandButton type="submit" value="Down" id="DownButton" immediate="true"/>
-					<ice:commandButton type="submit" value="Remove" id="RemoveButton" immediate="true"/>
+					<ice:commandButton type="submit" value="Up" id="UpButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityHigher}"/>
+					<ice:commandButton type="submit" value="Down" id="DownButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityLower}"/>
+					<ice:commandButton type="submit" value="Remove" id="RemoveButton" immediate="true" actionListener="#{studentService.actionRemoveApplication}"/>
 					
 				</ice:column>										
 			</ice:dataTable>

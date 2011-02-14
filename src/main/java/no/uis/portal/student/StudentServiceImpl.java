@@ -5,9 +5,13 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.TreeSet;
+
+import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+
+import com.icesoft.faces.component.ext.HtmlDataTable;
 
 
 import no.uis.portal.student.domain.Application;
@@ -191,15 +195,24 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	public void actionRemoveApplication(ActionEvent event) {
-		
+		Application application = getApplicationFromEvent(event);
+		currentStudent.removeApplication(application);
 	}
 	
 	public void actionSetApplicationPriorityHigher(ActionEvent event) {
-		
+		Application application = getApplicationFromEvent(event);
+		currentStudent.moveApplicationHigher(application);
 	}
 	
 	public void actionSetApplicationPriorityLower(ActionEvent event) {
-		
+		Application application = getApplicationFromEvent(event);
+		currentStudent.moveApplicationLower(application);
+	}
+	
+	private Application getApplicationFromEvent(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		return (Application)table.getRowData();
 	}
 	 
 	@Override
