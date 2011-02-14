@@ -176,6 +176,18 @@ public class Assignment {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public void updateType(String type) {
+		setType(type);
+		if(type.equalsIgnoreCase("Bachelor")) {
+			setBachelor(true);
+			setMaster(false);
+		}
+		else {
+			setBachelor(false);
+			setMaster(true);
+		}
+	}
 
 	public String getAttachedFilePath() {
 		return attachedFilePath;

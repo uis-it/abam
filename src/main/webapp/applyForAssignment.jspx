@@ -30,9 +30,9 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" ></ice:outputText></td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}"></ice:outputText></td>
+					<td><ice:outputText value="Number of students: " rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Type: "/> </td>

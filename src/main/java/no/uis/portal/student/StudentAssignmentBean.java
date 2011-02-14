@@ -59,7 +59,8 @@ public class StudentAssignmentBean implements DisposableBean {
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
 		if(assignment == null) {
 			assignment = new Assignment();
-			studentService.getCurrentStudent().setCustomAssignment(assignment);						
+			studentService.getCurrentStudent().setCustomAssignment(assignment);
+			
 		}
 		studentService.setSelectedAssignment(assignment);
 		setCurrentAssignment(assignment);
@@ -130,7 +131,7 @@ public class StudentAssignmentBean implements DisposableBean {
 		currentAssignment.setAddedDate(calendar);
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
-		currentAssignment.setType(studentService.getCurrentStudent().getType());
+		currentAssignment.updateType(studentService.getCurrentStudent().getType());
 		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";

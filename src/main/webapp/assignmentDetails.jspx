@@ -13,37 +13,37 @@
 			<table border="0" width="800">
 				<tr>
 					<td><ice:outputText value="Title: "/></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.title}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.title}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Description: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.description}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.description}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.department}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.department}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgram}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgram}"/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudents}" ></ice:outputText></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudentsError}"></ice:outputText></td>
+					<td><ice:outputText value="Number of students: " rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"/></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Type: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.type}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.type}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Faculty Supervisor: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:outputText></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor}"/></td>
 					<td></td>
 				</tr>
 				<tr>

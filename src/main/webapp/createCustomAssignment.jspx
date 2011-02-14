@@ -40,6 +40,11 @@
 				</td>
 				</tr>
 				<tr>
+					<td><ice:outputText value="Number of students: "/> </td>
+					<td><ice:inputText id="numberOfStudents" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
+				</tr>
+				<tr>
 					<td><ice:outputText value="Faculty Supervisor: "/> </td>
 					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:inputText></td>
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>

@@ -119,8 +119,9 @@ public class StudentServiceImpl implements StudentService {
 		
 		Assignment test2 = new Assignment();
 		test2.setTitle("IDE El oppgave");
-		test2.setBachelor(false);
-		test2.setMaster(true);
+		test2.setBachelor(true);
+		test2.setMaster(false);
+		test2.setType("Bachelor");
 		test2.setDescription("Beskrivelse av test2");
 		test2.setNumberOfStudents("1");
 		test2.setDepartment("Data- og elektroteknikk");
@@ -139,8 +140,9 @@ public class StudentServiceImpl implements StudentService {
 		
 		Assignment test3 = new Assignment();
 		test3.setTitle("Hei hopp");
-		test3.setBachelor(false);
-		test3.setMaster(true);
+		test3.setBachelor(true);
+		test3.setMaster(false);
+		test3.setType("Bachelor");
 		test3.setDescription("Beskrivelse av test3");
 		test3.setNumberOfStudents("1");
 		test3.setDepartment("Data- og elektroteknikk");
@@ -157,19 +159,19 @@ public class StudentServiceImpl implements StudentService {
 		assignmentList.add(test3);
 	}
 	
-//	public void setCurrentStudentFromLoggedInUser(){
-//		currentStudent = new BachelorStudent();
-//		currentStudent.setName("Studenten");
-//		currentStudent.setDepartment("Data- og elektroteknikk");
-//		currentStudent.setStudyProgram("Elektro");
-//	}
-
 	public void setCurrentStudentFromLoggedInUser(){
-		currentStudent = new MasterStudent();
+		currentStudent = new BachelorStudent();
 		currentStudent.setName("Studenten");
-		currentStudent.setDepartment("Petroleumsteknologi");
-		currentStudent.setStudyProgram("Boreteknologi");
+		currentStudent.setDepartment("Data- og elektroteknikk");
+		currentStudent.setStudyProgram("Elektro");
 	}
+
+//	public void setCurrentStudentFromLoggedInUser(){
+//		currentStudent = new MasterStudent();
+//		currentStudent.setName("Studenten");
+//		currentStudent.setDepartment("Petroleumsteknologi");
+//		currentStudent.setStudyProgram("Boreteknologi");
+//	}
 	
 	@Override
 	public int getNextId(){
@@ -250,7 +252,6 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
-		System.out.println(assignment.getTitle() + " : "+assignment.getType() +" vs " + currentStudent.getType());
 		return assignment.getType().equalsIgnoreCase(currentStudent.getType());
 	}
 	
