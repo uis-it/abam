@@ -129,6 +129,25 @@ public class StudentServiceImpl implements StudentService {
 		test2.setExpireDate(dato);
 		assignmentList.add(test1);
 		assignmentList.add(test2);
+		
+		Assignment test3 = new Assignment();
+		test3.setTitle("Hei hopp");
+		test3.setBachelor(false);
+		test3.setMaster(true);
+		test3.setDescription("Beskrivelse av test3");
+		test3.setNumberOfStudents("1");
+		test3.setDepartment("Data- og elektroteknikk");
+		test3.setDepartmentNumber(3);
+		test3.setStudyProgram("Elektro");
+		test3.setStudyProgramNumber(2);
+		test3.setId(3);
+		test3.setFacultySupervisor("Robin");
+		test3.getSupervisorList().get(0).setName("Batman");
+		test3.setAddedDate(new GregorianCalendar(2010, 10, 10));
+		dato = test3.getAddedDate();
+		dato.add(Calendar.MONTH, 6);
+		test3.setExpireDate(dato);
+		assignmentList.add(test3);
 	}
 	
 	public void setCurrentStudentFromLoggedInUser(){
@@ -171,6 +190,18 @@ public class StudentServiceImpl implements StudentService {
 		this.selectedAssignment = selectedAssignment;
 	}
 	
+	public void actionRemoveApplication(ActionEvent event) {
+		
+	}
+	
+	public void actionSetApplicationPriorityHigher(ActionEvent event) {
+		
+	}
+	
+	public void actionSetApplicationPriorityLower(ActionEvent event) {
+		
+	}
+	 
 	@Override
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
 		setSelectedStudyProgramNumber(0);

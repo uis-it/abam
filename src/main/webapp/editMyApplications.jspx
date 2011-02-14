@@ -6,7 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:form>
-			<ice:outputText value="My applications"/><br/>
+			<ice:outputText value="Edit my applications"/><br/>
 			<br/>
 			<br/>
 				<ice:dataTable var="application" value="#{studentService.currentStudent.applicationPriorityArray}">
@@ -17,11 +17,14 @@
 					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
 					<ice:outputText id="title" value="-"/>
 					<ice:outputText id="titleOutput" value="#{application.assignment.title}"/>
-	
+					
+					<ice:commandButton type="submit" value="Up" id="UpButton" immediate="true"/>
+					<ice:commandButton type="submit" value="Down" id="DownButton" immediate="true"/>
+					<ice:commandButton type="submit" value="Remove" id="RemoveButton" immediate="true"/>
+					
 				</ice:column>										
 			</ice:dataTable>
-			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="editMyApplications" value="Edit applications" id="EditButton" immediate="true"/>
+			<ice:commandButton type="submit" action="myApplications" value="Back" id="BackButton" immediate="true"/>
 		</ice:form>
 	</ice:portlet>
 </f:view>

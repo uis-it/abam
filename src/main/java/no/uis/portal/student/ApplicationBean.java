@@ -20,20 +20,32 @@ public class ApplicationBean implements DisposableBean {
 		
 	}
 	
-	public void actionCreateNewApplication(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-		Assignment selectedAssignment = null;
-		System.out.println("Parent = " + uic.getParent().getParent());
-		if( (uic.getParent().getParent()) instanceof HtmlDataTable){
-			HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-			selectedAssignment = (Assignment)table.getRowData();
+	public void actionSetApplicationFromCustomAssignment(ActionEvent event) {
+		Assignment selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
+		createNewApplication(selectedAssignment);
+	}
+	
+	public void actionApplyForAssignment(ActionEvent event) {
+		currentAssignment = studentService.getSelectedAssignment();
+		createNewApplication(currentAssignment);
+	}
+	
+	private void createNewApplication(Assignment selectedAssignment) {
+		Application newApplication = null;
+		if(assignmentIsAppliedFor(selectedAssignment)){
+			newApplication = studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment);
 		} else {
-			selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
+			newApplication = new Application();
+			newApplication.setAssignment(selectedAssignment);
 		}
-		Application newApplication = new Application();
-		newApplication.setAssignment(selectedAssignment);
+		
 		setCurrentAssignment(selectedAssignment);
 		setCurrentApplication(newApplication);
+	}
+	
+	private boolean assignmentIsAppliedFor(Assignment selectedAssignment){
+		return studentService.getCurrentStudent().assignmentIsAlreadyAppliedFor(selectedAssignment);
+		
 	}
 	
 	public void actionSaveApplication(ActionEvent event) {

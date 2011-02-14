@@ -80,7 +80,9 @@ public class StudentAssignmentBean implements DisposableBean {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		Assignment selectedAssignment = (Assignment)table.getRowData();
+		
 		setCurrentAssignment(selectedAssignment);
+		studentService.setSelectedAssignment(selectedAssignment);
 		studentService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
 		studentService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());

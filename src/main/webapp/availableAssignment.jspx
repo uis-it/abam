@@ -36,15 +36,14 @@
 						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
-						<ice:commandButton id="applyAssignment" value="Apply" actionListener="#{applicationBean.actionCreateNewApplication}" action="applyForAssignment" rendered="#{item.displayAssignment}"/>
-						<ice:commandButton id="remove" value="Remove" actionListener="#{assignmentBean.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
+						<ice:commandButton id="applyAssignment" value="Apply" actionListener="#{applicationBean.actionApplyForAssignment}" action="applyForAssignment" rendered="#{!studentService.currentStudent.appliedForThreeAssignments}"/>
+						<ice:commandButton id="View" value="View details" action="assignmentDetails" actionListener="#{assignmentBean.actionSetSelectedAssignment}" rendered="#{item.displayAssignment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
 				<tr>
 					<td></td><td></td>
-					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
-					<h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+					<td><h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
 				</tr>
 			</table>
 		</ice:form>

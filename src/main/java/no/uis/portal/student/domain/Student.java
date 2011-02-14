@@ -7,8 +7,6 @@ public abstract class Student extends Person {
 	private String studyProgram;
 	private String applicationsErrorMessage;
 	
-	private boolean maximumAllowedApplications;
-	
 	private Application[] applicationPriorityArray = new Application[3];
 	
 	public Student(){
@@ -44,8 +42,7 @@ public abstract class Student extends Person {
 	}
 	
 	public void addApplication(Application application) {
-		//System.out.println("Resultat =: "+assignmentIsAlreadyAppliedFor(application));
-		if(!assignmentIsAlreadyAppliedFor(application)) {
+		if(!assignmentIsAlreadyAppliedFor(application.getAssignment())) {
 			if(applicationPriorityArray[0] == null) {
 				application.setPriority(1);
 				applicationPriorityArray[0] = application;
@@ -58,19 +55,18 @@ public abstract class Student extends Person {
 				application.setPriority(3);
 				applicationPriorityArray[2] = application;
 			}
-			else {
+			if(isAppliedForThreeAssignments()) 
 				applicationsErrorMessage = "You have the maximum allowed applications, remove at least one and try again";
-				maximumAllowedApplications = true;
-			}
+
 		} else applicationsErrorMessage = "You have already applied for this assignment";
 		
 	}
 	
-	private boolean assignmentIsAlreadyAppliedFor(Application application){
-		String assignmentTitle = application.getAssignment().getTitle();
+	public boolean assignmentIsAlreadyAppliedFor(Assignment assignment){
+		String assignmentTitle = assignment.getTitle();
 		for(int index = 0; index < applicationPriorityArray.length; index++) {
 			if(applicationPriorityArray[index] != null) {
-				System.out.println("Index "+index+": "+applicationPriorityArray[index].getAssignment().getTitle() +" vs "+application.getAssignment().getTitle());
+				System.out.println("Index "+index+": "+applicationPriorityArray[index].getAssignment().getTitle() +" vs "+assignment.getTitle());
 				if(applicationPriorityArray[index].getAssignment().getTitle().equals(assignmentTitle)){
 					return true;
 				}
@@ -83,6 +79,15 @@ public abstract class Student extends Person {
 		return (applicationPriorityArray[0] != null) &&
 				(applicationPriorityArray[1] != null) &&
 				(applicationPriorityArray[2] != null);
+	}
+	
+	public Application getApplicationFromAssignment(Assignment selectedAssignment){
+		for(int index = 0; index < applicationPriorityArray.length; index++){
+			if(applicationPriorityArray[index].getAssignment() == selectedAssignment){
+				return applicationPriorityArray[index];
+			}
+		}
+		return null;
 	}
 	
 	public String getApplicationsErrorMessage() {

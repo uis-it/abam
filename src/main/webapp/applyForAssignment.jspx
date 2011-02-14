@@ -65,12 +65,12 @@
 				</tr>		
 				<tr>
 					<td><ice:outputText value="I want to write the thesis together with: " rendered="#{!studentService.currentStudent.masterStudent}"/> </td>
-					<td><ice:inputText id="studentName1" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+					<td><ice:inputText id="studentName1" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName1}"></ice:inputText></td>
 					<td></td>
 				</tr>
 				<tr> 
 					<td></td>
-					<td><ice:inputText id="studentName2" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+					<td><ice:inputText id="studentName2" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName2}"></ice:inputText></td>
 					<td></td>
 				</tr>		
 				<tr>

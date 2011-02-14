@@ -48,6 +48,10 @@
 			<from-outcome>assignmentSummary</from-outcome>
 			<to-view-id>/assignmentSummary.jspx</to-view-id>
 		</navigation-case>
+				<navigation-case>
+		<from-outcome>assignmentDetails</from-outcome>
+			<to-view-id>/assignmentDetails.jspx</to-view-id>
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>assignmentSavedConfirmation</from-outcome>
 			<to-view-id>/assignmentSavedConfirmation.jspx</to-view-id>
@@ -55,6 +59,10 @@
 		<navigation-case>
 			<from-outcome>myApplications</from-outcome>
 			<to-view-id>/myApplications.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editMyApplications</from-outcome>
+			<to-view-id>/editMyApplications.jspx</to-view-id>
 		</navigation-case>
 		</navigation-rule>
 	

@@ -16,6 +16,12 @@ public interface StudentService {
 
 	public abstract void actionClearStudyProgramAndDepartmentNumber(
 			ActionEvent event);
+	
+	public abstract void actionRemoveApplication(ActionEvent event);
+	
+	public abstract void actionSetApplicationPriorityHigher(ActionEvent event);
+	
+	public abstract void actionSetApplicationPriorityLower(ActionEvent event);
 
 	public abstract void actionUpdateStudyProgramList(ValueChangeEvent event);
 
