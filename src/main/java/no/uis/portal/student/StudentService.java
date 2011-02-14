@@ -23,7 +23,7 @@ public interface StudentService {
 	
 	public abstract void actionSetApplicationPriorityLower(ActionEvent event);
 
-	public abstract void actionUpdateStudyProgramList(ValueChangeEvent event);
+	public abstract void updateStudyProgramList(int index);
 
 	public abstract void actionUpdateStudyProgramListFromCreateAssignment(
 			ValueChangeEvent event);
@@ -31,6 +31,8 @@ public interface StudentService {
 	public abstract void actionSetDisplayAssignment(ValueChangeEvent event);
 
 	public abstract void updateSelectedAssignmentInformation(Assignment selectedAssignment);
+	
+	public abstract void actionUpdateDepartmentNumberFromCurrentStudent(ActionEvent event);
 	
 	public abstract void setAllEditExternalExaminerToFalse();
 	

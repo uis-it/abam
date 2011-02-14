@@ -11,7 +11,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:selectOneMenu id="departmentInput" value="#{studentService.selectedDepartmentNumber}" valueChangeListener="#{studentService.actionUpdateStudyProgramList}" partialSubmit="true">
+					<td><ice:selectOneMenu id="departmentInput" value="#{studentService.selectedDepartmentNumber}" valueChangeListener="#{studentService.actionUpdateStudyProgramList}" partialSubmit="true" disabled="true">
 						<f:selectItems id="departmentInputContent" value="#{studentService.departmentList}"/>
 					</ice:selectOneMenu>
 					</td>
@@ -28,7 +28,7 @@
 				</tr>
 				<tr>
 				<ice:dataTable id="departmentTable" var="item" value="#{studentService.assignmentList}">
-					<ice:column>
+					<ice:column rendered="#{item.displayAssignment}">
 						<f:facet name="header">
 							<ice:outputText value="Assignments:"/>
 						</f:facet>

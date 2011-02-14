@@ -154,13 +154,20 @@ public class StudentServiceImpl implements StudentService {
 		assignmentList.add(test3);
 	}
 	
+//	public void setCurrentStudentFromLoggedInUser(){
+//		currentStudent = new BachelorStudent();
+//		currentStudent.setName("Studenten");
+//		currentStudent.setDepartment("Data- og elektroteknikk");
+//		currentStudent.setStudyProgram("Elektro");
+//	}
+
 	public void setCurrentStudentFromLoggedInUser(){
 		currentStudent = new BachelorStudent();
 		currentStudent.setName("Studenten");
-		currentStudent.setDepartment("Data- og elektroteknikk");
-		currentStudent.setStudyProgram("Elektro");
+		currentStudent.setDepartment("Petroleumsteknologi");
+		currentStudent.setStudyProgram("Boreteknologi");
 	}
-
+	
 	@Override
 	public int getNextId(){
 		return assignmentList.size()+1;
@@ -222,10 +229,10 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	@Override
-	public void actionUpdateStudyProgramList(ValueChangeEvent event){
-		studyProgramList = allStudyProgramsByDepartmentList.get(Integer.parseInt(event.getNewValue().toString()));
-		selectedDepartment = (String) departmentList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
-		selectedDepartmentNumber = Integer.parseInt(event.getNewValue().toString());
+	public void updateStudyProgramList(int index){
+		studyProgramList = allStudyProgramsByDepartmentList.get(index);
+		selectedDepartment = (String) departmentList.get(index).getLabel();
+		selectedDepartmentNumber = index;
 		TreeSet<Assignment> assignmentList = getAssignmentList();
 		for (Assignment assignment : assignmentList) {
 			if (assignment.getDepartment().equals(selectedDepartment)
@@ -268,6 +275,19 @@ public class StudentServiceImpl implements StudentService {
 		
 		setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+	}
+	
+	@Override
+	public void actionUpdateDepartmentNumberFromCurrentStudent(ActionEvent event) {
+		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
+	}
+	
+	private int findDepartmentNumberForCurrentStudent() {
+		String name = currentStudent.getDepartment();
+		for (SelectItem department : departmentList) {
+			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
+		}
+		return 0;
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {

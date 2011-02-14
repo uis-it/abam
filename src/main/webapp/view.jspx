@@ -8,7 +8,7 @@
 			<ice:panelGrid columns="2" border="0" width="500">
 				<ice:panelGroup id="menu">
 				<table>
-					<tr><td><ice:commandLink action="availableAssignment">Available assignments</ice:commandLink></td></tr>
+					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionUpdateDepartmentNumberFromCurrentStudent}">Available assignments</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="myApplications">My applications</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}">Create custom assignment</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="acceptAssignment">Accept assignment</ice:commandLink></td></tr>
