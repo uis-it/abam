@@ -15,9 +15,8 @@
 				</f:facet>
 					<ice:outputText id="priority" value="Prioritet"/>
 					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
-					<ice:outputText id="title" value="-"/>
-					<ice:outputText id="titleOutput" value="#{application.assignment.title}"/>
-	
+					<ice:outputText id="title" value="-"/>					
+					<ice:commandLink value="#{application.assignment.title}" action="applyForAssignment" actionListener="#{applicationBean.actionEditApplication}"/>
 				</ice:column>										
 			</ice:dataTable>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>

@@ -62,12 +62,28 @@ public class ApplicationBean implements DisposableBean {
 		
 	}
 	
+	public void actionEditApplication(ActionEvent event){
+		UIComponent uic = event.getComponent();
+
+		Object parent = uic.getParent();
+		Application selectedApplication = null;
+		if(parent instanceof UIColumn){
+			UIColumn uiColumn = (UIColumn)parent;
+			parent = uiColumn.getParent();
+			if(parent instanceof HtmlDataTable){
+				HtmlDataTable table = (HtmlDataTable)parent;
+				selectedApplication = (Application)table.getRowData();
+				studentService.updateSelectedAssignmentInformation(selectedApplication.getAssignment());
+			}
+		}
+		currentAssignment = studentService.getSelectedAssignment();
+		createNewApplication(currentAssignment);
+	}
+	
 	public void actionSaveApplication(ActionEvent event) {
 		studentService.getApplicationList().add(currentApplication);
 		studentService.setApplicationToStudent(currentApplication);
 		studentService.setApplicationToAssignment(currentApplication);
-		System.out.println("CurrentAppl.: "+currentApplication);
-		System.out.println("Appl. ass. title: " + currentApplication.getAssignment().getTitle());
 	}
 	
 	public void dispose() throws Exception {

@@ -66,7 +66,6 @@ public abstract class Student extends Person {
 		String assignmentTitle = assignment.getTitle();
 		for(int index = 0; index < applicationPriorityArray.length; index++) {
 			if(applicationPriorityArray[index] != null) {
-				System.out.println("Index "+index+": "+applicationPriorityArray[index].getAssignment().getTitle() +" vs "+assignment.getTitle());
 				if(applicationPriorityArray[index].getAssignment().getTitle().equals(assignmentTitle)){
 					return true;
 				}

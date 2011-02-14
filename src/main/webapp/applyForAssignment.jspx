@@ -77,7 +77,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="availableAssignment" value="Back" id="BackButton" immediate="true"/>
+						<ice:commandButton type="submit" action="availableAssignment" value="Available assignments" id="BackButton" immediate="true"/>
 						<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="Save application" id="SaveButton"/>
 						<ice:commandButton type="submit" action="backToView" value="Cancel" id="CancelButton" immediate="true"/>
 					</td>
