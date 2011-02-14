@@ -30,6 +30,8 @@ public interface StudentService {
 
 	public abstract void actionSetDisplayAssignment(ValueChangeEvent event);
 
+	public abstract void updateSelectedAssignmentInformation(Assignment selectedAssignment);
+	
 	public abstract void setAllEditExternalExaminerToFalse();
 	
 	public abstract void saveAssignment(Assignment assignment);

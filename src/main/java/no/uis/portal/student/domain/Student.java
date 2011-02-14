@@ -104,10 +104,12 @@ public abstract class Student extends Person {
 		if(selectedApplicationIndex != 2) {
 			int lowerApplicationIndex = selectedApplicationIndex + 1;
 			Application lowerApplication = applicationPriorityArray[lowerApplicationIndex];
-			lowerApplication.setPriority(selectedApplicationIndex + 1);
-			selectedApplication.setPriority(lowerApplicationIndex + 1);
-			applicationPriorityArray[lowerApplicationIndex] = selectedApplication;
-			applicationPriorityArray[selectedApplicationIndex] = lowerApplication;
+			if(lowerApplication != null) {
+				lowerApplication.setPriority(selectedApplicationIndex + 1);
+				selectedApplication.setPriority(lowerApplicationIndex + 1);
+				applicationPriorityArray[lowerApplicationIndex] = selectedApplication;
+				applicationPriorityArray[selectedApplicationIndex] = lowerApplication;
+			}
 		}
 	}
 	

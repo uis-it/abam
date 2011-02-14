@@ -261,6 +261,15 @@ public class StudentServiceImpl implements StudentService {
 		|| abIn.getStudyProgram().equals(selectedStudyProgram);
 	}
 	
+	@Override
+	public void updateSelectedAssignmentInformation(Assignment selectedAssignment){
+		setSelectedAssignment(selectedAssignment);
+		setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		
+		setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+	}
+	
 	public void setAllEditExternalExaminerToFalse() {
 		for (Assignment assignment : assignmentList) {
 			assignment.setEditExternalExaminer(false);

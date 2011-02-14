@@ -82,11 +82,8 @@ public class StudentAssignmentBean implements DisposableBean {
 		Assignment selectedAssignment = (Assignment)table.getRowData();
 		
 		setCurrentAssignment(selectedAssignment);
-		studentService.setSelectedAssignment(selectedAssignment);
-		studentService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
-		studentService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
-		studentService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		studentService.updateSelectedAssignmentInformation(selectedAssignment);
 	}
 	
 	public void actionRemoveAssignment(ActionEvent event) {

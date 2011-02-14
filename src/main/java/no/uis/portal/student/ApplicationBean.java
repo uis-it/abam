@@ -7,6 +7,7 @@ import no.uis.portal.student.domain.Application;
 import no.uis.portal.student.domain.Assignment;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.context.DisposableBean;
 
 public class ApplicationBean implements DisposableBean {
@@ -26,6 +27,19 @@ public class ApplicationBean implements DisposableBean {
 	}
 	
 	public void actionApplyForAssignment(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+
+		Object parent = uic.getParent();
+		Assignment selectedAssignment = null;
+		if(parent instanceof UIColumn){
+			UIColumn uiColumn = (UIColumn)parent;
+			parent = uiColumn.getParent();
+			if(parent instanceof HtmlDataTable){
+				HtmlDataTable table = (HtmlDataTable)parent;
+				selectedAssignment = (Assignment)table.getRowData();
+				studentService.updateSelectedAssignmentInformation(selectedAssignment);
+			}
+		}
 		currentAssignment = studentService.getSelectedAssignment();
 		createNewApplication(currentAssignment);
 	}
