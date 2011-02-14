@@ -19,6 +19,7 @@ import no.uis.portal.student.domain.AssigmentIdComparator;
 import no.uis.portal.student.domain.Assignment;
 import no.uis.portal.student.domain.BachelorStudent;
 import no.uis.portal.student.domain.ExternalExaminer;
+import no.uis.portal.student.domain.MasterStudent;
 import no.uis.portal.student.domain.Student;
 
 public class StudentServiceImpl implements StudentService {
@@ -98,7 +99,9 @@ public class StudentServiceImpl implements StudentService {
 	public void createTestData(){
 		Assignment test1 = new Assignment();
 		test1.setTitle("Pet Bor oppgave");
-		test1.setBachelor(true);
+		test1.setBachelor(false);
+		test1.setMaster(true);
+		test1.setType("Master");
 		test1.setDescription("Beskrivelse av test1");
 		test1.setNumberOfStudents("2-3");
 		test1.setId(1);
@@ -162,7 +165,7 @@ public class StudentServiceImpl implements StudentService {
 //	}
 
 	public void setCurrentStudentFromLoggedInUser(){
-		currentStudent = new BachelorStudent();
+		currentStudent = new MasterStudent();
 		currentStudent.setName("Studenten");
 		currentStudent.setDepartment("Petroleumsteknologi");
 		currentStudent.setStudyProgram("Boreteknologi");
@@ -237,11 +240,18 @@ public class StudentServiceImpl implements StudentService {
 		TreeSet<Assignment> assignmentList = getAssignmentList();
 		for (Assignment assignment : assignmentList) {
 			if (assignment.getDepartment().equals(selectedDepartment)
-				|| selectedDepartment.equals("")) 
-				assignment.setDisplayAssignment(true);
-			else assignment.setDisplayAssignment(false);
+				|| selectedDepartment.equals("")) { 
+				if(currentStudentIsEligibleForAssignment(assignment))
+					assignment.setDisplayAssignment(true);
+				else assignment.setDisplayAssignment(false);
+			} else assignment.setDisplayAssignment(false);
 		}
 		setAllEditExternalExaminerToFalse();
+	}
+	
+	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
+		System.out.println(assignment.getTitle() + " : "+assignment.getType() +" vs " + currentStudent.getType());
+		return assignment.getType().equalsIgnoreCase(currentStudent.getType());
 	}
 	
 	@Override
@@ -257,9 +267,10 @@ public class StudentServiceImpl implements StudentService {
 		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
 		if (selectedDepartment == null) setSelectedDepartment("");
 		for (Assignment assignment : assignmentList) {
-			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)) 
-				assignment.setDisplayAssignment(true);
-			else assignment.setDisplayAssignment(false);
+			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)){ 
+				if(currentStudentIsEligibleForAssignment(assignment))
+					assignment.setDisplayAssignment(true);
+			} else assignment.setDisplayAssignment(false);
 		}
 		setAllEditExternalExaminerToFalse();
 	}
