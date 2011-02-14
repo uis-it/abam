@@ -183,7 +183,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 	
 	public void setApplicationToAssignment(Application application){
-		//TODO: implement this.
+		selectedAssignment.addApplication(application);
 	}
 	
 	@Override
@@ -204,6 +204,7 @@ public class StudentServiceImpl implements StudentService {
 	public void actionRemoveApplication(ActionEvent event) {
 		Application application = getApplicationFromEvent(event);
 		currentStudent.removeApplication(application);
+		selectedAssignment.removeApplication(application);
 	}
 	
 	public void actionSetApplicationPriorityHigher(ActionEvent event) {
