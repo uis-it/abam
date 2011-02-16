@@ -82,11 +82,9 @@ public abstract class Student extends Person {
 	
 	public void removeApplication(Application application) {
 		for (int index = 0; index < applicationPriorityArray.length; index++) {
-			if(applicationPriorityArray[index] == application){ 
-				System.out.println("Inside if "+index);
+			if(applicationPriorityArray[index] == application){ 				
 				applicationPriorityArray[index] = null;
 				for (int j = index + 1; j < applicationPriorityArray.length; j++) {
-					System.out.println("Inside for "+j);
 					if(applicationPriorityArray[j] != null){						
 						moveApplicationHigher(applicationPriorityArray[j]);
 					}
