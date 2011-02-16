@@ -8,9 +8,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import no.uis.portal.student.domain.Application;
-import no.uis.portal.student.domain.Assignment;
-import no.uis.portal.student.domain.Student;
+import no.uis.abam.dom.Application;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Student;
 
 public interface StudentService {
 

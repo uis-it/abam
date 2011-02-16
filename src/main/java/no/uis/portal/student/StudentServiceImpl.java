@@ -14,13 +14,7 @@ import javax.faces.model.SelectItem;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 
 
-import no.uis.portal.student.domain.Application;
-import no.uis.portal.student.domain.AssigmentIdComparator;
-import no.uis.portal.student.domain.Assignment;
-import no.uis.portal.student.domain.BachelorStudent;
-import no.uis.portal.student.domain.ExternalExaminer;
-import no.uis.portal.student.domain.MasterStudent;
-import no.uis.portal.student.domain.Student;
+import no.uis.abam.dom.*;
 
 public class StudentServiceImpl implements StudentService {
 

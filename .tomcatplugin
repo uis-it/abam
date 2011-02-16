@@ -11,45 +11,28 @@
     <webClassPathEntries>
         <webClassPathEntry>/abam_student/target/classes</webClassPathEntry>
         <webClassPathEntry>/abam_student/target/test-classes</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/backport-util-concurrent/backport-util-concurrent/3.1/backport-util-concurrent-3.1.jar</webClassPathEntry>
+        <webClassPathEntry>/dom/target/classes</webClassPathEntry>
+        <webClassPathEntry>C:/Users/Bente/.m2/repository/backport-util-concurrent/backport-util-concurrent/2.2/backport-util-concurrent-2.2.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/com/liferay/util-bridges/5.2.3/util-bridges-5.2.3.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/com/sun/xml/fastinfoset/FastInfoset/1.2.2/FastInfoset-1.2.2.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-codec/commons-codec/1.2/commons-codec-1.2.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-collections/commons-collections/3.2/commons-collections-3.2.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-digester/commons-digester/1.8/commons-digester-1.8.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-el/commons-el/1.0/commons-el-1.0.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar</webClassPathEntry>
+        <webClassPathEntry>C:/Users/Bente/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/no/uis/portal/portlet/portlet-util/2.0.10/portlet-util-2.0.10.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/ant/ant-launcher/1.7.0/ant-launcher-1.7.0.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/ant/ant/1.7.0/ant-1.7.0.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/axis2/axis2/1.4.1/axis2-1.4.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/commons/ssl/not-yet-commons-ssl/0.3.9/not-yet-commons-ssl-0.3.9.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/myfaces/core/myfaces-api/1.1.6/myfaces-api-1.1.6.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/myfaces/core/myfaces-impl/1.1.6/myfaces-impl-1.1.6.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/neethi/neethi/2.0.4/neethi-2.0.4.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/woden/woden-api/1.0M8/woden-api-1.0M8.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/woden/woden-impl-dom/1.0M8/woden-impl-dom-1.0M8.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/ws/commons/axiom/axiom-api/1.2.7/axiom-api-1.2.7.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/ws/commons/axiom/axiom-impl/1.2.7/axiom-impl-1.2.7.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/ws/commons/schema/XmlSchema/1.4.3/XmlSchema-1.4.3.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/xmlbeans/xmlbeans/2.4.0/xmlbeans-2.4.0.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/org/codehaus/woodstox/wstx-asl/3.2.4/wstx-asl-3.2.4.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/icefaces/icefaces-comps/1.8.2/icefaces-comps-1.8.2.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/icefaces/icefaces/1.8.2/icefaces-1.8.2.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/stax/stax-api/1.0.1/stax-api-1.0.1.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/xerces/xercesImpl/2.8.1/xercesImpl-2.8.1.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/xerces/xmlParserAPIs/2.6.0/xmlParserAPIs-2.6.0.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/xml-apis/xml-apis/1.3.04/xml-apis-1.3.04.jar</webClassPathEntry>
     </webClassPathEntries>
 </tomcatProjectProperties>

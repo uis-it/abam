@@ -3,8 +3,8 @@ package no.uis.portal.student;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
-import no.uis.portal.student.domain.Application;
-import no.uis.portal.student.domain.Assignment;
+import no.uis.abam.dom.Application;
+import no.uis.abam.dom.Assignment;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.UIColumn;

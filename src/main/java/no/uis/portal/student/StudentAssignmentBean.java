@@ -9,9 +9,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import no.uis.portal.student.domain.Assignment;
-import no.uis.portal.student.domain.ExternalExaminer;
-import no.uis.portal.student.domain.Supervisor;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.ExternalExaminer;
+import no.uis.abam.dom.Supervisor;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
