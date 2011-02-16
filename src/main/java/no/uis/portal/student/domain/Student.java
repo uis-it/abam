@@ -56,7 +56,7 @@ public abstract class Student extends Person {
 				applicationPriorityArray[2] = application;
 			}
 			if(isAppliedForThreeAssignments()) 
-				applicationsErrorMessage = "You have the maximum allowed applications, remove at least one and try again";
+				applicationsErrorMessage = "You have applied for the maximum allowed assignments, remove at least one and try again";
 
 		} else applicationsErrorMessage = "You have already applied for this assignment";
 		
@@ -82,20 +82,33 @@ public abstract class Student extends Person {
 	
 	public void removeApplication(Application application) {
 		for (int index = 0; index < applicationPriorityArray.length; index++) {
-			if(applicationPriorityArray[index] == application) 
+			if(applicationPriorityArray[index] == application){ 
+				System.out.println("Inside if "+index);
 				applicationPriorityArray[index] = null;
+				for (int j = index + 1; j < applicationPriorityArray.length; j++) {
+					System.out.println("Inside for "+j);
+					if(applicationPriorityArray[j] != null){						
+						moveApplicationHigher(applicationPriorityArray[j]);
+					}
+				}
+			}
 		}
 	}
 	
 	public void moveApplicationHigher(Application selectedApplication) {
 		int selectedApplicationIndex = findApplicationIndex(selectedApplication);
-		if(selectedApplicationIndex != 0) {
+		if(selectedApplicationIndex > 0) {
 			int higherApplicationIndex = selectedApplicationIndex - 1;
 			Application higherApplication = applicationPriorityArray[higherApplicationIndex];
-			higherApplication.setPriority(selectedApplicationIndex + 1);
-			selectedApplication.setPriority(higherApplicationIndex + 1);
-			applicationPriorityArray[higherApplicationIndex] = selectedApplication;
-			applicationPriorityArray[selectedApplicationIndex] = higherApplication;
+			if(selectedApplication != null){
+				selectedApplication.setPriority(higherApplicationIndex + 1);
+				if(higherApplication != null){
+					higherApplication.setPriority(selectedApplicationIndex + 1);
+				}
+				applicationPriorityArray[higherApplicationIndex] = selectedApplication;
+				applicationPriorityArray[selectedApplicationIndex] = higherApplication;								
+					
+			}
 		}
 	}
 	public void moveApplicationLower(Application selectedApplication) {
@@ -105,9 +118,11 @@ public abstract class Student extends Person {
 			Application lowerApplication = applicationPriorityArray[lowerApplicationIndex];
 			if(lowerApplication != null) {
 				lowerApplication.setPriority(selectedApplicationIndex + 1);
-				selectedApplication.setPriority(lowerApplicationIndex + 1);
 				applicationPriorityArray[lowerApplicationIndex] = selectedApplication;
 				applicationPriorityArray[selectedApplicationIndex] = lowerApplication;
+				if (selectedApplication != null) {
+					selectedApplication.setPriority(lowerApplicationIndex + 1);
+				}
 			}
 		}
 	}
@@ -121,7 +136,7 @@ public abstract class Student extends Person {
 	}
 	public Application getApplicationFromAssignment(Assignment selectedAssignment){
 		for(int index = 0; index < applicationPriorityArray.length; index++){
-			if(applicationPriorityArray[index].getAssignment() == selectedAssignment){
+			if((applicationPriorityArray[index] != null) && (applicationPriorityArray[index].getAssignment() == selectedAssignment)){
 				return applicationPriorityArray[index];
 			}
 		}

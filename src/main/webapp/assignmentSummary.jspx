@@ -69,7 +69,7 @@
 					<td></td>
 					<td>
 						<ice:commandButton type="submit" action="createAssignment" value="Back" id="BackButton" immediate="true"/>
-						<ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetApplicationFromCustomAssignment}" value="Apply for this assignment" id="ApplyButton"/>
+						<ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" value="Apply for this assignment" id="ApplyButton"/>
 						<ice:commandButton type="submit" action="backToView" value="Cancel" id="CancelButton" immediate="true"/>
 					</td>
 				</tr>

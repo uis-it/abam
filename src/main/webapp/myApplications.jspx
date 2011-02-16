@@ -17,7 +17,7 @@
 					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
 					<ice:outputText id="title" value="-"/>					
 					<ice:commandLink value="#{application.assignment.title}" action="applyForAssignment" actionListener="#{applicationBean.actionEditApplication}"/>
-				</ice:column>										
+				</ice:column>										Available assignments
 			</ice:dataTable>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
 			<ice:commandButton type="submit" action="editMyApplications" value="Edit applications" id="EditButton" immediate="true"/>

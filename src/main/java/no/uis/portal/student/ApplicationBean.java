@@ -17,16 +17,19 @@ public class ApplicationBean implements DisposableBean {
 	private Application currentApplication;
 	private Assignment currentAssignment;
 	
-	public ApplicationBean() {
-		
-	}
+	public ApplicationBean() {}
 	
-	public void actionSetApplicationFromCustomAssignment(ActionEvent event) {
+	public void actionSetCustomAssignmentToApplication(ActionEvent event) {
 		Assignment selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
-		createNewApplication(selectedAssignment);
+		
+		if(assignmentIsAppliedFor(selectedAssignment)){
+			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment));
+		} else {
+			createNewApplication(selectedAssignment);
+		}
 	}
 	
-	public void actionApplyForAssignment(ActionEvent event) {
+	public void actionSetSelectedAssignmentToApplication(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 
 		Object parent = uic.getParent();
@@ -41,17 +44,17 @@ public class ApplicationBean implements DisposableBean {
 			}
 		}
 		currentAssignment = studentService.getSelectedAssignment();
-		createNewApplication(currentAssignment);
+		if(assignmentIsAppliedFor(currentAssignment)){
+			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment));
+		} else {
+			createNewApplication(currentAssignment);
+		}
+		
 	}
 	
 	private void createNewApplication(Assignment selectedAssignment) {
-		Application newApplication = null;
-		if(assignmentIsAppliedFor(selectedAssignment)){
-			newApplication = studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment);
-		} else {
-			newApplication = new Application();
-			newApplication.setAssignment(selectedAssignment);
-		}
+		Application newApplication = new Application();
+		newApplication.setAssignment(selectedAssignment);
 		
 		setCurrentAssignment(selectedAssignment);
 		setCurrentApplication(newApplication);
