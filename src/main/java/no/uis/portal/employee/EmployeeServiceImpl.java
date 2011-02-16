@@ -9,9 +9,9 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 
-import no.uis.portal.employee.domain.AssigmentIdComparator;
-import no.uis.portal.employee.domain.Assignment;
-import no.uis.portal.employee.domain.ExternalExaminer;
+import no.uis.abam.dom.AssigmentIdComparator;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.ExternalExaminer;
 
 public class EmployeeServiceImpl implements EmployeeService {
 

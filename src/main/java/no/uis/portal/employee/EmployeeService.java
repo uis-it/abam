@@ -7,7 +7,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import no.uis.portal.employee.domain.Assignment;
+import no.uis.abam.dom.Assignment;
 
 public interface EmployeeService {
 
