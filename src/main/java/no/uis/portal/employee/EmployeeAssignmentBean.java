@@ -12,9 +12,11 @@ import javax.faces.event.ValueChangeEvent;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
+import no.uis.abam.ws_abam.AbamWebService;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
@@ -25,17 +27,24 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 	private FacesContext context;
 	private EmployeeService employeeService;
-	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class); 
-
+	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
 	
 	private Assignment currentAssignment;
 	
+	private AbamWebService abamClient;
+	//private AbamWSClient abamClient;
+	
 	public EmployeeAssignmentBean(){
+		
 	}
 	
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
-		context = FacesContext.getCurrentInstance();
+		context = FacesContext.getCurrentInstance();		
+	}
+	
+	public void setAbamClient(AbamWebService abamClient){
+		this.abamClient = abamClient;
 	}
 	
 	public void actionEditExternalExaminer(ActionEvent event) {
@@ -62,6 +71,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {		
+		System.out.println(abamClient.getAllAssignments().size());
 		setCurrentAssignment(new Assignment());
 		currentAssignment.setId(employeeService.getNextId());
 	}
