@@ -73,8 +73,12 @@
 	
 	<managed-bean>
 		<managed-bean-name>employeeService</managed-bean-name>
-		<managed-bean-class>no.uis.portal.employee.EmployeeServiceImpl</managed-bean-class>
+		<managed-bean-class>no.uis.portal.employee.EmployeeService</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>abamClient</property-name>
+			<value>#{abamClient}</value>
+		</managed-property>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>
@@ -83,10 +87,6 @@
 		<managed-property>
 			<property-name>employeeService</property-name>
 			<value>#{employeeService}</value>
-		</managed-property>
-		<managed-property>
-			<property-name>abamClient</property-name>
-			<value>#{abamClient}</value>
 		</managed-property>
 	</managed-bean>
 	<managed-bean>

@@ -45,7 +45,7 @@
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
 					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.currentAssignment.studyProgramNumber}">
-						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
+						<f:selectItems id="studyProgramContent" value="#{employeeService.selectedStudyProgramList}"/>
 					</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>

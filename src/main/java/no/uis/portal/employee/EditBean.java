@@ -1,11 +1,15 @@
 package no.uis.portal.employee;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+
+import no.uis.abam.dom.EditableSelectItem;
+
 import com.icesoft.faces.context.DisposableBean;
 
 public class EditBean implements DisposableBean {
@@ -29,34 +33,36 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionAddNewDepartment(ActionEvent event){
-		
-		LinkedList<SelectItem> departmentList = employeeService.getDepartmentList();
-		EditableSelectItem newItem = new EditableSelectItem(new Integer(departmentList.size()), "");
-		newItem.setEditable(true);
-		departmentList.add(newItem);
-		
-		LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentsList = employeeService.getAllStudyProgramsByDepartmentsList();
-		allStudyProgramsByDepartmentsList.add(new LinkedList<SelectItem>());
-		
+		employeeService.addNewDepartment();
+			
 	}
 	
 	public void actionRemoveDepartment(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		employeeService.getDepartmentList().remove(table.getRowData());	
+		employeeService.removeDepartment((EditableSelectItem) table.getRowData());	
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		LinkedList<SelectItem> studyProgramList = employeeService.getStudyProgramList();
+		List<EditableSelectItem> studyProgramList = employeeService.getSelectedStudyProgramList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
 		newItem.setEditable(true);
 		studyProgramList.add(newItem);
 	}
 	
+	public void actionSaveDepartmentListToWebService(ActionEvent event) {
+		employeeService.saveDepartmentListToWebService();
+	}
+	
+	public void actionGetListsFromWebService(ActionEvent event) {
+		employeeService.getDepartmentListFromWebService();
+		//employeeService.getAllStudyProgramsByDepartmentListFromWebService();
+	}
+	
 	public void actionRemoveStudyProgram(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		employeeService.getStudyProgramList().remove(table.getRowData());			
+		employeeService.getSelectedStudyProgramList().remove(table.getRowData());			
 	}
 	
 	public void dispose() throws Exception {

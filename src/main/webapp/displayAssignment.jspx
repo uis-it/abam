@@ -21,7 +21,7 @@
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
 					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true">
-						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramList}"/>
+						<f:selectItems id="studyProgramContent" value="#{employeeService.selectedStudyProgramList}"/>
 					</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true" showDetail="false"></ice:message></td>
 				
@@ -45,6 +45,7 @@
 					<td></td><td></td>
 					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
 					<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+					
 				</tr>
 			</table>
 		</ice:form>
