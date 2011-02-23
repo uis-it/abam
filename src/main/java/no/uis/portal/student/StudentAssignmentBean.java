@@ -25,6 +25,7 @@ public class StudentAssignmentBean implements DisposableBean {
 
 	private FacesContext context;
 	private StudentService studentService;
+	
 	private Logger log = Logger.getLogger(StudentAssignmentBean.class); 
 	
 	private Assignment currentAssignment;
@@ -124,7 +125,7 @@ public class StudentAssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		currentAssignment.setDepartment(studentService.getCurrentStudent().getDepartment());
+		currentAssignment.setDepartmentName(studentService.getCurrentStudent().getDepartment());
 		currentAssignment.setStudyProgram(studentService.getCurrentStudent().getStudyProgram());
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();

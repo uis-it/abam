@@ -68,8 +68,12 @@
 	
 	<managed-bean>
 		<managed-bean-name>studentService</managed-bean-name>
-		<managed-bean-class>no.uis.portal.student.StudentServiceImpl</managed-bean-class>
+		<managed-bean-class>no.uis.portal.student.StudentService</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>abamClient</property-name>
+			<value>#{abamStudentClient}</value>
+		</managed-property>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>assignmentBean</managed-bean-name>

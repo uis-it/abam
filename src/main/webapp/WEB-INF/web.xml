@@ -3,7 +3,17 @@
 	version="2.4">
 
 	<display-name>student</display-name>
-
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/cxf-beans.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
 	<context-param>
 		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
 		<param-value>.jspx</param-value>
