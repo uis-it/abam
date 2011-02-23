@@ -41,13 +41,10 @@ public class ApplicationBean implements DisposableBean {
 			if(parent instanceof HtmlDataTable){
 				HtmlDataTable table = (HtmlDataTable)parent;
 				selectedAssignment = (Assignment)table.getRowData();
-				System.out.println("selectedAssignment: "+selectedAssignment.getTitle());
 				studentService.updateSelectedAssignmentInformation(selectedAssignment);
 			}
 		}
-		//System.out.println("currentAssignment before setting: "+currentAssignment.getTitle());
 		currentAssignment = studentService.getSelectedAssignment();
-		System.out.println("currentAssignment after setting: "+currentAssignment.getTitle());
 		if(assignmentIsAppliedFor(currentAssignment)){
 			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(currentAssignment));
 		} else {

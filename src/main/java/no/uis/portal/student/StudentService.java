@@ -178,15 +178,6 @@ public class StudentService {
 	public void actionPrepareAvailableAssignments(ActionEvent event) {
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
-		
-		System.out.println(assignmentList.getClass());
-		Iterator<Assignment> iterator = assignmentList.iterator();
-		while(iterator.hasNext()){
-			Assignment ass = iterator.next();		
-			System.out.println(ass.getId() + "|" + ass.getTitle());
-		}
-		
-		
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
