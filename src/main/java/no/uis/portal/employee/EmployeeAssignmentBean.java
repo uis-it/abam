@@ -122,7 +122,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		System.out.println(currentAssignment.getDepartmentNumber());
 		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
 		currentAssignment.setStudyProgram(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramNumber()));
 		currentAssignment.setFileUploadErrorMessage("");

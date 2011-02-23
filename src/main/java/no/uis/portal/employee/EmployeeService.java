@@ -97,6 +97,7 @@ public class EmployeeService {
 				assignment.setDisplayAssignment(true);
 			else assignment.setDisplayAssignment(false);
 		}
+		abamClient.setAssignmentList(assignmentList);
 		setAllEditExternalExaminerToFalse();
 	}
 	
@@ -112,15 +113,22 @@ public class EmployeeService {
 	}
 	
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
-		String selectedStudyProgram = (String) abamClient.getStudyProgram(selectedDepartmentNumber,Integer.parseInt(event.getNewValue().toString()));
+		
+		if(event.getNewValue() == null) {
+			selectedStudyProgramNumber = 0;
+		} else {
+			selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
+		}
+		String selectedStudyProgram = getStudyProgramNameFromValue(selectedStudyProgramNumber);
 		Set<Assignment> assignmentList = abamClient.getAllAssignments();
-		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
+		
 		if (selectedDepartmentName == null) setSelectedDepartmentName("");
 		for (Assignment assignment : assignmentList) {
 			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)) 
 				assignment.setDisplayAssignment(true);
 			else assignment.setDisplayAssignment(false);
 		}
+		abamClient.setAssignmentList(assignmentList);
 		setAllEditExternalExaminerToFalse();
 	}
 	
@@ -182,6 +190,15 @@ public class EmployeeService {
 		return null;
 	}
 	
+	public String getStudyProgramNameFromValue(int value){
+		for (EditableSelectItem studyProgram : selectedStudyProgramList) {
+			if(Integer.parseInt(studyProgram.getValue().toString()) == value){
+				return studyProgram.getLabel();
+			}
+		}
+		return null;
+	}
+	
 	public String getSelectedDepartmentName() {
 		return selectedDepartmentName;
 	}
@@ -198,7 +215,7 @@ public class EmployeeService {
 
 	
 	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
-		setSelectedStudyProgramList(abamClient.getStudyProgramList(departmentNumber));
+		setSelectedStudyProgramList(getDepartmentFromValue(departmentNumber).getStudyPrograms());
 	}
 
 
