@@ -1,9 +1,10 @@
 package no.uis.portal.student;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
@@ -19,163 +20,28 @@ import no.uis.abam.ws_abam.AbamWebService;
 
 public class StudentService {
 
-	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>(new AssigmentIdComparator()); 
+	private TreeSet<Assignment> assignmentList; 
 	private Assignment selectedAssignment;
 	
 	private Student currentStudent;
 
-	private AbamWebService abamClient;
+	private AbamWebService abamStudentClient;
 	
-	private LinkedList<SelectItem> departmentList;
-	private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
-	private LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentList;
+	//private LinkedList<SelectItem> departmentList;
+	//private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
+	//private LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentList;
 	
 	private ArrayList<Application> applicationList = new ArrayList<Application>();
 	
-	private String selectedDepartment;
+	private String selectedDepartmentName;
 	
 	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 	
 	public StudentService() {
-		if(departmentList == null) {
-			initializeDepartmentAndStudyProgramLists();
-			createTestData();
-			setCurrentStudentFromLoggedInUser();
-		}
+		setCurrentStudentFromLoggedInUser();
 	}
-	
-	private void initializeDepartmentAndStudyProgramLists(){
-		departmentList = new LinkedList<SelectItem>();
-		allStudyProgramsByDepartmentList = new LinkedList<LinkedList<SelectItem>>();
-		
-		departmentList.add(new EditableSelectItem(new Integer(0), ""));
-		departmentList.add(new EditableSelectItem(new Integer(1), "Institutt for industriell økonomi, risikostyring og planlegging"));
-		departmentList.add(new EditableSelectItem(new Integer(2), "Petroleumsteknologi"));
-		departmentList.add(new EditableSelectItem(new Integer(3), "Data- og elektroteknikk"));
-		departmentList.add(new EditableSelectItem(new Integer(4), "Institutt for konstruksjonsteknikk og materialteknologi"));
-		departmentList.add(new EditableSelectItem(new Integer(5), "Matematikk og naturvitskap"));
-		
-		LinkedList<SelectItem> listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		
-		listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Industriell økonomi"));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		
-		listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Boreteknologi"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Petroleumsgeologi"));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		
-		listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Data"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Elektro"));
-		listToAdd.add(new EditableSelectItem(new Integer(3), "Informasjonsteknologi"));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		
-		listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Byggeteknikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Maskinteknikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(3), "Offshoreteknologi"));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		
-		listToAdd = new LinkedList<SelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Matematikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Fysikk"));
-		allStudyProgramsByDepartmentList.add(listToAdd);
-		studyProgramList = allStudyProgramsByDepartmentList.get(0);
-	}
-	
-	public void createTestData(){
-		Assignment test1 = new Assignment();
-		test1.setTitle("Pet Bor oppgave");
-		test1.setBachelor(false);
-		test1.setMaster(true);
-		test1.setType("Master");
-		test1.setDescription("Beskrivelse av test1");
-		test1.setNumberOfStudents("2-3");
-		test1.setId(1);
-		test1.setDepartmentName("Petroleumsteknologi");
-		test1.setDepartmentNumber(2);
-		test1.setStudyProgram("Boreteknologi");
-		test1.setStudyProgramNumber(1);
-		test1.setFacultySupervisor("Louis Lane");
-		test1.getSupervisorList().get(0).setName("Superman");
-		test1.setExternalExaminer(new ExternalExaminer("tester"));
-		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
-		GregorianCalendar dato = test1.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test1.setExpireDate(dato);
-		
-		Assignment test2 = new Assignment();
-		test2.setTitle("IDE El oppgave");
-		test2.setBachelor(true);
-		test2.setMaster(false);
-		test2.setType("Bachelor");
-		test2.setDescription("Beskrivelse av test2");
-		test2.setNumberOfStudents("1");
-		test2.setDepartmentName("Data- og elektroteknikk");
-		test2.setDepartmentNumber(3);
-		test2.setStudyProgram("Elektro");
-		test2.setStudyProgramNumber(2);
-		test2.setId(2);
-		test2.setFacultySupervisor("Robin");
-		test2.getSupervisorList().get(0).setName("Batman");
-		test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
-		dato = test2.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test2.setExpireDate(dato);
-		assignmentList.add(test1);
-		assignmentList.add(test2);
-		
-		test2 = new Assignment();
-		test2.setTitle("IDE El2 oppgave");
-		test2.setBachelor(true);
-		test2.setMaster(false);
-		test2.setType("Bachelor");
-		test2.setDescription("Beskrivelse av El2 oppgaven");
-		test2.setNumberOfStudents("2");
-		test2.setDepartmentName("Data- og elektroteknikk");
-		test2.setDepartmentNumber(3);
-		test2.setStudyProgram("Elektro");
-		test2.setStudyProgramNumber(2);
-		test2.setId(4);
-		test2.setFacultySupervisor("Hans");
-		test2.getSupervisorList().get(0).setName("Nils");
-		test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
-		dato = test2.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test2.setExpireDate(dato);
-		assignmentList.add(test2);
-		
-		Assignment test3 = new Assignment();
-		test3.setTitle("Hei hopp");
-		test3.setBachelor(true);
-		test3.setMaster(false);
-		test3.setType("Bachelor");
-		test3.setDescription("Beskrivelse av test3");
-		test3.setNumberOfStudents("1");
-		test3.setDepartmentName("Data- og elektroteknikk");
-		test3.setDepartmentNumber(3);
-		test3.setStudyProgram("Elektro");
-		test3.setStudyProgramNumber(2);
-		test3.setId(3);
-		test3.setFacultySupervisor("Robin");
-		test3.getSupervisorList().get(0).setName("Batman");
-		test3.setAddedDate(new GregorianCalendar(2010, 10, 10));
-		dato = test3.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test3.setExpireDate(dato);
-		assignmentList.add(test3);
-	}
-	
+
 	public void setCurrentStudentFromLoggedInUser(){
 		currentStudent = new BachelorStudent();
 		currentStudent.setName("Studenten");
@@ -192,7 +58,7 @@ public class StudentService {
 	
 	
 	public int getNextId(){
-		return assignmentList.size()+1;
+		return abamStudentClient.getNextId();
 	}
 	
 	
@@ -210,7 +76,9 @@ public class StudentService {
 	
 	
 	public TreeSet<Assignment> getAssignmentList() {
-		return assignmentList;
+		if(assignmentList == null) 
+			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
+		return assignmentList;		
 	}
 
 	
@@ -253,13 +121,12 @@ public class StudentService {
 	
 	
 	public void updateStudyProgramList(int index){
-		studyProgramList = allStudyProgramsByDepartmentList.get(index);
-		selectedDepartment = (String) departmentList.get(index).getLabel();
+		selectedDepartmentName = (String) getDepartmentName(index);
 		selectedDepartmentNumber = index;
-		TreeSet<Assignment> assignmentList = getAssignmentList();
+		Set<Assignment> assignmentList = getAssignmentList();
 		for (Assignment assignment : assignmentList) {
-			if (assignment.getDepartmentName().equals(selectedDepartment)
-				|| selectedDepartment.equals("")) { 
+			if (assignment.getDepartmentName().equals(selectedDepartmentName)
+				|| selectedDepartmentName.equals("")) { 
 				if(currentStudentIsEligibleForAssignment(assignment))
 					assignment.setDisplayAssignment(true);
 				else assignment.setDisplayAssignment(false);
@@ -273,17 +140,17 @@ public class StudentService {
 	}
 	
 	
-	public void actionUpdateStudyProgramListFromCreateAssignment(ValueChangeEvent event){
-		studyProgramList = allStudyProgramsByDepartmentList.get(Integer.parseInt(event.getNewValue().toString()));
-		selectedDepartmentNumber = Integer.parseInt(event.getNewValue().toString());
-	}
+//	public void actionUpdateStudyProgramListFromCreateAssignment(ValueChangeEvent event){
+//		studyProgramList = allStudyProgramsByDepartmentList.get(Integer.parseInt(event.getNewValue().toString()));
+//		selectedDepartmentNumber = Integer.parseInt(event.getNewValue().toString());
+//	}
 	
 	
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
-		String selectedStudyProgram = (String) studyProgramList.get(Integer.parseInt(event.getNewValue().toString())).getLabel();
-		TreeSet<Assignment> assignmentList = getAssignmentList();
+		String selectedStudyProgram = (String) getStudyProgramName(Integer.parseInt(event.getNewValue().toString()));
+		assignmentList = getAssignmentList();
 		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
-		if (selectedDepartment == null) setSelectedDepartment("");
+		if (selectedDepartmentName == null) setSelectedDepartment("");
 		for (Assignment assignment : assignmentList) {
 			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)){ 
 				if(currentStudentIsEligibleForAssignment(assignment))
@@ -294,98 +161,86 @@ public class StudentService {
 	}
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
-		return (selectedStudyProgram.equals("") && abIn.getDepartmentName().equals(selectedDepartment)) 
+		return (selectedStudyProgram.equals("") && abIn.getDepartmentName().equals(selectedDepartmentName)) 
 		|| abIn.getStudyProgram().equals(selectedStudyProgram);
 	}
 	
 	
 	public void updateSelectedAssignmentInformation(Assignment selectedAssignment){
 		setSelectedAssignment(selectedAssignment);
-		setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		//setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
 		setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
 	
-	public void actionUpdateDepartmentNumberFromCurrentStudent(ActionEvent event) {
+	public void actionPrepareAvailableAssignments(ActionEvent event) {
+		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
+		
+		System.out.println(assignmentList.getClass());
+		Iterator<Assignment> iterator = assignmentList.iterator();
+		while(iterator.hasNext()){
+			Assignment ass = iterator.next();		
+			System.out.println(ass.getId() + "|" + ass.getTitle());
+		}
+		
+		
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
 		String name = currentStudent.getDepartment();
-		for (SelectItem department : departmentList) {
+		for (SelectItem department : getDepartmentList()) {
 			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
 		}
 		return 0;
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {
-		for (Assignment assignment : assignmentList) {
+		for (Assignment assignment : getAssignmentList()) {
 			assignment.setEditExternalExaminer(false);
 		}
 	}
 	
 	
-	public LinkedList<SelectItem> getDepartmentList() {
-		return departmentList;
+	public LinkedList<Department> getDepartmentList() {
+		return abamStudentClient.getDepartmentList();
 	}
 
-	
-	public void setDepartmentList(LinkedList<SelectItem> departmentList) {
-		this.departmentList = departmentList;
+	public List<EditableSelectItem> getStudyProgramList() {
+		return abamStudentClient.getStudyProgramList(selectedDepartmentNumber);
 	}
 	
-	public LinkedList<SelectItem> getStudyProgramList() {
-		return studyProgramList;
-	}
-
-	
-	public void setStudyProgramList(LinkedList<SelectItem> studyProgramList) {
-		this.studyProgramList = studyProgramList;
+	public String getStudyProgramName(int index) {
+		return abamStudentClient.getStudyProgram(selectedDepartmentNumber,index);
 	}
 	
-	
-	public LinkedList<LinkedList<SelectItem>> getAllStudyProgramsByDepartmentsList() {
-		return allStudyProgramsByDepartmentList;
-	}
-
-	
-	public void setAllStudyProgramsByDepartmentList(
-			LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentListIn) {
-		  allStudyProgramsByDepartmentList = allStudyProgramsByDepartmentListIn;
-	}
-
-	
-	public String getStudyProgram(int index) {
-		return studyProgramList.get(index).getLabel();
-	}
-	
-	public String getDepartment(int index) {
-		return  departmentList.get(index).getLabel();
+	public String getDepartmentName(int index) {
+		return  abamStudentClient.getDepartmentList().get(index).getLabel();
 	}
 
 	
 	public String getSelectedDepartment() {
-		return selectedDepartment;
+		return selectedDepartmentName;
 	}
 
 	
 	public void setSelectedDepartment(String selectedDepartment) {
-		this.selectedDepartment = selectedDepartment;
+		this.selectedDepartmentName = selectedDepartment;
 	}
 
 	
 	public void removeAssignment(Assignment assignment) {
-		assignmentList.remove(assignment);
+		abamStudentClient.removeAssignment(assignment);
 	}
 
 	
-	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
-		setStudyProgramList(getAllStudyProgramsByDepartmentsList().
-				get(departmentNumber));
-	}
-	
+//	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
+//		setStudyProgramList(getAllStudyProgramsByDepartmentsList().
+//				get(departmentNumber));
+//	}
+//	
 	
 	public int getSelectedDepartmentNumber() {
 		return selectedDepartmentNumber;
@@ -422,7 +277,9 @@ public class StudentService {
 		this.applicationList = applicationList;
 	}
 
-	public void setAbamClient(AbamWebService abamClient) {
-		this.abamClient = abamClient;
+
+
+	public void setAbamStudentClient(AbamWebService abamStudentClient) {
+		this.abamStudentClient = abamStudentClient;
 	}
 }

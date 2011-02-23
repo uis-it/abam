@@ -11,6 +11,7 @@
 		</locale-config>
 		<message-bundle>Language_nb</message-bundle>
 		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
 	</application>
 	<factory>
 		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>
@@ -71,7 +72,7 @@
 		<managed-bean-class>no.uis.portal.student.StudentService</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
-			<property-name>abamClient</property-name>
+			<property-name>abamStudentClient</property-name>
 			<value>#{abamStudentClient}</value>
 		</managed-property>
 	</managed-bean>
