@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class Assignment {
+public class Assignment implements Comparable<Assignment>{
 
 	public final static int ACTIVE_MONTHS = 6;
 	
@@ -22,7 +22,7 @@ public class Assignment {
 	private String facultySupervisor;
 	private String description;
 	private String studyProgram;
-	private String department;
+	private String departmentName;
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
 	private String type;
@@ -145,12 +145,12 @@ public class Assignment {
 		this.studyProgram = studyProgram;
 	}
 
-	public String getDepartment() {
-		return department;
+	public String getDepartmentName() {
+		return departmentName;
 	}
 
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setDepartmentName(String department) {
+		this.departmentName = department;
 	}
 
 	public String getNumberOfStudentsError() {
@@ -263,5 +263,11 @@ public class Assignment {
 
 	public void setApplications(ArrayList<Application> applications) {
 		this.applications = applications;
+	}
+
+	public int compareTo(Assignment arg0) {
+		if (getId() > arg0.getId()) return 1;
+		else if (getId() < arg0.getId()) return -1;
+		else return 0; 
 	}
 }
