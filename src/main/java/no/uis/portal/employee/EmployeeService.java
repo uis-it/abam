@@ -3,6 +3,8 @@ package no.uis.portal.employee;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
+
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import no.uis.abam.dom.Assignment;
@@ -90,7 +92,7 @@ public class EmployeeService {
 		selectedDepartmentName = selectedDepartment.getLabel();
 		selectedStudyProgramList = selectedDepartment.getStudyPrograms(); 
 		
-		Set<Assignment> assignmentList = abamClient.getAllAssignments();
+		TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
 		for (Assignment assignment : assignmentList) {
 			if (assignment.getDepartmentName().equals(selectedDepartmentName)
 				|| selectedDepartmentName.equals("")) 
@@ -120,7 +122,7 @@ public class EmployeeService {
 			selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
 		}
 		String selectedStudyProgram = getStudyProgramNameFromValue(selectedStudyProgramNumber);
-		Set<Assignment> assignmentList = abamClient.getAllAssignments();
+		TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
 		
 		if (selectedDepartmentName == null) setSelectedDepartmentName("");
 		for (Assignment assignment : assignmentList) {
