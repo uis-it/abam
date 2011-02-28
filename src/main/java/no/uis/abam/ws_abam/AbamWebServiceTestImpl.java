@@ -1,5 +1,6 @@
 package no.uis.abam.ws_abam;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
 	private LinkedList<Department> departmentList;
 	private List<EditableSelectItem> studyProgramList = new LinkedList();
+	private List<Application> applicationList = new ArrayList<Application>();
 	
 	public AbamWebServiceTestImpl(){
 		
@@ -160,6 +162,22 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 
 	public void setDepartmentList(LinkedList<Department> departmentList){
 		this.departmentList = departmentList;
+	}
+	
+	public List<Application> getApplicationList() {
+		return applicationList;
+	}
+	
+	public void setApplicationList(List<Application> applicationList) {
+		this.applicationList = applicationList;
+	}
+	
+	public void saveApplication(Application application) {
+		applicationList.add(application);
+	}
+	
+	public void removeApplication(Application application) {
+		applicationList.remove(application);
 	}
 
 	public int getNextId() {
