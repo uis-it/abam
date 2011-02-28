@@ -20,7 +20,7 @@
 				</ice:column>										Available assignments
 			</ice:dataTable>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="editMyApplications" value="Edit applications" id="EditButton" immediate="true"/>
+			<ice:commandButton type="submit" action="editMyApplications" value="Edit applications" id="EditButton" immediate="true" actionListener="#{studentService.actionGetApplicationFromStudent}"/>
 		</ice:form>
 	</ice:portlet>
 </f:view>

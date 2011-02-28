@@ -1,7 +1,6 @@
 package no.uis.portal.student;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +25,8 @@ public class StudentService {
 	private Student currentStudent;
 
 	private AbamWebService abamStudentClient;
+	
+	private Application[] tempApplicationPriorityArray = new Application[3];
 	
 	//private LinkedList<SelectItem> departmentList;
 	//private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
@@ -70,11 +71,6 @@ public class StudentService {
 		currentStudent.addApplication(application);
 	}
 	
-	public void setApplicationToAssignment(Application application){
-		selectedAssignment.addApplication(application);
-	}
-	
-	
 	public TreeSet<Assignment> getAssignmentList() {
 		if(assignmentList == null) 
 			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
@@ -93,18 +89,17 @@ public class StudentService {
 	
 	public void actionRemoveApplication(ActionEvent event) {
 		Application application = getApplicationFromEvent(event);
-		currentStudent.removeApplication(application);
-		selectedAssignment.removeApplication(application);
+		removeApplication(application);
 	}
 	
 	public void actionSetApplicationPriorityHigher(ActionEvent event) {
 		Application application = getApplicationFromEvent(event);
-		currentStudent.moveApplicationHigher(application);
+		moveApplicationHigher(application);
 	}
 	
 	public void actionSetApplicationPriorityLower(ActionEvent event) {
 		Application application = getApplicationFromEvent(event);
-		currentStudent.moveApplicationLower(application);
+		moveApplicationLower(application);
 	}
 	
 	private Application getApplicationFromEvent(ActionEvent event) {
@@ -113,6 +108,9 @@ public class StudentService {
 		return (Application)table.getRowData();
 	}
 	 
+	public void actionGetApplicationFromStudent(ActionEvent event) {
+		tempApplicationPriorityArray = currentStudent.getApplicationPriorityArray().clone();
+	}
 	
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
 		setSelectedStudyProgramNumber(0);
@@ -178,6 +176,10 @@ public class StudentService {
 	public void actionPrepareAvailableAssignments(ActionEvent event) {
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
+	}
+	
+	public void actionSaveApplications(ActionEvent event) {
+		currentStudent.setApplicationPriorityArray(tempApplicationPriorityArray);
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
@@ -272,13 +274,66 @@ public class StudentService {
 		abamStudentClient.saveApplication(application);
 	}
 
-	public void removeApplication(Application application) {
-		abamStudentClient.removeApplication(application);
-	}
-	
 	public void setAbamStudentClient(AbamWebService abamStudentClient) {
 		this.abamStudentClient = abamStudentClient;
 	}
+	
+	public void removeApplication(Application application) {
+		for (int index = 0; index < tempApplicationPriorityArray.length; index++) {
+			if(tempApplicationPriorityArray[index] == application){ 				
+				tempApplicationPriorityArray[index] = null;
+				for (int j = index + 1; j < tempApplicationPriorityArray.length; j++) {
+					if(tempApplicationPriorityArray[j] != null){						
+						moveApplicationHigher(tempApplicationPriorityArray[j]);
+					}
+				}
+			}
+		}
+	}
+	
+	public void moveApplicationHigher(Application selectedApplication) {
+		int selectedApplicationIndex = findApplicationIndex(selectedApplication);
+		if(selectedApplicationIndex > 0) {
+			int higherApplicationIndex = selectedApplicationIndex - 1;
+			Application higherApplication = tempApplicationPriorityArray[higherApplicationIndex];
+			if(selectedApplication != null){
+				selectedApplication.setPriority(higherApplicationIndex + 1);
+				if(higherApplication != null){
+					higherApplication.setPriority(selectedApplicationIndex + 1);
+				}
+				tempApplicationPriorityArray[higherApplicationIndex] = selectedApplication;
+				tempApplicationPriorityArray[selectedApplicationIndex] = higherApplication;								
+					
+			}
+		}
+	}
+	public void moveApplicationLower(Application selectedApplication) {
+		int selectedApplicationIndex = findApplicationIndex(selectedApplication);
+		if(selectedApplicationIndex != 2) {
+			int lowerApplicationIndex = selectedApplicationIndex + 1;
+			Application lowerApplication = tempApplicationPriorityArray[lowerApplicationIndex];
+			if(lowerApplication != null) {
+				lowerApplication.setPriority(selectedApplicationIndex + 1);
+				tempApplicationPriorityArray[lowerApplicationIndex] = selectedApplication;
+				tempApplicationPriorityArray[selectedApplicationIndex] = lowerApplication;
+				if (selectedApplication != null) {
+					selectedApplication.setPriority(lowerApplicationIndex + 1);
+				}
+			}
+		}
+	}
+	private int findApplicationIndex(Application application) {
+		for (int index = 0; index < tempApplicationPriorityArray.length; index++) {
+			if(tempApplicationPriorityArray[index] == application) return index;
+		}
+		return -1;
+	}
+
+	public Application[] getTempApplicationPriorityArray() {
+		return tempApplicationPriorityArray;
+	}
+	
+	
 }
 
 

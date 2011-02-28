@@ -56,7 +56,7 @@ public class ApplicationBean implements DisposableBean {
 	private void createNewApplication(Assignment selectedAssignment) {
 		Application newApplication = new Application();
 		newApplication.setAssignment(selectedAssignment);
-		
+		newApplication.setApplicant(studentService.getCurrentStudent().getName());
 		setCurrentAssignment(selectedAssignment);
 		setCurrentApplication(newApplication);
 	}
@@ -89,9 +89,8 @@ public class ApplicationBean implements DisposableBean {
 	}
 	
 	public void actionSaveApplication(ActionEvent event) {
-		studentService.saveApplication(currentApplication);
 		studentService.setApplicationToStudent(currentApplication);
-		studentService.setApplicationToAssignment(currentApplication);
+		studentService.saveApplication(currentApplication);
 	}
 	
 	public void dispose() throws Exception {
