@@ -1,5 +1,6 @@
 package no.uis.portal.employee;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,8 @@ import java.util.TreeSet;
 
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+
+import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.EditableSelectItem;
@@ -19,6 +22,7 @@ public class EmployeeService {
 	
 	private LinkedList<Department> departmentList;
 	private List<EditableSelectItem> selectedStudyProgramList = new LinkedList<EditableSelectItem>();
+	private List<Application> applicationList;
 	
 	private String selectedDepartmentName;
 	
@@ -219,7 +223,12 @@ public class EmployeeService {
 	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
 		setSelectedStudyProgramList(getDepartmentFromValue(departmentNumber).getStudyPrograms());
 	}
-
+	
+	public List<Application> getApplicationList(){
+		if (applicationList == null) 
+			applicationList = abamClient.getApplicationList();
+		return applicationList;
+	}
 
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;

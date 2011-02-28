@@ -98,5 +98,13 @@
 			<value>#{employeeService}</value>
 		</managed-property>
 	</managed-bean>
-	
+	<managed-bean>
+		<managed-bean-name>assignSortableBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.AssignSortableBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>employeeService</property-name>
+			<value>#{employeeService}</value>
+		</managed-property>
+	</managed-bean>
 </faces-config>

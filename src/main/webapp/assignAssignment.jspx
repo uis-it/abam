@@ -9,6 +9,23 @@
 			<h:outputText value="Assign Assignments To Students"/><br/>
 			<br/>
 			<br/>
+			<ice:dataTable 
+				id="dataSortData"
+                sortColumn="#{assignSortableBean.sortColumnName}"
+                sortAscending="#{assignSortableBean.ascending}"
+                value="#{assignSortableBean.applicationArray}"
+                var="item">
+				<ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader
+                            columnName="#{assignSortableBean.assignmentTitleColumnName}"
+                            arrow="true">
+                        <ice:outputText value="#{assignSortableBean.assignmentTitleColumnName}"/>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.assignment.title}"/>
+            </ice:column>
+			</ice:dataTable>
 			<table border="0">
 				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
 			</table>
