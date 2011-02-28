@@ -8,7 +8,7 @@ public class Application {
 	
 	private int priority;
 	
-	private Student applicant;
+	private String applicant;
 	
 	private String coStudentName1;
 	private String coStudentName2;
@@ -26,12 +26,12 @@ public class Application {
 	public void setAssignment(Assignment assignment) {
 		this.assignment = assignment;
 	}
-
-	public Student getApplicant() {
+	
+	public String getApplicant() {
 		return applicant;
 	}
 
-	public void setApplicant(Student applicant) {
+	public void setApplicant(String applicant) {
 		this.applicant = applicant;
 	}
 
@@ -67,5 +67,9 @@ public class Application {
 		this.priority = priority;
 	}
 	
+	public boolean equals(Application inApplication) {
+		return this.getApplicant().equals(inApplication.getApplicant()) 
+		&& this.getAssignment().equals(inApplication.getAssignment());
+	}
 	
 }

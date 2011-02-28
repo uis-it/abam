@@ -32,7 +32,6 @@ public class Assignment implements Comparable<Assignment>{
 	private GregorianCalendar expireDate;
 	
 	private ArrayList<Supervisor> supervisorList;
-	private ArrayList<Application> applications;
 	private ArrayList<String> attachedFileList;
 	
 	private ExternalExaminer externalExaminer;
@@ -41,7 +40,6 @@ public class Assignment implements Comparable<Assignment>{
 	
 	public Assignment() {
 		attachedFileList = new ArrayList<String>();
-		applications = new ArrayList<Application>();
 		supervisorList = new ArrayList<Supervisor>();		
 		supervisorList.add(new Supervisor());
 		
@@ -49,14 +47,6 @@ public class Assignment implements Comparable<Assignment>{
 		type = "Bachelor";
 	}
 
-	public void addApplication(Application application){
-		applications.add(application);
-	}
-	
-	public void removeApplication(Application application){
-		applications.remove(application);
-	}
-	
 	public boolean isMaster() {
 		return master;
 	}
@@ -255,14 +245,6 @@ public class Assignment implements Comparable<Assignment>{
 
 	public void setEditExternalExaminer(boolean editExternalExaminer) {
 		this.editExternalExaminer = editExternalExaminer;
-	}
-
-	public ArrayList<Application> getApplications() {
-		return applications;
-	}
-
-	public void setApplications(ArrayList<Application> applications) {
-		this.applications = applications;
 	}
 
 	public int compareTo(Assignment arg0) {
