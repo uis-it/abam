@@ -260,17 +260,25 @@ public class StudentService {
 		this.currentStudent = currentStudent;
 	}
 
-	public ArrayList<Application> getApplicationList() {
-		return applicationList;
+	public List<Application> getApplicationList() {
+		return abamStudentClient.getApplicationList();
 	}
 
 	public void setApplicationList(ArrayList<Application> applicationList) {
-		this.applicationList = applicationList;
+		abamStudentClient.setApplicationList(applicationList);
 	}
 
+	public void saveApplication(Application application) {
+		abamStudentClient.saveApplication(application);
+	}
 
-
+	public void removeApplication(Application application) {
+		abamStudentClient.removeApplication(application);
+	}
+	
 	public void setAbamStudentClient(AbamWebService abamStudentClient) {
 		this.abamStudentClient = abamStudentClient;
 	}
 }
+
+

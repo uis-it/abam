@@ -89,7 +89,7 @@ public class ApplicationBean implements DisposableBean {
 	}
 	
 	public void actionSaveApplication(ActionEvent event) {
-		studentService.getApplicationList().add(currentApplication);
+		studentService.saveApplication(currentApplication);
 		studentService.setApplicationToStudent(currentApplication);
 		studentService.setApplicationToAssignment(currentApplication);
 	}
