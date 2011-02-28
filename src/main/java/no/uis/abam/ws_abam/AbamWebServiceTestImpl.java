@@ -150,16 +150,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	public void removeDepartment(EditableSelectItem department){
-		System.out.println(department.getLabel() + " " + departmentList.size());
 		departmentList.remove(department);
-		System.out.println(departmentList.indexOf(department));
-		System.out.println(departmentList.size());
 	}
 	
-//	public void addNewStudyProgramListForNewDepartment(){
-//		allStudyProgramsByDepartmentList.add(new LinkedList<EditableSelectItem>());
-//	}
-
 	public void setDepartmentList(LinkedList<Department> departmentList){
 		this.departmentList = departmentList;
 	}
@@ -177,7 +170,12 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	public void removeApplication(Application application) {
-		applicationList.remove(application);
+		for (Application app : applicationList) {
+			if (app.equals(application)) {
+					applicationList.remove(app);
+				return;
+			}
+		}
 	}
 
 	public int getNextId() {
