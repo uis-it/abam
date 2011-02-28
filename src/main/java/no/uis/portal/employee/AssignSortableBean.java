@@ -35,7 +35,6 @@ public class AssignSortableBean {
 	}
 
 	public void sort() {
-		System.out.println("Sort");
 		Comparator comparator = new Comparator(){
 			public int compare(Object obj1, Object obj2) {
 				Application app1 = (Application)obj1;
@@ -44,20 +43,19 @@ public class AssignSortableBean {
 					return 0;
 				}
 				if(sortColumnName.equals(assignmentTitleColumnName)){
-					System.out.println("Ascending: " + ascending);
-					System.out.println(app1.getAssignment().getTitle() + " vs. " + app2.getAssignment().getTitle());
-					System.out.println(app1.getAssignment().getTitle().compareTo(app2.getAssignment().getTitle()));
 					return ascending ? 
 							app1.getAssignment().getTitle().compareTo(app2.getAssignment().getTitle()) :
 								app2.getAssignment().getTitle().compareTo(app1.getAssignment().getTitle());
-				} else return 0;
+				}
+				else if(sortColumnName.equals(studentColumnName)){
+					return ascending ? 
+							app1.getApplicant().compareTo(app2.getApplicant()) :
+								app2.getApplicant().compareTo(app1.getApplicant());
+				}else return 0;
 			}
 		};
+		
 		Arrays.sort(getApplicationArray(), comparator);
-
-		for (int i = 0; i < applicationArray.length; i++) {
-			System.out.println(i+": "+applicationArray[i].getAssignment().getTitle());
-		}
 	}
 
 	public Object[] getApplicationArray() {
@@ -74,7 +72,6 @@ public class AssignSortableBean {
 				applicationArray = applicationList.toArray(applicationArray);
 			}
 		}
-
 		return applicationArray;
 	}
 
@@ -108,7 +105,6 @@ public class AssignSortableBean {
 	}
 
 	public void setAscending(boolean ascending) {
-		System.out.println("ascending = " + ascending);
 		oldAscending = this.ascending;
 		this.ascending = ascending;
 	}
