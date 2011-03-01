@@ -1,11 +1,12 @@
-
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:form partialSubmit="true" >
+		<ice:outputStyle href="/css/style.css" id="tableStyle"></ice:outputStyle>
+		<ice:form partialSubmit="true">
 			<h:outputText value="Assign Assignments To Students"/><br/>
 			<br/>
 			<br/>
@@ -13,6 +14,10 @@
 				id="dataSortData"
                 sortColumn="#{assignSortableBean.sortColumnName}"
                 sortAscending="#{assignSortableBean.ascending}"
+                columnClasses="titleColumn, studentColumn, priorityColumn, facultySupervisorColumn, priceColumn"
+                rowClasses="oddRow, evenRow"
+                headerClass="headerStyle"
+                styleClass="tableStyle"
                 value="#{assignSortableBean.applicationInformationAsArray}"
                 var="item">
 				<ice:column>
@@ -37,7 +42,7 @@
                 <ice:outputText value="#{item.studentName}"/>
             </ice:column>
             
-                        <ice:column>
+            <ice:column>
                 <f:facet name="header">
                     <ice:commandSortHeader
                             columnName="#{assignSortableBean.priorityNumberColumnName}"
@@ -46,6 +51,35 @@
                     </ice:commandSortHeader>
                 </f:facet>
                 <ice:outputText value="#{item.priority}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:commandSortHeader
+                            columnName="#{assignSortableBean.facultySupervisorColumnName}"
+                            arrow="true">
+                        <ice:outputText value="#{assignSortableBean.facultySupervisorColumnName}"/>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.facultySupervisor}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:headerRow>
+                        <ice:outputText value="Co student"/>
+                    </ice:headerRow>
+                </f:facet>
+                <ice:outputText value="#{item.coStudent1Name}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:headerRow>
+                        <ice:outputText value="Co student"/>
+                    </ice:headerRow>
+                </f:facet>
+                <ice:outputText value="#{item.coStudent2Name}"/>
             </ice:column>
             
 			</ice:dataTable>

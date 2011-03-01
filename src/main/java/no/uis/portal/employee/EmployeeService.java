@@ -230,9 +230,7 @@ public class EmployeeService {
 	}
 	
 	public List<Application> getApplicationList(){
-		if (applicationList == null) 
-			applicationList = abamClient.getApplicationList();
-		return applicationList;
+		return abamClient.getApplicationList();
 	}
 
 	public void setAbamClient(AbamWebService abamClient) {

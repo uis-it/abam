@@ -15,7 +15,7 @@ public class AssignSortableBean {
 	private static final String studentColumnName = "Student";
 	private static final String priorityNumberColumnName = "Priority";
 	private static final String facultySupervisorColumnName = "Faculty Supervisor";
-
+	
 	private String sortColumnName;
 	private boolean ascending;
 
@@ -37,22 +37,29 @@ public class AssignSortableBean {
 	public void sort() {
 		Comparator comparator = new Comparator(){
 			public int compare(Object obj1, Object obj2) {
-				Application app1 = (Application)obj1;
-				Application app2 = (Application)obj2;
+				ApplicationInformation app1 = (ApplicationInformation)obj1;
+				ApplicationInformation app2 = (ApplicationInformation)obj2;
 				if (sortColumnName == null) {
 					return 0;
 				}
 				if(sortColumnName.equals(assignmentTitleColumnName)){
 					return ascending ? 
-							app1.getAssignment().getTitle().compareTo(app2.getAssignment().getTitle()) :
-								app2.getAssignment().getTitle().compareTo(app1.getAssignment().getTitle());
+							app1.getAssignmentTitle().compareTo(app2.getAssignmentTitle()) :
+								app2.getAssignmentTitle().compareTo(app1.getAssignmentTitle());
 				}
 				else if(sortColumnName.equals(studentColumnName)){
-					String studentName1 = employeeService.getStudentFromStudentNumber(app1.getApplicantStudentNumber()).getName();
-					String studentName2 = employeeService.getStudentFromStudentNumber(app2.getApplicantStudentNumber()).getName();
+					String studentName1 = app1.getStudentName();
+					String studentName2 = app2.getStudentName();
 					return ascending ? 
 							studentName1.compareTo(studentName2) :
 							studentName2.compareTo(studentName1);
+				}
+				else if(sortColumnName.equals(priorityNumberColumnName)){
+					Integer priority1 = app1.getPriority();
+					Integer priority2 = app2.getPriority();
+					return ascending ? 
+							priority1.compareTo(priority2) :
+							priority2.compareTo(priority1);
 				} else return 0;
 			}
 		};
@@ -67,13 +74,7 @@ public class AssignSortableBean {
 			oldAscending = ascending;
 			sort();
 		}
-		if(applicationInformationArray == null){
-			List<Application> applicationList = employeeService.getApplicationList();
-			if(applicationList != null){							
-				applicationInformationArray = new ApplicationInformation[applicationList.size()];
-				fillApplicationInformationArray(applicationList);
-			}
-		}
+
 		return applicationInformationArray;
 	}
 	
@@ -97,6 +98,15 @@ public class AssignSortableBean {
 		}
 	}
 
+	public void actionRefreshApplicationInformationArray(ActionEvent event) {
+		List<Application> applicationList = employeeService.getApplicationList();
+		System.out.println(applicationList.size());
+		if(applicationList != null){							
+			applicationInformationArray = new ApplicationInformation[applicationList.size()];
+			fillApplicationInformationArray(applicationList);
+		}
+	}
+	
 	public String getAssignmentTitleColumnName() {
 		return assignmentTitleColumnName;
 	}
