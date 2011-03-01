@@ -11,6 +11,7 @@ import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.EditableSelectItem;
+import no.uis.abam.dom.Student;
 
 @WebService
 public interface AbamWebService {
@@ -37,4 +38,8 @@ public interface AbamWebService {
 	public void removeApplication(Application application);
 	
 	public int getNextId();
+	public void updateApplicationsFromCurrentStudent(
+			Application[] tempApplicationPriorityArray);
+	
+	public Student getStudentFromStudentNumber(long studentNumber);
 }

@@ -18,11 +18,13 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private LinkedList<Department> departmentList;
 	private List<EditableSelectItem> studyProgramList = new LinkedList();
 	private List<Application> applicationList = new ArrayList<Application>();
-	
+	private List<Student> studentList = new ArrayList<Student>();
+ 	
 	public AbamWebServiceTestImpl(){
 		
 		createAssignmentListContent();
 		initializeDepartmentAndStudyProgramLists();
+		initializeStudentList();
 	}
 	
 	public TreeSet<Assignment> getAllAssignments() {
@@ -119,6 +121,23 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		departmentList.get(5).setStudyPrograms(listToAdd);
 		studyProgramList = departmentList.get(0).getStudyPrograms();	
 	}
+	
+	private void initializeStudentList() { 
+		Student newStudent = new BachelorStudent();
+		newStudent.setName("Bachelor Studenten");
+		newStudent.setStudentNumber(123456);
+		newStudent.setDepartment("Data- og elektroteknikk");
+		newStudent.setStudyProgram("Elektro");
+		studentList.add(newStudent);
+		
+		newStudent = new MasterStudent();
+		newStudent.setName("Master Studenten");
+		newStudent.setStudentNumber(654321);
+		newStudent.setDepartment("Data- og elektroteknikk");
+		newStudent.setStudyProgram("Elektro");
+		studentList.add(newStudent);
+		
+	}
 
 	public void removeAssignment(Assignment assignment) {
 		assignmentList.remove(assignment);		
@@ -196,4 +215,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return assignmentsToReturn;
 	}
 
+	public void updateApplicationsFromCurrentStudent(
+			Application[] tempApplicationPriorityArray) {
+		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
+			
+		}
+	}
+	
+	public Student getStudentFromStudentNumber(long studentNumber) {
+		for (Student student : studentList) {
+			if (student.getStudentNumber() == studentNumber) return student;
+		}
+		return null;
+	}
 }
