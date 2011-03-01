@@ -3,6 +3,7 @@ package no.uis.abam.ws_abam;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
@@ -185,13 +186,23 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	public void saveApplication(Application application) {
+		Iterator<Application> iterator = applicationList.iterator();
+		while (iterator.hasNext()){	
+			Application app = iterator.next();
+			if(app != null) {
+				if (app.equals(application)) {
+					applicationList.remove(app);
+					break;
+				}
+			}
+		}
 		applicationList.add(application);
 	}
 	
 	public void removeApplication(Application application) {
 		for (Application app : applicationList) {
 			if (app.equals(application)) {
-					applicationList.remove(app);
+				applicationList.remove(app);
 				return;
 			}
 		}
@@ -218,7 +229,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public void updateApplicationsFromCurrentStudent(
 			Application[] tempApplicationPriorityArray) {
 		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
-			
+			if(tempApplicationPriorityArray[i].getAssignment() != null) {
+				saveApplication(tempApplicationPriorityArray[i]);
+			}
 		}
 	}
 	
