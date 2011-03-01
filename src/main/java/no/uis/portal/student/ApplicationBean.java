@@ -56,7 +56,7 @@ public class ApplicationBean implements DisposableBean {
 	private void createNewApplication(Assignment selectedAssignment) {
 		Application newApplication = new Application();
 		newApplication.setAssignment(selectedAssignment);
-		newApplication.setApplicant(studentService.getCurrentStudent().getName());
+		newApplication.setApplicantStudentNumber(studentService.getCurrentStudent().getStudentNumber());
 		setCurrentAssignment(selectedAssignment);
 		setCurrentApplication(newApplication);
 	}

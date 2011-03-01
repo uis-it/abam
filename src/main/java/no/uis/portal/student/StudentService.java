@@ -27,10 +27,7 @@ public class StudentService {
 	private AbamWebService abamStudentClient;
 	
 	private Application[] tempApplicationPriorityArray = new Application[3];
-	
-	//private LinkedList<SelectItem> departmentList;
-	//private LinkedList<SelectItem> studyProgramList = new LinkedList<SelectItem>();
-	//private LinkedList<LinkedList<SelectItem>> allStudyProgramsByDepartmentList;
+	private ArrayList<Application> applicationsToRemove = new ArrayList<Application>();
 	
 	private ArrayList<Application> applicationList = new ArrayList<Application>();
 	
@@ -45,7 +42,8 @@ public class StudentService {
 
 	public void setCurrentStudentFromLoggedInUser(){
 		currentStudent = new BachelorStudent();
-		currentStudent.setName("Studenten");
+		currentStudent.setName("Bachelor Studenten");
+		currentStudent.setStudentNumber(123456);
 		currentStudent.setDepartment("Data- og elektroteknikk");
 		currentStudent.setStudyProgram("Elektro");
 	}
@@ -89,6 +87,7 @@ public class StudentService {
 	
 	public void actionRemoveApplication(ActionEvent event) {
 		Application application = getApplicationFromEvent(event);
+		applicationsToRemove.add(application);
 		removeApplication(application);
 	}
 	
@@ -178,16 +177,28 @@ public class StudentService {
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
 	}
 	
-	public void actionSaveApplications(ActionEvent event) {
-		currentStudent.setApplicationPriorityArray(tempApplicationPriorityArray);
-	}
-	
 	private int findDepartmentNumberForCurrentStudent() {
 		String name = currentStudent.getDepartment();
 		for (SelectItem department : getDepartmentList()) {
 			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
 		}
 		return 0;
+	}
+	
+	public void actionSaveApplications(ActionEvent event) {
+		removeDeletedApplications();
+		currentStudent.setApplicationPriorityArray(tempApplicationPriorityArray);
+		abamStudentClient.updateApplicationsFromCurrentStudent(tempApplicationPriorityArray);
+	}
+	
+	private void removeDeletedApplications() {
+		for (Application application : applicationsToRemove) {
+			abamStudentClient.removeApplication(application);
+		}
+	}
+	
+	public void actionClearDeletedElements(ActionEvent event){
+		applicationsToRemove.clear();
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {

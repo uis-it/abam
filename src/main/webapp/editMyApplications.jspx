@@ -24,7 +24,7 @@
 					
 				</ice:column>										
 			</ice:dataTable>
-			<ice:commandButton type="submit" action="myApplications" value="Back" id="BackButton" immediate="true"/>
+			<ice:commandButton type="submit" action="myApplications" value="Back" id="BackButton" immediate="true" actionListener="#{studentService.actionClearDeletedElements}"/>
 			<ice:commandButton type="submit" action="myApplications" value="Save" id="SaveButton" immediate="true" actionListener="#{studentService.actionSaveApplications}"/>
 		</ice:form>
 	</ice:portlet>
