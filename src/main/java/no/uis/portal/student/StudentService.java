@@ -188,7 +188,7 @@ public class StudentService {
 	public void actionSaveApplications(ActionEvent event) {
 		removeDeletedApplications();
 		currentStudent.setApplicationPriorityArray(tempApplicationPriorityArray);
-		abamStudentClient.updateApplicationsFromCurrentStudent(tempApplicationPriorityArray);
+		abamStudentClient.updateApplicationsFromCurrentStudent(tempApplicationPriorityArray);		
 	}
 	
 	private void removeDeletedApplications() {
