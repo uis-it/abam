@@ -100,7 +100,6 @@ public class AssignSortableBean {
 
 	public void actionRefreshApplicationInformationArray(ActionEvent event) {
 		List<Application> applicationList = employeeService.getApplicationList();
-		System.out.println(applicationList.size());
 		if(applicationList != null){							
 			applicationInformationArray = new ApplicationInformation[applicationList.size()];
 			fillApplicationInformationArray(applicationList);
