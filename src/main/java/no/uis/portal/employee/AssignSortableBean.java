@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
-import no.uis.abam.dom.Application;
+import no.uis.abam.dom.*;
 
 public class AssignSortableBean {
 
@@ -24,7 +24,7 @@ public class AssignSortableBean {
 
 	private EmployeeService employeeService;
 
-	private Application[] applicationArray;
+	private ApplicationInformation[] applicationInformationArray;
 
 	public AssignSortableBean() {
 		sortColumnName = assignmentTitleColumnName;
@@ -48,31 +48,53 @@ public class AssignSortableBean {
 								app2.getAssignment().getTitle().compareTo(app1.getAssignment().getTitle());
 				}
 				else if(sortColumnName.equals(studentColumnName)){
+					String studentName1 = employeeService.getStudentFromStudentNumber(app1.getApplicantStudentNumber()).getName();
+					String studentName2 = employeeService.getStudentFromStudentNumber(app2.getApplicantStudentNumber()).getName();
 					return ascending ? 
-							app1.getApplicant().compareTo(app2.getApplicant()) :
-								app2.getApplicant().compareTo(app1.getApplicant());
-				}else return 0;
+							studentName1.compareTo(studentName2) :
+							studentName2.compareTo(studentName1);
+				} else return 0;
 			}
 		};
 		
-		Arrays.sort(getApplicationArray(), comparator);
+		Arrays.sort(getApplicationInformationAsArray(), comparator);
 	}
 
-	public Object[] getApplicationArray() {
+	public Object[] getApplicationInformationAsArray() {
 		if (!oldSort.equals(sortColumnName) ||
 				oldAscending != ascending){
 			oldSort = sortColumnName;
 			oldAscending = ascending;
 			sort();
 		}
-		if(applicationArray == null){
+		if(applicationInformationArray == null){
 			List<Application> applicationList = employeeService.getApplicationList();
 			if(applicationList != null){							
-				applicationArray = new Application[applicationList.size()];
-				applicationArray = applicationList.toArray(applicationArray);
+				applicationInformationArray = new ApplicationInformation[applicationList.size()];
+				fillApplicationInformationArray(applicationList);
 			}
 		}
-		return applicationArray;
+		return applicationInformationArray;
+	}
+	
+	private void fillApplicationInformationArray(List<Application> applicationList) {
+		ApplicationInformation applicationInformation = null;
+		Application application = null;
+		for (int i = 0; i < applicationInformationArray.length; i++) {
+			application = applicationList.get(i);
+			applicationInformation = new ApplicationInformation();
+			applicationInformation.setApplication(application);
+			applicationInformation.setAssigned(application.isAssigned());
+			applicationInformation.setAssignmentTitle(application.getAssignment().getTitle());
+			applicationInformation.setCoStudent1Name(application.getCoStudentName1());
+			applicationInformation.setCoStudent2Name(application.getCoStudentName2());
+			applicationInformation.setFacultySupervisor(application.getAssignment().getFacultySupervisor());
+			applicationInformation.setPriority(application.getPriority());
+			applicationInformation.setStudentName(
+					employeeService.getStudentFromStudentNumber(
+							application.getApplicantStudentNumber()).getName());
+			applicationInformationArray[i] = applicationInformation;
+		}
 	}
 
 	public String getAssignmentTitleColumnName() {
@@ -112,5 +134,4 @@ public class AssignSortableBean {
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
 	}
-
 }

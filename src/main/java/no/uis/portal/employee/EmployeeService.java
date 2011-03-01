@@ -13,6 +13,7 @@ import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.EditableSelectItem;
+import no.uis.abam.dom.Student;
 import no.uis.abam.ws_abam.AbamWebService;
 
 
@@ -203,6 +204,10 @@ public class EmployeeService {
 			}
 		}
 		return null;
+	}
+	
+	public Student getStudentFromStudentNumber(long studentNumber) {
+		return abamClient.getStudentFromStudentNumber(studentNumber);
 	}
 	
 	public String getSelectedDepartmentName() {
