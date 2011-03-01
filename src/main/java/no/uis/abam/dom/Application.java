@@ -8,7 +8,9 @@ public class Application {
 	
 	private int priority;
 	
-	private String applicant;
+	private long applicantStudentNumber;
+	
+	private boolean assigned;
 	
 	private String coStudentName1;
 	private String coStudentName2;
@@ -26,13 +28,13 @@ public class Application {
 	public void setAssignment(Assignment assignment) {
 		this.assignment = assignment;
 	}
-	
-	public String getApplicant() {
-		return applicant;
+
+	public long getApplicantStudentNumber() {
+		return applicantStudentNumber;
 	}
 
-	public void setApplicant(String applicant) {
-		this.applicant = applicant;
+	public void setApplicantStudentNumber(long applicantStudentNumber) {
+		this.applicantStudentNumber = applicantStudentNumber;
 	}
 
 	public String getCoStudentName1() {
@@ -67,8 +69,16 @@ public class Application {
 		this.priority = priority;
 	}
 	
+	public boolean isAssigned() {
+		return assigned;
+	}
+
+	public void setAssigned(boolean assigned) {
+		this.assigned = assigned;
+	}
+
 	public boolean equals(Application inApplication) {
-		return this.getApplicant().equals(inApplication.getApplicant()) 
+		return this.getApplicantStudentNumber() == inApplication.getApplicantStudentNumber() 
 		&& this.getAssignment().equals(inApplication.getAssignment());
 	}
 	

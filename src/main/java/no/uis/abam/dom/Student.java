@@ -7,6 +7,8 @@ public class Student extends Person {
 	private String studyProgram;
 	private String applicationsErrorMessage;
 	
+	private long studentNumber;
+	
 	private Application[] applicationPriorityArray = new Application[3];
 	
 	public Student(){
@@ -110,4 +112,13 @@ public class Student extends Person {
 	public String getType(){
 		return "";
 	}
+
+	public long getStudentNumber() {
+		return studentNumber;
+	}
+
+	public void setStudentNumber(long studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
 }
