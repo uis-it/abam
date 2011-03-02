@@ -26,7 +26,8 @@ public class AssignSortableBean {
 	private EmployeeService employeeService;
 
 	private ApplicationInformation[] applicationInformationArray;
-
+	private List<ApplicationInformation> selectedApplicationInformationList = new ArrayList<ApplicationInformation>();
+	
 	public AssignSortableBean() {
 		sortColumnName = assignmentTitleColumnName;
 		ascending = true;
@@ -111,6 +112,18 @@ public class AssignSortableBean {
 		}
 	}
 	
+	public void actionGetSelectedRows(ActionEvent event) {
+		selectedApplicationInformationList.clear();
+		for (int i = 0; i < applicationInformationArray.length; i++) {
+			ApplicationInformation ai = applicationInformationArray[i];
+			if(ai.isSelected()) selectedApplicationInformationList.add(ai);
+		}
+	}
+	
+	public void actionSaveAssignedApplications(ActionEvent event) {
+		
+	}
+	
 	public String getAssignmentTitleColumnName() {
 		return assignmentTitleColumnName;
 	}
@@ -147,5 +160,14 @@ public class AssignSortableBean {
 
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
+	}
+
+	public List<ApplicationInformation> getSelectedApplicationInformationList() {
+		return selectedApplicationInformationList;
+	}
+
+	public void setSelectedApplicationInformationList(
+			List<ApplicationInformation> selectedApplicationInformationList) {
+		this.selectedApplicationInformationList = selectedApplicationInformationList;
 	}
 }

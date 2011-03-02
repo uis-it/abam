@@ -97,7 +97,7 @@
 			</ice:dataTable>
 			<table border="0">
 				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
-				<h:commandButton type="submit" action="assignAssignmentSummary" value="Assign Selected" id="assignSelected"></h:commandButton>
+				<h:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="Next" id="assignSelected"></h:commandButton>
 			</table>
 		</ice:form>
 	</ice:portlet>

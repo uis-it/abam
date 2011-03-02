@@ -69,9 +69,13 @@
 			<from-outcome>displayAssignment</from-outcome>
 			<to-view-id>/displayAssignment.jspx</to-view-id>
 		</navigation-case>
-				<navigation-case>
+		<navigation-case>
 			<from-outcome>assignAssignmentSummary</from-outcome>
 			<to-view-id>/assignAssignmentSummary.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>assignSavedConfirmation</from-outcome>
+			<to-view-id>/assignSavedConfirmation.jspx</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	

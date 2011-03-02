@@ -7,7 +7,7 @@
 	<ice:portlet>
 		<ice:outputStyle href="/css/style3.css" id="tableStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
-			<h:outputText value="Assign Assignments To Students Summary"/><br/>
+			<h:outputText value="Assign Assignments Confirmation"/><br/>
 			<br/>
 			<br/>
 			<ice:dataTable 
@@ -67,8 +67,7 @@
             
 			</ice:dataTable>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Cancel" id="BackButton"></h:commandButton>
-				<h:commandButton type="submit" action="assignSavedConfirmation" value="Save" id="assignSelectedSave" actionListener="#{assignSortableBean.actionSaveAssignedApplications }"></h:commandButton>
+				<h:commandButton type="submit" action="backToView" value="Main menu" id="BackButton"></h:commandButton>
 			</table>
 		</ice:form>
 	</ice:portlet>
