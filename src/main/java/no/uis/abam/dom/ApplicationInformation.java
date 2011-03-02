@@ -11,7 +11,7 @@ public class ApplicationInformation {
 	private String facultySupervisor;
 	
 	private boolean assigned;
-	
+	private boolean selected;
 	private int priority;
 	
 	public ApplicationInformation() {
@@ -80,6 +80,14 @@ public class ApplicationInformation {
 
 	public void setAssigned(boolean assigned) {
 		this.assigned = assigned;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	
 }
