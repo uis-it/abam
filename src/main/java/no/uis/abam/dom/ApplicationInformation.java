@@ -10,7 +10,6 @@ public class ApplicationInformation {
 	private String coStudent2Name;
 	private String facultySupervisor;
 	
-	private boolean assigned;
 	private boolean selected;
 	private int priority;
 	
@@ -72,14 +71,6 @@ public class ApplicationInformation {
 
 	public void setApplication(Application application) {
 		this.application = application;
-	}
-
-	public boolean isAssigned() {
-		return assigned;
-	}
-
-	public void setAssigned(boolean assigned) {
-		this.assigned = assigned;
 	}
 
 	public boolean isSelected() {
