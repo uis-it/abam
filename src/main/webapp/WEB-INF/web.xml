@@ -104,6 +104,11 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<!--servlet>
+		<servlet-name>Resource Servlet</servlet-name>
+		<servlet-class>com.icesoft.faces.webapp.ResourceServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet-->
 	<servlet-mapping>
 		<servlet-name>Blocking Servlet</servlet-name>
 		<url-pattern>/block/*</url-pattern>
@@ -128,6 +133,10 @@
 		<servlet-name>Persistent Faces Servlet</servlet-name>
 		<url-pattern>/xmlhttp/*</url-pattern>
 	</servlet-mapping>
+	<!--servlet-mapping>
+		<servlet-name>Resource Servlet</servlet-name>
+		<url-pattern>/xmlhttp/*</url-pattern>
+	</servlet-mapping-->
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Page Sources</web-resource-name>

@@ -77,6 +77,10 @@
 			<from-outcome>assignSavedConfirmation</from-outcome>
 			<to-view-id>/assignSavedConfirmation.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>assignSetDates</from-outcome>
+			<to-view-id>/assignSetDates.jspx</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	<managed-bean>

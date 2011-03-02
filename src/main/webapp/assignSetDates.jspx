@@ -1,0 +1,43 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:form>
+		<table>
+				<tr>
+					<td>
+						<ice:selectOneRadio id="type" required="true" value="#{assignSortableBean.bachelor}" layout="pageDirection" valueChangeListener="#{assignSortableBean.radioListener}" partialSubmit="true">
+								<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
+								<f:selectItem itemValue="#{false}" itemLabel="Master" />
+						</ice:selectOneRadio>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<ice:outputText value="#{assignSortableBean.fromDateString }" />
+						<ice:commandButton id="fromButton" value="Show calendar" actionListener="#{assignSortableBean.actionToggleCalendar}"></ice:commandButton>						
+					</td>
+					<td>
+						<ice:selectInputDate id="fromDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<ice:outputText value="#{assignSortableBean.toDateString }" />
+						<ice:commandButton id="toButton" value="Show calendar" actionListener="#{assignSortableBean.actionToggleCalendar}"></ice:commandButton>
+					</td>
+					<td>
+						<ice:selectInputDate id="toDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
+					</td>
+				</tr>
+			</table>
+		<table border="0">
+				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+				<h:commandButton type="submit" action="assignAssignment" actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" value="Next" id="assignSelected"></h:commandButton>
+			</table> 
+		</ice:form>
+	</ice:portlet>
+</f:view>

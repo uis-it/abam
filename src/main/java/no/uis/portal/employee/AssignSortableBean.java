@@ -3,8 +3,9 @@ package no.uis.portal.employee;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -23,6 +24,15 @@ public class AssignSortableBean {
 	private String oldSort;
 	private boolean oldAscending;
 
+	private boolean bachelor;
+	private boolean showCalendar;
+	
+	private Date fromDate;
+	private Date toDate;
+	
+	private String fromDateString;
+	private String toDateString;
+	
 	private EmployeeService employeeService;
 
 	private ApplicationInformation[] applicationInformationArray;
@@ -34,6 +44,10 @@ public class AssignSortableBean {
 
 		oldSort = sortColumnName;
 		oldAscending = !ascending;
+		bachelor = true;
+		
+		fromDate = GregorianCalendar.getInstance().getTime();
+		toDate = GregorianCalendar.getInstance().getTime();
 	}
 
 	public void sort() {
@@ -91,7 +105,6 @@ public class AssignSortableBean {
 			application = applicationList.get(i);
 			applicationInformation = new ApplicationInformation();
 			applicationInformation.setApplication(application);
-			applicationInformation.setAssigned(application.isAssigned());
 			applicationInformation.setAssignmentTitle(application.getAssignment().getTitle());
 			applicationInformation.setCoStudent1Name(application.getCoStudentName1());
 			applicationInformation.setCoStudent2Name(application.getCoStudentName2());
@@ -122,6 +135,29 @@ public class AssignSortableBean {
 	
 	public void actionSaveAssignedApplications(ActionEvent event) {
 		
+	}
+	
+	public void actionToggleCalendar(ActionEvent event) {
+		System.out.println("showCalendar: "+showCalendar);
+		showCalendar = !showCalendar;
+	}
+	
+	public void actionUpdateDate(ValueChangeEvent event) {
+		System.out.println(event.getComponent().getId());
+		if(event.getComponent().getId().equals("fromDateInput")) {
+			fromDate = (Date)event.getNewValue();
+			fromDateString = fromDate.toString();
+			System.out.println("from: " + fromDate);
+		} else if (event.getComponent().getId().equals("toDateInput")) {
+			toDate = (Date)event.getNewValue();
+			toDateString = toDate.toString();
+			System.out.println("to: " + toDate);
+		}
+	}
+	
+	public void radioListener(ValueChangeEvent event) {
+		bachelor = (Boolean) event.getNewValue();
+		System.out.println("bachelor test: "+bachelor);
 	}
 	
 	public String getAssignmentTitleColumnName() {
@@ -170,4 +206,63 @@ public class AssignSortableBean {
 			List<ApplicationInformation> selectedApplicationInformationList) {
 		this.selectedApplicationInformationList = selectedApplicationInformationList;
 	}
+
+	public boolean isBachelor() {
+		return bachelor;
+	}
+
+	public void setBachelor(boolean bachelor) {
+		this.bachelor = bachelor;
+	}
+
+	public boolean isShowCalendar() {
+		return showCalendar;
+	}
+
+	public void setShowCalendar(boolean showCalendar) {
+		this.showCalendar = showCalendar;
+	}
+
+	public Date getFromDate() {
+		return fromDate;
+	}
+	
+	public String getFromDateAsString() {
+		return fromDate.toString();
+	}
+
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public Date getToDate() {
+		return toDate;
+	}
+	
+	public String getToDateAsString() {
+		System.out.println("TodateAsString");
+		return toDate.toString();
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	public String getFromDateString() {
+		return fromDateString;
+	}
+
+	public void setFromDateString(String fromDateString) {
+		this.fromDateString = fromDateString;
+	}
+
+	public String getToDateString() {
+		return toDateString;
+	}
+
+	public void setToDateString(String toDateString) {
+		this.toDateString = toDateString;
+	}
+	
+	
 }
