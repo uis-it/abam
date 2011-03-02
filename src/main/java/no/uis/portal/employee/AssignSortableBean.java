@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.*;
 
@@ -46,20 +47,24 @@ public class AssignSortableBean {
 					return ascending ? 
 							app1.getAssignmentTitle().compareTo(app2.getAssignmentTitle()) :
 								app2.getAssignmentTitle().compareTo(app1.getAssignmentTitle());
-				}
-				else if(sortColumnName.equals(studentColumnName)){
+				} else if(sortColumnName.equals(studentColumnName)){
 					String studentName1 = app1.getStudentName();
 					String studentName2 = app2.getStudentName();
 					return ascending ? 
 							studentName1.compareTo(studentName2) :
 							studentName2.compareTo(studentName1);
-				}
-				else if(sortColumnName.equals(priorityNumberColumnName)){
+				} else if(sortColumnName.equals(priorityNumberColumnName)){
 					Integer priority1 = app1.getPriority();
 					Integer priority2 = app2.getPriority();
 					return ascending ? 
 							priority1.compareTo(priority2) :
 							priority2.compareTo(priority1);
+				} else if(sortColumnName.equals(facultySupervisorColumnName)){
+					String facultySuperVisor1 = app1.getFacultySupervisor();
+					String facultySuperVisor2 = app2.getFacultySupervisor();
+					return ascending ? 
+							facultySuperVisor1.compareTo(facultySuperVisor2) :
+								facultySuperVisor2.compareTo(facultySuperVisor1);
 				} else return 0;
 			}
 		};

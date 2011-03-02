@@ -1,7 +1,12 @@
+
 /* common to all columns*/
-.titleColumn, .studentColumn, .priorityColumn, .facultySupervisorColumn, .priceColumn{
+.assignColumn, .titleColumn, .studentColumn, .priorityColumn, .facultySupervisorColumn, .coStudentColumn{
     border-right: 1px solid #666666;
     border-bottom: 1px solid #666666;
+}
+
+.assignColumn{
+    width: 45px;
 }
 
 .titleColumn{
@@ -20,7 +25,7 @@
     width: 130px;
 }
 
-.priceColumn{
+.coStudentColumn{
     width: 75px;
 }
 
