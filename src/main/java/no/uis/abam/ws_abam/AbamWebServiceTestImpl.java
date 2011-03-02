@@ -36,6 +36,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		assignmentList.add(assignment);
 	}
 
+	private void createTestApplications() {
+
+	}
+	
 	private void createAssignmentListContent(){
 		Assignment test1 = new Assignment();
 		test1.setTitle("Pet Bor oppgave");
@@ -55,25 +59,40 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		dato.add(Calendar.MONTH, 6);
 		test1.setExpireDate(dato);
 		
-		Assignment test2 = new Assignment();
-		test2.setTitle("IDE El oppgave");
-		test2.setBachelor(false);
-		test2.setMaster(true);
-		test2.setDescription("Beskrivelse av test2");
-		test2.setNumberOfStudents("1");
-		test2.setDepartmentName("Data- og elektroteknikk");
-		test2.setDepartmentNumber(3);
-		test2.setStudyProgram("Elektro");
-		test2.setStudyProgramNumber(2);
-		test2.setId(2);
-		test2.setFacultySupervisor("Robin");
-		test2.getSupervisorList().get(0).setName("Batman");
-		test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
-		dato = test2.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test2.setExpireDate(dato);
+		Assignment test2 = null;
+		Application app = new Application();
+		for (int j = 0; j < 2; j++) {
+			
+			for (int i = 0; i < 3; i++) {
+				app.setApplicantStudentNumber((123456+j));
+				app.setApplicationDate(new GregorianCalendar());				
+				app.setPriority(i+1);		
+				test2 = new Assignment();
+				test2.setTitle("IDE El oppgave " +i);
+				test2.setBachelor(false);
+				test2.setMaster(true);
+				test2.setDescription("Beskrivelse av test" +i);
+				test2.setNumberOfStudents("1");
+				test2.setDepartmentName("Data- og elektroteknikk");
+				test2.setDepartmentNumber(3);
+				test2.setStudyProgram("Elektro");
+				test2.setStudyProgramNumber(2);
+				test2.setId(2);
+				test2.setFacultySupervisor("Robin");
+				test2.getSupervisorList().get(0).setName("Batman");
+				test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
+				dato = test2.getAddedDate();
+				dato.add(Calendar.MONTH, 6);
+				test2.setExpireDate(dato);
+				assignmentList.add(test2);
+				app.setAssignment(test2);
+				applicationList.add(app);
+				app = new Application();				
+			}
+		}
+		
 		assignmentList.add(test1);
-		assignmentList.add(test2);
+		
 	}
 	
 	private void initializeDepartmentAndStudyProgramLists(){
@@ -108,6 +127,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		listToAdd.add(new EditableSelectItem(new Integer(3), "Informasjonsteknologi"));
 		departmentList.get(3).setStudyPrograms(listToAdd);
 		
+	
 		listToAdd = new LinkedList<EditableSelectItem>();
 		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
 		listToAdd.add(new EditableSelectItem(new Integer(1), "Byggeteknikk"));
@@ -133,7 +153,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		
 		newStudent = new MasterStudent();
 		newStudent.setName("Master Studenten");
-		newStudent.setStudentNumber(654321);
+		newStudent.setStudentNumber(123457);
 		newStudent.setDepartment("Data- og elektroteknikk");
 		newStudent.setStudyProgram("Elektro");
 		studentList.add(newStudent);
