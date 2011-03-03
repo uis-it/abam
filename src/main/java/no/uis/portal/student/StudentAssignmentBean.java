@@ -125,8 +125,8 @@ public class StudentAssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		currentAssignment.setDepartmentName(studentService.getCurrentStudent().getDepartment());
-		currentAssignment.setStudyProgram(studentService.getCurrentStudent().getStudyProgram());
+		currentAssignment.setDepartmentName(studentService.getCurrentStudent().getDepartmentName());
+		currentAssignment.setStudyProgramName(studentService.getCurrentStudent().getStudyProgramName());
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();
 		currentAssignment.setAddedDate(calendar);

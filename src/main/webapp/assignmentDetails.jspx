@@ -23,12 +23,12 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.department}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.departmentName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgram}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgramName}"/></td>
 					<td></td>
 				</tr>
 				<tr>

@@ -44,8 +44,8 @@ public class StudentService {
 		currentStudent = new BachelorStudent();
 		currentStudent.setName("Bachelor Studenten");
 		currentStudent.setStudentNumber(123456);
-		currentStudent.setDepartment("Data- og elektroteknikk");
-		currentStudent.setStudyProgram("Elektro");
+		currentStudent.setDepartmentName("Data- og elektroteknikk");
+		currentStudent.setStudyProgramName("Elektro");
 	}
 
 //	public void setCurrentStudentFromLoggedInUser(){
@@ -71,7 +71,7 @@ public class StudentService {
 	
 	public TreeSet<Assignment> getAssignmentList() {
 		if(assignmentList == null) 
-			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
+			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartmentName());
 		return assignmentList;		
 	}
 
@@ -159,7 +159,7 @@ public class StudentService {
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
 		return (selectedStudyProgram.equals("") && abIn.getDepartmentName().equals(selectedDepartmentName)) 
-		|| abIn.getStudyProgram().equals(selectedStudyProgram);
+		|| abIn.getStudyProgramName().equals(selectedStudyProgram);
 	}
 	
 	
@@ -173,12 +173,12 @@ public class StudentService {
 	
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {
-		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartment());
+		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartmentName());
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
-		String name = currentStudent.getDepartment();
+		String name = currentStudent.getDepartmentName();
 		for (SelectItem department : getDepartmentList()) {
 			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
 		}

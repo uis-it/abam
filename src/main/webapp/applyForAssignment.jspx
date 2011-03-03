@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.studyProgram}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.studyProgramName}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>

@@ -63,7 +63,6 @@ public class ApplicationBean implements DisposableBean {
 	
 	private boolean assignmentIsAppliedFor(Assignment selectedAssignment){
 		return studentService.getCurrentStudent().assignmentIsAlreadyAppliedFor(selectedAssignment);
-		
 	}
 	
 	public void actionEditApplication(ActionEvent event){

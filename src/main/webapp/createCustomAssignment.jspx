@@ -25,12 +25,12 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:outputText value="#{studentService.currentStudent.department}"/></td>					
+					<td><ice:outputText value="#{studentService.currentStudent.departmentName}"/></td>					
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:outputText value="#{studentService.currentStudent.studyProgram}"/></td>
+					<td><ice:outputText value="#{studentService.currentStudent.studyProgramName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
