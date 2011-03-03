@@ -1,22 +1,37 @@
 package no.uis.abam.dom;
 
 public class ApplicationInformation {
-
-	private Application application;
 	
+	private int priority;
+	
+	private boolean selected;
+		
 	private String assignmentTitle;
 	private String studentName;
 	private String coStudent1Name;
 	private String coStudent2Name;
 	private String facultySupervisor;
-	
-	private boolean selected;
-	private int priority;
-	
-	public ApplicationInformation() {
 		
+	private Application application;
+	
+	public ApplicationInformation() {}
+
+	public int getPriority() {
+		return priority;
 	}
 
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
 	public String getAssignmentTitle() {
 		return assignmentTitle;
 	}
@@ -56,29 +71,13 @@ public class ApplicationInformation {
 	public void setFacultySupervisor(String facultySupervisor) {
 		this.facultySupervisor = facultySupervisor;
 	}
-
-	public int getPriority() {
-		return priority;
-	}
-
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
-
+	
 	public Application getApplication() {
 		return application;
 	}
 
 	public void setApplication(Application application) {
 		this.application = application;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
 	}
 	
 }

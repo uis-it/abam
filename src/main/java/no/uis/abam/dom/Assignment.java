@@ -7,68 +7,66 @@ import java.util.GregorianCalendar;
 public class Assignment implements Comparable<Assignment>{
 
 	public final static int ACTIVE_MONTHS = 6;
-	
+
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+
+	private int id;
+	private int departmentNumber;
+	private int studyProgramNumber;
+
 	private boolean master;
 	private boolean bachelor;
 	private boolean displayAssignment = true;
 	private boolean editExternalExaminer = false;
-	
-	private int id;
-	private int departmentNumber;
-	private int studyProgramNumber;
-		
-	private String numberOfStudents;
+
 	private String title;
-	private String facultySupervisor;
 	private String description;
-	private String studyProgram;
 	private String departmentName;
-	private String numberOfStudentsError;
-	private String fileUploadErrorMessage;
+	private String studyProgramName;
 	private String type;
+	private String numberOfStudents;
+	private String numberOfStudentsError;
+	private String facultySupervisor;
+	private String fileUploadErrorMessage;
 	private String attachedFilePath;
-	
+
 	private GregorianCalendar addedDate;
 	private GregorianCalendar expireDate;
-	
+
 	private ArrayList<Supervisor> supervisorList;
 	private ArrayList<String> attachedFileList;
-	
+
 	private ExternalExaminer externalExaminer;
-	
-	private SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-	
+
 	public Assignment() {
-		attachedFileList = new ArrayList<String>();
-		supervisorList = new ArrayList<Supervisor>();		
-		supervisorList.add(new Supervisor());
-		
 		bachelor = true;
 		type = "Bachelor";
+
+		attachedFileList = new ArrayList<String>();
+		supervisorList = new ArrayList<Supervisor>();		
+		supervisorList.add(new Supervisor());			
 	}
 
-	public boolean isMaster() {
-		return master;
+	public void updateType(String type) {
+		setType(type);
+		if(type.equalsIgnoreCase("Bachelor")) {
+			setBachelor(true);
+			setMaster(false);
+		}
+		else {
+			setBachelor(false);
+			setMaster(true);
+		}
 	}
 
-	public void setMaster(boolean master) {
-		this.master = master;
+	public int compareTo(Assignment arg0) {
+		if (getId() > arg0.getId()) return 1;
+		else if (getId() < arg0.getId()) return -1;
+		else return 0; 
 	}
 
-	public boolean isBachelor() {
-		return bachelor;
-	}
-
-	public void setBachelor(boolean bachelor) {
-		this.bachelor = bachelor;
-	}
-
-	public boolean isDisplayAssignment() {
-		return displayAssignment;
-	}
-
-	public void setDisplayAssignment(boolean displayAssignment) {
-		this.displayAssignment = displayAssignment;
+	public boolean equals (Assignment ab) {
+		return ab.getId() == this.getId();
 	}
 
 	public int getId() {
@@ -95,12 +93,36 @@ public class Assignment implements Comparable<Assignment>{
 		this.studyProgramNumber = studyProgramNumber;
 	}
 
-	public String getNumberOfStudents() {
-		return numberOfStudents;
+	public boolean isMaster() {
+		return master;
 	}
 
-	public void setNumberOfStudents(String numberOfStudents) {
-		this.numberOfStudents = numberOfStudents;
+	public void setMaster(boolean master) {
+		this.master = master;
+	}
+
+	public boolean isBachelor() {
+		return bachelor;
+	}
+
+	public void setBachelor(boolean bachelor) {
+		this.bachelor = bachelor;
+	}
+
+	public boolean isDisplayAssignment() {
+		return displayAssignment;
+	}
+
+	public boolean isEditExternalExaminer() {
+		return editExternalExaminer;
+	}
+
+	public void setEditExternalExaminer(boolean editExternalExaminer) {
+		this.editExternalExaminer = editExternalExaminer;
+	}
+
+	public void setDisplayAssignment(boolean displayAssignment) {
+		this.displayAssignment = displayAssignment;
 	}
 
 	public String getTitle() {
@@ -111,28 +133,12 @@ public class Assignment implements Comparable<Assignment>{
 		this.title = title;
 	}
 
-	public String getFacultySupervisor() {
-		return facultySupervisor;
-	}
-
-	public void setFacultySupervisor(String facultySupervisor) {
-		this.facultySupervisor = facultySupervisor;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getStudyProgram() {
-		return studyProgram;
-	}
-
-	public void setStudyProgram(String studyProgram) {
-		this.studyProgram = studyProgram;
 	}
 
 	public String getDepartmentName() {
@@ -143,20 +149,12 @@ public class Assignment implements Comparable<Assignment>{
 		this.departmentName = department;
 	}
 
-	public String getNumberOfStudentsError() {
-		return numberOfStudentsError;
+	public String getStudyProgramName() {
+		return studyProgramName;
 	}
 
-	public void setNumberOfStudentsError(String numberOfStudentsError) {
-		this.numberOfStudentsError = numberOfStudentsError;
-	}
-
-	public String getFileUploadErrorMessage() {
-		return fileUploadErrorMessage;
-	}
-
-	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
-		this.fileUploadErrorMessage = fileUploadErrorMessage;
+	public void setStudyProgramName(String studyProgramName) {
+		this.studyProgramName = studyProgramName;
 	}
 
 	public String getType() {
@@ -166,17 +164,29 @@ public class Assignment implements Comparable<Assignment>{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	public void updateType(String type) {
-		setType(type);
-		if(type.equalsIgnoreCase("Bachelor")) {
-			setBachelor(true);
-			setMaster(false);
-		}
-		else {
-			setBachelor(false);
-			setMaster(true);
-		}
+
+	public String getNumberOfStudents() {
+		return numberOfStudents;
+	}
+
+	public void setNumberOfStudents(String numberOfStudents) {
+		this.numberOfStudents = numberOfStudents;
+	}
+
+	public String getNumberOfStudentsError() {
+		return numberOfStudentsError;
+	}
+
+	public void setNumberOfStudentsError(String numberOfStudentsError) {
+		this.numberOfStudentsError = numberOfStudentsError;
+	}
+
+	public String getFacultySupervisor() {
+		return facultySupervisor;
+	}
+
+	public void setFacultySupervisor(String facultySupervisor) {
+		this.facultySupervisor = facultySupervisor;
 	}
 
 	public String getAttachedFilePath() {
@@ -185,6 +195,14 @@ public class Assignment implements Comparable<Assignment>{
 
 	public void setAttachedFilePath(String attachedFilePath) {
 		this.attachedFilePath = attachedFilePath;
+	}
+
+	public String getFileUploadErrorMessage() {
+		return fileUploadErrorMessage;
+	}
+
+	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
+		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
 
 	public GregorianCalendar getAddedDate() {
@@ -219,14 +237,10 @@ public class Assignment implements Comparable<Assignment>{
 		this.attachedFileList = attachedFileList;
 	}
 
-	public boolean equals (Assignment ab) {
-		return ab.getId() == this.getId();
-	}
-	
 	public String getAddedDateAsString() {		
 		return simpleDateFormatter.format(getAddedDate().getTime());
 	}
-	
+
 	public String getExpireDateAsString() {		
 		return simpleDateFormatter.format(getExpireDate().getTime());
 	}
@@ -239,17 +253,4 @@ public class Assignment implements Comparable<Assignment>{
 		this.externalExaminer = externalExaminer;
 	}
 
-	public boolean isEditExternalExaminer() {
-		return editExternalExaminer;
-	}
-
-	public void setEditExternalExaminer(boolean editExternalExaminer) {
-		this.editExternalExaminer = editExternalExaminer;
-	}
-
-	public int compareTo(Assignment arg0) {
-		if (getId() > arg0.getId()) return 1;
-		else if (getId() < arg0.getId()) return -1;
-		else return 0; 
-	}
 }

@@ -3,11 +3,8 @@ package no.uis.abam.dom;
 import java.util.GregorianCalendar;
 
 public class Application {
-
-	private Assignment assignment;
 	
 	private int priority;
-	
 	private long applicantStudentNumber;
 	
 	private boolean assigned;
@@ -15,26 +12,37 @@ public class Application {
 	private String coStudentName1;
 	private String coStudentName2;
 	
+	private Assignment assignment;
 	private GregorianCalendar applicationDate;
 	
-	public Application() {
-	
-	}
+	public Application() {}
 
 	public Assignment getAssignment() {
 		return assignment;
 	}
-
-	public void setAssignment(Assignment assignment) {
-		this.assignment = assignment;
+	
+	public int getPriority() {
+		return priority;
 	}
 
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+	
 	public long getApplicantStudentNumber() {
 		return applicantStudentNumber;
 	}
 
 	public void setApplicantStudentNumber(long applicantStudentNumber) {
 		this.applicantStudentNumber = applicantStudentNumber;
+	}
+	
+	public boolean isAssigned() {
+		return assigned;
+	}
+
+	public void setAssigned(boolean assigned) {
+		this.assigned = assigned;
 	}
 
 	public String getCoStudentName1() {
@@ -53,6 +61,10 @@ public class Application {
 		this.coStudentName2 = coStudentName2;
 	}
 
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
+	
 	public GregorianCalendar getApplicationDate() {
 		return applicationDate;
 	}
@@ -60,23 +72,7 @@ public class Application {
 	public void setApplicationDate(GregorianCalendar applicationDate) {
 		this.applicationDate = applicationDate;
 	}
-
-	public int getPriority() {
-		return priority;
-	}
-
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
 	
-	public boolean isAssigned() {
-		return assigned;
-	}
-
-	public void setAssigned(boolean assigned) {
-		this.assigned = assigned;
-	}
-
 	public boolean equals(Application inApplication) {
 		return this.getApplicantStudentNumber() == inApplication.getApplicantStudentNumber() 
 		&& this.getAssignment().equals(inApplication.getAssignment());

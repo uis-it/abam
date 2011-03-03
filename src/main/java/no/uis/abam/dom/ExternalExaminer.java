@@ -7,12 +7,10 @@ public class ExternalExaminer extends Person{
 	private String postalCodeAndPlace;
 	private String placeOfEmployment;
 	
-	public ExternalExaminer() {
-	}
+	public ExternalExaminer() {}
 
 	public ExternalExaminer(String name) {
-		super();
-		super.setName(name);
+		super(name);		
 	}
 	
 	public String getTitle() {

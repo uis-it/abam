@@ -1,9 +1,16 @@
 package no.uis.abam.dom;
 
 public class Person {
+	
 	private String name;
 	private String email;
 	private String phoneNumber;
+	
+	public Person() {}
+	
+	public Person(String name) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name;

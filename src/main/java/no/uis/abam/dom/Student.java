@@ -2,66 +2,31 @@ package no.uis.abam.dom;
 
 public class Student extends Person {
 
-	private Assignment customAssignment;
-	private String department;
-	private String studyProgram;
-	private String applicationsErrorMessage;
+	private static final String MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED = 
+		"You have applied for the maximum allowed assignments, remove at least one and try again";
+	private static final String ASSIGNMENT_ALREADY_APPLIED_FOR = 
+		"You have already applied for this assignment";
 	
 	private long studentNumber;
 	
+	private String departmentName;
+	private String studyProgramName;
+	private String applicationsErrorMessage;
+	
+	private Assignment customAssignment;	
+	
 	private Application[] applicationPriorityArray = new Application[3];
 	
-	public Student(){
-		//isAppliedForThreeAssignments();
-	}
+	public Student(){}
 
-	public Assignment getCustomAssignment() {
-		return customAssignment;
-	}
-
-	public void setCustomAssignment(Assignment customAssignment) {
-		this.customAssignment = customAssignment;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	public String getStudyProgram() {
-		return studyProgram;
-	}
-
-	public void setStudyProgram(String studyProgram) {
-		this.studyProgram = studyProgram;
-	}
-	
-	public boolean isMasterStudent(){
-		return this.getType().equals("Master");
-	}
-	
 	public void addApplication(Application application) {
-		if(!assignmentIsAlreadyAppliedFor(application.getAssignment())) {
-			if(applicationPriorityArray[0] == null) {
-				application.setPriority(1);
-				applicationPriorityArray[0] = application;
-			}
-			else if(applicationPriorityArray[1] == null) {
-				application.setPriority(2);
-				applicationPriorityArray[1] = application;
-			}
-			else if(applicationPriorityArray[2] == null) { 
-				application.setPriority(3);
-				applicationPriorityArray[2] = application;
-			}
-			if(isAppliedForThreeAssignments()) 
-				applicationsErrorMessage = "You have applied for the maximum allowed assignments, remove at least one and try again";
-
-		} else applicationsErrorMessage = "You have already applied for this assignment";
-		
+		if (applicationIsLegitimate(application)) {	
+			placeApplicationInArray(application);
+		}
+	}
+	
+	private boolean applicationIsLegitimate(Application application) {
+		return !assignmentIsAlreadyAppliedFor(application.getAssignment()) && !isAppliedForThreeAssignments();
 	}
 	
 	public boolean assignmentIsAlreadyAppliedFor(Assignment assignment){
@@ -69,6 +34,7 @@ public class Student extends Person {
 		for(int index = 0; index < applicationPriorityArray.length; index++) {
 			if(applicationPriorityArray[index] != null) {
 				if(applicationPriorityArray[index].getAssignment().getTitle().equals(assignmentTitle)){
+					applicationsErrorMessage = ASSIGNMENT_ALREADY_APPLIED_FOR;
 					return true;
 				}
 			}
@@ -77,12 +43,26 @@ public class Student extends Person {
 	}
 	
 	public boolean isAppliedForThreeAssignments(){
-		return (applicationPriorityArray[0] != null) &&
+		if ((applicationPriorityArray[0] != null) &&
 				(applicationPriorityArray[1] != null) &&
-				(applicationPriorityArray[2] != null);
+				(applicationPriorityArray[2] != null)) {
+			applicationsErrorMessage = MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
-
+	private void placeApplicationInArray(Application application) {
+		for (int i = 0; i < applicationPriorityArray.length; i++) {
+			if (applicationPriorityArray[i] == null) {
+				application.setPriority(i+1);
+				applicationPriorityArray[i] = application;
+				return;
+			}
+		}
+	}
+	
 	public Application getApplicationFromAssignment(Assignment selectedAssignment){
 		for(int index = 0; index < applicationPriorityArray.length; index++){
 			if((applicationPriorityArray[index] != null) && (applicationPriorityArray[index].getAssignment() == selectedAssignment)){
@@ -92,6 +72,30 @@ public class Student extends Person {
 		return null;
 	}
 	
+	public long getStudentNumber() {
+		return studentNumber;
+	}
+
+	public void setStudentNumber(long studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	public String getStudyProgramName() {
+		return studyProgramName;
+	}
+
+	public void setStudyProgramName(String studyProgramName) {
+		this.studyProgramName = studyProgramName;
+	}
+	
 	public String getApplicationsErrorMessage() {
 		return applicationsErrorMessage;
 	}
@@ -99,6 +103,14 @@ public class Student extends Person {
 	public void setApplicationsErrorMessage(
 			String tooManyApplicationsErrorMessage) {
 		this.applicationsErrorMessage = tooManyApplicationsErrorMessage;
+	}
+	
+	public Assignment getCustomAssignment() {
+		return customAssignment;
+	}
+
+	public void setCustomAssignment(Assignment customAssignment) {
+		this.customAssignment = customAssignment;
 	}
 	
 	public Application[] getApplicationPriorityArray() {
@@ -113,12 +125,8 @@ public class Student extends Person {
 		return "";
 	}
 
-	public long getStudentNumber() {
-		return studentNumber;
+	public boolean isMasterStudent(){
+		return this.getType().equals("Master");
 	}
-
-	public void setStudentNumber(long studentNumber) {
-		this.studentNumber = studentNumber;
-	}
-
+	
 }
