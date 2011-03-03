@@ -141,7 +141,7 @@ public class EmployeeService {
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
 		return (selectedStudyProgram.equals("") && abIn.getDepartmentName().equals(selectedDepartmentName)) 
-		|| abIn.getStudyProgram().equals(selectedStudyProgram);
+		|| abIn.getStudyProgramName().equals(selectedStudyProgram);
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {
