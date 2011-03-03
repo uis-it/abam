@@ -49,7 +49,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		test1.setId(1);
 		test1.setDepartmentName("Petroleumsteknologi");
 		test1.setDepartmentNumber(2);
-		test1.setStudyProgram("Boreteknologi");
+		test1.setStudyProgramName("Boreteknologi");
 		test1.setStudyProgramNumber(1);
 		test1.setFacultySupervisor("Louis Lane");
 		test1.getSupervisorList().get(0).setName("Superman");
@@ -61,7 +61,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		
 		Assignment test2 = null;
 		Application app = new Application();
-		for (int j = 0; j < 2; j++) {
+		for (int j = 0, id = 2; j < 2; j++) {
 			
 			for (int i = 0; i < 3; i++) {
 				app.setApplicantStudentNumber((123456+j));
@@ -75,9 +75,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				test2.setNumberOfStudents("1");
 				test2.setDepartmentName("Data- og elektroteknikk");
 				test2.setDepartmentNumber(3);
-				test2.setStudyProgram("Elektro");
+				test2.setStudyProgramName("Elektro");
 				test2.setStudyProgramNumber(2);
-				test2.setId(2);
+				test2.setId(id);
 				test2.setFacultySupervisor("Robin");
 				test2.getSupervisorList().get(0).setName("Batman");
 				test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
@@ -87,7 +87,8 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				assignmentList.add(test2);
 				app.setAssignment(test2);
 				applicationList.add(app);
-				app = new Application();				
+				app = new Application();	
+				id++;
 			}
 		}
 		
@@ -147,15 +148,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		Student newStudent = new BachelorStudent();
 		newStudent.setName("Bachelor Studenten");
 		newStudent.setStudentNumber(123456);
-		newStudent.setDepartment("Data- og elektroteknikk");
-		newStudent.setStudyProgram("Elektro");
+		newStudent.setDepartmentName("Data- og elektroteknikk");
+		newStudent.setStudyProgramName("Elektro");
 		studentList.add(newStudent);
 		
 		newStudent = new MasterStudent();
 		newStudent.setName("Master Studenten");
 		newStudent.setStudentNumber(123457);
-		newStudent.setDepartment("Data- og elektroteknikk");
-		newStudent.setStudyProgram("Elektro");
+		newStudent.setDepartmentName("Data- og elektroteknikk");
+		newStudent.setStudyProgramName("Elektro");
 		studentList.add(newStudent);
 		
 	}
