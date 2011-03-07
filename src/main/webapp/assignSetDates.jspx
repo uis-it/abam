@@ -16,22 +16,41 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<ice:outputText value="#{assignSortableBean.fromDateString }" />
-						<ice:commandButton id="fromButton" value="Show calendar" actionListener="#{assignSortableBean.actionToggleCalendar}"></ice:commandButton>						
+					<td> 
+						<ice:outputText id="fromDateText" value="From date: "></ice:outputText>
 					</td>
 					<td>
-						<ice:selectInputDate id="fromDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
+					<ice:panelGroup panelTooltip="changeDate2">
+						<ice:commandLink id="fromDate" value="#{assignSortableBean.fromDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}"/>
+						<ice:panelTooltip id="changeDate2" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white;">
+							<f:facet name="body">
+								<ice:outputText value="Click here to change date"></ice:outputText>
+							</f:facet>
+						</ice:panelTooltip>
+					</ice:panelGroup>
+					</td>
+					<td>
+						<ice:selectInputDate id="fromDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showFromDateCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<ice:outputText value="#{assignSortableBean.toDateString }" />
-						<ice:commandButton id="toButton" value="Show calendar" actionListener="#{assignSortableBean.actionToggleCalendar}"></ice:commandButton>
+					<td> 
+						<ice:outputText id="toDateText" value="To date: "></ice:outputText>
 					</td>
 					<td>
-						<ice:selectInputDate id="toDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
+					<ice:panelGroup panelTooltip="changeDate">
+						<ice:commandLink id="toDate" value="#{assignSortableBean.toDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}" />
+						<ice:panelTooltip id="changeDate" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white;">
+							<f:facet name="body">
+								<ice:outputText value="Click here to change date"></ice:outputText>
+							</f:facet>
+						</ice:panelTooltip>
+					</ice:panelGroup>
 					</td>
+					<td>
+						<ice:selectInputDate id="toDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showToDateCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true"/>
+					</td>
+					
 				</tr>
 			</table>
 		<table border="0">

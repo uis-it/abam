@@ -1,11 +1,17 @@
 package no.uis.portal.employee;
 
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -17,6 +23,16 @@ public class AssignSortableBean {
 	private static final String studentColumnName = "Student";
 	private static final String priorityNumberColumnName = "Priority";
 	private static final String facultySupervisorColumnName = "Faculty Supervisor";
+	private static final Date FROM_DATE_MASTER_DEFAULT = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.FEBRUARY, 1).getTime();
+	private static final Date FROM_DATE_BACHELOR_DEFAULT = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.JANUARY, 15).getTime();
+	private static final Date TO_DATE_MASTER_DEFAULT = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.JULY, 1).getTime();
+	private static final Date TO_DATE_BACHELOR_DEFAULT = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.MAY, 15).getTime();
+	
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private String sortColumnName;
 	private boolean ascending;
@@ -25,7 +41,8 @@ public class AssignSortableBean {
 	private boolean oldAscending;
 
 	private boolean bachelor;
-	private boolean showCalendar;
+	private boolean showFromDateCalendar;
+	private boolean showToDateCalendar;
 	
 	private Date fromDate;
 	private Date toDate;
@@ -46,8 +63,8 @@ public class AssignSortableBean {
 		oldAscending = !ascending;
 		bachelor = true;
 		
-		fromDate = GregorianCalendar.getInstance().getTime();
-		toDate = GregorianCalendar.getInstance().getTime();
+		setFromDate(FROM_DATE_BACHELOR_DEFAULT);
+		setToDate(TO_DATE_BACHELOR_DEFAULT);
 	}
 
 	public void sort() {
@@ -138,26 +155,36 @@ public class AssignSortableBean {
 	}
 	
 	public void actionToggleCalendar(ActionEvent event) {
-		System.out.println("showCalendar: "+showCalendar);
-		showCalendar = !showCalendar;
+		System.out.println("onclick");
+		Object compId = event.getComponent().getId();
+		System.out.println(compId);
+		if (compId.equals("fromDate")) {
+			showFromDateCalendar = !showFromDateCalendar;
+		} else if (compId.equals("toDate")) {
+			showToDateCalendar = !showToDateCalendar;
+		}
+		
 	}
 	
 	public void actionUpdateDate(ValueChangeEvent event) {
-		System.out.println(event.getComponent().getId());
 		if(event.getComponent().getId().equals("fromDateInput")) {
-			fromDate = (Date)event.getNewValue();
-			fromDateString = fromDate.toString();
-			System.out.println("from: " + fromDate);
+			setFromDate((Date)event.getNewValue());
 		} else if (event.getComponent().getId().equals("toDateInput")) {
-			toDate = (Date)event.getNewValue();
-			toDateString = toDate.toString();
-			System.out.println("to: " + toDate);
+			setToDate((Date)event.getNewValue());
 		}
 	}
 	
 	public void radioListener(ValueChangeEvent event) {
 		bachelor = (Boolean) event.getNewValue();
-		System.out.println("bachelor test: "+bachelor);
+		if(bachelor) {
+			setToDate(TO_DATE_BACHELOR_DEFAULT);
+			setFromDate(FROM_DATE_BACHELOR_DEFAULT);
+		} else {
+			setToDate(TO_DATE_MASTER_DEFAULT);
+			setFromDate(FROM_DATE_MASTER_DEFAULT);
+		}
+		System.out.println("toDate: "+toDate.toString());
+		System.out.println("toDateString: "+toDateString);
 	}
 	
 	public String getAssignmentTitleColumnName() {
@@ -215,12 +242,20 @@ public class AssignSortableBean {
 		this.bachelor = bachelor;
 	}
 
-	public boolean isShowCalendar() {
-		return showCalendar;
+	public boolean isShowFromDateCalendar() {
+		return showFromDateCalendar;
 	}
 
-	public void setShowCalendar(boolean showCalendar) {
-		this.showCalendar = showCalendar;
+	public void setShowFromDateCalendar(boolean showFromDateCalendar) {
+		this.showFromDateCalendar = showFromDateCalendar;
+	}
+
+	public boolean isShowToDateCalendar() {
+		return showToDateCalendar;
+	}
+
+	public void setShowToDateCalendar(boolean showToDateCalendar) {
+		this.showToDateCalendar = showToDateCalendar;
 	}
 
 	public Date getFromDate() {
@@ -232,6 +267,8 @@ public class AssignSortableBean {
 	}
 
 	public void setFromDate(Date fromDate) {
+		System.out.println(fromDate.toString());
+		fromDateString = simpleDateFormatter.format(fromDate);
 		this.fromDate = fromDate;
 	}
 
@@ -240,11 +277,12 @@ public class AssignSortableBean {
 	}
 	
 	public String getToDateAsString() {
-		System.out.println("TodateAsString");
 		return toDate.toString();
 	}
 
 	public void setToDate(Date toDate) {
+		System.out.println(toDate.toString());
+		toDateString = simpleDateFormatter.format(toDate);
 		this.toDate = toDate;
 	}
 
