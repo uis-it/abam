@@ -14,6 +14,7 @@ import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.EditableSelectItem;
 import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 
 
@@ -158,6 +159,10 @@ public class EmployeeService {
 		//allStudyProgramsByDepartmentList.add(new LinkedList<EditableSelectItem>());
 	}
 	
+	public void addThesesFromList(List<Thesis> thesesToAdd) {
+		abamClient.addThesesFromList(thesesToAdd);
+	}
+	
 	public List<Department> getDepartmentList() {
 		return departmentList;
 	}
@@ -224,6 +229,9 @@ public class EmployeeService {
 		abamClient.removeAssignment(assignment);
 	}
 
+	public void removeApplication(Application application) {
+		abamClient.removeApplication(application);
+	}
 	
 	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
 		setSelectedStudyProgramList(getDepartmentFromValue(departmentNumber).getStudyPrograms());

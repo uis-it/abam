@@ -53,7 +53,7 @@ public class AssignSortableBean {
 	private EmployeeService employeeService;
 
 	private ApplicationInformation[] applicationInformationArray;
-	private List<ApplicationInformation> selectedApplicationInformationList = new ArrayList<ApplicationInformation>();
+	private List<ApplicationInformation> selectedApplicationInformationList = new ArrayList<ApplicationInformation>();	
 	
 	public AssignSortableBean() {
 		sortColumnName = assignmentTitleColumnName;
@@ -153,7 +153,20 @@ public class AssignSortableBean {
 	}
 	
 	public void actionSaveAssignedApplications(ActionEvent event) {
-		
+		List<Thesis> thesisToSave = new ArrayList<Thesis>();
+		Thesis thesisToAdd = null;
+		for (ApplicationInformation appInfo : selectedApplicationInformationList) {
+			thesisToAdd = new Thesis();
+			thesisToAdd.setAssignedAssignmentId(appInfo.getApplication().getAssignment().getId());
+			thesisToAdd.setCoStudent1(appInfo.getCoStudent1Name());
+			thesisToAdd.setCoStudent2(appInfo.getCoStudent2Name());
+			thesisToAdd.setDeadlineForSubmissionOfTopic(getFromDate());
+			thesisToAdd.setDeadlineForSubmissionForEvalutation(getToDate());
+			thesisToAdd.setStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
+			thesisToSave.add(thesisToAdd);		
+			employeeService.removeApplication(appInfo.getApplication());
+		}
+		employeeService.addThesesFromList(thesisToSave);
 	}
 	
 	public void actionToggleCalendar(ActionEvent event) {
