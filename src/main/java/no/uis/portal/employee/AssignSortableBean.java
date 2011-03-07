@@ -155,9 +155,7 @@ public class AssignSortableBean {
 	}
 	
 	public void actionToggleCalendar(ActionEvent event) {
-		System.out.println("onclick");
 		Object compId = event.getComponent().getId();
-		System.out.println(compId);
 		if (compId.equals("fromDate")) {
 			showFromDateCalendar = !showFromDateCalendar;
 		} else if (compId.equals("toDate")) {
@@ -183,8 +181,6 @@ public class AssignSortableBean {
 			setToDate(TO_DATE_MASTER_DEFAULT);
 			setFromDate(FROM_DATE_MASTER_DEFAULT);
 		}
-		System.out.println("toDate: "+toDate.toString());
-		System.out.println("toDateString: "+toDateString);
 	}
 	
 	public String getAssignmentTitleColumnName() {
@@ -267,7 +263,6 @@ public class AssignSortableBean {
 	}
 
 	public void setFromDate(Date fromDate) {
-		System.out.println(fromDate.toString());
 		fromDateString = simpleDateFormatter.format(fromDate);
 		this.fromDate = fromDate;
 	}
@@ -281,7 +276,6 @@ public class AssignSortableBean {
 	}
 
 	public void setToDate(Date toDate) {
-		System.out.println(toDate.toString());
 		toDateString = simpleDateFormatter.format(toDate);
 		this.toDate = toDate;
 	}
