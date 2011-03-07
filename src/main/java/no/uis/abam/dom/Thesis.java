@@ -1,0 +1,99 @@
+package no.uis.abam.dom;
+
+import java.util.Date;
+
+public class Thesis {
+
+	private int assignedAssignmentId;
+	private long studentNumber;
+		
+	private boolean accepted;
+	
+	private String coStudent1;
+	private String coStudent2;
+	
+	private Date deadlineForSubmissionOfTopic;
+	private Date deadlineForSubmissionForEvalutation;	
+	private Date actualSubmissionOfTopic;
+	private Date actualSubmissionForEvalutation;
+	
+	public Thesis() {
+		
+	}
+
+	public int getAssignedAssignmentId() {
+		return assignedAssignmentId;
+	}
+
+	public void setAssignedAssignmentId(int assignedAssignmentId) {
+		this.assignedAssignmentId = assignedAssignmentId;
+	}
+
+	public long getStudentNumber() {
+		return studentNumber;
+	}
+
+	public void setStudentNumber(long studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
+	public boolean isAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(boolean accepted) {
+		this.accepted = accepted;
+	}
+
+	public String getCoStudent1() {
+		return coStudent1;
+	}
+
+	public void setCoStudent1(String coStudent1) {
+		this.coStudent1 = coStudent1;
+	}
+
+	public String getCoStudent2() {
+		return coStudent2;
+	}
+
+	public void setCoStudent2(String coStudent2) {
+		this.coStudent2 = coStudent2;
+	}
+
+	public Date getDeadlineForSubmissionOfTopic() {
+		return deadlineForSubmissionOfTopic;
+	}
+
+	public void setDeadlineForSubmissionOfTopic(Date deadlineForSubmissionOfTopic) {
+		this.deadlineForSubmissionOfTopic = deadlineForSubmissionOfTopic;
+	}
+
+	public Date getDeadlineForSubmissionForEvalutation() {
+		return deadlineForSubmissionForEvalutation;
+	}
+
+	public void setDeadlineForSubmissionForEvalutation(
+			Date deadlineForSubmissionForEvalutation) {
+		this.deadlineForSubmissionForEvalutation = deadlineForSubmissionForEvalutation;
+	}
+
+	public Date getActualSubmissionOfTopic() {
+		return actualSubmissionOfTopic;
+	}
+
+	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
+		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
+	}
+
+	public Date getActualSubmissionForEvalutation() {
+		return actualSubmissionForEvalutation;
+	}
+
+	public void setActualSubmissionForEvalutation(
+			Date actualSubmissionForEvalutation) {
+		this.actualSubmissionForEvalutation = actualSubmissionForEvalutation;
+	}
+	
+	
+}
