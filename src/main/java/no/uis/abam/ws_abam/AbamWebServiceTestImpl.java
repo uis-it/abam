@@ -43,6 +43,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private void createAssignmentListContent(){
 		Assignment test1 = new Assignment();
 		test1.setTitle("Pet Bor oppgave");
+		test1.setMaster(false);
 		test1.setBachelor(true);
 		test1.setDescription("Beskrivelse av test1");
 		test1.setNumberOfStudents("2-3");
@@ -58,9 +59,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		GregorianCalendar dato = test1.getAddedDate();
 		dato.add(Calendar.MONTH, 6);
 		test1.setExpireDate(dato);
+		Application app = new Application();
+		app.setApplicantStudentNumber((123456));
+		app.setApplicationDate(new GregorianCalendar());				
+		app.setPriority(1);		
+		app.setAssignment(test1);
+		applicationList.add(app);
 		
 		Assignment test2 = null;
-		Application app = new Application();
+		app = new Application();
 		for (int j = 0, id = 2; j < 2; j++) {
 			
 			for (int i = 0; i < 3; i++) {
@@ -200,6 +207,27 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public List<Application> getApplicationList() {
 		return applicationList;
+	}
+	
+	public List<Application> getMasterApplicationList() {
+		List<Application> masterApplicationList = new ArrayList<Application>();
+		for (Application application : applicationList) {
+			if(application.getAssignment().isMaster()) {
+				masterApplicationList.add(application);
+			}
+		}
+		return masterApplicationList;
+	}
+
+	public List<Application> getBachelorApplicationList() {
+		List<Application> bachelorApplicationList = new ArrayList<Application>();
+		for (Application application : applicationList) {
+			if(application.getAssignment().isBachelor()) {
+				bachelorApplicationList.add(application);
+			}
+		}
+		return bachelorApplicationList;
+	
 	}
 	
 	public void setApplicationList(List<Application> applicationList) {
