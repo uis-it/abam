@@ -17,9 +17,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
 	private LinkedList<Department> departmentList;
-	private List<EditableSelectItem> studyProgramList = new LinkedList();
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
+	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
  	
 	public AbamWebServiceTestImpl(){
 		
@@ -148,7 +148,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		listToAdd.add(new EditableSelectItem(new Integer(1), "Matematikk"));
 		listToAdd.add(new EditableSelectItem(new Integer(2), "Fysikk"));
 		departmentList.get(5).setStudyPrograms(listToAdd);
-		studyProgramList = departmentList.get(0).getStudyPrograms();	
+		//studyProgramList = departmentList.get(0).getStudyPrograms();	
 	}
 	
 	private void initializeStudentList() { 
@@ -254,7 +254,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				applicationList.remove(app);
 				return;
 			}
-		}
+		}	
 	}
 
 	public int getNextId() {
@@ -289,5 +289,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			if (student.getStudentNumber() == studentNumber) return student;
 		}
 		return null;
+	}
+	
+	public void addThesesFromList(List<Thesis> thesesToAdd) {
+		for (Thesis thesis : thesesToAdd) {
+			savedThesesList.add(thesis);
+		}
 	}
 }

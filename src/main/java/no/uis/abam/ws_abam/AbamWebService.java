@@ -12,6 +12,7 @@ import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.EditableSelectItem;
 import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Thesis;
 
 @WebService
 public interface AbamWebService {
@@ -44,4 +45,6 @@ public interface AbamWebService {
 			Application[] tempApplicationPriorityArray);
 	
 	public Student getStudentFromStudentNumber(long studentNumber);
+	
+	public void addThesesFromList(List<Thesis> thesesToAdd);
 }
