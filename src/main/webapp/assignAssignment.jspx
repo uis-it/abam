@@ -9,6 +9,20 @@
 		<ice:form partialSubmit="true">
 			<h:outputText value="Assign Assignments To Students"/><br/>
 			<br/>
+			<table>
+				<tr>
+					<td><ice:outputText id="typeText" value="Type: "/></td>
+					<td><ice:outputText id="type" value="#{assignSortableBean.typeAsString}" /></td>
+				</tr>
+				<tr>
+					<td><ice:outputText id="fromDateText" value="From date: "></ice:outputText> </td>
+					<td><ice:outputText id="fromDate" value="#{assignSortableBean.fromDateString }"/> </td>
+				</tr>
+								<tr>
+					<td><ice:outputText id="toDateText" value="To date: "></ice:outputText> </td>
+					<td><ice:outputText id="toDate" value="#{assignSortableBean.toDateString }"/> </td>
+				</tr>
+			</table>
 			<br/>
 			<ice:dataTable 
 				id="dataSortData"
@@ -96,7 +110,7 @@
             
 			</ice:dataTable>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+				<h:commandButton type="submit" action="assignSetDates" value="Back" id="BackButton"></h:commandButton>
 				<h:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="Next" id="assignSelected"></h:commandButton>
 			</table>
 		</ice:form>

@@ -229,10 +229,14 @@ public class EmployeeService {
 		setSelectedStudyProgramList(getDepartmentFromValue(departmentNumber).getStudyPrograms());
 	}
 	
-	public List<Application> getApplicationList(){
-		return abamClient.getApplicationList();
+	public List<Application> getMasterApplicationList(){
+		return abamClient.getMasterApplicationList();
 	}
-
+	
+	public List<Application> getBachelorApplicationList(){
+		return abamClient.getBachelorApplicationList();
+	}
+	
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;
 	}

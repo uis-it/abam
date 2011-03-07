@@ -135,7 +135,9 @@ public class AssignSortableBean {
 	}
 
 	public void actionRefreshApplicationInformationArray(ActionEvent event) {
-		List<Application> applicationList = employeeService.getApplicationList();
+		List<Application> applicationList;
+		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
+		else applicationList = employeeService.getMasterApplicationList();
 		if(applicationList != null){							
 			applicationInformationArray = new ApplicationInformation[applicationList.size()];
 			fillApplicationInformationArray(applicationList);
@@ -296,5 +298,9 @@ public class AssignSortableBean {
 		this.toDateString = toDateString;
 	}
 	
+	public String getTypeAsString() {
+		if(bachelor) return "Bachelor";
+		return "Master";
+	}
 	
 }
