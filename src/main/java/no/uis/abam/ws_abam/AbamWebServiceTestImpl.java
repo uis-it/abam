@@ -23,7 +23,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
  	
 	public AbamWebServiceTestImpl(){
 		
-		createAssignmentListContent();
+		//createAssignmentListContent();
 		initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
 	}
@@ -34,10 +34,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public void saveAssignment(Assignment assignment){
 		assignmentList.add(assignment);
-	}
-
-	private void createTestApplications() {
-
 	}
 	
 	private void createAssignmentListContent(){
@@ -76,8 +72,8 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				app.setPriority(i+1);		
 				test2 = new Assignment();
 				test2.setTitle("IDE El oppgave " +i);
-				test2.setBachelor(false);
-				test2.setMaster(true);
+				test2.setBachelor(true);
+				test2.setMaster(false);
 				test2.setDescription("Beskrivelse av test" +i);
 				test2.setNumberOfStudents("1");
 				test2.setDepartmentName("Data- og elektroteknikk");
@@ -152,18 +148,20 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	private void initializeStudentList() { 
-		Student newStudent = new BachelorStudent();
+		Student newStudent = new Student();
 		newStudent.setName("Bachelor Studenten");
 		newStudent.setStudentNumber(123456);
+		newStudent.setBachelor(true);
 		newStudent.setDepartmentName("Data- og elektroteknikk");
 		newStudent.setStudyProgramName("Elektro");
 		studentList.add(newStudent);
 		
-		newStudent = new MasterStudent();
+		newStudent = new Student();
 		newStudent.setName("Master Studenten");
 		newStudent.setStudentNumber(123457);
 		newStudent.setDepartmentName("Data- og elektroteknikk");
 		newStudent.setStudyProgramName("Elektro");
+		newStudent.setBachelor(false);
 		studentList.add(newStudent);
 		
 	}
@@ -275,6 +273,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return assignmentsToReturn;
 	}
 
+	public Assignment getAssignmentFromId(int id) {
+		for (Assignment assignment : assignmentList) {
+			if(assignment.getId() == id){
+				return assignment;
+			}
+		}
+		return null;
+	}
+	
 	public void updateApplicationsFromCurrentStudent(
 			Application[] tempApplicationPriorityArray) {
 		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
@@ -294,6 +301,25 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
 		for (Thesis thesis : thesesToAdd) {
 			savedThesesList.add(thesis);
+			Student student = getStudentFromStudentNumber(thesis.getStudentNumber());
+			student.setAssignedThesis(thesis);
+			removeStudentsApplicationFromList(student);
+		}
+	}
+	
+	private void removeStudentsApplicationFromList(Student student) {
+		for (Application application : student.getApplicationPriorityArray()) {
+			removeApplication(application);
+		}
+	}
+	
+	public void updateStudent(Student studentToUpdate) {
+		for (Student student : studentList) {
+			if (student.equals(studentToUpdate)) {
+				studentList.remove(student);
+				studentList.add(studentToUpdate);
+				return;
+			}
 		}
 	}
 }

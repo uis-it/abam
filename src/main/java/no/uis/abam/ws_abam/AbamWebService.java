@@ -2,7 +2,6 @@ package no.uis.abam.ws_abam;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
@@ -47,4 +46,6 @@ public interface AbamWebService {
 	public Student getStudentFromStudentNumber(long studentNumber);
 	
 	public void addThesesFromList(List<Thesis> thesesToAdd);
+	public Assignment getAssignmentFromId(int id);
+	public void updateStudent(Student studentToUpdate);
 }
