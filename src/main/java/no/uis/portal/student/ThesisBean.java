@@ -19,6 +19,7 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public void actionGetInformationForStudent(ActionEvent event) {
+		studentService.updateCurrentStudentFromWebService();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
 		if (currentStudentsThesis.getAssignedAssignmentId() == 0) {
 			currentAssignment = studentService.getCurrentStudent().getCustomAssignment();

@@ -269,12 +269,22 @@ public class StudentService {
 	}
 
 	public Student getCurrentStudent() {
-		currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber); 
+		if (currentStudent == null) {
+			currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber);
+		}
 		return currentStudent;
 	}
 
 	public void setCurrentStudent(Student currentStudent) {
 		this.currentStudent = currentStudent;
+	}
+	
+	public void updateStudentInWebServiceFromCurrentStudent() {
+		abamStudentClient.updateStudent(currentStudent);
+	}
+	
+	public void updateCurrentStudentFromWebService() {
+		currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber);
 	}
 
 	public List<Application> getApplicationList() {
