@@ -23,7 +23,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
  	
 	public AbamWebServiceTestImpl(){
 		
-		//createAssignmentListContent();
+		createAssignmentListContent();
 		initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
 	}
@@ -89,7 +89,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				test2.setExpireDate(dato);
 				assignmentList.add(test2);
 				app.setAssignment(test2);
-				applicationList.add(app);
+				//applicationList.add(app);
 				app = new Application();	
 				id++;
 			}
@@ -309,8 +309,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	private void removeStudentsApplicationFromList(Student student) {
 		for (Application application : student.getApplicationPriorityArray()) {
-			removeApplication(application);
-		}
+			if (application != null) {
+				removeApplication(application);
+			}
+		}			
 	}
 	
 	public void updateStudent(Student studentToUpdate) {
