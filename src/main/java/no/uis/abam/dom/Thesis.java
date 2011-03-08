@@ -9,6 +9,7 @@ public class Thesis {
 	private long studentNumber;
 		
 	private boolean accepted;
+	private boolean submitted;
 	
 	private String coStudent1;
 	private String coStudent2;
@@ -46,6 +47,14 @@ public class Thesis {
 
 	public void setAccepted(boolean accepted) {
 		this.accepted = accepted;
+	}
+	
+	public boolean isSubmitted() {
+		return submitted;
+	}
+
+	public void setSubmitted(boolean submitted) {
+		this.submitted = submitted;
 	}
 
 	public String getCoStudent1() {
