@@ -36,7 +36,7 @@
 						<ice:outputText id="itemTitle" value="#{item.title}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}"/>							
-						<ice:commandButton id="applyAssignment" value="Apply for this assignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" action="applyForAssignment" rendered="#{!studentService.currentStudent.appliedForThreeAssignments}"/>
+						<ice:commandButton id="applyAssignment" value="Apply for this assignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" action="applyForAssignment" rendered="#{!studentService.currentStudent.hasAssignedThesis and !studentService.currentStudent.appliedForThreeAssignments}"/>
 						<ice:commandButton id="View" value="View details" action="assignmentDetails" actionListener="#{assignmentBean.actionSetSelectedAssignment}"/>
 					</ice:column>
 				</ice:dataTable>

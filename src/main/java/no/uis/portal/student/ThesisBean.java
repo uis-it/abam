@@ -26,7 +26,6 @@ public class ThesisBean implements DisposableBean {
 	
 	
 	public ThesisBean() {
-		
 	}
 	
 	public void actionGetInformationForStudent(ActionEvent event) {

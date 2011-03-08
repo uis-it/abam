@@ -176,8 +176,9 @@ public class StudentService {
 	
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
+		updateCurrentStudentFromWebService();
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());
-		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
+		updateStudyProgramList(findDepartmentNumberForCurrentStudent());		
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
