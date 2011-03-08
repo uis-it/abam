@@ -100,8 +100,9 @@ public class AssignSortableBean {
 				} else return 0;
 			}
 		};
-		
-		Arrays.sort(getApplicationInformationAsArray(), comparator);
+		if(getApplicationInformationAsArray() != null) {
+			Arrays.sort(getApplicationInformationAsArray(), comparator);
+		}
 	}
 
 	public Object[] getApplicationInformationAsArray() {
@@ -141,6 +142,8 @@ public class AssignSortableBean {
 		if(applicationList != null){							
 			applicationInformationArray = new ApplicationInformation[applicationList.size()];
 			fillApplicationInformationArray(applicationList);
+		} else {
+			applicationInformationArray = null;
 		}
 	}
 	
@@ -164,7 +167,6 @@ public class AssignSortableBean {
 			thesisToAdd.setDeadlineForSubmissionForEvalutation(getToDate());
 			thesisToAdd.setStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
 			thesisToSave.add(thesisToAdd);		
-			employeeService.removeApplication(appInfo.getApplication());
 		}
 		employeeService.addThesesFromList(thesisToSave);
 	}
