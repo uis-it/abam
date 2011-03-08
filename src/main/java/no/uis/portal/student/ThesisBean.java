@@ -20,7 +20,11 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionGetInformationForStudent(ActionEvent event) {
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
-		currentAssignment = studentService.getAssignmentFromId(currentStudentsThesis.getAssignedAssignmentId());
+		if (currentStudentsThesis.getAssignedAssignmentId() == 0) {
+			currentAssignment = studentService.getCurrentStudent().getCustomAssignment();
+		} else {
+			currentAssignment = studentService.getAssignmentFromId(currentStudentsThesis.getAssignedAssignmentId());
+		}
 	}
 	
 	public void setStudentService(StudentService studentService) {

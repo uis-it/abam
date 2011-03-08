@@ -68,7 +68,7 @@ public class StudentService {
 	}
 	
 	public void setApplicationToStudent(Application application){
-		getCurrentStudent().addApplication(application);
+		currentStudent.addApplication(application);
 		abamStudentClient.updateStudent(currentStudent);
 	}
 	
@@ -269,9 +269,7 @@ public class StudentService {
 	}
 
 	public Student getCurrentStudent() {
-		if (currentStudent == null) {
-			currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber); 
-		}
+		currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber); 
 		return currentStudent;
 	}
 
