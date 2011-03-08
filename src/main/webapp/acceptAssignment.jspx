@@ -4,7 +4,11 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:form partialSubmit="true" >
+		<ice:form rendered="#{thesisBean.renderNotAssigned}">
+			<ice:outputText value="You have not been assigned any thesis yet."/>
+			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"/>
+		</ice:form>
+		<ice:form partialSubmit="true" rendered="#{!thesisBean.renderNotAssigned}">
 			<ice:outputText value="acceptAssignment"/><br/>
 			<br/>
 			<br/>
@@ -13,7 +17,16 @@
 					<td> <ice:outputText value="Deadline for submission of topic:"/></td>
 					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionOfTopicAsString}"/> </td>
 				</tr>
-			
+				<tr>
+					<td> 
+						<ice:outputText value="You accepted:" rendered="#{thesisBean.currentStudentsThesis.accepted}"/>
+						<ice:outputText value="You have not accepted yet" rendered="#{!thesisBean.currentStudentsThesis.accepted}"/>
+					</td>
+					
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.actualSubmissionOfTopicAsString}" rendered="#{thesisBean.currentStudentsThesis.accepted}"/> </td>
+					
+				</tr>
+								
 				<tr>
 					<td><ice:outputText value="Title: "/></td>
 					<td><ice:outputText value="#{thesisBean.currentAssignment.title}"/></td>
@@ -57,7 +70,7 @@
 				</ice:dataTable>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Cooperative student: "/> </td>
+					<td><ice:outputText value="Cooperative student(s): "/> </td>
 					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent1}"/></td>
 					<td></td>
 				</tr>
@@ -78,8 +91,30 @@
 				</tr>
 			</table>
 			
+			<table>
+				<tr> 
+					<td>
+					</td>
+					<td> <ice:outputLink value="http://student.uis.no/studieinformasjon/tn/oppgaveskriving/" target="_blank"> Press here for rules </ice:outputLink> </td> 
+				</tr>
+				<tr>
+					<td> <ice:selectBooleanCheckbox id="readRules1" value="#{thesisBean.readRules1}" valueChangeListener="#{thesisBean.actionCheckBoxChanges}" partialSubmit="true" disabled="#{thesisBean.currentStudentsThesis.accepted}"/> </td>
+					<td> <ice:outputText value="I have read the rules that apply to the thesis and fulfill the requirements for choice of subject" /> </td>
+				</tr>
+				<tr>
+					<td> <ice:selectBooleanCheckbox id="readRules2" value="#{thesisBean.readRules2}" valueChangeListener="#{thesisBean.actionCheckBoxChanges}" partialSubmit="true" disabled="#{thesisBean.currentStudentsThesis.accepted}"/> </td>
+					<td> <ice:outputText value="I realize that while working with experimental projects I must inform myself about the rules for HES(Health, Environment, Safety) before starting the work." /> </td>
+				</tr>
+				<tr>		
+					<td> <ice:selectBooleanCheckbox value="#{thesisBean.readRules3}" id="readRules3" valueChangeListener="#{thesisBean.actionCheckBoxChanges}" partialSubmit="true" disabled="#{thesisBean.currentStudentsThesis.accepted}"/> </td>
+					<td> <ice:outputText value="I am aware of the rules for the use of sources as described in the Students guide (ch. 4.2) and will observe them in my work with the thesis." /> </td>
+				</tr>
+			</table>
+			
 			<table border="0">
 				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"></ice:commandButton>
+				<ice:outputText value="Please check all checkboxes before you can accept." rendered="#{!thesisBean.renderAcceptButton and !thesisBean.currentStudentsThesis.accepted}" />
+				<ice:commandButton type="submit" action="myThesis" value="I accept this thesis" id="acceptThesis" actionListener="#{thesisBean.actionSetThesisIsAccepted}" rendered="#{thesisBean.renderAcceptButton}"></ice:commandButton>
 			</table>
 		</ice:form>
 	</ice:portlet>
