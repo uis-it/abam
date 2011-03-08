@@ -13,7 +13,11 @@ public class Student extends Person {
 	private String studyProgramName;
 	private String applicationsErrorMessage;
 	
+	private boolean bachelor;
+	
 	private Assignment customAssignment;	
+	
+	private Thesis assignedThesis; 
 	
 	private Application[] applicationPriorityArray = new Application[3];
 	
@@ -65,7 +69,8 @@ public class Student extends Person {
 	
 	public Application getApplicationFromAssignment(Assignment selectedAssignment){
 		for(int index = 0; index < applicationPriorityArray.length; index++){
-			if((applicationPriorityArray[index] != null) && (applicationPriorityArray[index].getAssignment() == selectedAssignment)){
+			if((applicationPriorityArray[index] != null) 
+					&& (applicationPriorityArray[index].getAssignment().equals(selectedAssignment))){
 				return applicationPriorityArray[index];
 			}
 		}
@@ -122,11 +127,31 @@ public class Student extends Person {
 	}
 
 	public String getType(){
-		return "";
+		if(bachelor) return "Bachelor";
+		return "Master";
 	}
 
 	public boolean isMasterStudent(){
 		return this.getType().equals("Master");
 	}
-	
+
+	public Thesis getAssignedThesis() {
+		return assignedThesis;
+	}
+
+	public void setAssignedThesis(Thesis assignedThesis) {
+		this.assignedThesis = assignedThesis;
+	}
+
+	public boolean isBachelor() {
+		return bachelor;
+	}
+
+	public void setBachelor(boolean bachelor) {
+		this.bachelor = bachelor;
+	}
+
+	public boolean equals(Student student) {
+		return this.getStudentNumber() == student.getStudentNumber();
+	}
 }
