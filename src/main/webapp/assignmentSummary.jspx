@@ -63,7 +63,16 @@
 					</ice:column>
 				</ice:dataTable>
 				</tr>
-
+				<tr>
+					<ice:dataTable var="attachment" value="#{assignmentBean.currentAssignment.attachedFileList }">
+						<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="Attachments"/>
+						</f:facet>
+							<ice:outputText id="nameInput" value="#{attachment}"/>
+						</ice:column>
+					</ice:dataTable>
+				</tr>
 				<tr>
 					<td></td>
 					<td></td>

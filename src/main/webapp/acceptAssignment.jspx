@@ -10,6 +10,11 @@
 			<br/>
 			<table border="0" width="800">
 				<tr>
+					<td> <ice:outputText value="Deadline for submission of topic:"/></td>
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionOfTopicAsString}"/> </td>
+				</tr>
+			
+				<tr>
 					<td><ice:outputText value="Title: "/></td>
 					<td><ice:outputText value="#{thesisBean.currentAssignment.title}"/></td>
 					<td></td>
@@ -51,8 +56,26 @@
 					</ice:column>
 				</ice:dataTable>
 				</tr>
-
-				
+				<tr>
+					<td><ice:outputText value="Cooperative student: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent1}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent2}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+				<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachedFileList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Attachments"/>
+					</f:facet>
+						<ice:outputText id="nameInput" value="#{attachment}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
 			</table>
 			
 			<table border="0">
