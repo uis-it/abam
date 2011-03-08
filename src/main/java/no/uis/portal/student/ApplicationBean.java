@@ -22,7 +22,6 @@ public class ApplicationBean implements DisposableBean {
 	public void actionSetCustomAssignmentToApplication(ActionEvent event) {
 		Assignment selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
 		currentAssignment = selectedAssignment;
-		
 		if(assignmentIsAppliedFor(selectedAssignment)){
 			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment));
 		} else {

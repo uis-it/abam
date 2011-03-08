@@ -34,8 +34,8 @@
 			<to-view-id>/acceptAssignment.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>myAssignment</from-outcome>
-			<to-view-id>/myAssignment.jspx</to-view-id>
+			<from-outcome>myThesis</from-outcome>
+			<to-view-id>/myThesis.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>searchArchive</from-outcome>
@@ -88,6 +88,15 @@
 	<managed-bean>
 		<managed-bean-name>applicationBean</managed-bean-name>
 		<managed-bean-class>no.uis.portal.student.ApplicationBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>studentService</property-name>
+			<value>#{studentService}</value>
+		</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>thesisBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.student.ThesisBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>studentService</property-name>

@@ -36,13 +36,15 @@ public class StudentService {
 	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 	
+	private long testStudentNumber = 123456;
+	
 	public StudentService() {
-		setCurrentStudentFromLoggedInUser();
 	}
 
 	public void setCurrentStudentFromLoggedInUser(){
-		currentStudent = new BachelorStudent();
+		currentStudent = new Student();
 		currentStudent.setName("Bachelor Studenten");
+		currentStudent.setBachelor(true);
 		currentStudent.setStudentNumber(123456);
 		currentStudent.setDepartmentName("Data- og elektroteknikk");
 		currentStudent.setStudyProgramName("Elektro");
@@ -62,16 +64,17 @@ public class StudentService {
 	
 	
 	public void saveAssignment(Assignment assignment) {
-		currentStudent.setCustomAssignment(assignment);
+		getCurrentStudent().setCustomAssignment(assignment);
 	}
 	
 	public void setApplicationToStudent(Application application){
-		currentStudent.addApplication(application);
+		getCurrentStudent().addApplication(application);
+		abamStudentClient.updateStudent(currentStudent);
 	}
 	
 	public TreeSet<Assignment> getAssignmentList() {
 		if(assignmentList == null) 
-			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartmentName());
+			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());
 		return assignmentList;		
 	}
 
@@ -108,7 +111,7 @@ public class StudentService {
 	}
 	 
 	public void actionGetApplicationFromStudent(ActionEvent event) {
-		tempApplicationPriorityArray = currentStudent.getApplicationPriorityArray().clone();
+		tempApplicationPriorityArray = getCurrentStudent().getApplicationPriorityArray().clone();
 	}
 	
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
@@ -133,7 +136,7 @@ public class StudentService {
 	}
 	
 	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
-		return assignment.getType().equalsIgnoreCase(currentStudent.getType());
+		return assignment.getType().equalsIgnoreCase(getCurrentStudent().getType());
 	}
 	
 	
@@ -172,13 +175,13 @@ public class StudentService {
 	}
 	
 	
-	public void actionPrepareAvailableAssignments(ActionEvent event) {
-		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(currentStudent.getDepartmentName());
+	public void actionPrepareAvailableAssignments(ActionEvent event) {		
+		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
-		String name = currentStudent.getDepartmentName();
+		String name = getCurrentStudent().getDepartmentName();
 		for (SelectItem department : getDepartmentList()) {
 			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
 		}
@@ -187,7 +190,7 @@ public class StudentService {
 	
 	public void actionSaveApplications(ActionEvent event) {
 		removeDeletedApplications();
-		currentStudent.setApplicationPriorityArray(tempApplicationPriorityArray);
+		getCurrentStudent().setApplicationPriorityArray(tempApplicationPriorityArray);
 		abamStudentClient.updateApplicationsFromCurrentStudent(tempApplicationPriorityArray);		
 	}
 	
@@ -266,6 +269,9 @@ public class StudentService {
 	}
 
 	public Student getCurrentStudent() {
+		if (currentStudent == null) {
+			currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber); 
+		}
 		return currentStudent;
 	}
 
@@ -342,6 +348,10 @@ public class StudentService {
 
 	public Application[] getTempApplicationPriorityArray() {
 		return tempApplicationPriorityArray;
+	}
+
+	public Assignment getAssignmentFromId(int assignedAssignmentId) {
+		return abamStudentClient.getAssignmentFromId(assignedAssignmentId);
 	}
 	
 	

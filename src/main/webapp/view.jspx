@@ -11,8 +11,8 @@
 					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}">Available assignments</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="myApplications">My applications</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}">Create custom assignment</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="acceptAssignment">Accept assignment</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="myAssignment">My Assignment</ice:commandLink></td></tr>
+					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}">Accept assignment</ice:commandLink></td></tr>
+					<tr><td><ice:commandLink action="myThesis">My Thesis</ice:commandLink></td></tr>
 					<tr><td><ice:commandLink action="searchArchive">Search</ice:commandLink></td></tr>
 				</table>
 				</ice:panelGroup>

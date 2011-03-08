@@ -8,6 +8,53 @@
 			<ice:outputText value="acceptAssignment"/><br/>
 			<br/>
 			<br/>
+			<table border="0" width="800">
+				<tr>
+					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.title}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.description}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.departmentName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.studyProgramName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.facultySupervisor}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Supervisor"/>
+					</f:facet>
+						<ice:outputText id="name" value="Name: "/>
+						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
+						<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+
+				
+			</table>
+			
 			<table border="0">
 				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"></ice:commandButton>
 			</table>
