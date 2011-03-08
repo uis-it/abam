@@ -1,5 +1,6 @@
 package no.uis.abam.dom;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Thesis {
@@ -16,6 +17,8 @@ public class Thesis {
 	private Date deadlineForSubmissionForEvalutation;	
 	private Date actualSubmissionOfTopic;
 	private Date actualSubmissionForEvalutation;
+	
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Thesis() {
 		
@@ -64,13 +67,21 @@ public class Thesis {
 	public Date getDeadlineForSubmissionOfTopic() {
 		return deadlineForSubmissionOfTopic;
 	}
-
+	
+	public String getDeadlineForSubmissionOfTopicAsString() {
+		return simpleDateFormatter.format(deadlineForSubmissionOfTopic);
+	}
+	
 	public void setDeadlineForSubmissionOfTopic(Date deadlineForSubmissionOfTopic) {
 		this.deadlineForSubmissionOfTopic = deadlineForSubmissionOfTopic;
 	}
 
 	public Date getDeadlineForSubmissionForEvalutation() {
 		return deadlineForSubmissionForEvalutation;
+	}
+	
+	public String getDeadlineForSubmissionForEvalutationAsString() {
+		return simpleDateFormatter.format(deadlineForSubmissionForEvalutation);
 	}
 
 	public void setDeadlineForSubmissionForEvalutation(
@@ -81,6 +92,10 @@ public class Thesis {
 	public Date getActualSubmissionOfTopic() {
 		return actualSubmissionOfTopic;
 	}
+	
+	public String getActualSubmissionOfTopicAsString() {
+		return simpleDateFormatter.format(actualSubmissionOfTopic);
+	}
 
 	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
 		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
@@ -90,6 +105,10 @@ public class Thesis {
 		return actualSubmissionForEvalutation;
 	}
 
+	public String getActualSubmissionForEvalutationAsString() {
+		return simpleDateFormatter.format(actualSubmissionForEvalutation);
+	}
+	
 	public void setActualSubmissionForEvalutation(
 			Date actualSubmissionForEvalutation) {
 		this.actualSubmissionForEvalutation = actualSubmissionForEvalutation;
