@@ -19,6 +19,7 @@ public class ThesisBean implements DisposableBean {
 	
 	private boolean renderAcceptButton = false;
 	private boolean renderNotAssigned;
+	private boolean renderMyThesis;
 	private boolean readRules1;
 	private boolean readRules2;
 	private boolean readRules3;
@@ -75,6 +76,15 @@ public class ThesisBean implements DisposableBean {
 		currentStudentsThesis.setActualSubmissionOfTopic(GregorianCalendar.getInstance().getTime());
 		studentService.getCurrentStudent().setAssignedThesis(currentStudentsThesis);
 		studentService.updateStudentInWebServiceFromCurrentStudent();
+		actionInitMyThesisPage(event);
+	}
+	
+	public void actionInitMyThesisPage(ActionEvent event) {
+		if (currentStudentsThesis == null) {
+			renderMyThesis = false;
+		} else {
+			renderMyThesis = true;
+		}
 	}
 	
 	public void setStudentService(StudentService studentService) {
@@ -137,6 +147,14 @@ public class ThesisBean implements DisposableBean {
 
 	public void setRenderNotAssigned(boolean renderNotAssigned) {
 		this.renderNotAssigned = renderNotAssigned;
+	}
+
+	public boolean isRenderMyThesis() {
+		return renderMyThesis;
+	}
+
+	public void setRenderMyThesis(boolean renderMyThesis) {
+		this.renderMyThesis = renderMyThesis;
 	}
 
 	public void dispose() throws Exception {}

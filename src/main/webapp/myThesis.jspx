@@ -1,15 +1,99 @@
-
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />	
+	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:form>
-			<ice:outputText value="myAssignment"/><br/>
+		<ice:form rendered="#{!thesisBean.renderMyThesis}">
+			<ice:outputText value="You have not accepted a thesis yet."/>
+			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"/>
+		</ice:form>
+		<ice:form partialSubmit="true" rendered="#{thesisBean.renderMyThesis or thesisBean.currentStudentsThesis.accepted}">
+			<ice:outputText value="My thesis"/><br/>
 			<br/>
 			<br/>
-			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
+			<table border="0" width="800">
+				<tr>
+					<td> <ice:outputText value="Deadline for submission for evalutation:"/></td>
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionForEvalutationAsString}"/> </td>
+				</tr>
+				<tr>
+					<td> 
+						<ice:outputText value="You submitted your thesis:" rendered="#{thesisBean.currentStudentsThesis.submitted}"/>
+						<ice:outputText value="You have not submitted yet" rendered="#{!thesisBean.currentStudentsThesis.submitted}"/>
+					</td>
+					
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.actualSubmissionForEvalutationAsString}" rendered="#{thesisBean.currentStudentsThesis.submitted}"/> </td>
+					
+				</tr>
+								
+				<tr>
+					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.title}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.description}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.departmentName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.studyProgramName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.facultySupervisor}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Supervisor"/>
+					</f:facet>
+						<ice:outputText id="name" value="Name: "/>
+						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
+						<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+				<tr>
+					<td><ice:outputText value="Cooperative student(s): "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent1}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent2}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+				<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachedFileList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Attachments"/>
+					</f:facet>
+						<ice:outputText id="nameInput" value="#{attachment}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+			</table>
+						
+			<table border="0">
+				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"></ice:commandButton>
+			</table>
 		</ice:form>
 	</ice:portlet>
 </f:view>
