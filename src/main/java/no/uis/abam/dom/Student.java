@@ -67,6 +67,10 @@ public class Student extends Person {
 		}
 	}
 	
+	public boolean isHasAssignedThesis() {
+		return assignedThesis != null;
+	}
+	
 	public Application getApplicationFromAssignment(Assignment selectedAssignment){
 		for(int index = 0; index < applicationPriorityArray.length; index++){
 			if((applicationPriorityArray[index] != null) 
