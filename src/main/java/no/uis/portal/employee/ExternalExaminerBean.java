@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.faces.event.ActionEvent;
 
+import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
+import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisInformation;
 
@@ -34,9 +36,13 @@ public class ExternalExaminerBean implements DisposableBean{
 		ThesisInformation thesisInformation;
 		for (Thesis thesis : thesisList) {
 			thesisInformation = new ThesisInformation();
-			thesisInformation.setAssignmentTitle(employeeService
-					.getAssignmentFromId(thesis.getAssignedAssignmentId())
-					.getTitle());
+			Assignment assignment = employeeService.getAssignmentFromId(thesis.getAssignedAssignmentId());
+			if (assignment == null) {
+				Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber());
+				thesisInformation.setAssignmentTitle(student.getCustomAssignment().getTitle());
+			} else {
+				thesisInformation.setAssignmentTitle(assignment.getTitle());
+			}			
 			thesisInformation.setCoStudent1Name(thesis.getCoStudent1());
 			thesisInformation.setCoStudent2Name(thesis.getCoStudent2());
 			ExternalExaminer examiner = thesis.getExternalExaminer();
