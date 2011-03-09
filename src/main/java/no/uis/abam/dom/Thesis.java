@@ -141,5 +141,9 @@ public class Thesis {
 	public void setExternalExaminer(ExternalExaminer externalExaminer) {
 		this.externalExaminer = externalExaminer;
 	}
-
+	public boolean equals(Thesis thesis) {
+		return (this.getStudentNumber() == thesis.getStudentNumber())
+				&& (this.getAssignedAssignmentId() == thesis
+						.getAssignedAssignmentId());
+	}
 }
