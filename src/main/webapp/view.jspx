@@ -14,7 +14,7 @@
 					<tr><td><h:commandLink action="myStudentAssignments">My Student Assignments</h:commandLink></td></tr>
 					<tr><td><h:commandLink action="addExternalExaminer" actionListener="#{assignmentBean.actionEditExternalExaminerSetAllFalse}">Add External Examiner</h:commandLink></td></tr>
 					<tr><td><h:commandLink action="createAddressLabels">Create Address Labels</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="searchArchive">Search</h:commandLink></td></tr>
+					<tr><td><h:commandLink action="searchArchive">Archive</h:commandLink></td></tr>
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">

@@ -1,12 +1,10 @@
 package no.uis.portal.employee;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
 
 import no.uis.abam.dom.EditableSelectItem;
 

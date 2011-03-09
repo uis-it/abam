@@ -1,6 +1,5 @@
 package no.uis.portal.employee;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +23,6 @@ public class EmployeeService {
 	
 	private LinkedList<Department> departmentList;
 	private List<EditableSelectItem> selectedStudyProgramList = new LinkedList<EditableSelectItem>();
-	private List<Application> applicationList;
 	
 	private String selectedDepartmentName;
 	
