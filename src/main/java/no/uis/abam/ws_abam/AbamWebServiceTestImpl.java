@@ -51,7 +51,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		test1.setStudyProgramNumber(1);
 		test1.setFacultySupervisor("Louis Lane");
 		test1.getSupervisorList().get(0).setName("Superman");
-		test1.setExternalExaminer(new ExternalExaminer("tester"));
 		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
 		GregorianCalendar dato = test1.getAddedDate();
 		dato.add(Calendar.MONTH, 6);
@@ -324,5 +323,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				return;
 			}
 		}
+	}
+	
+	public List<Thesis> getThesisList() {
+		return savedThesesList;
 	}
 }
