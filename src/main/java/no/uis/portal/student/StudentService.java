@@ -29,8 +29,6 @@ public class StudentService {
 	private Application[] tempApplicationPriorityArray = new Application[3];
 	private ArrayList<Application> applicationsToRemove = new ArrayList<Application>();
 	
-	private ArrayList<Application> applicationList = new ArrayList<Application>();
-	
 	private String selectedDepartmentName;
 	
 	private int selectedDepartmentNumber;
