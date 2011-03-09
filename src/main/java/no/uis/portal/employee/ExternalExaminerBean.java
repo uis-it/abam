@@ -13,6 +13,8 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class ExternalExaminerBean implements DisposableBean{
 
+	private boolean showSavedConfirmation;
+	
 	private List<ThesisInformation> thesisInformationList = new ArrayList<ThesisInformation>();
 	
 	private EmployeeService employeeService;
@@ -48,6 +50,25 @@ public class ExternalExaminerBean implements DisposableBean{
 			thesisInformation.setThesis(thesis);	
 			thesisInformationList.add(thesisInformation);
 		}
+	}
+	
+	public void actionSaveExaminerToSelectedRows(ActionEvent event) {
+		for (ThesisInformation thesisInformation : thesisInformationList) {
+			if (thesisInformation.isSelected()) {
+				thesisInformation.getThesis().setExternalExaminer(externalExaminer);
+				thesisInformation.setExternalExaminerName(externalExaminer.getName());
+				employeeService.updateThesis(thesisInformation.getThesis());
+			}
+		}
+		showSavedConfirmation = true;
+	}
+
+	public boolean isShowSavedConfirmation() {
+		return showSavedConfirmation;
+	}
+
+	public void setShowSavedConfirmation(boolean showSavedConfirmation) {
+		this.showSavedConfirmation = showSavedConfirmation;
 	}
 
 	public List<ThesisInformation> getThesisInformationList() {

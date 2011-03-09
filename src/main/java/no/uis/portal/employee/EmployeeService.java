@@ -163,6 +163,10 @@ public class EmployeeService {
 		abamClient.addThesesFromList(thesesToAdd);
 	}
 	
+	public void updateThesis(Thesis thesisToUpdate) {
+		abamClient.updateThesis(thesisToUpdate);
+	}
+	
 	public List<Thesis> getThesisList() {
 		return abamClient.getThesisList();
 	}
