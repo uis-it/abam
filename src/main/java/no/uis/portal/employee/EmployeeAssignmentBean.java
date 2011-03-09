@@ -67,7 +67,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	
 	public void actionSetSelectedAssignmentFromAssignAssignment(ActionEvent event) {
 		UIComponent uic = event.getComponent();
-		System.out.println("getParent: " +uic.getParent().getParent());
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		ApplicationInformation applicationInformation = (ApplicationInformation)table.getRowData();
