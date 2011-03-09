@@ -81,6 +81,10 @@
 			<from-outcome>assignSetDates</from-outcome>
 			<to-view-id>/assignSetDates.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>assignmentAttachment</from-outcome>
+			<to-view-id>/assignmentAttachment.jspx</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	<managed-bean>

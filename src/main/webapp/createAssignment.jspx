@@ -91,7 +91,7 @@
 			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row" immediate="true"/>
 			<br/><br/>
 			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
+			<ice:commandButton type="submit" action="assignmentAttachment" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
 		</ice:form>
 	</ice:portlet>
 </f:view>

@@ -54,7 +54,7 @@
                         <ice:outputText value="#{assignSortableBean.assignmentTitleColumnName}"/>
                     </ice:commandSortHeader>
                 </f:facet>
-                <ice:outputText value="#{item.assignmentTitle}"/>
+                <ice:commandLink value="#{item.assignmentTitle}" action="assignmentSummary" actionListener="#{assignmentBean.actionSetSelectedAssignmentFromAssignAssignment }"/>
             </ice:column>
             
             <ice:column>

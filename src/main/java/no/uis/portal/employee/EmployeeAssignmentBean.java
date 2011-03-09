@@ -9,6 +9,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import no.uis.abam.dom.ApplicationInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
@@ -29,6 +30,8 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	
 	private Assignment currentAssignment;
 	
+	private boolean backToAssignAssignment;
+	private boolean backToAssignmentAttachment;
 
 	public EmployeeAssignmentBean(){
 		
@@ -60,6 +63,21 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	
 	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
 		employeeService.setAllEditExternalExaminerToFalse();
+	}
+	
+	public void actionSetSelectedAssignmentFromAssignAssignment(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+		System.out.println("getParent: " +uic.getParent().getParent());
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		ApplicationInformation applicationInformation = (ApplicationInformation)table.getRowData();
+		Assignment selectedAssignment = applicationInformation.getApplication().getAssignment();
+		setCurrentAssignment(selectedAssignment);
+		employeeService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		
+		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		actionPrepareBackButtonFromAssignAssignemnt(event);
 	}
 	
 	public void actionCreateNewAssignment(ActionEvent event) {	
@@ -103,6 +121,20 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		currentAssignment.getSupervisorList().remove(table.getRowData());		
+	}
+	
+	public void actionPrepareBackButtonFromAssignmentAttachment(ActionEvent event) {
+		setBackToAssignmentAttachment(true);
+		setBackToAssignAssignment(false);
+		System.out.println("Prep assign: " + backToAssignAssignment);
+		System.out.println("Prep assignemntattachment: " + backToAssignmentAttachment);
+	}
+	
+	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
+		setBackToAssignmentAttachment(false);
+		setBackToAssignAssignment(true);
+		System.out.println("Prep assign: " + backToAssignAssignment);
+		System.out.println("Prep assignemntattachment: " + backToAssignmentAttachment);
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {
@@ -189,6 +221,22 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 	    currentAssignment.getAttachedFileList().remove(table.getRowData());		
+	}
+
+	public boolean isBackToAssignAssignment() {
+		return backToAssignAssignment;
+	}
+
+	public void setBackToAssignAssignment(boolean backToAssignAssignment) {
+		this.backToAssignAssignment = backToAssignAssignment;
+	}
+
+	public boolean isBackToAssignmentAttachment() {
+		return backToAssignmentAttachment;
+	}
+
+	public void setBackToAssignmentAttachment(boolean backToAssignmentAttachment) {
+		this.backToAssignmentAttachment = backToAssignmentAttachment;
 	}
 
 	public void dispose() throws Exception {
