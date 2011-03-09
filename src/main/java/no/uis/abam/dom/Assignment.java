@@ -17,7 +17,6 @@ public class Assignment implements Comparable<Assignment>{
 	private boolean master;
 	private boolean bachelor;
 	private boolean displayAssignment = true;
-	private boolean editExternalExaminer = false;
 
 	private String title;
 	private String description;
@@ -35,8 +34,6 @@ public class Assignment implements Comparable<Assignment>{
 
 	private ArrayList<Supervisor> supervisorList;
 	private ArrayList<String> attachedFileList;
-
-	private ExternalExaminer externalExaminer;
 
 	public Assignment() {
 		bachelor = true;
@@ -111,14 +108,6 @@ public class Assignment implements Comparable<Assignment>{
 
 	public boolean isDisplayAssignment() {
 		return displayAssignment;
-	}
-
-	public boolean isEditExternalExaminer() {
-		return editExternalExaminer;
-	}
-
-	public void setEditExternalExaminer(boolean editExternalExaminer) {
-		this.editExternalExaminer = editExternalExaminer;
 	}
 
 	public void setDisplayAssignment(boolean displayAssignment) {
@@ -244,13 +233,4 @@ public class Assignment implements Comparable<Assignment>{
 	public String getExpireDateAsString() {		
 		return simpleDateFormatter.format(getExpireDate().getTime());
 	}
-
-	public ExternalExaminer getExternalExaminer() {
-		return externalExaminer;
-	}
-
-	public void setExternalExaminer(ExternalExaminer externalExaminer) {
-		this.externalExaminer = externalExaminer;
-	}
-
 }

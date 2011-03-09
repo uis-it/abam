@@ -10,6 +10,7 @@ public class Thesis {
 		
 	private boolean accepted;
 	private boolean submitted;
+	private boolean editExternalExaminer = false;
 	
 	private String coStudent1;
 	private String coStudent2;
@@ -19,6 +20,8 @@ public class Thesis {
 	private Date actualSubmissionOfTopic;
 	private Date actualSubmissionForEvalutation;
 	
+	private ExternalExaminer externalExaminer;
+
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Thesis() {
@@ -51,6 +54,14 @@ public class Thesis {
 	
 	public boolean isSubmitted() {
 		return submitted;
+	}
+
+	public boolean isEditExternalExaminer() {
+		return editExternalExaminer;
+	}
+
+	public void setEditExternalExaminer(boolean editExternalExaminer) {
+		this.editExternalExaminer = editExternalExaminer;
 	}
 
 	public void setSubmitted(boolean submitted) {
@@ -123,5 +134,12 @@ public class Thesis {
 		this.actualSubmissionForEvalutation = actualSubmissionForEvalutation;
 	}
 	
-	
+	public ExternalExaminer getExternalExaminer() {
+		return externalExaminer;
+	}
+
+	public void setExternalExaminer(ExternalExaminer externalExaminer) {
+		this.externalExaminer = externalExaminer;
+	}
+
 }
