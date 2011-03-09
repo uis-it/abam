@@ -13,6 +13,7 @@ import no.uis.abam.dom.ApplicationInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
+import no.uis.abam.dom.Thesis;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -48,10 +49,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
-		Assignment selectedAssignment = (Assignment)table.getRowData();
-		//if(!selectedAssignment.equals(currentAssignment)) currentAssignment.setEditExternalExaminer(false);
-		setCurrentAssignment(selectedAssignment);
-	
+		Thesis selectedThesis = (Thesis)table.getRowData();
+//		if(!selectedThesis.equals(currentAssignment)) currentAssignment.setEditExternalExaminer(false);
+//		setCurrentAssignment(selectedAssignment);
+//	
 //		if(currentAssignment.getExternalExaminer() == null) {
 //			currentAssignment.setExternalExaminer(new ExternalExaminer());
 //		}
@@ -61,7 +62,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 //		} else {
 //			currentAssignment.setEditExternalExaminer(true);
 //		}
-		employeeService.saveAssignment(currentAssignment);
+//		employeeService.saveAssignment(currentAssignment);
 	}
 	
 	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {

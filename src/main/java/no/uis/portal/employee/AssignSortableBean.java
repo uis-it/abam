@@ -11,9 +11,11 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import com.icesoft.faces.context.DisposableBean;
+
 import no.uis.abam.dom.*;
 
-public class AssignSortableBean {
+public class AssignSortableBean implements DisposableBean{
 
 	private static final String assignmentTitleColumnName = "Assignment Title";
 	private static final String studentColumnName = "Student";
@@ -312,6 +314,11 @@ public class AssignSortableBean {
 	public String getTypeAsString() {
 		if(bachelor) return "Bachelor";
 		return "Master";
+	}
+
+	@Override
+	public void dispose() throws Exception {
+	
 	}
 	
 }

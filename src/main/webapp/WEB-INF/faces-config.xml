@@ -123,4 +123,13 @@
 			<value>#{employeeService}</value>
 		</managed-property>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>externalExaminerBean</managed-bean-name>
+		<managed-bean-class>no.uis.portal.employee.ExternalExaminerBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>employeeService</property-name>
+			<value>#{employeeService}</value>
+		</managed-property>
+	</managed-bean>
 </faces-config>

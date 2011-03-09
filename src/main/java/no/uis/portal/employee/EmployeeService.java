@@ -145,9 +145,10 @@ public class EmployeeService {
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {
-//		for (Thesis thesis : abamClient.getThesisList()) {
-//			thesis.setEditExternalExaminer(false);
-//		}
+		//TODO Only get logged in teacher's students theses 
+		for (Thesis thesis : abamClient.getThesisList()) {
+			thesis.setEditExternalExaminer(false);
+		}
 	}
 	
 	public void addNewDepartment(){
@@ -160,6 +161,10 @@ public class EmployeeService {
 	
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
 		abamClient.addThesesFromList(thesesToAdd);
+	}
+	
+	public List<Thesis> getThesisList() {
+		return abamClient.getThesisList();
 	}
 	
 	public List<Department> getDepartmentList() {
@@ -246,6 +251,10 @@ public class EmployeeService {
 	
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;
+	}
+	
+	public Assignment getAssignmentFromId(int id) {
+		return abamClient.getAssignmentFromId(id);
 	}
 	
 }
