@@ -33,6 +33,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}	
 	
 	public void saveAssignment(Assignment assignment){
+		assignmentList.remove(assignment);
 		assignmentList.add(assignment);
 	}
 	
