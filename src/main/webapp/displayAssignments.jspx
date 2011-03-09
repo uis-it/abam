@@ -32,7 +32,7 @@
 							<ice:outputText value="Assignments:"/>
 						</f:facet>
 						<ice:outputText id="itemId" value="#{item.id}" rendered="#{item.displayAssignment}"/>
-						<ice:outputText id="itemTitle" value="#{item.title}" rendered="#{item.displayAssignment}"/>
+						<ice:commandLink id="itemTitle" action="assignmentSummary" actionListener="#{assignmentBean.actionSetSelectedAssignmentFromDisplayAssignments}" value="#{item.title}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>							
 						<ice:commandButton id="editAssignment" value="Edit" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>

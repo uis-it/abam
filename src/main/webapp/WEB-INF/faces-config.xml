@@ -66,8 +66,8 @@
 			<to-view-id>/editStudyPrograms.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>displayAssignment</from-outcome>
-			<to-view-id>/displayAssignment.jspx</to-view-id>
+			<from-outcome>displayAssignments</from-outcome>
+			<to-view-id>/displayAssignments.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>assignAssignmentSummary</from-outcome>

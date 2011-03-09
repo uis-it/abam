@@ -64,7 +64,7 @@ public class EmployeeService {
 	}
 	
 	
-	public void saveAssignment(Assignment assignment) {
+	public void saveAssignment(Assignment assignment) {		
 		abamClient.saveAssignment(assignment);
 	}
 	
@@ -145,9 +145,9 @@ public class EmployeeService {
 	}
 	
 	public void setAllEditExternalExaminerToFalse() {
-		for (Assignment assignment : abamClient.getAllAssignments()) {
-			assignment.setEditExternalExaminer(false);
-		}
+//		for (Thesis thesis : abamClient.getThesisList()) {
+//			thesis.setEditExternalExaminer(false);
+//		}
 	}
 	
 	public void addNewDepartment(){

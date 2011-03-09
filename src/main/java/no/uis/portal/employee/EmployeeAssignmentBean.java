@@ -31,6 +31,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private Assignment currentAssignment;
 	
 	private boolean backToAssignAssignment;
+	private boolean backToDisplayAssignments;
 	private boolean backToAssignmentAttachment;
 
 	public EmployeeAssignmentBean(){
@@ -48,17 +49,19 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		
 		Assignment selectedAssignment = (Assignment)table.getRowData();
-		if(selectedAssignment != currentAssignment) currentAssignment.setEditExternalExaminer(false);
-		
+		//if(!selectedAssignment.equals(currentAssignment)) currentAssignment.setEditExternalExaminer(false);
 		setCurrentAssignment(selectedAssignment);
-				
-		if(currentAssignment.getExternalExaminer() == null) {
-			currentAssignment.setExternalExaminer(new ExternalExaminer());
-		}
-		
-		if(currentAssignment.isEditExternalExaminer()) {
-				currentAssignment.setEditExternalExaminer(false);
-		} else currentAssignment.setEditExternalExaminer(true);
+	
+//		if(currentAssignment.getExternalExaminer() == null) {
+//			currentAssignment.setExternalExaminer(new ExternalExaminer());
+//		}
+//		
+//		if(currentAssignment.isEditExternalExaminer()) {
+//				currentAssignment.setEditExternalExaminer(false);
+//		} else {
+//			currentAssignment.setEditExternalExaminer(true);
+//		}
+		employeeService.saveAssignment(currentAssignment);
 	}
 	
 	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
@@ -102,6 +105,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
+	public void actionSetSelectedAssignmentFromDisplayAssignments(ActionEvent event){
+		actionSetSelectedAssignment(event);
+		actionPrepareBackButtonFromDisplayAssignments(event);
+	}
+	
 	public void actionRemoveAssignment(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
@@ -125,11 +133,19 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionPrepareBackButtonFromAssignmentAttachment(ActionEvent event) {
 		setBackToAssignmentAttachment(true);
 		setBackToAssignAssignment(false);
+		setBackToDisplayAssignments(false);
 	}
 	
 	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
 		setBackToAssignmentAttachment(false);
 		setBackToAssignAssignment(true);
+		setBackToDisplayAssignments(false);
+	}
+	
+	public void actionPrepareBackButtonFromDisplayAssignments(ActionEvent event) {
+		setBackToDisplayAssignments(true);
+		setBackToAssignmentAttachment(false);
+		setBackToAssignAssignment(false);
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {
@@ -232,6 +248,14 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 	public void setBackToAssignmentAttachment(boolean backToAssignmentAttachment) {
 		this.backToAssignmentAttachment = backToAssignmentAttachment;
+	}
+
+	public boolean isBackToDisplayAssignments() {
+		return backToDisplayAssignments;
+	}
+
+	public void setBackToDisplayAssignments(boolean backToDisplayAssignments) {
+		this.backToDisplayAssignments = backToDisplayAssignments;
 	}
 
 	public void dispose() throws Exception {
