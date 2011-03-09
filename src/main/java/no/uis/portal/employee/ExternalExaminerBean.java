@@ -27,6 +27,7 @@ public class ExternalExaminerBean implements DisposableBean{
 	
 	public void actionPrepareAddExternalExaminer(ActionEvent event) {
 		thesisInformationList.clear();
+		setShowSavedConfirmation(false);
 		setExternalExaminer(new ExternalExaminer());
 		//TODO: don't get all theses.
 		List<Thesis> thesisList = employeeService.getThesisList();
@@ -60,7 +61,7 @@ public class ExternalExaminerBean implements DisposableBean{
 				employeeService.updateThesis(thesisInformation.getThesis());
 			}
 		}
-		showSavedConfirmation = true;
+		setShowSavedConfirmation(true);
 	}
 
 	public boolean isShowSavedConfirmation() {

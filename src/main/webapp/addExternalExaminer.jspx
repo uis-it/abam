@@ -133,6 +133,12 @@
 					<td><ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
 					<ice:commandButton type="submit" action="addExternalExaminer" value="Save" id="SaveButton" immediate="true" actionListener="#{externalExaminerBean.actionSaveExaminerToSelectedRows }"/></td>
 				</tr>
+				<tr>
+					<td>
+						<ice:outputText value="External examiner saved successfully to selected theses" rendered="#{externalExaminerBean.showSavedConfirmation}"/>
+					</td>
+				</tr>
+				
 			</table>
 		</ice:form>
 	</ice:portlet>
