@@ -89,6 +89,7 @@ public class EmployeeService {
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
 		setSelectedStudyProgramNumber(0);
 		setSelectedDepartmentNumber(0);
+		getDepartmentListFromWebService();
 	}
 	
 	

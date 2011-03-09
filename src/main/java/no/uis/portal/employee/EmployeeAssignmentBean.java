@@ -126,15 +126,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionPrepareBackButtonFromAssignmentAttachment(ActionEvent event) {
 		setBackToAssignmentAttachment(true);
 		setBackToAssignAssignment(false);
-		System.out.println("Prep assign: " + backToAssignAssignment);
-		System.out.println("Prep assignemntattachment: " + backToAssignmentAttachment);
 	}
 	
 	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
 		setBackToAssignmentAttachment(false);
 		setBackToAssignAssignment(true);
-		System.out.println("Prep assign: " + backToAssignAssignment);
-		System.out.println("Prep assignemntattachment: " + backToAssignmentAttachment);
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {

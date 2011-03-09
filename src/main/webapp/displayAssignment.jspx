@@ -42,8 +42,11 @@
 				</tr>
 				<tr>
 					<td></td><td></td>
-					<td><h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
-					<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+					<td>
+						<h:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true"></h:commandButton>
+						<h:commandButton type="submit" action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment }" value="Create new" id="CreateButton"></h:commandButton>
+					</td>
+				
 					
 				</tr>
 			</table>
