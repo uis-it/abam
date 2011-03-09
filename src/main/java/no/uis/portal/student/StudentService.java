@@ -130,19 +130,11 @@ public class StudentService {
 				else assignment.setDisplayAssignment(false);
 			} else assignment.setDisplayAssignment(false);
 		}
-		setAllEditExternalExaminerToFalse();
 	}
 	
 	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
 		return assignment.getType().equalsIgnoreCase(getCurrentStudent().getType());
 	}
-	
-	
-//	public void actionUpdateStudyProgramListFromCreateAssignment(ValueChangeEvent event){
-//		studyProgramList = allStudyProgramsByDepartmentList.get(Integer.parseInt(event.getNewValue().toString()));
-//		selectedDepartmentNumber = Integer.parseInt(event.getNewValue().toString());
-//	}
-	
 	
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
 		String selectedStudyProgram = (String) getStudyProgramName(Integer.parseInt(event.getNewValue().toString()));
@@ -154,8 +146,7 @@ public class StudentService {
 				if(currentStudentIsEligibleForAssignment(assignment))
 					assignment.setDisplayAssignment(true);
 			} else assignment.setDisplayAssignment(false);
-		}
-		setAllEditExternalExaminerToFalse();
+		}		
 	}
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
@@ -202,13 +193,6 @@ public class StudentService {
 	public void actionClearDeletedElements(ActionEvent event){
 		applicationsToRemove.clear();
 	}
-	
-	public void setAllEditExternalExaminerToFalse() {
-		for (Assignment assignment : getAssignmentList()) {
-			assignment.setEditExternalExaminer(false);
-		}
-	}
-	
 	
 	public LinkedList<Department> getDepartmentList() {
 		return abamStudentClient.getDepartmentList();

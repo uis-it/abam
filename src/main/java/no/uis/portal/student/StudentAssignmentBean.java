@@ -32,30 +32,7 @@ public class StudentAssignmentBean implements DisposableBean {
 	
 	public StudentAssignmentBean(){
 	}
-	
-	public void actionEditExternalExaminer(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Assignment selectedAssignment = (Assignment)table.getRowData();
-		if(selectedAssignment != currentAssignment) currentAssignment.setEditExternalExaminer(false);
-		
-		setCurrentAssignment(selectedAssignment);
-				
-		if(currentAssignment.getExternalExaminer() == null) {
-			currentAssignment.setExternalExaminer(new ExternalExaminer());
-		}
-		
-		if(currentAssignment.isEditExternalExaminer()) {
-				currentAssignment.setEditExternalExaminer(false);
-		} else currentAssignment.setEditExternalExaminer(true);
-	}
-	
-	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
-		studentService.setAllEditExternalExaminerToFalse();
-	}
-	
+			
 	public void actionGetCustomAssignment(ActionEvent event) {
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
 		if(assignment == null) {
