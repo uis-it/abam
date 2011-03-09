@@ -26,6 +26,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		createAssignmentListContent();
 		initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
+		initializeThesisList();
 	}
 	
 	public TreeSet<Assignment> getAllAssignments() {
@@ -97,6 +98,21 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		
 		assignmentList.add(test1);
 		
+	}
+	
+	private void initializeThesisList() {
+		Thesis testThesis = new Thesis();
+		testThesis.setAccepted(true);
+		testThesis.setAssignedAssignmentId(assignmentList.first().getId());
+		testThesis.setCoStudent1("Tom");
+		testThesis.setStudentNumber(studentList.get(0).getStudentNumber());
+		savedThesesList.add(testThesis);
+		testThesis = new Thesis();
+		testThesis.setAccepted(true);
+		testThesis.setAssignedAssignmentId(assignmentList.last().getId());
+		testThesis.setCoStudent1("Bente");
+		testThesis.setStudentNumber(studentList.get(1).getStudentNumber());
+		savedThesesList.add(testThesis);
 	}
 	
 	private void initializeDepartmentAndStudyProgramLists(){
@@ -304,6 +320,16 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber());
 			student.setAssignedThesis(thesis);
 			removeStudentsApplicationFromList(student);
+		}
+	}
+	
+	public void updateThesis(Thesis thesisToUpdate) {
+		for (Thesis thesis : savedThesesList) {
+			if(thesis.equals(thesisToUpdate)) {
+				savedThesesList.remove(thesis);
+				savedThesesList.add(thesisToUpdate);
+				return;
+			}
 		}
 	}
 	

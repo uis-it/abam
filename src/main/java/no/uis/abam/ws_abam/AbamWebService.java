@@ -49,4 +49,5 @@ public interface AbamWebService {
 	public Assignment getAssignmentFromId(int id);
 	public void updateStudent(Student studentToUpdate);
 	public List<Thesis> getThesisList();
+	public void updateThesis(Thesis thesisToUpdate);
 }
