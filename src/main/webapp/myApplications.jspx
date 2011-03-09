@@ -13,7 +13,7 @@
 				<ice:column>
 				<f:facet name="header">
 				</f:facet>
-					<ice:outputText id="priority" value="Prioritet"/>
+					<ice:outputText id="priority" value="Priority"/>
 					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
 					<ice:outputText id="title" value="-"/>					
 					<ice:commandLink value="#{application.assignment.title}" action="applyForAssignment" actionListener="#{applicationBean.actionEditApplication}"/>
