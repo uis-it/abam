@@ -182,8 +182,10 @@ public class AssignSortableBean implements DisposableBean{
 	public void actionUpdateDate(ValueChangeEvent event) {
 		if(event.getComponent().getId().equals("fromDateInput")) {
 			setFromDate((Date)event.getNewValue());
+			setShowFromDateCalendar(false);
 		} else if (event.getComponent().getId().equals("toDateInput")) {
 			setToDate((Date)event.getNewValue());
+			setShowToDateCalendar(false);
 		}
 	}
 	
