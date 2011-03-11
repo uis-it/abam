@@ -21,12 +21,13 @@ public class AssignSortableBean implements DisposableBean{
 	private static final String studentColumnName = "Student";
 	private static final String priorityNumberColumnName = "Priority";
 	private static final String facultySupervisorColumnName = "Faculty Supervisor";
+	
 	private static final Date FROM_DATE_MASTER_DEFAULT = new GregorianCalendar(
 			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.FEBRUARY, 1).getTime();
 	private static final Date FROM_DATE_BACHELOR_DEFAULT = new GregorianCalendar(
 			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.JANUARY, 15).getTime();
 	private static final Date TO_DATE_MASTER_DEFAULT = new GregorianCalendar(
-			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.JULY, 1).getTime();
+			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.JUNE, 15).getTime();
 	private static final Date TO_DATE_BACHELOR_DEFAULT = new GregorianCalendar(
 			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.MAY, 15).getTime();
 	
@@ -74,9 +75,11 @@ public class AssignSortableBean implements DisposableBean{
 					return 0;
 				}
 				if(sortColumnName.equals(assignmentTitleColumnName)){
+					String assignmentTitle1 = app1.getAssignmentTitle();
+					String assignmentTitle2 = app2.getAssignmentTitle();
 					return ascending ? 
-							app1.getAssignmentTitle().compareTo(app2.getAssignmentTitle()) :
-								app2.getAssignmentTitle().compareTo(app1.getAssignmentTitle());
+							assignmentTitle1.compareTo(assignmentTitle2) :
+							assignmentTitle2.compareTo(assignmentTitle1);
 				} else if(sortColumnName.equals(studentColumnName)){
 					String studentName1 = app1.getStudentName();
 					String studentName2 = app2.getStudentName();
@@ -115,22 +118,26 @@ public class AssignSortableBean implements DisposableBean{
 	}
 	
 	private void fillApplicationInformationArray(List<Application> applicationList) {
-		ApplicationInformation applicationInformation = null;
-		Application application = null;
 		for (int i = 0; i < applicationInformationArray.length; i++) {
-			application = applicationList.get(i);
-			applicationInformation = new ApplicationInformation();
-			applicationInformation.setApplication(application);
-			applicationInformation.setAssignmentTitle(application.getAssignment().getTitle());
-			applicationInformation.setCoStudent1Name(application.getCoStudentName1());
-			applicationInformation.setCoStudent2Name(application.getCoStudentName2());
-			applicationInformation.setFacultySupervisor(application.getAssignment().getFacultySupervisor());
-			applicationInformation.setPriority(application.getPriority());
-			applicationInformation.setStudentName(
-					employeeService.getStudentFromStudentNumber(
-							application.getApplicantStudentNumber()).getName());
-			applicationInformationArray[i] = applicationInformation;
+			applicationInformationArray[i] = getApplicationInformationWithFieldsSetFromApplication(applicationList.get(i));			
 		}
+	}
+	
+	private ApplicationInformation getApplicationInformationWithFieldsSetFromApplication(
+			Application application) {
+		ApplicationInformation appInfo = new ApplicationInformation();
+		
+		appInfo.setApplication(application);
+		appInfo.setAssignmentTitle(application.getAssignment().getTitle());
+		appInfo.setCoStudent1Name(application.getCoStudentName1());
+		appInfo.setCoStudent2Name(application.getCoStudentName2());
+		appInfo.setFacultySupervisor(application.getAssignment()
+				.getFacultySupervisor());
+		appInfo.setPriority(application.getPriority());
+		appInfo.setStudentName(employeeService.getStudentFromStudentNumber(
+				application.getApplicantStudentNumber()).getName());
+		
+		return appInfo;
 	}
 
 	public void actionRefreshApplicationInformationArray(ActionEvent event) {
@@ -154,19 +161,28 @@ public class AssignSortableBean implements DisposableBean{
 	}
 	
 	public void actionSaveAssignedApplications(ActionEvent event) {
-		List<Thesis> thesisToSave = new ArrayList<Thesis>();
-		Thesis thesisToAdd = null;
+		List<Thesis> thesesToSave = new ArrayList<Thesis>();
 		for (ApplicationInformation appInfo : selectedApplicationInformationList) {
-			thesisToAdd = new Thesis();
-			thesisToAdd.setAssignedAssignmentId(appInfo.getApplication().getAssignment().getId());
-			thesisToAdd.setCoStudent1(appInfo.getCoStudent1Name());
-			thesisToAdd.setCoStudent2(appInfo.getCoStudent2Name());
-			thesisToAdd.setDeadlineForSubmissionOfTopic(getFromDate());
-			thesisToAdd.setDeadlineForSubmissionForEvalutation(getToDate());
-			thesisToAdd.setStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
-			thesisToSave.add(thesisToAdd);		
+			thesesToSave
+					.add(getThesisWithFieldsSetFromApplicationInformation(appInfo));
 		}
-		employeeService.addThesesFromList(thesisToSave);
+		employeeService.addThesesFromList(thesesToSave);
+	}
+
+	private Thesis getThesisWithFieldsSetFromApplicationInformation(
+			ApplicationInformation appInfo) {
+		Thesis thesis = new Thesis();
+
+		thesis.setAssignedAssignmentId(appInfo.getApplication().getAssignment()
+				.getId());
+		thesis.setCoStudent1(appInfo.getCoStudent1Name());
+		thesis.setCoStudent2(appInfo.getCoStudent2Name());
+		thesis.setDeadlineForSubmissionOfTopic(getFromDate());
+		thesis.setDeadlineForSubmissionForEvalutation(getToDate());
+		thesis.setStudentNumber(appInfo.getApplication()
+				.getApplicantStudentNumber());
+
+		return thesis;
 	}
 	
 	public void actionToggleCalendar(ActionEvent event) {
@@ -180,10 +196,11 @@ public class AssignSortableBean implements DisposableBean{
 	}
 	
 	public void actionUpdateDate(ValueChangeEvent event) {
-		if(event.getComponent().getId().equals("fromDateInput")) {
+		String componentId = event.getComponent().getId();
+		if(componentId.equals("fromDateInput")) {
 			setFromDate((Date)event.getNewValue());
 			setShowFromDateCalendar(false);
-		} else if (event.getComponent().getId().equals("toDateInput")) {
+		} else if (componentId.equals("toDateInput")) {
 			setToDate((Date)event.getNewValue());
 			setShowToDateCalendar(false);
 		}
