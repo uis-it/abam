@@ -114,6 +114,10 @@ public class Assignment implements Comparable<Assignment>{
 		this.displayAssignment = displayAssignment;
 	}
 
+	public boolean isExpired() {
+		return expireDate.before(GregorianCalendar.getInstance());
+	}
+
 	public String getTitle() {
 		return title;
 	}
