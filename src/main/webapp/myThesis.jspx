@@ -70,8 +70,13 @@
 				</ice:dataTable>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Cooperative student(s): "/> </td>
+					<td><ice:outputText value="Student(s) assigned to this thesis: "/> </td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.studentNumber1}"/></td>
+					<td></td>
+				</tr>
+				<tr>
 					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.studentNumber2}"/></td>
+					<td></td>
 					<td></td>
 				</tr>
 				<tr>
