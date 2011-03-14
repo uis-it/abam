@@ -1,11 +1,16 @@
 package no.uis.abam.dom;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Student extends Person {
 
 	private static final String MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED = 
 		"You have applied for the maximum allowed assignments, remove at least one and try again";
 	private static final String ASSIGNMENT_ALREADY_APPLIED_FOR = 
 		"You have already applied for this assignment";
+	
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private long studentNumber;
 	
@@ -14,6 +19,9 @@ public class Student extends Person {
 	private String applicationsErrorMessage;
 	
 	private boolean bachelor;
+	private boolean acceptedThesis;
+	
+	private Date actualSubmissionOfTopic;
 	
 	private Assignment customAssignment;	
 	
@@ -155,6 +163,26 @@ public class Student extends Person {
 		this.bachelor = bachelor;
 	}
 
+	public boolean isAcceptedThesis() {
+		return acceptedThesis;
+	}
+
+	public void setAcceptedThesis(boolean acceptedThesis) {
+		this.acceptedThesis = acceptedThesis;
+	}
+
+	public Date getActualSubmissionOfTopic() {
+		return actualSubmissionOfTopic;
+	}
+	
+	public String getActualSubmissionOfTopicAsString() {
+		return simpleDateFormatter.format(actualSubmissionOfTopic);
+	}
+
+	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
+		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
+	}
+	
 	public boolean equals(Student student) {
 		return this.getStudentNumber() == student.getStudentNumber();
 	}

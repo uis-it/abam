@@ -1,27 +1,32 @@
 package no.uis.abam.dom;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Thesis {
 
 	private int assignedAssignmentId;
-	private long studentNumber;
-		
-	private boolean accepted;
+	private long studentNumber1;
+	private long studentNumber2;
+	private long studentNumber3;
+	
 	private boolean submitted;
 	private boolean editExternalExaminer = false;
 	
-	private String coStudent1;
-	private String coStudent2;
+	private String fileUploadErrorMessage;
+	private String attachedFilePath;
+
 	
 	private Date deadlineForSubmissionOfTopic;
 	private Date deadlineForSubmissionForEvalutation;	
-	private Date actualSubmissionOfTopic;
 	private Date actualSubmissionForEvalutation;
 	
 	private ExternalExaminer externalExaminer;
 
+	private List<String> attachedFileList = new ArrayList<String>();
+	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Thesis() {
@@ -35,23 +40,37 @@ public class Thesis {
 	public void setAssignedAssignmentId(int assignedAssignmentId) {
 		this.assignedAssignmentId = assignedAssignmentId;
 	}
-
-	public long getStudentNumber() {
-		return studentNumber;
-	}
-
-	public void setStudentNumber(long studentNumber) {
-		this.studentNumber = studentNumber;
-	}
-
-	public boolean isAccepted() {
-		return accepted;
-	}
-
-	public void setAccepted(boolean accepted) {
-		this.accepted = accepted;
-	}
 	
+	public void addStudentNumber(long studentNumber) {
+		if (studentNumber1 == 0) setStudentNumber1(studentNumber);
+		else if (studentNumber2 == 0) setStudentNumber2(studentNumber);
+		else if (studentNumber3 == 0) setStudentNumber3(studentNumber);
+	}
+
+	public long getStudentNumber1() {
+		return studentNumber1;
+	}
+
+	public void setStudentNumber1(long studentNumber1) {
+		this.studentNumber1 = studentNumber1;
+	}
+
+	public long getStudentNumber2() {
+		return studentNumber2;
+	}
+
+	public void setStudentNumber2(long studentNumber2) {
+		this.studentNumber2 = studentNumber2;
+	}
+
+	public long getStudentNumber3() {
+		return studentNumber3;
+	}
+
+	public void setStudentNumber3(long studentNumber3) {
+		this.studentNumber3 = studentNumber3;
+	}
+
 	public boolean isSubmitted() {
 		return submitted;
 	}
@@ -66,22 +85,6 @@ public class Thesis {
 
 	public void setSubmitted(boolean submitted) {
 		this.submitted = submitted;
-	}
-
-	public String getCoStudent1() {
-		return coStudent1;
-	}
-
-	public void setCoStudent1(String coStudent1) {
-		this.coStudent1 = coStudent1;
-	}
-
-	public String getCoStudent2() {
-		return coStudent2;
-	}
-
-	public void setCoStudent2(String coStudent2) {
-		this.coStudent2 = coStudent2;
 	}
 
 	public Date getDeadlineForSubmissionOfTopic() {
@@ -109,18 +112,6 @@ public class Thesis {
 		this.deadlineForSubmissionForEvalutation = deadlineForSubmissionForEvalutation;
 	}
 
-	public Date getActualSubmissionOfTopic() {
-		return actualSubmissionOfTopic;
-	}
-	
-	public String getActualSubmissionOfTopicAsString() {
-		return simpleDateFormatter.format(actualSubmissionOfTopic);
-	}
-
-	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
-		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
-	}
-
 	public Date getActualSubmissionForEvalutation() {
 		return actualSubmissionForEvalutation;
 	}
@@ -129,6 +120,22 @@ public class Thesis {
 		return simpleDateFormatter.format(actualSubmissionForEvalutation);
 	}
 	
+	public String getFileUploadErrorMessage() {
+		return fileUploadErrorMessage;
+	}
+
+	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
+		this.fileUploadErrorMessage = fileUploadErrorMessage;
+	}
+
+	public String getAttachedFilePath() {
+		return attachedFilePath;
+	}
+
+	public void setAttachedFilePath(String attachedFilePath) {
+		this.attachedFilePath = attachedFilePath;
+	}
+
 	public void setActualSubmissionForEvalutation(
 			Date actualSubmissionForEvalutation) {
 		this.actualSubmissionForEvalutation = actualSubmissionForEvalutation;
@@ -142,8 +149,16 @@ public class Thesis {
 		this.externalExaminer = externalExaminer;
 	}
 	public boolean equals(Thesis thesis) {
-		return (this.getStudentNumber() == thesis.getStudentNumber())
-				&& (this.getAssignedAssignmentId() == thesis
-						.getAssignedAssignmentId());
+		return this.getAssignedAssignmentId() == thesis
+						.getAssignedAssignmentId();
 	}
+
+	public List<String> getAttachedFileList() {
+		return attachedFileList;
+	}
+
+	public void setAttachedFileList(List<String> attachedFileList) {
+		this.attachedFileList = attachedFileList;
+	}
+	
 }
