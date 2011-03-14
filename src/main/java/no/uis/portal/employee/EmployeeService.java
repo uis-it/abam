@@ -5,10 +5,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -35,14 +42,15 @@ public class EmployeeService {
 	
 	private Set<Assignment> assignmentSet;
 	
-	public EmployeeService() {
+	public EmployeeService() {		
+		
 	}
 
 	public void saveAssignment(Assignment assignment) {
 		abamClient.saveAssignment(assignment);
 	}
 
-	public void actionPrepareDisplayAssignments(ActionEvent event) {
+	public void actionPrepareDisplayAssignments(ActionEvent event) {		
 		getActiveAssignmentsSet();
 		setSelectedStudyProgramNumber(0);
 		setSelectedDepartmentNumber(0);
@@ -289,4 +297,21 @@ public class EmployeeService {
 		this.abamClient = abamClient;
 	}
 
+//	private void methodForFindingUserInfoToBeUsed() {
+//		try {
+//			String userId = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
+//			User user = UserLocalServiceUtil.getUser(Long.valueOf(userId));
+//			List<Role> roles = user.getRoles();			
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (PortalException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (SystemException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
 }
