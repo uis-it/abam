@@ -38,13 +38,13 @@ public class ExternalExaminerBean implements DisposableBean{
 			thesisInformation = new ThesisInformation();
 			Assignment assignment = employeeService.getAssignmentFromId(thesis.getAssignedAssignmentId());
 			if (assignment == null) {
-				Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber());
+				Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1());
 				thesisInformation.setAssignmentTitle(student.getCustomAssignment().getTitle());
 			} else {
 				thesisInformation.setAssignmentTitle(assignment.getTitle());
 			}			
-			thesisInformation.setCoStudent1Name(thesis.getCoStudent1());
-			thesisInformation.setCoStudent2Name(thesis.getCoStudent2());
+			thesisInformation.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
+			thesisInformation.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
 			ExternalExaminer examiner = thesis.getExternalExaminer();
 			if (examiner == null) {
 				thesisInformation.setExternalExaminerName("");
@@ -52,7 +52,7 @@ public class ExternalExaminerBean implements DisposableBean{
 				thesisInformation.setExternalExaminerName(thesis.getExternalExaminer().getName());
 			}
 			thesisInformation.setStudentName(employeeService
-					.getStudentFromStudentNumber(thesis.getStudentNumber())
+					.getStudentFromStudentNumber(thesis.getStudentNumber1())
 					.getName());
 			thesisInformation.setThesis(thesis);	
 			thesisInformationList.add(thesisInformation);
