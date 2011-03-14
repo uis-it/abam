@@ -25,7 +25,7 @@
 			<table>
 			<tr>
 					<td><ice:outputText value="Attachment: "/> </td>
-					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}"/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}" /> </td>
 					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.fileUploadErrorMessage}"/> </td>
 				</tr>
 				<tr>

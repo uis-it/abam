@@ -97,7 +97,7 @@ public class ThesisBean implements DisposableBean {
         FileInfo fileInfo = inputFile.getFileInfo();
         //file has been saved
         if (fileInfo.isSaved()) {
-        	currentStudentsThesis.setFileUploadErrorMessage("");
+        	currentStudentsThesis.setFileUploadErrorMessage("The size limit of an attachment is 40MB");
         	currentStudentsThesis.getAttachedFileList().add(fileInfo.getFileName());
         	currentStudentsThesis.setAttachedFilePath(fileInfo.getPhysicalPath());
         	currentStudentsThesis.getAttachedFilePath().replace(fileInfo.getFileName(), "");
@@ -108,7 +108,7 @@ public class ThesisBean implements DisposableBean {
             	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
             }
             if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment exceeded the size limit.");
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment exceeded the size limit of 40MB.");
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
             	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
