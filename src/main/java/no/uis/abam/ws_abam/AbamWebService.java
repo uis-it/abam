@@ -2,6 +2,7 @@ package no.uis.abam.ws_abam;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
@@ -19,6 +20,7 @@ public interface AbamWebService {
 	public TreeSet<Assignment> getAllAssignments();
 	public void setAssignmentList(TreeSet<Assignment> assignmentList);
 	public TreeSet<Assignment> getAssignmentsFromDepartmentName(String departmentName);
+	public TreeSet<Assignment> getActiveAssignments();
 	
 	public void saveAssignment(Assignment assignment);
 	public void removeAssignment(Assignment assignment);

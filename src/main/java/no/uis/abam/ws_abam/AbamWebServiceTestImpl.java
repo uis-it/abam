@@ -6,9 +6,12 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
+
+import com.sun.xml.bind.v2.runtime.AssociationMap;
 
 import no.uis.abam.dom.*;
 
@@ -32,6 +35,14 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public TreeSet<Assignment> getAllAssignments() {
 		return assignmentList;
 	}	
+	
+	public TreeSet<Assignment> getActiveAssignments() {
+		TreeSet<Assignment> activeAssignments = new TreeSet<Assignment>();
+		for (Assignment assignment : assignmentList) {
+			if(!assignment.isExpired()) activeAssignments.add(assignment);
+		}
+		return activeAssignments;
+	}
 	
 	public void saveAssignment(Assignment assignment){
 		assignmentList.remove(assignment);
