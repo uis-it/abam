@@ -7,12 +7,12 @@
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
 		
-			<h:outputText value="Assignment successfully saved"/><br/>
+			<ice:outputText value="Assignment successfully saved"/><br/>
 			<br/>
 			<br/>
-			<h:commandButton type="submit" actionListener="#{assignmentBean.actionCreateNewAssignment}" action="createAssignment" value="Create new"></h:commandButton>						
-			<h:commandButton type="submit" action="displayAssignments" value="View assignments"></h:commandButton>	
-			<h:commandButton type="submit" action="backToView" value="Main menu"></h:commandButton>
+			<ice:commandButton type="submit" actionListener="#{assignmentBean.actionCreateNewAssignment}" action="createAssignment" value="Create new"/>						
+			<ice:commandButton type="submit" action="displayAssignments" value="View assignments" actionListener="#{employeeService.actionPrepareDisplayAssignments}"/>	
+			<ice:commandButton type="submit" action="backToView" value="Main menu"/>
 		</ice:form>
 	</ice:portlet>
 </f:view>

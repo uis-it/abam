@@ -11,7 +11,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="Department: "/> </td>
-					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true" immediate="true">
 						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
 					</ice:selectOneMenu>
 					</td>
@@ -20,13 +20,17 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Study Program: "/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true">
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true" immediate="true" binding="#{employeeService.studyProgramMenu}">
 						<f:selectItems id="studyProgramContent" value="#{employeeService.selectedStudyProgramList}"/>
 					</ice:selectOneMenu></td>
 					
 				</tr>
 				<tr>
-				<ice:dataTable id="departmentTable" var="item" value="#{employeeService.assignmentList}">
+					<td><ice:outputText value="Show expired assignments:" /></td>
+					<td><ice:selectBooleanCheckbox value="#{assignmentBean.showExpired}" valueChangeListener="#{assignmentBean.actionShowExpired}" partialSubmit="true"/></td>
+				</tr>
+				<tr>
+				<ice:dataTable id="departmentTable" var="item" value="#{employeeService.assignmentSet}">
 					<ice:column>
 						<f:facet name="header">
 							<ice:outputText value="Assignments:"/>

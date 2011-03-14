@@ -8,6 +8,8 @@ import java.util.TreeSet;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
+
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
@@ -28,6 +30,11 @@ public class EmployeeService {
 	private LinkedList<Department> departmentList;
 	private List<EditableSelectItem> selectedStudyProgramList = new LinkedList<EditableSelectItem>();
 
+	private HtmlSelectOneMenu studyProgramMenu;
+
+	
+	private Set<Assignment> assignmentSet;
+	
 	public EmployeeService() {
 	}
 
@@ -35,7 +42,8 @@ public class EmployeeService {
 		abamClient.saveAssignment(assignment);
 	}
 
-	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event) {
+	public void actionPrepareDisplayAssignments(ActionEvent event) {
+		getActiveAssignmentsSet();
 		setSelectedStudyProgramNumber(0);
 		setSelectedDepartmentNumber(0);
 		getDepartmentListFromWebService();
@@ -43,23 +51,22 @@ public class EmployeeService {
 
 	public void actionUpdateStudyProgramList(ValueChangeEvent event) {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
-		
-		TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
-		for (Assignment assignment : assignmentList) {
+		studyProgramMenu.setValue(getSelectedStudyProgramNumber());
+		for (Assignment assignment : assignmentSet) {
 			if (assignment.getDepartmentName().equals(selectedDepartmentName)
 					|| selectedDepartmentName.equals(""))
 				assignment.setDisplayAssignment(true);
 			else
 				assignment.setDisplayAssignment(false);
 		}
-		abamClient.setAssignmentList(assignmentList);
 		setAllEditExternalExaminerToFalse();
 	}
 
 	private void setSelectedDepartmentAndStudyProgramFromValue(int value) {
-		selectedDepartmentNumber = value;
+		setSelectedDepartmentNumber(value);
 		Department selectedDepartment = getDepartmentFromValue(selectedDepartmentNumber);
-		selectedDepartmentName = selectedDepartment.getLabel();
+		setSelectedDepartmentName(selectedDepartment.getLabel());
+		setSelectedStudyProgramNumber(0);
 		setSelectedStudyProgramList(selectedDepartment.getStudyPrograms());		
 
 	}
@@ -85,30 +92,37 @@ public class EmployeeService {
 			selectedStudyProgramNumber = Integer.parseInt(event.getNewValue()
 					.toString());
 		}
+		setDisplayAssignments();
+		setAllEditExternalExaminerToFalse();
+	}
+	
+	public void setDisplayAssignments() {
 		String selectedStudyProgram = getStudyProgramNameFromValue(selectedStudyProgramNumber);
 		
 		
-		TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
+		//TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
 		
 		if (selectedDepartmentName == null)
 			setSelectedDepartmentName("");
-		for (Assignment assignment : assignmentList) {
+		if (selectedStudyProgram == null)
+			selectedStudyProgram = "";
+		for (Assignment assignment : assignmentSet) {
 			if (assignmentShouldBeDisplayed(assignment,
 					selectedStudyProgram))
 				assignment.setDisplayAssignment(true);
 			else
 				assignment.setDisplayAssignment(false);
 		}
-		abamClient.setAssignmentList(assignmentList);
-		setAllEditExternalExaminerToFalse();
+		//abamClient.setAssignmentList(assignmentSet);
 	}
-
+		
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn,
 			String selectedStudyProgram) {
 		return (selectedStudyProgram.equals("") && assignmentIn
 				.getDepartmentName().equals(selectedDepartmentName))
 				|| assignmentIn.getStudyProgramName().equals(
-						selectedStudyProgram);
+						selectedStudyProgram)
+				|| getSelectedDepartmentName().equals("");
 	}
 
 	public void setAllEditExternalExaminerToFalse() {
@@ -245,8 +259,30 @@ public class EmployeeService {
 		return departmentList;
 	}
 
-	public Set<Assignment> getAssignmentList() {
-		return abamClient.getAllAssignments();
+	public Set<Assignment> getAssignmentSet() {
+		return assignmentSet;
+	}
+
+	public void setAssignmentSet(Set<Assignment> assignmentSet) {
+		this.assignmentSet = assignmentSet;
+	}
+
+	public Set<Assignment> getAllAssignmentsSet() {
+		assignmentSet = abamClient.getAllAssignments();
+		return assignmentSet;
+	}
+	
+	public HtmlSelectOneMenu getStudyProgramMenu() {
+		return studyProgramMenu;
+	}
+
+	public void setStudyProgramMenu(HtmlSelectOneMenu studyProgramMenu) {
+		this.studyProgramMenu = studyProgramMenu;
+	}
+
+	public Set<Assignment> getActiveAssignmentsSet() {
+		assignmentSet = abamClient.getActiveAssignments();
+		return assignmentSet;
 	}
 
 	public void setAbamClient(AbamWebService abamClient) {

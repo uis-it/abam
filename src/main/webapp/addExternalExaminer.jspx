@@ -16,7 +16,7 @@
 						<ice:outputText id="examinerName" value="Name:" />
 					</td>
 					<td>
-						<ice:inputText id="examinerNameValue" value="#{externalExaminerBean.externalExaminer.name}"/>
+						<ice:inputText id="examinerNameValue" value="#{externalExaminerBean.externalExaminer.name}" required="true"/>
 					</td>
 				</tr>
 				<tr>

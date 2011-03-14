@@ -38,6 +38,8 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private boolean backToAssignAssignment;
 	private boolean backToDisplayAssignments;
 	private boolean backToAssignmentAttachment;
+	
+	private boolean showExpired;
 
 	public EmployeeAssignmentBean(){
 		
@@ -47,31 +49,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		this.employeeService = employeeService;
 		context = FacesContext.getCurrentInstance();		
 	}
-	
-//	public void actionEditExternalExaminer(ActionEvent event) {
-//		UIComponent uic = event.getComponent();
-//
-//		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-//		
-//		Thesis selectedThesis = (Thesis)table.getRowData();
-//		if(!selectedThesis.equals(currentAssignment)) currentAssignment.setEditExternalExaminer(false);
-//		setCurrentAssignment(selectedAssignment);
-//	
-//		if(currentAssignment.getExternalExaminer() == null) {
-//			currentAssignment.setExternalExaminer(new ExternalExaminer());
-//		}
-//		
-//		if(currentAssignment.isEditExternalExaminer()) {
-//				currentAssignment.setEditExternalExaminer(false);
-//		} else {
-//			currentAssignment.setEditExternalExaminer(true);
-//		}
-//		employeeService.saveAssignment(currentAssignment);
-//	}
-	
-//	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
-//		employeeService.setAllEditExternalExaminerToFalse();
-//	}
 	
 	public void actionSetSelectedAssignmentFromAssignAssignment(ActionEvent event) {
 		UIComponent uic = event.getComponent();
@@ -193,6 +170,15 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		}
 	}
 	
+	public void actionShowExpired(ValueChangeEvent event) {
+		if(event.getNewValue().equals(true)) {
+			employeeService.getAllAssignmentsSet();			
+		} else {
+			employeeService.getActiveAssignmentsSet();
+		}
+		employeeService.setDisplayAssignments();
+	}
+	
 	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -259,6 +245,14 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 	public void setBackToDisplayAssignments(boolean backToDisplayAssignments) {
 		this.backToDisplayAssignments = backToDisplayAssignments;
+	}
+
+	public boolean isShowExpired() {
+		return showExpired;
+	}
+
+	public void setShowExpired(boolean showExpired) {
+		this.showExpired = showExpired;
 	}
 
 	public void dispose() throws Exception {
