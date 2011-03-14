@@ -61,6 +61,10 @@
 			<from-outcome>editMyApplications</from-outcome>
 			<to-view-id>/editMyApplications.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>submitThesis</from-outcome>
+			<to-view-id>/submitThesis.jspx</to-view-id>
+		</navigation-case>
 		</navigation-rule>
 	
 	<managed-bean>

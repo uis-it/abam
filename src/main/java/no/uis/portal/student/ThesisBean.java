@@ -2,12 +2,17 @@ package no.uis.portal.student;
 
 import java.util.GregorianCalendar;
 
+import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 
+import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.icesoft.faces.component.inputfile.FileInfo;
+import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 
 public class ThesisBean implements DisposableBean {
@@ -30,8 +35,9 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionGetInformationForStudent(ActionEvent event) {
 		setRenderAcceptButtonFalse();
-
+		
 		studentService.updateCurrentStudentFromWebService();
+		Student currentStudent = studentService.getCurrentStudent();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
 		if (currentStudentsThesis != null) {
 			if (currentStudentsThesis.getAssignedAssignmentId() == 0) {
@@ -42,7 +48,7 @@ public class ThesisBean implements DisposableBean {
 						.getAssignmentFromId(currentStudentsThesis
 								.getAssignedAssignmentId());
 			}
-			if (currentStudentsThesis.isAccepted()) {
+			if (currentStudent.isAcceptedThesis()) {
 				readRules1 = true;
 				readRules2 = true;
 				readRules3 = true;
@@ -71,9 +77,9 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public void actionSetThesisIsAccepted(ActionEvent event) {
-		currentStudentsThesis.setAccepted(true);
-		currentStudentsThesis.setActualSubmissionOfTopic(GregorianCalendar.getInstance().getTime());
+		studentService.getCurrentStudent().setActualSubmissionOfTopic(GregorianCalendar.getInstance().getTime());
 		studentService.getCurrentStudent().setAssignedThesis(currentStudentsThesis);
+		studentService.getCurrentStudent().setAcceptedThesis(true);
 		studentService.updateStudentInWebServiceFromCurrentStudent();
 		actionInitMyThesisPage(event);
 	}
@@ -84,6 +90,40 @@ public class ThesisBean implements DisposableBean {
 		} else {
 			renderMyThesis = true;
 		}
+	}
+	
+	public void actionFileUpload(ActionEvent event){
+		InputFile inputFile =(InputFile) event.getSource();
+        FileInfo fileInfo = inputFile.getFileInfo();
+        //file has been saved
+        if (fileInfo.isSaved()) {
+        	currentStudentsThesis.setFileUploadErrorMessage("");
+        	currentStudentsThesis.getAttachedFileList().add(fileInfo.getFileName());
+        	currentStudentsThesis.setAttachedFilePath(fileInfo.getPhysicalPath());
+        	currentStudentsThesis.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+        }
+        //upload failed, generate custom messages
+        if (fileInfo.isFailed()) {
+            if(fileInfo.getStatus() == FileInfo.INVALID){
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
+            }
+            if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment exceeded the size limit.");
+            }
+            if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
+            }
+            if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment can only be a pdf, zip, gif, png, jpeg, jpg, doc or docx file.");
+            }
+        }
+	}
+	
+	public void actionRemoveAttachment(ActionEvent event){
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		
+		currentStudentsThesis.getAttachedFileList().remove(table.getRowData());		
 	}
 	
 	public void setStudentService(StudentService studentService) {

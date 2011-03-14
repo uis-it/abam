@@ -71,11 +71,11 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Cooperative student(s): "/> </td>
-					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent1}"/></td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.studentNumber2}"/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.coStudent2}"/></td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.studentNumber3}"/></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -92,7 +92,8 @@
 			</table>
 						
 			<table border="0">
-				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"></ice:commandButton>
+				<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton"/>
+				<ice:commandButton type="submit" action="submitThesis" value="Submit thesis" id="SubmitButton"/>
 			</table>
 		</ice:form>
 	</ice:portlet>

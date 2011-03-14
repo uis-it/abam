@@ -1,0 +1,48 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />	
+	<ice:portlet>
+		<ice:form>
+		
+			<ice:outputText value="Create/edit your custom assignment"/><br/>
+			<br/>
+			<br/>
+			<table border="0" >				
+				<tr>
+					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText id="title" value="#{thesisBean.currentAssignment.title}"/></td>					
+				</tr>
+				<tr>
+					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText id="description" value="#{thesisBean.currentAssignment.description}"/></td>					
+				</tr>
+				<tr>
+				</tr>
+			</table>
+			<table>
+			<tr>
+					<td><ice:outputText value="Attachment: "/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}"/> </td>
+					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.fileUploadErrorMessage}"/> </td>
+				</tr>
+				<tr>
+					<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachedFileList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="Uploaded files"/>
+					</f:facet>
+						<ice:outputText id="nameInput" value="#{attachment}"/>
+						<ice:commandButton type="submit" value="Remove" actionListener="#{thesisBean.actionRemoveAttachment}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>	
+			</table>
+
+			<ice:commandButton type="submit" action="myThesis" value="Back" id="BackButton" immediate="true"/>
+			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
+		</ice:form>
+	</ice:portlet>
+</f:view>
