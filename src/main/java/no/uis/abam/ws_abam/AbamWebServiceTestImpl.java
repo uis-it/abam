@@ -102,16 +102,13 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	private void initializeThesisList() {
 		Thesis testThesis = new Thesis();
-		testThesis.setAccepted(true);
 		testThesis.setAssignedAssignmentId(assignmentList.first().getId());
-		testThesis.setCoStudent1("Tom");
-		testThesis.setStudentNumber(studentList.get(0).getStudentNumber());
+		testThesis.setStudentNumber1(studentList.get(0).getStudentNumber());
 		savedThesesList.add(testThesis);
 		testThesis = new Thesis();
-		testThesis.setAccepted(true);
 		testThesis.setAssignedAssignmentId(assignmentList.last().getId());
-		testThesis.setCoStudent1("Bente");
-		testThesis.setStudentNumber(studentList.get(1).getStudentNumber());
+		testThesis.setStudentNumber2(123456);
+		testThesis.setStudentNumber1(studentList.get(1).getStudentNumber());
 		savedThesesList.add(testThesis);
 	}
 	
@@ -193,15 +190,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public List<EditableSelectItem> getStudyProgramList(int departmentIndex) {
 		return departmentList.get(departmentIndex).getStudyPrograms();
 	}
-
-//	public List<LinkedList<EditableSelectItem>> getAllStudyProgramsByDepartmentList() {
-//		return allStudyProgramsByDepartmentList;
-//	}
-
-//	public void setAllStudyProgramsByDepartmentList(
-//			List<LinkedList<EditableSelectItem>> allStudyProgramsByDepartmentList) {
-//		this.allStudyProgramsByDepartmentList = allStudyProgramsByDepartmentList;
-//	}
 
 	public String getStudyProgram(int departmentIndex, int studyProgramIndex) {
 		return getStudyProgramList(departmentIndex).get(studyProgramIndex).getLabel();
@@ -317,7 +305,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
 		for (Thesis thesis : thesesToAdd) {
 			savedThesesList.add(thesis);
-			Student student = getStudentFromStudentNumber(thesis.getStudentNumber());
+			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
 			student.setAssignedThesis(thesis);
 			removeStudentsApplicationFromList(student);
 		}
