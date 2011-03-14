@@ -30,7 +30,7 @@ public class Thesis {
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Thesis() {
-		
+		fileUploadErrorMessage = "The size limit of an attachment is 40MB";
 	}
 
 	public int getAssignedAssignmentId() {
