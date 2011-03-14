@@ -1,7 +1,11 @@
 package no.uis.portal.employee;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIComponent;
@@ -44,12 +48,12 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		context = FacesContext.getCurrentInstance();		
 	}
 	
-	public void actionEditExternalExaminer(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Thesis selectedThesis = (Thesis)table.getRowData();
+//	public void actionEditExternalExaminer(ActionEvent event) {
+//		UIComponent uic = event.getComponent();
+//
+//		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+//		
+//		Thesis selectedThesis = (Thesis)table.getRowData();
 //		if(!selectedThesis.equals(currentAssignment)) currentAssignment.setEditExternalExaminer(false);
 //		setCurrentAssignment(selectedAssignment);
 //	
@@ -63,11 +67,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 //			currentAssignment.setEditExternalExaminer(true);
 //		}
 //		employeeService.saveAssignment(currentAssignment);
-	}
+//	}
 	
-	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
-		employeeService.setAllEditExternalExaminerToFalse();
-	}
+//	public void actionEditExternalExaminerSetAllFalse(ActionEvent event) {
+//		employeeService.setAllEditExternalExaminerToFalse();
+//	}
 	
 	public void actionSetSelectedAssignmentFromAssignAssignment(ActionEvent event) {
 		UIComponent uic = event.getComponent();
@@ -76,7 +80,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		ApplicationInformation applicationInformation = (ApplicationInformation)table.getRowData();
 		Assignment selectedAssignment = applicationInformation.getApplication().getAssignment();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
 		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
@@ -93,17 +97,19 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		employeeService.saveAssignment(currentAssignment);
 	}
 	
-	public void actionSetSelectedAssignment(ActionEvent event){
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Assignment selectedAssignment = (Assignment)table.getRowData();
+	public void actionSetSelectedAssignment(ActionEvent event){		
+		Assignment selectedAssignment = (Assignment) getRowFromEvent(event);
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
 		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+	}
+	
+	private Object getRowFromEvent(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		return table.getRowData();
 	}
 	
 	public void actionSetSelectedAssignmentFromDisplayAssignments(ActionEvent event){
@@ -112,10 +118,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionRemoveAssignment(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Assignment assignment = (Assignment)table.getRowData();
+		Assignment assignment = (Assignment) getRowFromEvent(event);
 		
 		employeeService.removeAssignment(assignment);
 	}
@@ -125,10 +128,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionRemoveSupervisor(ActionEvent event) {
-		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		currentAssignment.getSupervisorList().remove(table.getRowData());		
+		currentAssignment.getSupervisorList().remove(getRowFromEvent(event));		
 	}
 	
 	public void actionPrepareBackButtonFromAssignmentAttachment(ActionEvent event) {
@@ -138,8 +138,8 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
-		setBackToAssignmentAttachment(false);
 		setBackToAssignAssignment(true);
+		setBackToAssignmentAttachment(false);
 		setBackToDisplayAssignments(false);
 	}
 	
@@ -149,7 +149,32 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToAssignAssignment(false);
 	}
 	
-	public void actionUpdateCurrentAssignment(ActionEvent event) {
+	public void actionUpdateCurrentAssignment(ActionEvent event) {		
+		debugToLog(Level.ERROR, event);
+		
+		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
+		currentAssignment.setStudyProgramName(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramNumber()));
+		currentAssignment.setFileUploadErrorMessage("");
+		GregorianCalendar calendar = new GregorianCalendar();
+		currentAssignment.setAddedDate(calendar);
+		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
+		currentAssignment.setExpireDate(calendar);
+		currentAssignment.setType("Bachelor");
+		
+		String numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
+		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
+		String typeAssignment = currentAssignment.isBachelor() ? "true" : "false";
+		if(typeAssignment != null && typeAssignment.equals("false")){
+			if(!numberOfStudentsInput.equals("1")){
+				currentAssignment.setNumberOfStudents("1");
+				currentAssignment.setType("Master");
+				if(!numberOfStudentsInput.equals(""))
+					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
+			}
+		}
+	}
+	
+	private void debugToLog(Level level, ActionEvent event) {
 		String clientId = event.getComponent().getClientId(context);
 		clientId = clientId.replaceAll("CreateButton", "");
 		
@@ -166,29 +191,9 @@ public class EmployeeAssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
-		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
-		currentAssignment.setStudyProgramName(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramNumber()));
-		currentAssignment.setFileUploadErrorMessage("");
-		GregorianCalendar calendar = new GregorianCalendar();
-		currentAssignment.setAddedDate(calendar);
-		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
-		currentAssignment.setExpireDate(calendar);
-		currentAssignment.setType("Bachelor");
-		
-		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
-		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
-		String typeAssignment = (String)parameterMap.get(clientId+"type");
-		if(typeAssignment != null && typeAssignment.equals("false")){
-			if(!numberOfStudentsInput.equals("1")){
-				currentAssignment.setNumberOfStudents("1");
-				currentAssignment.setType("Master");
-				if(!numberOfStudentsInput.equals(""))
-					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
-			}
-		}
 	}
 	
-	public void fileUploadListen(ActionEvent event){
+	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
         //file has been saved
@@ -229,10 +234,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionRemoveAttachment(ActionEvent event){
-		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-	    currentAssignment.getAttachedFileList().remove(table.getRowData());		
+		currentAssignment.getAttachedFileList().remove(getRowFromEvent(event));		
 	}
 
 	public boolean isBackToAssignAssignment() {

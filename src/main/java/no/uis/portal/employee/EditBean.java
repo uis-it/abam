@@ -18,57 +18,54 @@ public class EditBean implements DisposableBean {
 	}
 
 	public void actionSetEditable(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		EditableSelectItem editItem = (EditableSelectItem)table.getRowData();
-		if (editItem.isEditable()){
-			editItem.setEditable(false);
-		} else {
-			editItem.setEditable(true);
-		}
-	
+		EditableSelectItem editItem = (EditableSelectItem) getRowFromEvent(event);
+		editItem.setEditable(!editItem.isEditable());			
 	}
 	
-	public void actionAddNewDepartment(ActionEvent event){
-		employeeService.addNewDepartment();
-			
-	}
-	
-	public void actionRemoveDepartment(ActionEvent event) {
+	private Object getRowFromEvent(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		employeeService.removeDepartment((EditableSelectItem) table.getRowData());	
+		return table.getRowData();
 	}
 	
 	public void actionAddNewStudyProgram(ActionEvent event){
-		List<EditableSelectItem> studyProgramList = employeeService.getSelectedStudyProgramList();
+		List<EditableSelectItem> studyProgramList = getSelectedStudyProgramList();
 		EditableSelectItem newItem = new EditableSelectItem(new Integer(studyProgramList.size()), "");
 		newItem.setEditable(true);
 		studyProgramList.add(newItem);
+	}
+	
+	public void actionAddNewDepartment(ActionEvent event){
+		employeeService.addNewDepartment();		
+	}
+	
+	public void actionRemoveStudyProgram(ActionEvent event) {		
+		getSelectedStudyProgramList().remove(getRowFromEvent(event));			
+	}
+	
+	public void actionRemoveDepartment(ActionEvent event) {		
+		employeeService.removeDepartment((EditableSelectItem) getRowFromEvent(event));	
 	}
 	
 	public void actionSaveDepartmentListToWebService(ActionEvent event) {
 		employeeService.saveDepartmentListToWebService();
 	}
 	
-	public void actionGetListsFromWebService(ActionEvent event) {
+	public void actionGetDepartmentListFromWebService(ActionEvent event) {
 		employeeService.getDepartmentListFromWebService();
-		//employeeService.getAllStudyProgramsByDepartmentListFromWebService();
 	}
 	
-	public void actionRemoveStudyProgram(ActionEvent event) {
-		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		employeeService.getSelectedStudyProgramList().remove(table.getRowData());			
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
 	}
 	
+	public List<EditableSelectItem> getSelectedStudyProgramList() {
+		return employeeService.getSelectedStudyProgramList();
+	}
+
 	public void dispose() throws Exception {
 		
 	}
 
-	public void setEmployeeService(EmployeeService employeeService) {
-		this.employeeService = employeeService;
-	}
-
+	
 }

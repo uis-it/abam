@@ -28,7 +28,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="Attachment: "/> </td>
-					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" actionListener="#{assignmentBean.fileUploadListen}"/> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" actionListener="#{assignmentBean.actionFileUpload}"/> </td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.fileUploadErrorMessage}"/> </td>
 				</tr>
 				<tr>

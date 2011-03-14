@@ -27,7 +27,7 @@
 			<table border="0">
 				<tr>
 					<td></td><td></td>
-					<td><ice:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true" actionListener="#{editBean.actionGetListsFromWebService}"/></td>
+					<td><ice:commandButton type="submit" action="editInformation" value="Back" id="BackButton" immediate="true" actionListener="#{editBean.actionGetDepartmentListFromWebService}"/></td>
 					<td><ice:commandButton type="submit" value="Save" id="SaveButton" action="editInformation" immediate="true" actionListener="#{editBean.actionSaveDepartmentListToWebService}"/></td>
 				</tr>
 			</table>

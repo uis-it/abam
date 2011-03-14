@@ -13,7 +13,7 @@
 				<tr>
 					<td><ice:commandButton value="Edit assignment" action="displayAssignments" actionListener="#{employeeService.actionClearStudyProgramAndDepartmentNumber}"/>
 					<ice:commandButton value="Edit study programs" action="editStudyPrograms" id="editStudyProgram" />
-					<ice:commandButton value="Edit department" action="editDepartment" id="editDepartment" actionListener="#{editBean.actionGetListsFromWebService}"/>
+					<ice:commandButton value="Edit department" action="editDepartment" id="editDepartment" actionListener="#{editBean.actionGetDepartmentListFromWebService}"/>
 					</td>
 				</tr>
 				<tr>

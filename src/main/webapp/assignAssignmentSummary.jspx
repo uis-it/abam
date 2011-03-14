@@ -67,7 +67,7 @@
             
 			</ice:dataTable>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Cancel" id="BackButton"></h:commandButton>
+				<h:commandButton type="submit" action="assignAssignment" value="Back" id="BackButton"></h:commandButton>
 				<h:commandButton type="submit" action="assignSavedConfirmation" value="Save" id="assignSelectedSave" actionListener="#{assignSortableBean.actionSaveAssignedApplications }"></h:commandButton>
 			</table>
 		</ice:form>
