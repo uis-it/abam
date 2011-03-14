@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.EditableSelectItem;
 
@@ -35,6 +36,15 @@ public class EditBean implements DisposableBean {
 		studyProgramList.add(newItem);
 	}
 	
+	public void actionPrepareEditStudyProgram(ActionEvent event) {
+		employeeService.setSelectedDepartmentNumber(0);
+		employeeService.setSelectedStudyProgramListFromDepartmentNumber(0);
+	}
+	
+	public void actionUpdateStudyProgramList(ValueChangeEvent event) {
+		employeeService.setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
+	}
+	
 	public void actionAddNewDepartment(ActionEvent event){
 		employeeService.addNewDepartment();		
 	}
@@ -48,6 +58,10 @@ public class EditBean implements DisposableBean {
 	}
 	
 	public void actionSaveDepartmentListToWebService(ActionEvent event) {
+		List<EditableSelectItem> studyPrograms = employeeService.getSelectedStudyProgramList();
+		for (EditableSelectItem studyProgram : studyPrograms) {
+			studyProgram.setEditable(false);
+		}
 		employeeService.saveDepartmentListToWebService();
 	}
 	

@@ -9,7 +9,7 @@
 			<ice:outputText value="Edit study program"/><br/>
 			<br/>
 			<ice:outputText value="Department: "/> 
-				<ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true">
+				<ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{editBean.actionUpdateStudyProgramList}" partialSubmit="true">
 					<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
 				</ice:selectOneMenu>
 			<ice:dataTable id="studyProgramTable" var="item" value="#{employeeService.selectedStudyProgramList}">

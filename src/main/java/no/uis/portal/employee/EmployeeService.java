@@ -51,7 +51,7 @@ public class EmployeeService {
 
 	public void actionUpdateStudyProgramList(ValueChangeEvent event) {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
-		studyProgramMenu.setValue(getSelectedStudyProgramNumber());
+		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
 		for (Assignment assignment : assignmentSet) {
 			if (assignment.getDepartmentName().equals(selectedDepartmentName)
 					|| selectedDepartmentName.equals(""))
@@ -62,7 +62,7 @@ public class EmployeeService {
 		setAllEditExternalExaminerToFalse();
 	}
 
-	private void setSelectedDepartmentAndStudyProgramFromValue(int value) {
+	public void setSelectedDepartmentAndStudyProgramFromValue(int value) {
 		setSelectedDepartmentNumber(value);
 		Department selectedDepartment = getDepartmentFromValue(selectedDepartmentNumber);
 		setSelectedDepartmentName(selectedDepartment.getLabel());
