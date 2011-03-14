@@ -48,6 +48,7 @@ public class AssignSortableBean implements DisposableBean{
 	
 	private String fromDateString;
 	private String toDateString;
+	private String selectedPriority;
 	
 	private EmployeeService employeeService;
 
@@ -141,6 +142,7 @@ public class AssignSortableBean implements DisposableBean{
 	}
 
 	public void actionRefreshApplicationInformationArray(ActionEvent event) {
+		setSelectedPriority("all");
 		List<Application> applicationList;
 		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
 		else applicationList = employeeService.getMasterApplicationList();
@@ -150,6 +152,36 @@ public class AssignSortableBean implements DisposableBean{
 		} else {
 			applicationInformationArray = null;
 		}
+	}
+	
+	public void actionPriorityChange(ValueChangeEvent event) {
+		List<Application> applicationList;
+		List<Application> applicationPriorityList = new ArrayList<Application>();
+ 		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
+		else applicationList = employeeService.getMasterApplicationList();
+		int priority = convertSelectedPriority(event.getNewValue().toString());
+		if(applicationList != null){
+	 		if(priority != 0) {
+				for (Application application : applicationList) {
+					if(application.getPriority() == priority) applicationPriorityList.add(application);
+				}
+				applicationInformationArray = new ApplicationInformation[applicationPriorityList.size()];
+				fillApplicationInformationArray(applicationPriorityList);
+	 		}
+	 		else {
+	 			applicationInformationArray = new ApplicationInformation[applicationList.size()];
+	 			fillApplicationInformationArray(applicationList);
+	 		}
+		} else {
+			applicationInformationArray = null;
+		}
+	}
+	
+	private int convertSelectedPriority(String priority) {
+		if (priority.equals("one")) return 1;
+		else if(priority.equals("two")) return 2;
+		else if(priority.equals("three")) return 3;
+		else return 0;
 	}
 	
 	public void actionGetSelectedRows(ActionEvent event) {
@@ -328,6 +360,14 @@ public class AssignSortableBean implements DisposableBean{
 		this.toDateString = toDateString;
 	}
 	
+	public String getSelectedPriority() {
+		return selectedPriority;
+	}
+
+	public void setSelectedPriority(String selectedPriority) {
+		this.selectedPriority = selectedPriority;
+	}
+
 	public String getTypeAsString() {
 		if(bachelor) return "Bachelor";
 		return "Master";
