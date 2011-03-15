@@ -56,7 +56,7 @@
 					<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }">
 					<ice:column>
 					<f:facet name="header">
-						<ice:outputText value="Supervisor"/>
+						<ice:outputText value="#{msgs.lbl_supervisor}"/>
 					</f:facet>
 						<ice:outputText id="name" value="#{msgs.lbl_name} "/>
 						<ice:outputText id="nameInput" value="#{supervisor.name}"/>

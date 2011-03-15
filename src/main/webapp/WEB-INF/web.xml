@@ -71,7 +71,7 @@
 	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
-		<param-value>40048576</param-value>
+		<param-value>41943040</param-value>
 	</context-param>
 	
 	<filter>
