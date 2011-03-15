@@ -7,7 +7,7 @@
 	<ice:portlet>
 		<ice:outputStyle href="/css/style3.css" id="tableStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
-			<h:outputText value="Assign Assignments Confirmation"/><br/>
+			<ice:outputText value="#{msgs.lbl_assign_assignments_confirmation}"/><br/>
 			<br/>
 			<br/>
 			<ice:dataTable 
@@ -21,28 +21,28 @@
                 
 				<ice:column>
                 <f:facet name="header">
-                      <ice:outputText value="#{assignSortableBean.assignmentTitleColumnName}"/>
+                      <ice:outputText value="#{msgs.lbl_title}"/>
                 </f:facet>
                 <ice:outputText value="#{item.assignmentTitle}"/>
             </ice:column>
             
             <ice:column>
                 <f:facet name="header">
-                	<ice:outputText value="#{assignSortableBean.studentColumnName}"/>
+                	<ice:outputText value="#{msgs.lbl_std}"/>
                 </f:facet>
                 <ice:outputText value="#{item.studentName}"/>
             </ice:column>
             
             <ice:column>
                 <f:facet name="header">
-                	<ice:outputText value="#{assignSortableBean.priorityNumberColumnName}"/>
+                	<ice:outputText value="#{msgs.lbl_pri}"/>
                 </f:facet>
                 <ice:outputText value="#{item.priority}"/>
             </ice:column>
             
             <ice:column>
                 <f:facet name="header">
-                	<ice:outputText value="#{assignSortableBean.facultySupervisorColumnName}"/>
+                	<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
                 </f:facet>
                 <ice:outputText value="#{item.facultySupervisor}"/>
             </ice:column>
@@ -50,7 +50,7 @@
             <ice:column>
                 <f:facet name="header">
                     <ice:headerRow>
-                        <ice:outputText value="Co student"/>
+                        <ice:outputText value="#{msgs.lbl_co_std}"/>
                     </ice:headerRow>
                 </f:facet>
                 <ice:outputText value="#{item.coStudent1Name}"/>
@@ -59,7 +59,7 @@
             <ice:column>
                 <f:facet name="header">
                     <ice:headerRow>
-                        <ice:outputText value="Co student"/>
+                        <ice:outputText value="#{msgs.lbl_co_std}"/>
                     </ice:headerRow>
                 </f:facet>
                 <ice:outputText value="#{item.coStudent2Name}"/>
@@ -67,7 +67,7 @@
             
 			</ice:dataTable>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Main menu" id="BackButton"></h:commandButton>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" id="BackButton"/>
 			</table>
 		</ice:form>
 	</ice:portlet>

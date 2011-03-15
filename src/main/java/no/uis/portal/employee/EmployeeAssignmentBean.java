@@ -1,12 +1,15 @@
 package no.uis.portal.employee;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,9 +43,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private boolean backToAssignmentAttachment;
 	
 	private boolean showExpired;
+	
+	private Locale locale;
 
 	public EmployeeAssignmentBean(){
-		
+		  
 	}
 	
 	public void setEmployeeService(EmployeeService employeeService) {
@@ -182,7 +187,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
+
         //file has been saved
+        locale = context.getViewRoot().getLocale();
+        ResourceBundle res = ResourceBundle.getBundle("Language", locale);
         if (fileInfo.isSaved()) {
         	currentAssignment.setFileUploadErrorMessage("");
         	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
@@ -192,16 +200,16 @@ public class EmployeeAssignmentBean implements DisposableBean {
         //upload failed, generate custom messages
         if (fileInfo.isFailed()) {
             if(fileInfo.getStatus() == FileInfo.INVALID){
-            	currentAssignment.setFileUploadErrorMessage("The attachment could not be uploaded.");
+            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
             }
             if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentAssignment.setFileUploadErrorMessage("The attachment exceeded the size limit.");
+            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_exceeded_size_limit").toString());
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
-            	currentAssignment.setFileUploadErrorMessage("The attachment could not be uploaded.");
+            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-            	currentAssignment.setFileUploadErrorMessage("The attachment can only be a pdf, zip, gif, png, jpeg, jpg, doc or docx file.");
+            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_attachment_type_restrictions").toString());
             }
         }
 	}

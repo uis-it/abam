@@ -8,17 +8,17 @@
 			<ice:panelGrid columns="2" border="0" width="500">
 				<ice:panelGroup id="menu">
 				<table>
-					<tr><td><h:commandLink action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment}">Create Assignment</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="assignSetDates">Assign Assignment</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="editInformation">Edit Information</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="myStudentAssignments">My Student Assignments</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="addExternalExaminer" actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}">Add External Examiner</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="createAddressLabels">Create Address Labels</h:commandLink></td></tr>
-					<tr><td><h:commandLink action="searchArchive">Archive</h:commandLink></td></tr>
+					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment}" value="#{msgs.link_create_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="assignSetDates" value="#{msgs.link_assign_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="editInformation" value="#{msgs.link_edit_info}"/></td></tr>
+					<tr><td><ice:commandLink action="myStudentAssignments" value="#{msgs.link_my_std_assignments}"/></td></tr>
+					<tr><td><ice:commandLink action="addExternalExaminer" actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" value="#{msgs.link_add_ext_examiner}"/></td></tr>
+					<tr><td><ice:commandLink action="createAddressLabels" value="#{msgs.link_create_address_lbls}"/></td></tr>
+					<tr><td><ice:commandLink action="searchArchive" value="#{msgs.link_archive}"/></td></tr>
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">
-					<h:outputText value="Welcome employee" />
+					<ice:outputText value="Welcome employee" />
 				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>

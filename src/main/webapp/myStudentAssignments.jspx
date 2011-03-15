@@ -6,11 +6,11 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
-			<h:outputText value="My students Assignments"/><br/>
+			<h:outputText value="#{msgs.lbl_my_std_assignment}"/><br/>
 			<br/>
 			<br/>
 			<table border="0">
-				<h:commandButton type="submit" action="backToView" value="Back" id="BackButton"></h:commandButton>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
 			</table>
 		</ice:form>
 	</ice:portlet>
