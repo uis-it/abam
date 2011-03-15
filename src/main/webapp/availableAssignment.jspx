@@ -43,7 +43,7 @@
 				</tr>
 				<tr>
 					<td></td><td></td>
-					<td><h:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"></h:commandButton></td>
+					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/></td>
 				</tr>
 			</table>
 		</ice:form>
