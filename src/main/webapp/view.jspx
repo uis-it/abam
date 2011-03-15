@@ -8,16 +8,16 @@
 			<ice:panelGrid columns="2" border="0" width="500">
 				<ice:panelGroup id="menu">
 				<table>
-					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}">Available assignments</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="myApplications">My applications</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}">Create custom assignment</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}">Accept assignment</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}">My Thesis</ice:commandLink></td></tr>
-					<tr><td><ice:commandLink action="searchArchive">Search</ice:commandLink></td></tr>
+					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" /></td></tr>
+					<tr><td><ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" /></td></tr>
+					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}" value="#{msgs.link_create_custom_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/></td></tr>
+					<tr><td><ice:commandLink action="searchArchive" value="#{msgs.link_search}"/></td></tr>
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">
-					<ice:outputText value="Welcome Student" />
+					<ice:outputText value="#{msgs.lbl_welcome_std}" />
 				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>

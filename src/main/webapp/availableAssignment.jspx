@@ -10,7 +10,7 @@
 			
 			<table border="0">
 				<tr>
-					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
 					<td><ice:selectOneMenu id="departmentInput" value="#{studentService.selectedDepartmentNumber}" valueChangeListener="#{studentService.actionUpdateStudyProgramList}" partialSubmit="true" disabled="true">
 						<f:selectItems id="departmentInputContent" value="#{studentService.departmentList}"/>
 					</ice:selectOneMenu>
@@ -19,7 +19,7 @@
 					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_study_program}"/> </td>
 					<td><ice:selectOneMenu id="studyProgramInput" value="#{studentService.selectedStudyProgramNumber}" valueChangeListener="#{studentService.actionSetDisplayAssignment}" partialSubmit="true">
 						<f:selectItems id="studyProgramContent" value="#{studentService.studyProgramList}"/>
 					</ice:selectOneMenu></td>
@@ -30,20 +30,20 @@
 				<ice:dataTable id="departmentTable" var="item" value="#{studentService.assignmentList}">
 					<ice:column rendered="#{item.displayAssignment}">
 						<f:facet name="header">
-							<ice:outputText value="Assignments:"/>
+							<ice:outputText value="#{msgs.lbl_assignments}"/>
 						</f:facet>
 						<ice:outputText id="itemId" value="#{item.id}"/>
 						<ice:outputText id="itemTitle" value="#{item.title}"/>
 						<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}"/>
 						<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}"/>							
-						<ice:commandButton id="applyAssignment" value="Apply for this assignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" action="applyForAssignment" rendered="#{!studentService.currentStudent.hasAssignedThesis and !studentService.currentStudent.appliedForThreeAssignments}"/>
-						<ice:commandButton id="View" value="View details" action="assignmentDetails" actionListener="#{assignmentBean.actionSetSelectedAssignment}"/>
+						<ice:commandButton id="applyAssignment" value="#{msgs.btn_apply_for_assignment}" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" action="applyForAssignment" rendered="#{!studentService.currentStudent.hasAssignedThesis and !studentService.currentStudent.appliedForThreeAssignments}"/>
+						<ice:commandButton id="View" value="#{msgs.btn_view_details}" action="assignmentDetails" actionListener="#{assignmentBean.actionSetSelectedAssignment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
 				<tr>
 					<td></td><td></td>
-					<td><h:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"></h:commandButton></td>
+					<td><h:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"></h:commandButton></td>
 				</tr>
 			</table>
 		</ice:form>

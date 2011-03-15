@@ -1,4 +1,3 @@
-
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -7,45 +6,45 @@
 	<ice:portlet>
 		<ice:form>
 		
-			<ice:outputText value="Create/edit your custom assignment"/><br/>
+			<ice:outputText value="#{msgs.lbl_create_custom_assignment}"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">				
 				<tr>
-					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
 					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
 					<td><ice:message for="title" showSummary="true" showDetail="false" ></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_description}"/> </td>
 					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.currentAssignment.description}"></ice:inputTextarea></td>
 					<td><ice:message for="description" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_title}"/> </td>
 					<td><ice:outputText value="#{studentService.currentStudent.departmentName}"/></td>					
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_study_program}"/> </td>
 					<td><ice:outputText value="#{studentService.currentStudent.studyProgramName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Type: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
 				<td>				
 					<ice:outputText value="#{studentService.currentStudent.type}"/>
 				</td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_number_of_students}"/> </td>
 					<td><ice:inputText id="numberOfStudents" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
 					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
 					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:inputText></td>
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>			
@@ -53,28 +52,28 @@
 			<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }">
 				<ice:column>
 				<f:facet name="header">
-						<ice:outputText value="Supervisor"/>
+						<ice:outputText value="#{msgs.lbl_supervisor}"/>
 				</f:facet>
-					<ice:outputText id="name" value="Name: "/>
+					<ice:outputText id="name" value="#{msgs.lbl_name}"/>
 					<ice:inputText id="nameInput" value="#{supervisor.name}" required="true" partialSubmit="true"/>
-					<ice:outputText value="External:" />
+					<ice:outputText value="#{msgs.lbl_external}" />
 					<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}" partialSubmit="true"/>
-					<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+					<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
 					<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}" partialSubmit="true"/>
-					<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+					<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
 					<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"  partialSubmit="true"/>
-					<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+					<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"  partialSubmit="true"/>
-					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="Remove row" immediate="true"/>
+					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="#{msgs.btn_remove_row}" immediate="true"/>
 					<td><ice:message for="nameInput" showSummary="true" showDetail="false"></ice:message> </td>
 				</ice:column>										
 			</ice:dataTable>
-			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="Add row" immediate="true"/>
+			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="#{msgs.btn_add_row}" immediate="true"/>
 			<br/><br/>
 
 			<table>
 			<tr>
-					<td><ice:outputText value="Attachment: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_attachment}: "/> </td>
 					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" actionListener="#{assignmentBean.fileUploadListen}"/> </td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.fileUploadErrorMessage}"/> </td>
 				</tr>
@@ -82,17 +81,17 @@
 					<ice:dataTable var="attachment" value="#{assignmentBean.currentAssignment.attachedFileList }">
 					<ice:column>
 					<f:facet name="header">
-						<ice:outputText value="Uploaded attachments"/>
+						<ice:outputText value="#{msgs.lbl_attachments}"/>
 					</f:facet>
 						<ice:outputText id="nameInput" value="#{attachment}"/>
-						<ice:commandButton type="submit" value="Remove" actionListener="#{assignmentBean.actionRemoveAttachment}"/>
+						<ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{assignmentBean.actionRemoveAttachment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>	
 			</table>
 
-			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="Next" id="CreateButton" />
+			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+			<ice:commandButton type="submit" action="assignmentSummary" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="#{msgs.btn_next}" id="CreateButton" />
 		</ice:form>
 	</ice:portlet>
 </f:view>

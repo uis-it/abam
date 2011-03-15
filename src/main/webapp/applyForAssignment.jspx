@@ -5,42 +5,42 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:form partialSubmit="true" >
-			<ice:outputText value="applyForAssignment"/><br/>
+			<ice:outputText value="#{msgs.lbl_apply_for_assignment}"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">				
 				<tr>
-					<td><ice:outputText value="Title: "/></td>
+					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.title}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Description: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_description}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.description}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Department: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.departmentName}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Study Program: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_study_program}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.studyProgramName}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Number of students: " rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
+					<td><ice:outputText value="#{msgs.lbl_numer_of_students}" rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Type: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.type}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="Faculty Supervisor: "/> </td>
+					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.facultySupervisor}"></ice:outputText></td>
 					<td></td>
 				</tr>
@@ -48,15 +48,15 @@
 					<ice:dataTable var="supervisor" value="#{applicationBean.currentAssignment.supervisorList }">
 						<ice:column>
 							<f:facet name="header">
-								<ice:outputText value="Supervisor"/>
+								<ice:outputText value="#{msgs.lbl_supervisor}"/>
 							</f:facet>
-							<ice:outputText id="name" value="Name: "/>
+							<ice:outputText id="name" value="#{msgs.lbl_name}"/>
 							<ice:outputText id="nameInput" value="#{supervisor.name}"/>
-							<ice:outputText id="Email" value="Email: " rendered="#{supervisor.external}"/>
+							<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
 							<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="phoneNumber" value="Phone number:" rendered="#{supervisor.external}"/>
+							<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
 							<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="company" value="Company: " rendered="#{supervisor.external}"/>
+							<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 							<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
 						</ice:column>
 					</ice:dataTable></td>
@@ -64,7 +64,7 @@
 					<td></td>
 				</tr>		
 				<tr>
-					<td><ice:outputText value="I want to write the thesis together with: " rendered="#{!studentService.currentStudent.masterStudent}"/> </td>
+					<td><ice:outputText value="#{msgs.lbl_i_want_to_write_together}" rendered="#{!studentService.currentStudent.masterStudent}"/> </td>
 					<td><ice:inputText id="studentName1" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName1}"></ice:inputText></td>
 					<td></td>
 				</tr>
@@ -77,19 +77,19 @@
 					<td></td>
 					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="availableAssignment" value="Available assignments" id="BackButton" immediate="true"/>
-						<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="Save application" id="SaveButton"/>
-						<ice:commandButton type="submit" action="backToView" value="Cancel" id="CancelButton" immediate="true"/>
+						<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" id="BackButton" immediate="true"/>
+						<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}" id="SaveButton"/>
+						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true"/>
 					</td>
 				</tr>
 			
 			</table>
 			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
 				<f:facet name="header">
-					<ice:outputText value="Confirmation"/>
+					<ice:outputText value="#{msgs.lbl_confirmation}"/>
 				</f:facet>
 				<f:facet name="body">
-					<ice:commandButton type="submit" action="backToView" value="Ok"/>
+					<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_ok}"/>
 				</f:facet>
 			</ice:panelPopup>
 		</ice:form>

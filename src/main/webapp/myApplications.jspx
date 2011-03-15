@@ -6,21 +6,21 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:form>
-			<ice:outputText value="My applications"/><br/>
+			<ice:outputText value="#{msgs.lbl_my_applications}"/><br/>
 			<br/>
 			<br/>
 				<ice:dataTable var="application" value="#{studentService.currentStudent.applicationPriorityArray}">
 				<ice:column>
 				<f:facet name="header">
 				</f:facet>
-					<ice:outputText id="priority" value="Priority"/>
+					<ice:outputText id="priority" value="#{msgs.lbl_priority}"/>
 					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
 					<ice:outputText id="title" value="-"/>					
 					<ice:commandLink value="#{application.assignment.title}" action="applyForAssignment" actionListener="#{applicationBean.actionEditApplication}"/>
-				</ice:column>										Available assignments
+				</ice:column>										
 			</ice:dataTable>
-			<ice:commandButton type="submit" action="backToView" value="Back" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="editMyApplications" value="Edit applications" id="EditButton" immediate="true" actionListener="#{studentService.actionGetApplicationFromStudent}" rendered="#{!studentService.currentStudent.hasAssignedThesis }"/>
+			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+			<ice:commandButton type="submit" action="editMyApplications" value="#{msgs.btn_edit_applications}" id="EditButton" immediate="true" actionListener="#{studentService.actionGetApplicationFromStudent}" rendered="#{!studentService.currentStudent.hasAssignedThesis }"/>
 		</ice:form>
 	</ice:portlet>
 </f:view>
