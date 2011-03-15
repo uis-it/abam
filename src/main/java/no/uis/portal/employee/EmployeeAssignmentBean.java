@@ -203,7 +203,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
             	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
             }
             if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_exceeded_size_limit").toString());
+            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_exceeded_size_limit").toString());            	
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
             	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
@@ -211,7 +211,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
             if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
             	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_attachment_type_restrictions").toString());
             }
-        }
+        }        
 	}
 	
 	public void radioListener(ValueChangeEvent event){
