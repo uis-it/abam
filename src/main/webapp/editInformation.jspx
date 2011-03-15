@@ -11,9 +11,9 @@
 			<br/>
 			<table border="0">
 				<tr>
-					<td><ice:commandButton value="#{msgs.lbl_edit_assignment}" action="displayAssignments" actionListener="#{employeeService.actionPrepareDisplayAssignments}"/>
-					<ice:commandButton value="#{msgs.lbl_edit_std_prg}" action="editStudyPrograms" id="editStudyProgram" actionListener="#{editBean.actionPrepareEditStudyProgram}"/>
-					<ice:commandButton value="#{msgs.lbl_edit_department}" action="editDepartment" id="editDepartment" actionListener="#{editBean.actionGetDepartmentListFromWebService}"/>
+					<td>
+						<ice:commandButton value="#{msgs.lbl_edit_std_prg}" action="editStudyPrograms" id="editStudyProgram" actionListener="#{editBean.actionPrepareEditStudyProgram}"/>
+						<ice:commandButton value="#{msgs.lbl_edit_department}" action="editDepartment" id="editDepartment" actionListener="#{editBean.actionGetDepartmentListFromWebService}"/>
 					</td>
 				</tr>
 				<tr>

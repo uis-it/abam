@@ -9,6 +9,7 @@
 				<ice:panelGroup id="menu">
 				<table>
 					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment}" value="#{msgs.link_create_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="displayAssignments" actionListener="#{employeeService.actionPrepareDisplayAssignments}" value="#{msgs.lbl_edit_assignment}" /></td></tr>
 					<tr><td><ice:commandLink action="assignSetDates" value="#{msgs.link_assign_assignment}"/></td></tr>
 					<tr><td><ice:commandLink action="editInformation" value="#{msgs.link_edit_info}"/></td></tr>
 					<tr><td><ice:commandLink action="myStudentAssignments" value="#{msgs.link_my_std_assignments}"/></td></tr>
