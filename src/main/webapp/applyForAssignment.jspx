@@ -30,7 +30,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_numer_of_students}" rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
+					<td><ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
 				</tr>
