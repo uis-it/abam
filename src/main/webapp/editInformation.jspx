@@ -7,7 +7,7 @@
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
-			<ice:outputText value="Edit information"/><br/>
+			<ice:outputText value="#{msgs.lbl_edit_information}"/><br/>
 			<br/>
 			<br/>
 			<table border="0">
