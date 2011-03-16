@@ -6,6 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
 			<h:outputText value="#{msgs.lbl_assign_assignments_to_students}"/><br/>
 			<br/>
@@ -29,7 +30,13 @@
 				<ice:outputText value="#{msgs.lbl_pri}" />
 				</td>
 					<td>
-						<ice:selectOneRadio value="#{assignSortableBean.selectedPriority}" id="setPriority" partialSubmit="true" valueChangeListener="#{assignSortableBean.actionPriorityChange}">
+						<ice:selectOneRadio 
+							value="#{assignSortableBean.selectedPriority}" 
+							id="setPriority" 
+							partialSubmit="true" 
+							valueChangeListener="#{assignSortableBean.actionPriorityChange}"
+							styleClass="selectRadio"
+							>
 								<f:selectItem itemValue="all" itemLabel="#{msgs.lbl_all}" />
 								<f:selectItem itemValue="one" itemLabel="1" />
 								<f:selectItem itemValue="two" itemLabel="2" />
@@ -124,8 +131,10 @@
             
 			</ice:dataTable>
 			<table border="0">
-				<h:commandButton type="submit" action="assignSetDates" value="#{msgs.btn_back}" id="BackButton"></h:commandButton>
-				<h:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="#{msgs.btn_next}" id="assignSelected"></h:commandButton>
+				<tr>
+					<td><ice:commandButton type="submit" action="assignSetDates" value="#{msgs.btn_back}" id="BackButton"/></td>
+					<td><ice:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="#{msgs.btn_next}" id="assignSelected"/></td>
+				</tr>
 			</table>
 		</ice:form>
 	</ice:portlet>

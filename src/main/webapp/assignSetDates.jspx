@@ -5,58 +5,88 @@
 
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form>
+		<ice:outputText value="#{msgs.lbl_assign_select_type}"/>
 		<table>
-				<tr>
-					<td>
-						<ice:selectOneRadio id="type" required="true" value="#{assignSortableBean.bachelor}" layout="pageDirection" valueChangeListener="#{assignSortableBean.radioListener}" partialSubmit="true">
-								<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
-								<f:selectItem itemValue="#{false}" itemLabel="Master" />
-						</ice:selectOneRadio>
-					</td>
-				</tr>
-				<tr>
-					<td> 
-						<ice:outputText id="fromDateText" value="#{msgs.lbl_from_date}"></ice:outputText>
-					</td>
-					<td>
-					<ice:panelGroup panelTooltip="changeDate2">
-						<ice:commandLink id="fromDate" value="#{assignSortableBean.fromDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}"/>
-						<ice:panelTooltip id="changeDate2" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white; border: 1px solid black;">
-							<f:facet name="body">
-								<ice:outputText value="#{msgs.lbl_click_here_to_change_date}"></ice:outputText>
-							</f:facet>
-						</ice:panelTooltip>
-					</ice:panelGroup>
-					</td>
-					<td>
-						<ice:selectInputDate id="fromDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showFromDateCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true" style="border: 1px solid black;"/>
-					</td>
-				</tr>
-				<tr>
-					<td> 
-						<ice:outputText id="toDateText" value="#{msgs.lbl_to_date}"></ice:outputText>
-					</td>
-					<td>
-					<ice:panelGroup panelTooltip="changeDate">
-						<ice:commandLink id="toDate" value="#{assignSortableBean.toDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}" />
-						<ice:panelTooltip id="changeDate" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white; border: 1px solid black;">
-							<f:facet name="body">
-								<ice:outputText value="#{msgs.lbl_click_here_to_change_date}"></ice:outputText>
-							</f:facet>
-						</ice:panelTooltip>
-					</ice:panelGroup>
-					</td>
-					<td>
-						<ice:selectInputDate id="toDateInput" title="Withdraw deadline:" valueChangeListener="#{assignSortableBean.actionUpdateDate}" rendered="#{assignSortableBean.showToDateCalendar}" renderAsPopup="false" renderMonthAsDropdown="true" renderYearAsDropdown="true" style="border: 1px solid black;"/>
-					</td>
-					
-				</tr>
-			</table>
-		<table border="0">
-				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
-				<ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_next}" actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" id="assignSelected"/>
-			</table> 
+			<tr>
+				<td>
+					<ice:selectOneRadio 
+						id="type" 
+						required="true" 
+						styleClass="selectRadio" 
+						value="#{assignSortableBean.bachelor}" 			 
+						valueChangeListener="#{assignSortableBean.radioListener}" 
+						partialSubmit="true">
+							<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
+							<f:selectItem itemValue="#{false}" itemLabel="Master" />
+					</ice:selectOneRadio>
+				</td>
+			</tr>
+		</table>
+		<ice:outputText value="#{msgs.lbl_assign_set_dates}"/>
+		<table>			
+			<tr>
+				<td> 
+					<ice:outputText id="fromDateText" value="#{msgs.lbl_from_date}"></ice:outputText>
+				</td>
+				<td>
+				<ice:panelGroup panelTooltip="changeDate2">
+					<ice:commandLink id="fromDate" value="#{assignSortableBean.fromDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}"/>
+					<ice:panelTooltip id="changeDate2" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white; border: 1px solid black;">
+						<f:facet name="body">
+							<ice:outputText value="#{msgs.lbl_click_here_to_change_date}"></ice:outputText>
+						</f:facet>
+					</ice:panelTooltip>
+				</ice:panelGroup>
+				</td>
+				<td>
+					<ice:selectInputDate 
+						id="fromDateInput" 
+						title="Withdraw deadline:" 
+						valueChangeListener="#{assignSortableBean.actionUpdateDate}" 
+						rendered="#{assignSortableBean.showFromDateCalendar}" 
+						renderAsPopup="false" 
+						renderMonthAsDropdown="true" 
+						renderYearAsDropdown="true" 
+						styleClass="selectInputDate"/>
+				</td>
+			</tr>
+			<tr>
+				<td> 
+					<ice:outputText id="toDateText" value="#{msgs.lbl_to_date}"></ice:outputText>
+				</td>
+				<td>
+				<ice:panelGroup panelTooltip="changeDate">
+					<ice:commandLink id="toDate" value="#{assignSortableBean.toDateString }" actionListener="#{assignSortableBean.actionToggleCalendar}" />
+					<ice:panelTooltip id="changeDate" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white; border: 1px solid black;">
+						<f:facet name="body">
+							<ice:outputText value="#{msgs.lbl_click_here_to_change_date}"></ice:outputText>
+						</f:facet>
+					</ice:panelTooltip>
+				</ice:panelGroup>
+				</td>
+				<td>
+					<ice:selectInputDate
+						id="toDateInput" 
+						title="Withdraw deadline:" 
+						valueChangeListener="#{assignSortableBean.actionUpdateDate}" 
+						rendered="#{assignSortableBean.showToDateCalendar}" 
+						renderAsPopup="false" 
+						renderMonthAsDropdown="true" 
+						renderYearAsDropdown="true" 
+						styleClass="selectInputDate"						
+					/>
+				</td>
+				
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
+				<td><ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_next}" actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" id="assignSelected"/></td>
+			</tr>
+		</table> 
 		</ice:form>
 	</ice:portlet>
 </f:view>

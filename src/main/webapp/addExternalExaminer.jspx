@@ -5,7 +5,8 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/style3.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 			<ice:outputText value="#{msgs.lbl_add_edit_ext_examiner}"/>
 			<br/>
@@ -71,7 +72,7 @@
 				<tr>
 				<ice:dataTable 
 					id="ThesisTable" 
-					columnClasses="assignColumn, titleColumn, studentColumn, priorityColumn, facultySupervisorColumn, coStudentColumn, coStudentColumn"
+					columnClasses="assignColumn, titleColumn, studentColumn, coStudentColumn, coStudentColumn, titleColumn"
 	                rowClasses="oddRow, evenRow"
 	                headerClass="headerStyle"
 	                styleClass="tableStyle"
@@ -127,13 +128,15 @@
 					</ice:column>						
 				</ice:dataTable>
 				</tr>			
+			</table>
+			<table>
 				<tr>
-					<td></td><td></td>
-										
-					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-					<ice:commandButton type="submit" action="addExternalExaminer" value="#{msgs.btn_save}" id="SaveButton" immediate="true" actionListener="#{externalExaminerBean.actionSaveExaminerToSelectedRows }"/></td>
-				</tr>
-				<tr>
+					<td>
+						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+					</td>
+					<td>
+						<ice:commandButton type="submit" action="addExternalExaminer" value="#{msgs.btn_save}" id="SaveButton" immediate="true" actionListener="#{externalExaminerBean.actionSaveExaminerToSelectedRows }"/>
+					</td>
 					<td>
 						<ice:outputText value="#{msgs.lbl_ext_examiner_saved}" rendered="#{externalExaminerBean.showSavedConfirmation}"/>
 					</td>

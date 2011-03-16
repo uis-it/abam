@@ -5,6 +5,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 			<h:outputText value="#{msgs.lbl_my_std_assignment}"/><br/>
 			<br/>

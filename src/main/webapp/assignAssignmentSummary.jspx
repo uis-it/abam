@@ -6,6 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/style3.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
 			<h:outputText value="#{msgs.lbl_assign_assignments_to_std_summary}"/><br/>
 			<br/>
@@ -66,9 +67,11 @@
             </ice:column>
             
 			</ice:dataTable>
-			<table border="0">
-				<h:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButton"></h:commandButton>
-				<h:commandButton type="submit" action="assignSavedConfirmation" value="#{msgs.btn_save}" id="assignSelectedSave" actionListener="#{assignSortableBean.actionSaveAssignedApplications }"></h:commandButton>
+			<table>
+				<tr>
+				<td><ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButton"/></td>
+				<td><ice:commandButton type="submit" action="assignSavedConfirmation" value="#{msgs.btn_save}" id="assignSelectedSave" actionListener="#{assignSortableBean.actionSaveAssignedApplications }"/> </td>
+				</tr>
 			</table>
 		</ice:form>
 	</ice:portlet>

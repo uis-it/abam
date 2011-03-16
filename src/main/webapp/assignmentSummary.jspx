@@ -5,12 +5,13 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
+		<ice:outputStyle href="/css/assignmentSummaryStyle.css" id="assignmentSummaryStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 		
 			<ice:outputText value="#{msgs.lbl_assignment_summary}"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">
+			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.id}"/></td>
@@ -52,7 +53,7 @@
 					<td></td>
 				</tr>
 				<tr>
-					<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }">
+					<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }" styleClass="assignmentSummaryStyle">
 					<ice:column>
 					<f:facet name="header">
 						<ice:outputText value="#{msgs.lbl_supervisor}"/>
