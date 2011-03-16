@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+
+table, td{
+	/*border: 1px solid black;*/
+}
+
+td {
+	padding: 5px;
+}
+
+.selectRadio {
+	border-width: 0px;	
+		 	
+}
+
+.superVisorTable {
+	border: 1px solid silver;
+}
+
+.displayAssignmentsTable {
+	border: 1px solid silver;
+}
+
+.selectBoolean {	
+	vertical-align: middle;	
+}
