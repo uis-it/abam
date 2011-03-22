@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
-
-import com.sun.xml.bind.v2.runtime.AssociationMap;
 
 import no.uis.abam.dom.*;
 
@@ -19,7 +16,7 @@ import no.uis.abam.dom.*;
 public class AbamWebServiceTestImpl implements AbamWebService {
 
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
-	private LinkedList<Department> departmentList;
+	private List<Department> departmentList;
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
@@ -124,7 +121,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	private void initializeDepartmentAndStudyProgramLists(){
-		departmentList = new LinkedList<Department>();
+		departmentList = new ArrayList<Department>();
 		
 		departmentList.add(new Department(new Integer(0), ""));
 		departmentList.add(new Department(new Integer(1), "Institutt for industriell økonomi, risikostyring og planlegging"));
@@ -133,40 +130,41 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		departmentList.add(new Department(new Integer(4), "Institutt for konstruksjonsteknikk og materialteknologi"));
 		departmentList.add(new Department(new Integer(5), "Matematikk og naturvitskap"));
 		
-		LinkedList<EditableSelectItem> listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
+		List<StudyProgram> listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
 		departmentList.get(0).setStudyPrograms(listToAdd);
 		
-		listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Industriell økonomi"));
+		listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
+		listToAdd.add(new StudyProgram(new Integer(1), "Industriell økonomi"));
 		departmentList.get(1).setStudyPrograms(listToAdd);
 		
-		listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Boreteknologi"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Petroleumsgeologi"));
+	
+		listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
+		listToAdd.add(new StudyProgram(new Integer(1), "Boreteknologi"));
+		listToAdd.add(new StudyProgram(new Integer(2), "Petroleumsgeologi"));
 		departmentList.get(2).setStudyPrograms(listToAdd);
 		
-		listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Data"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Elektro"));
-		listToAdd.add(new EditableSelectItem(new Integer(3), "Informasjonsteknologi"));
+		listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
+		listToAdd.add(new StudyProgram(new Integer(1), "Data"));
+		listToAdd.add(new StudyProgram(new Integer(2), "Elektro"));
+		listToAdd.add(new StudyProgram(new Integer(3), "Informasjonsteknologi"));
 		departmentList.get(3).setStudyPrograms(listToAdd);
 		
 	
-		listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Byggeteknikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Maskinteknikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(3), "Offshoreteknologi"));
+		listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
+		listToAdd.add(new StudyProgram(new Integer(1), "Byggeteknikk"));
+		listToAdd.add(new StudyProgram(new Integer(2), "Maskinteknikk"));
+		listToAdd.add(new StudyProgram(new Integer(3), "Offshoreteknologi"));
 		departmentList.get(4).setStudyPrograms(listToAdd);
 		
-		listToAdd = new LinkedList<EditableSelectItem>();
-		listToAdd.add(new EditableSelectItem(new Integer(0), ""));
-		listToAdd.add(new EditableSelectItem(new Integer(1), "Matematikk"));
-		listToAdd.add(new EditableSelectItem(new Integer(2), "Fysikk"));
+		listToAdd = new ArrayList<StudyProgram>();
+		listToAdd.add(new StudyProgram(new Integer(0), ""));
+		listToAdd.add(new StudyProgram(new Integer(1), "Matematikk"));
+		listToAdd.add(new StudyProgram(new Integer(2), "Fysikk"));
 		departmentList.get(5).setStudyPrograms(listToAdd);
 		//studyProgramList = departmentList.get(0).getStudyPrograms();	
 	}
@@ -194,27 +192,31 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		assignmentList.remove(assignment);		
 	}
 
-	public LinkedList<Department> getDepartmentList() {
+	public List<Department> getDepartmentList() {
 		return departmentList;
 	}
 
-	public List<EditableSelectItem> getStudyProgramList(int departmentIndex) {
+	public List<StudyProgram> getStudyProgramList(int departmentIndex) {
 		return departmentList.get(departmentIndex).getStudyPrograms();
 	}
 
 	public String getStudyProgram(int departmentIndex, int studyProgramIndex) {
-		return getStudyProgramList(departmentIndex).get(studyProgramIndex).getLabel();
+		return getStudyProgramList(departmentIndex).get(studyProgramIndex).getName();
 	}
 
 	public String getDepartment(int index) {
-		return  departmentList.get(index).getLabel();
+		return  departmentList.get(index).getOeNavn_Engelsk();
 	}
 	
-	public void removeDepartment(EditableSelectItem department){
+	public void removeDepartment(Department department){
 		departmentList.remove(department);
 	}
 	
-	public void setDepartmentList(LinkedList<Department> departmentList){
+//	public void setDepartmentList(ArrayList<Department> departmentList){
+//		this.departmentList = departmentList;
+//	}
+	
+	public void setDepartmentList(List<Department> departmentList) {
 		this.departmentList = departmentList;
 	}
 	

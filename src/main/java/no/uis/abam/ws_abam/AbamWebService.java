@@ -1,8 +1,6 @@
 package no.uis.abam.ws_abam;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
@@ -10,8 +8,8 @@ import javax.jws.WebService;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
-import no.uis.abam.dom.EditableSelectItem;
 import no.uis.abam.dom.Student;
+import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
 
 @WebService
@@ -22,13 +20,17 @@ public interface AbamWebService {
 	public TreeSet<Assignment> getAssignmentsFromDepartmentName(String departmentName);
 	public TreeSet<Assignment> getActiveAssignments();
 	
-	public void saveAssignment(Assignment assignment);
+	
+	public void saveAssignment(
+			//@WebParam(targetNamespace="http://localhost/AbamWebService/AbamWebService", 
+            //name="assignmentToSave",mode=Mode.IN)
+            Assignment assignment);
 	public void removeAssignment(Assignment assignment);
 	
-	public LinkedList<Department> getDepartmentList();
-	public void setDepartmentList(LinkedList<Department> departmentList);
+	public List<Department> getDepartmentList();
+	public void setDepartmentList(List<Department> departmentList);
 	
-	public List<EditableSelectItem> getStudyProgramList(int departmentIndex);
+	public List<StudyProgram> getStudyProgramList(int departmentIndex);
 	
 	public String getStudyProgram(int departmentIndex, int studyProgramIndex);
 	public String getDepartment(int index); 
