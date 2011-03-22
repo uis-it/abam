@@ -28,6 +28,8 @@ public class StudentService {
 	
 	private Application[] tempApplicationPriorityArray = new Application[3];
 	private ArrayList<Application> applicationsToRemove = new ArrayList<Application>();
+	private ArrayList<SelectItem> departmentSelectItemList = new ArrayList<SelectItem>();
+	private ArrayList<SelectItem> studyProgramSelectItemList = new ArrayList<SelectItem>();
 	
 	private String selectedDepartmentName;
 	
@@ -117,7 +119,6 @@ public class StudentService {
 		setSelectedDepartmentNumber(0);
 	}
 	
-	
 	public void updateStudyProgramList(int index){
 		selectedDepartmentName = (String) getDepartmentName(index);
 		selectedDepartmentNumber = index;
@@ -166,14 +167,17 @@ public class StudentService {
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
 		updateCurrentStudentFromWebService();
-		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());
+		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());			
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());		
+		getStudyProgramList();
 	}
 	
 	private int findDepartmentNumberForCurrentStudent() {
 		String name = getCurrentStudent().getDepartmentName();
-		for (SelectItem department : getDepartmentList()) {
-			if(department.getLabel().equalsIgnoreCase(name)) return Integer.parseInt(department.getValue().toString());
+		List<Department> tempList = getDepartmentList();
+		for (Department department : tempList) {
+			if(department.getName().equalsIgnoreCase(name)) 
+				return tempList.indexOf(department);
 		}
 		return 0;
 	}
@@ -194,12 +198,20 @@ public class StudentService {
 		applicationsToRemove.clear();
 	}
 	
-	public LinkedList<Department> getDepartmentList() {
-		return abamStudentClient.getDepartmentList();
+	public List<Department> getDepartmentList() {
+		List<Department> departmentList = abamStudentClient.getDepartmentList();
+		for (int i = 0; i < departmentList.size(); i++) {
+			departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getName()));
+		}
+		return departmentList;
 	}
 
-	public List<EditableSelectItem> getStudyProgramList() {
-		return abamStudentClient.getStudyProgramList(selectedDepartmentNumber);
+	public List<StudyProgram> getStudyProgramList() {
+		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(selectedDepartmentNumber);
+		for (int i = 0; i < studyProgramList.size(); i++) {
+			studyProgramSelectItemList.add(new SelectItem(i,studyProgramList.get(i).getName()));
+		}
+		return studyProgramList;
 	}
 	
 	public String getStudyProgramName(int index) {
@@ -207,7 +219,7 @@ public class StudentService {
 	}
 	
 	public String getDepartmentName(int index) {
-		return  abamStudentClient.getDepartmentList().get(index).getLabel();
+		return  abamStudentClient.getDepartmentList().get(index).getName();
 	}
 
 	
@@ -343,6 +355,24 @@ public class StudentService {
 
 	public Assignment getAssignmentFromId(int assignedAssignmentId) {
 		return abamStudentClient.getAssignmentFromId(assignedAssignmentId);
+	}
+
+	public ArrayList<SelectItem> getDepartmentSelectItemList() {
+		return departmentSelectItemList;
+	}
+
+	public void setDepartmentSelectItemList(
+			ArrayList<SelectItem> departmentSelectItemList) {
+		this.departmentSelectItemList = departmentSelectItemList;
+	}
+
+	public ArrayList<SelectItem> getStudyProgramSelectItemList() {
+		return studyProgramSelectItemList;
+	}
+
+	public void setStudyProgramSelectItemList(
+			ArrayList<SelectItem> studyProgramSelectItemList) {
+		this.studyProgramSelectItemList = studyProgramSelectItemList;
 	}
 	
 	
