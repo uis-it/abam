@@ -13,7 +13,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
 					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true" immediate="true">
-						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentList}"/>
+						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
 					</ice:selectOneMenu>
 					</td>
 					
@@ -22,7 +22,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_std_prg}"/> </td>
 					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramNumber}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true" immediate="true" binding="#{employeeService.studyProgramMenu}">
-						<f:selectItems id="studyProgramContent" value="#{employeeService.selectedStudyProgramList}"/>
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramSelectItemList}"/>
 					</ice:selectOneMenu></td>
 					
 				</tr>

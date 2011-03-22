@@ -1,27 +1,21 @@
 package no.uis.portal.employee;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
-import com.liferay.portal.PortalException;
-import com.liferay.portal.SystemException;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
-import no.uis.abam.dom.EditableSelectItem;
 import no.uis.abam.dom.Student;
+import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 
@@ -34,11 +28,13 @@ public class EmployeeService {
 
 	private AbamWebService abamClient;
 
-	private LinkedList<Department> departmentList;
-	private List<EditableSelectItem> selectedStudyProgramList = new LinkedList<EditableSelectItem>();
+	private List<Department> departmentList;
+	private List<StudyProgram> selectedStudyProgramList = new ArrayList<StudyProgram>();
 
+	private List<SelectItem> departmentSelectItemList = new ArrayList<SelectItem>();
+	private List<SelectItem> studyProgramSelectItemList = new ArrayList<SelectItem>();
+	
 	private HtmlSelectOneMenu studyProgramMenu;
-
 	
 	private Set<Assignment> assignmentSet;
 	
@@ -73,7 +69,7 @@ public class EmployeeService {
 	public void setSelectedDepartmentAndStudyProgramFromValue(int value) {
 		setSelectedDepartmentNumber(value);
 		Department selectedDepartment = getDepartmentFromValue(selectedDepartmentNumber);
-		setSelectedDepartmentName(selectedDepartment.getLabel());
+		setSelectedDepartmentName(selectedDepartment.getName());
 		setSelectedStudyProgramNumber(0);
 		setSelectedStudyProgramList(selectedDepartment.getStudyPrograms());		
 
@@ -84,12 +80,18 @@ public class EmployeeService {
 		selectedDepartmentNumber = Integer.parseInt(event.getNewValue()
 				.toString());
 		getStudyProgramListFromSelectedDepartment();
+		methodForFindingUserInfoToBeUsed();
 
 	}
 
 	private void getStudyProgramListFromSelectedDepartment() {
 		selectedStudyProgramList = getDepartmentFromValue(
 				selectedDepartmentNumber).getStudyPrograms();
+		studyProgramSelectItemList.clear();
+		for (int i = 0; i < selectedStudyProgramList.size(); i++) {
+			studyProgramSelectItemList.add(new SelectItem(i,selectedStudyProgramList.get(i).getName()));
+		}
+		
 	}
 
 	public void actionSetDisplayAssignment(ValueChangeEvent event) {
@@ -140,12 +142,12 @@ public class EmployeeService {
 		}
 	}
 
-	public void addNewDepartment() {
-		Department newDepartment = new Department(new Integer(
-				departmentList.size()), "");
-		newDepartment.setEditable(true);
-		departmentList.add(newDepartment);
-	}
+//	public void addNewDepartment() {
+//		Department newDepartment = new Department(new Integer(
+//				departmentList.size()), "");
+//		newDepartment.setEditable(true);
+//		departmentList.add(newDepartment);
+//	}
 
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
 		abamClient.addThesesFromList(thesesToAdd);
@@ -155,7 +157,7 @@ public class EmployeeService {
 		abamClient.updateThesis(thesisToUpdate);
 	}
 
-	public void removeDepartment(EditableSelectItem department) {
+	public void removeDepartment(Department department) {
 		departmentList.remove(department);
 	}
 
@@ -164,12 +166,13 @@ public class EmployeeService {
 	}
 
 	public String getDepartmentNameFromIndex(int index) {
-		return departmentList.get(index).getLabel();
+		return departmentList.get(index).getOeNavn_Engelsk();
 	}
 
+	//TODO Må kanskje endre litt på denne metoden.
 	public Department getDepartmentFromValue(int value) {
 		for (Department department : departmentList) {
-			if (Integer.parseInt(department.getValue().toString()) == value) {
+			if (departmentList.indexOf(department) == value) {
 				return department;
 			}
 		}
@@ -177,9 +180,9 @@ public class EmployeeService {
 	}
 
 	public String getStudyProgramNameFromValue(int value) {
-		for (EditableSelectItem studyProgram : selectedStudyProgramList) {
-			if (Integer.parseInt(studyProgram.getValue().toString()) == value) {
-				return studyProgram.getLabel();
+		for (StudyProgram studyProgram : selectedStudyProgramList) {
+			if (selectedStudyProgramList.indexOf(studyProgram) == value) {
+				return studyProgram.getName();
 			}
 		}
 		return null;
@@ -198,7 +201,7 @@ public class EmployeeService {
 	}
 
 	public String getSelectedStudyProgramNameFromIndex(int index) {
-		return selectedStudyProgramList.get(index).getLabel();
+		return selectedStudyProgramList.get(index).getName();
 	}
 
 	public void setSelectedStudyProgramListFromDepartmentNumber(
@@ -221,6 +224,10 @@ public class EmployeeService {
 
 	public void getDepartmentListFromWebService() {
 		departmentList = abamClient.getDepartmentList();
+		departmentSelectItemList.clear();
+		for (int i = 0; i < departmentList.size(); i++) {
+			departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getName()));
+		}
 	}
 
 	public int getSelectedDepartmentNumber() {
@@ -251,12 +258,16 @@ public class EmployeeService {
 		this.selectedDepartmentName = selectedDepartment;
 	}
 
-	public List<EditableSelectItem> getSelectedStudyProgramList() {
+	public List<StudyProgram> getSelectedStudyProgramList() {
 		return selectedStudyProgramList;
 	}
 
-	public void setSelectedStudyProgramList(List<EditableSelectItem> list) {
+	public void setSelectedStudyProgramList(List<StudyProgram> list) {
 		this.selectedStudyProgramList = list;
+		studyProgramSelectItemList.clear();
+		for (int i = 0; i < selectedStudyProgramList.size(); i++) {
+			studyProgramSelectItemList.add(new SelectItem(i,selectedStudyProgramList.get(i).getName()));
+		}
 	}
 
 	public List<Thesis> getThesisList() {
@@ -297,21 +308,34 @@ public class EmployeeService {
 		this.abamClient = abamClient;
 	}
 
-//	private void methodForFindingUserInfoToBeUsed() {
-//		try {
-//			String userId = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
+	private void methodForFindingUserInfoToBeUsed() {
+		try {
+			String principal = PrincipalThreadLocal.getName();
+		
+			//String userId = FacesContext.getCurrentInstance().getRemoteUser();
 //			User user = UserLocalServiceUtil.getUser(Long.valueOf(userId));
 //			List<Role> roles = user.getRoles();			
-//		} catch (NumberFormatException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (PortalException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SystemException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	public List<SelectItem> getDepartmentSelectItemList() {
+		return departmentSelectItemList;
+	}
+
+	public void setDepartmentSelectItemList(
+			List<SelectItem> departmentSelectItemList) {
+		this.departmentSelectItemList = departmentSelectItemList;
+	}
+
+	public List<SelectItem> getStudyProgramSelectItemList() {
+		return studyProgramSelectItemList;
+	}
+
+	public void setStudyProgramSelectItemList(
+			List<SelectItem> studyProgramSelectItemList) {
+		this.studyProgramSelectItemList = studyProgramSelectItemList;
+	}
 }
