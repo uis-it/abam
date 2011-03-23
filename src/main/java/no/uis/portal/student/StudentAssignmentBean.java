@@ -37,9 +37,6 @@ public class StudentAssignmentBean implements DisposableBean {
 	public void actionGetCustomAssignment(ActionEvent event) {
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
 		Student student = studentService.getCurrentStudent(); 
-		System.out.println(".." +studentService
-				.getDepartmentNameFromIndex(studentService
-						.findDepartmentNumberForCurrentStudent()));
 		student.setDepartmentName(studentService
 				.getDepartmentNameFromIndex(studentService
 						.findDepartmentNumberForCurrentStudent()));
