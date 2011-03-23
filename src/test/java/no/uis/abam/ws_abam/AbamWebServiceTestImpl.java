@@ -179,14 +179,14 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		newStudent.setName("Bachelor Studenten");
 		newStudent.setStudentNumber(123456);
 		newStudent.setBachelor(true);
-		newStudent.setDepartmentName("Data- og elektroteknikk");
+		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
 		studentList.add(newStudent);
 		
 		newStudent = new Student();
 		newStudent.setName("Master Studenten");
 		newStudent.setStudentNumber(123457);
-		newStudent.setDepartmentName("Data- og elektroteknikk");
+		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
 		newStudent.setBachelor(false);
 		studentList.add(newStudent);
