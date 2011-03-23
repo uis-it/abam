@@ -22,7 +22,7 @@ public class DepartmentDAOTest {
 	}
 	
 	@Test
-	public void getDepartments() throws Exception {
+	public void assureGetDepartmentsReturnsSomething() throws Exception {
 		List<Department> departments = dao.getDepartments();
 		System.out.println(departments.size());
 		for (Department department : departments) {
@@ -30,5 +30,6 @@ public class DepartmentDAOTest {
 		}
 		Assert.assertNotNull(departments);
 		Assert.assertFalse(departments.isEmpty());
+		
 	}
 }
