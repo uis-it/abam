@@ -10,6 +10,10 @@ import java.util.TreeSet;
 
 import javax.jws.WebService;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import no.uis.abam.dao.DepartmentDAO;
 import no.uis.abam.dom.*;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
@@ -20,11 +24,12 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
+	private DepartmentDAO departmentDao;
  	
 	public AbamWebServiceTestImpl(){
 		
 		createAssignmentListContent();
-		initializeDepartmentAndStudyProgramLists();
+		//initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
 		initializeThesisList();
 	}
@@ -193,6 +198,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public List<Department> getDepartmentList() {
+		System.out.println("Inne i getDepartmentList i WS");
+		if ((departmentList == null) || (departmentList.isEmpty())) {
+			departmentList = departmentDao.getDepartments();
+			System.out.println("Virker: " + departmentList.size());
+		}
 		return departmentList;
 	}
 
@@ -355,4 +365,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public List<Thesis> getThesisList() {
 		return savedThesesList;
 	}
+
+	public void setDepartmentDao(DepartmentDAO departmentDao) {
+		this.departmentDao = departmentDao;
+	}
+	
 }

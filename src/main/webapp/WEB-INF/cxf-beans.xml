@@ -13,7 +13,10 @@
 
 	<jaxws:endpoint 
 	  id="abamWebService" 
-	  implementor="no.uis.abam.ws_abam.AbamWebServiceTestImpl" 
+	  implementor="#abamWS" 
 	  address="/AbamWebService" />
 	  
+	<bean id="abamWS" class="no.uis.abam.ws_abam.AbamWebServiceTestImpl">
+		<property name="departmentDao" ref="departmentDAO"/>
+	</bean>
 </beans>
