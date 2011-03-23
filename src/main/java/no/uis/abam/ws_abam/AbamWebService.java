@@ -36,8 +36,8 @@ public interface AbamWebService {
 	public String getDepartment(int index); 
 	
 	public List<Application> getApplicationList();
-	public List<Application> getMasterApplicationList();
-	public List<Application> getBachelorApplicationList();
+	public List<Application> getMasterApplicationListFromDepartmentCode(String code);
+	public List<Application> getBachelorApplicationListFromDepartmentCode(String code);
 	public void setApplicationList(List<Application> applicationList);
 	
 	public void saveApplication(Application application);

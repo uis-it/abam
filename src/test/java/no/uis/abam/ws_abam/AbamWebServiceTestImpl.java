@@ -286,20 +286,20 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return applicationList;
 	}
 	
-	public List<Application> getMasterApplicationList() {
+	public List<Application> getMasterApplicationListFromDepartmentCode(String code) {
 		List<Application> masterApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
-			if(application.getAssignment().isMaster()) {
+			if(application.getAssignment().isMaster() && application.getAssignment().getDepartmentCode().equals(code)) {
 				masterApplicationList.add(application);
 			}
 		}
 		return masterApplicationList;
 	}
 
-	public List<Application> getBachelorApplicationList() {
+	public List<Application> getBachelorApplicationListFromDepartmentCode(String code) {
 		List<Application> bachelorApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
-			if(application.getAssignment().isBachelor()) {
+			if(application.getAssignment().isBachelor() && application.getAssignment().getDepartmentCode().equals(code)) {
 				bachelorApplicationList.add(application);
 			}
 		}
