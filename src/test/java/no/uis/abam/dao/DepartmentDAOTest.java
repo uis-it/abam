@@ -26,7 +26,7 @@ public class DepartmentDAOTest {
 		List<Department> departments = dao.getDepartments();
 		System.out.println(departments.size());
 		for (Department department : departments) {
-			System.out.println(department.getOeNavn_Engelsk());
+			System.out.println("index: " + department.getOe2() + " " + department.getOeNavn_Engelsk());
 		}
 		Assert.assertNotNull(departments);
 		Assert.assertFalse(departments.isEmpty());

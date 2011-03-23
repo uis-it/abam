@@ -20,8 +20,9 @@ public class Assignment implements Comparable<Assignment>{
 
 	private String title;
 	private String description;
-	private String departmentName;
 	private String studyProgramName;
+	private String departmentCode;
+	private String departmentName;
 	private String type;
 	private String numberOfStudents;
 	private String numberOfStudentsError;
@@ -134,14 +135,6 @@ public class Assignment implements Comparable<Assignment>{
 		this.description = description;
 	}
 
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String department) {
-		this.departmentName = department;
-	}
-
 	public String getStudyProgramName() {
 		return studyProgramName;
 	}
@@ -237,4 +230,21 @@ public class Assignment implements Comparable<Assignment>{
 	public String getExpireDateAsString() {		
 		return simpleDateFormatter.format(getExpireDate().getTime());
 	}
+
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
 }
