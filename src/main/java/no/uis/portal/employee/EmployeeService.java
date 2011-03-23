@@ -2,8 +2,11 @@ package no.uis.portal.employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -225,8 +228,16 @@ public class EmployeeService {
 	public void getDepartmentListFromWebService() {
 		departmentList = abamClient.getDepartmentList();
 		departmentSelectItemList.clear();
+		FacesContext context  = FacesContext.getCurrentInstance();
+		Locale locale = context.getViewRoot().getLocale();
+        ResourceBundle res = ResourceBundle.getBundle("Language", locale);
+        System.out.println(res.getString("language"));
 		for (int i = 0; i < departmentList.size(); i++) {
-			departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getName()));
+			if(res.getString("language").equals("Norsk")) {
+				departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Bokmaal()));
+			} else {
+				departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Engelsk()));
+			}
 		}
 	}
 

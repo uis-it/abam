@@ -191,6 +191,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
         //file has been saved
         locale = context.getViewRoot().getLocale();
         ResourceBundle res = ResourceBundle.getBundle("Language", locale);
+        
         if (fileInfo.isSaved()) {
         	currentAssignment.setFileUploadErrorMessage("");
         	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
