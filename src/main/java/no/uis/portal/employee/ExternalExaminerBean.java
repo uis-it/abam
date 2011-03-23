@@ -34,30 +34,32 @@ public class ExternalExaminerBean implements DisposableBean{
 		//TODO: don't get all theses.
 		List<Thesis> thesisList = employeeService.getThesisList();
 		ThesisInformation thesisInformation;
-		for (Thesis thesis : thesisList) {
-			thesisInformation = new ThesisInformation();
-			Assignment assignment = employeeService.getAssignmentFromId(thesis.getAssignedAssignmentId());
-			if (assignment == null) {
-				Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1());
-				thesisInformation.setAssignmentTitle(student.getCustomAssignment().getTitle());
-			} else {
-				thesisInformation.setAssignmentTitle(assignment.getTitle());
+		if(thesisList != null) {
+			for (Thesis thesis : thesisList) {
+				thesisInformation = new ThesisInformation();
+				Assignment assignment = employeeService.getAssignmentFromId(thesis.getAssignedAssignmentId());
+				if (assignment == null) {
+					Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1());
+					thesisInformation.setAssignmentTitle(student.getCustomAssignment().getTitle());
+				} else {
+					thesisInformation.setAssignmentTitle(assignment.getTitle());
+				}
+				if (thesis.getStudentNumber2() != 0)
+				thesisInformation.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
+				if (thesis.getStudentNumber3() != 0)
+				thesisInformation.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
+				ExternalExaminer examiner = thesis.getExternalExaminer();
+				if (examiner == null) {
+					thesisInformation.setExternalExaminerName("");
+				} else {
+					thesisInformation.setExternalExaminerName(thesis.getExternalExaminer().getName());
+				}
+				thesisInformation.setStudentName(employeeService
+						.getStudentFromStudentNumber(thesis.getStudentNumber1())
+						.getName());
+				thesisInformation.setThesis(thesis);	
+				thesisInformationList.add(thesisInformation);
 			}
-			if (thesis.getStudentNumber2() != 0)
-			thesisInformation.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
-			if (thesis.getStudentNumber3() != 0)
-			thesisInformation.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
-			ExternalExaminer examiner = thesis.getExternalExaminer();
-			if (examiner == null) {
-				thesisInformation.setExternalExaminerName("");
-			} else {
-				thesisInformation.setExternalExaminerName(thesis.getExternalExaminer().getName());
-			}
-			thesisInformation.setStudentName(employeeService
-					.getStudentFromStudentNumber(thesis.getStudentNumber1())
-					.getName());
-			thesisInformation.setThesis(thesis);	
-			thesisInformationList.add(thesisInformation);
 		}
 	}
 	
