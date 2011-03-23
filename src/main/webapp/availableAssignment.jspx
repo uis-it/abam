@@ -11,7 +11,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-					<td><ice:selectOneMenu id="departmentInput" value="#{studentService.selectedDepartmentNumber}" partialSubmit="true" disabled="true">
+					<td><ice:selectOneMenu id="departmentInput" disabled="true">
 						<f:selectItems id="departmentInputContent" value="#{studentService.departmentSelectItemList}"/>
 					</ice:selectOneMenu>
 					</td>

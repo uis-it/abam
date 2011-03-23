@@ -23,7 +23,7 @@
 				<tr>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_title}"/> </td>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
 					<td><ice:outputText value="#{studentService.currentStudent.departmentName}"/></td>					
 					<td></td>
 				</tr>

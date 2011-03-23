@@ -3,10 +3,13 @@ package no.uis.portal.student;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -19,6 +22,9 @@ import no.uis.abam.ws_abam.AbamWebService;
 
 public class StudentService {
 
+	private static final String LANGUAGE = "language";
+	private static final String NORWEGIAN_LANGUAGE = "Norsk";
+	
 	private TreeSet<Assignment> assignmentList; 
 	private Assignment selectedAssignment;
 	
@@ -30,15 +36,20 @@ public class StudentService {
 	private ArrayList<Application> applicationsToRemove = new ArrayList<Application>();
 	private ArrayList<SelectItem> departmentSelectItemList = new ArrayList<SelectItem>();
 	private ArrayList<SelectItem> studyProgramSelectItemList = new ArrayList<SelectItem>();
+	private List<Department> departmentList;
 	
-	private String selectedDepartmentName;
-	
-	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 	
 	private long testStudentNumber = 123456;
 	
+	FacesContext context;
+	Locale locale;
+    ResourceBundle res;
+	
 	public StudentService() {
+		context  = FacesContext.getCurrentInstance();
+		locale = context.getViewRoot().getLocale();
+		res = ResourceBundle.getBundle("Language", locale);
 	}
 
 	public void setCurrentStudentFromLoggedInUser(){
@@ -46,7 +57,7 @@ public class StudentService {
 		currentStudent.setName("Bachelor Studenten");
 		currentStudent.setBachelor(true);
 		currentStudent.setStudentNumber(123456);
-		currentStudent.setDepartmentName("Data- og elektroteknikk");
+		currentStudent.setDepartmentCode("TN-IDE");
 		currentStudent.setStudyProgramName("Elektro");
 	}
 
@@ -74,7 +85,7 @@ public class StudentService {
 	
 	public TreeSet<Assignment> getAssignmentList() {
 		if(assignmentList == null) 
-			assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());
+			assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());
 		return assignmentList;		
 	}
 
@@ -116,21 +127,36 @@ public class StudentService {
 	
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
 		setSelectedStudyProgramNumber(0);
-		setSelectedDepartmentNumber(0);
 	}
 	
 	public void updateStudyProgramList(int index){
-		selectedDepartmentName = (String) getDepartmentName(index);
-		selectedDepartmentNumber = index;
 		Set<Assignment> assignmentList = getAssignmentList();
-		for (Assignment assignment : assignmentList) {
-			if (assignment.getDepartmentName().equals(selectedDepartmentName)
-				|| selectedDepartmentName.equals("")) { 
-				if(currentStudentIsEligibleForAssignment(assignment))
-					assignment.setDisplayAssignment(true);
-				else assignment.setDisplayAssignment(false);
-			} else assignment.setDisplayAssignment(false);
+		if (assignmentList != null) {
+			for (Assignment assignment : assignmentList) {
+				if (assignment.getDepartmentCode().equals(currentStudent.getDepartmentCode())) { 
+					if(currentStudentIsEligibleForAssignment(assignment)) {
+						assignment.setDisplayAssignment(true);
+						String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
+						assignment.setDepartmentName(depName);
+					}
+					else assignment.setDisplayAssignment(false);
+				} else assignment.setDisplayAssignment(false);
+			}
 		}
+	}
+	
+	private String getDepartmentNameFromCode(String code) {
+		String language = res.getString(LANGUAGE);
+		for (Department dep : departmentList) {
+			if (dep.getOeKode() != null && dep.getOeKode().equals(code)) {
+				if (language.equals(NORWEGIAN_LANGUAGE)) {
+					return dep.getOeNavn_Bokmaal();
+				} else {
+					return dep.getOeNavn_Engelsk();
+				}
+			}
+		}
+		return "";
 	}
 	
 	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
@@ -141,7 +167,6 @@ public class StudentService {
 		String selectedStudyProgram = (String) getStudyProgramName(Integer.parseInt(event.getNewValue().toString()));
 		assignmentList = getAssignmentList();
 		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
-		if (selectedDepartmentName == null) setSelectedDepartment("");
 		for (Assignment assignment : assignmentList) {
 			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)){ 
 				if(currentStudentIsEligibleForAssignment(assignment))
@@ -151,7 +176,7 @@ public class StudentService {
 	}
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
-		return (selectedStudyProgram.equals("") && abIn.getDepartmentName().equals(selectedDepartmentName)) 
+		return (selectedStudyProgram.equals("") && abIn.getDepartmentCode().equals(currentStudent.getDepartmentCode())) 
 		|| abIn.getStudyProgramName().equals(selectedStudyProgram);
 	}
 	
@@ -160,23 +185,22 @@ public class StudentService {
 		setSelectedAssignment(selectedAssignment);
 		//setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
-		setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
 		updateCurrentStudentFromWebService();
-		assignmentList = abamStudentClient.getAssignmentsFromDepartmentName(getCurrentStudent().getDepartmentName());			
+		assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());			
 		updateStudyProgramList(findDepartmentNumberForCurrentStudent());		
 		getStudyProgramList();
 	}
 	
-	private int findDepartmentNumberForCurrentStudent() {
-		String name = getCurrentStudent().getDepartmentName();
+	public int findDepartmentNumberForCurrentStudent() {
+		String code = getCurrentStudent().getDepartmentCode();
 		List<Department> tempList = getDepartmentList();
 		for (Department department : tempList) {
-			if(department.getName().equalsIgnoreCase(name)) 
+			if(department.getOeKode().equalsIgnoreCase(code)) 
 				return tempList.indexOf(department);
 		}
 		return 0;
@@ -199,15 +223,22 @@ public class StudentService {
 	}
 	
 	public List<Department> getDepartmentList() {
-		List<Department> departmentList = abamStudentClient.getDepartmentList();
-		for (int i = 0; i < departmentList.size(); i++) {
-			departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getName()));
+		if(departmentList == null || departmentList.isEmpty()) {
+			departmentList = abamStudentClient.getDepartmentList();
+			for (int i = 0; i < departmentList.size(); i++) {
+				if(departmentList.get(i).getOeKode().equals(currentStudent.getDepartmentCode())) {
+					if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
+						departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Bokmaal()));
+					} else departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Engelsk()));
+				}	
+			}
 		}
 		return departmentList;
 	}
 
 	public List<StudyProgram> getStudyProgramList() {
-		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(selectedDepartmentNumber);
+		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(findDepartmentNumberForCurrentStudent());
+		studyProgramSelectItemList.clear();
 		for (int i = 0; i < studyProgramList.size(); i++) {
 			studyProgramSelectItemList.add(new SelectItem(i,studyProgramList.get(i).getName()));
 		}
@@ -215,21 +246,19 @@ public class StudentService {
 	}
 	
 	public String getStudyProgramName(int index) {
-		return abamStudentClient.getStudyProgram(selectedDepartmentNumber,index);
+		return abamStudentClient.getStudyProgram(findDepartmentNumberForCurrentStudent(),index);
 	}
 	
-	public String getDepartmentName(int index) {
-		return  abamStudentClient.getDepartmentList().get(index).getName();
+	public String getDepartmentNameFromIndex(int index) {
+		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
+			return departmentList.get(index).getOeNavn_Bokmaal();
+		}
+		return departmentList.get(index).getOeNavn_Engelsk();
 	}
+	
+	public String getDepartmentCodeFromIndex(int index) {		
+		return departmentList.get(index).getOeKode();
 
-	
-	public String getSelectedDepartment() {
-		return selectedDepartmentName;
-	}
-
-	
-	public void setSelectedDepartment(String selectedDepartment) {
-		this.selectedDepartmentName = selectedDepartment;
 	}
 
 	
@@ -243,16 +272,6 @@ public class StudentService {
 //				get(departmentNumber));
 //	}
 //	
-	
-	public int getSelectedDepartmentNumber() {
-		return selectedDepartmentNumber;
-	}
-
-	
-	public void setSelectedDepartmentNumber(int selectedDepartmentNumber) {
-		this.selectedDepartmentNumber = selectedDepartmentNumber;
-	}
-
 	
 	public int getSelectedStudyProgramNumber() {
 		return selectedStudyProgramNumber;

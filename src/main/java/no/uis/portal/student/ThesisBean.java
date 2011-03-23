@@ -48,6 +48,9 @@ public class ThesisBean implements DisposableBean {
 						.getAssignmentFromId(currentStudentsThesis
 								.getAssignedAssignmentId());
 			}
+			currentAssignment.setDepartmentName(
+					studentService.getDepartmentNameFromIndex(
+							studentService.findDepartmentNumberForCurrentStudent()));
 			if (currentStudent.isAcceptedThesis()) {
 				readRules1 = true;
 				readRules2 = true;

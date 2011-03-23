@@ -11,6 +11,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
+import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
 
 import org.apache.log4j.Level;
@@ -35,6 +36,13 @@ public class StudentAssignmentBean implements DisposableBean {
 			
 	public void actionGetCustomAssignment(ActionEvent event) {
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
+		Student student = studentService.getCurrentStudent(); 
+		System.out.println(".." +studentService
+				.getDepartmentNameFromIndex(studentService
+						.findDepartmentNumberForCurrentStudent()));
+		student.setDepartmentName(studentService
+				.getDepartmentNameFromIndex(studentService
+						.findDepartmentNumberForCurrentStudent()));
 		if(assignment == null) {
 			assignment = new Assignment();
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
@@ -102,6 +110,7 @@ public class StudentAssignmentBean implements DisposableBean {
 			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
 			log.debug("type: "+parameterMap.get(clientId+"type"));
 		}
+		currentAssignment.setDepartmentCode(studentService.getCurrentStudent().getDepartmentCode());
 		currentAssignment.setDepartmentName(studentService.getCurrentStudent().getDepartmentName());
 		currentAssignment.setStudyProgramName(studentService.getCurrentStudent().getStudyProgramName());
 		currentAssignment.setFileUploadErrorMessage("");
