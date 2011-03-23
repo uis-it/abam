@@ -28,10 +28,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
  	
 	public AbamWebServiceTestImpl(){
 		
-		createAssignmentListContent();
+		//createAssignmentListContent();
 		//initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
-		initializeThesisList();
+		//initializeThesisList();
 	}
 	
 	public TreeSet<Assignment> getAllAssignments() {
@@ -53,15 +53,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	private void createAssignmentListContent(){
 		Assignment test1 = new Assignment();
-		test1.setTitle("Pet Bor oppgave");
+		test1.setTitle("IDE Data oppgave");
 		test1.setMaster(false);
 		test1.setBachelor(true);
 		test1.setDescription("Beskrivelse av test1");
 		test1.setNumberOfStudents("2-3");
 		test1.setId(1);
-		test1.setDepartmentName("Petroleumsteknologi");
+		test1.setDepartmentCode("TN-IDE");
 		test1.setDepartmentNumber(2);
-		test1.setStudyProgramName("Boreteknologi");
+		test1.setStudyProgramName("Data");
 		test1.setStudyProgramNumber(1);
 		test1.setFacultySupervisor("Louis Lane");
 		test1.getSupervisorList().get(0).setName("Superman");
@@ -90,7 +90,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				test2.setMaster(false);
 				test2.setDescription("Beskrivelse av test" +i);
 				test2.setNumberOfStudents("1");
-				test2.setDepartmentName("Data- og elektroteknikk");
+				test2.setDepartmentCode("TN-IDE");
 				test2.setDepartmentNumber(3);
 				test2.setStudyProgramName("Elektro");
 				test2.setStudyProgramNumber(2);
@@ -192,16 +192,68 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		studentList.add(newStudent);
 		
 	}
+	
+	private void initializeStudyPrograms(int departmentIndex) {
+		
+		List<StudyProgram> listToAdd = new ArrayList<StudyProgram>();
+		if ( departmentList.get(departmentIndex).getOe2() == 3) {
+			listToAdd = new ArrayList<StudyProgram>();
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			listToAdd.add(new StudyProgram(new Integer(1), "Industriell økonomi"));
+			getDepartmentFromOe2(3).setStudyPrograms(listToAdd);
+		} else if (departmentList.get(departmentIndex).getOe2() == 6) {
+			listToAdd = new ArrayList<StudyProgram>();
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			listToAdd.add(new StudyProgram(new Integer(1), "Boreteknologi"));
+			listToAdd.add(new StudyProgram(new Integer(2), "Petroleumsgeologi"));
+			getDepartmentFromOe2(6).setStudyPrograms(listToAdd);
+		} else if (departmentList.get(departmentIndex).getOe2() == 4) {
+			listToAdd = new ArrayList<StudyProgram>();
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			listToAdd.add(new StudyProgram(new Integer(1), "Data"));
+			listToAdd.add(new StudyProgram(new Integer(2), "Elektro"));
+			listToAdd.add(new StudyProgram(new Integer(3), "Informasjonsteknologi"));
+			getDepartmentFromOe2(4).setStudyPrograms(listToAdd);
+		} else if (departmentList.get(departmentIndex).getOe2() == 5) {
+			listToAdd = new ArrayList<StudyProgram>();
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			listToAdd.add(new StudyProgram(new Integer(1), "Byggeteknikk"));
+			listToAdd.add(new StudyProgram(new Integer(2), "Maskinteknikk"));
+			listToAdd.add(new StudyProgram(new Integer(3), "Offshoreteknologi"));
+			getDepartmentFromOe2(5).setStudyPrograms(listToAdd);
+		} else if(departmentList.get(departmentIndex).getOe2() == 2) {
+			listToAdd = new ArrayList<StudyProgram>();
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			listToAdd.add(new StudyProgram(new Integer(1), "Matematikk"));
+			listToAdd.add(new StudyProgram(new Integer(2), "Fysikk"));
+			getDepartmentFromOe2(2).setStudyPrograms(listToAdd);
+		} else {
+			listToAdd.add(new StudyProgram(new Integer(0), ""));
+			departmentList.get(0).setStudyPrograms(listToAdd);			
+		}
+
+	}
+	
+	private Department getDepartmentFromOe2(int oe2) {
+		for (Department dep : departmentList) {
+			if(dep.getOe2() == oe2) return dep;
+		}
+		return departmentList.get(0);
+	}
 
 	public void removeAssignment(Assignment assignment) {
 		assignmentList.remove(assignment);		
 	}
 
 	public List<Department> getDepartmentList() {
-		System.out.println("Inne i getDepartmentList i WS");
 		if ((departmentList == null) || (departmentList.isEmpty())) {
 			departmentList = departmentDao.getDepartments();
-			System.out.println("Virker: " + departmentList.size());
+			Department blankDepartment = new Department(0, "");
+			blankDepartment.setOeKode("");
+			departmentList.add(0, blankDepartment);
+			for (int i = 0; i < departmentList.size(); i++) {
+				initializeStudyPrograms(i);
+			}
 		}
 		return departmentList;
 	}
@@ -290,10 +342,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		this.assignmentList = assignmentList;
 	}
 
-	public TreeSet<Assignment> getAssignmentsFromDepartmentName(String departmentName) {
+	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentCode) {
 		TreeSet<Assignment> assignmentsToReturn = new TreeSet<Assignment>();
 		for (Assignment assignment : assignmentList) {
-			if(assignment.getDepartmentName().equalsIgnoreCase(departmentName)){
+			if(assignment.getDepartmentCode().equalsIgnoreCase(departmentCode)){
 				assignmentsToReturn.add(assignment);
 			}
 		}

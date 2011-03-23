@@ -17,7 +17,7 @@ public interface AbamWebService {
 
 	public TreeSet<Assignment> getAllAssignments();
 	public void setAssignmentList(TreeSet<Assignment> assignmentList);
-	public TreeSet<Assignment> getAssignmentsFromDepartmentName(String departmentName);
+	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentName);
 	public TreeSet<Assignment> getActiveAssignments();
 	
 	
