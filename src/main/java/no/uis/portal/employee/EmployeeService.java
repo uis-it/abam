@@ -23,11 +23,14 @@ import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 
 public class EmployeeService {
+	
+	private static final String LANGUAGE = "language";
+	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 
 	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 
-	private String selectedDepartmentName;
+	private String selectedDepartmentCode;
 
 	private AbamWebService abamClient;
 
@@ -41,8 +44,14 @@ public class EmployeeService {
 	
 	private Set<Assignment> assignmentSet;
 	
-	public EmployeeService() {		
-		
+	FacesContext context;
+	Locale locale;
+    ResourceBundle res;
+	
+	public EmployeeService() {	
+		context  = FacesContext.getCurrentInstance();
+		locale = context.getViewRoot().getLocale();
+		res = ResourceBundle.getBundle("Language", locale);
 	}
 
 	public void saveAssignment(Assignment assignment) {
@@ -60,22 +69,41 @@ public class EmployeeService {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
 		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
 		for (Assignment assignment : assignmentSet) {
-			if (assignment.getDepartmentName().equals(selectedDepartmentName)
-					|| selectedDepartmentName.equals(""))
+			System.out.println(assignment.getDepartmentCode());
+			System.out.println("selected: " + selectedDepartmentCode);
+			if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
+					|| selectedDepartmentCode.equals("")) {
 				assignment.setDisplayAssignment(true);
-			else
+				String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
+				assignment.setDepartmentName(depName);
+			} else
 				assignment.setDisplayAssignment(false);
 		}
-		setAllEditExternalExaminerToFalse();
+		//setAllEditExternalExaminerToFalse();
 	}
 
 	public void setSelectedDepartmentAndStudyProgramFromValue(int value) {
 		setSelectedDepartmentNumber(value);
 		Department selectedDepartment = getDepartmentFromValue(selectedDepartmentNumber);
-		setSelectedDepartmentName(selectedDepartment.getName());
+		setSelectedDepartmentCode(selectedDepartment.getOeKode());
+		
 		setSelectedStudyProgramNumber(0);
 		setSelectedStudyProgramList(selectedDepartment.getStudyPrograms());		
 
+	}
+	
+	private String getDepartmentNameFromCode(String code) {
+		String language = res.getString(LANGUAGE);
+		for (Department dep : departmentList) {
+			if (dep.getOeKode() != null && dep.getOeKode().equals(code)) {
+				if (language.equals(NORWEGIAN_LANGUAGE)) {
+					return dep.getOeNavn_Bokmaal();
+				} else {
+					return dep.getOeNavn_Engelsk();
+				}
+			}
+		}
+		return "";
 	}
 	
 	public void actionUpdateStudyProgramListFromCreateAssignment(
@@ -106,7 +134,7 @@ public class EmployeeService {
 					.toString());
 		}
 		setDisplayAssignments();
-		setAllEditExternalExaminerToFalse();
+		//setAllEditExternalExaminerToFalse();
 	}
 	
 	public void setDisplayAssignments() {
@@ -115,8 +143,9 @@ public class EmployeeService {
 		
 		//TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
 		
-		if (selectedDepartmentName == null)
-			setSelectedDepartmentName("");
+		if (selectedDepartmentCode == null)
+			
+			setSelectedDepartmentCode("");
 		if (selectedStudyProgram == null)
 			selectedStudyProgram = "";
 		for (Assignment assignment : assignmentSet) {
@@ -132,10 +161,10 @@ public class EmployeeService {
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn,
 			String selectedStudyProgram) {
 		return (selectedStudyProgram.equals("") && assignmentIn
-				.getDepartmentName().equals(selectedDepartmentName))
+				.getDepartmentCode().equals(selectedDepartmentCode))
 				|| assignmentIn.getStudyProgramName().equals(
 						selectedStudyProgram)
-				|| getSelectedDepartmentName().equals("");
+				|| getSelectedDepartmentCode().equals("");
 	}
 
 	public void setAllEditExternalExaminerToFalse() {
@@ -169,7 +198,15 @@ public class EmployeeService {
 	}
 
 	public String getDepartmentNameFromIndex(int index) {
+		if(res.getString("language").equals("Norsk")) {
+			return departmentList.get(index).getOeNavn_Bokmaal();
+		}
 		return departmentList.get(index).getOeNavn_Engelsk();
+	}
+	
+	public String getDepartmentCodeFromIndex(int index) {		
+		return departmentList.get(index).getOeKode();
+
 	}
 
 	//TODO Må kanskje endre litt på denne metoden.
@@ -228,11 +265,7 @@ public class EmployeeService {
 	public void getDepartmentListFromWebService() {
 		departmentList = abamClient.getDepartmentList();
 		departmentSelectItemList.clear();
-		FacesContext context  = FacesContext.getCurrentInstance();
-		Locale locale = context.getViewRoot().getLocale();
-        ResourceBundle res = ResourceBundle.getBundle("Language", locale);
-        System.out.println(res.getString("language"));
-		for (int i = 0; i < departmentList.size(); i++) {
+  		for (int i = 0; i < departmentList.size(); i++) {
 			if(res.getString("language").equals("Norsk")) {
 				departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Bokmaal()));
 			} else {
@@ -261,12 +294,12 @@ public class EmployeeService {
 		return abamClient.getNextId();
 	}
 
-	public String getSelectedDepartmentName() {
-		return selectedDepartmentName;
+	public String getSelectedDepartmentCode() {
+		return selectedDepartmentCode;
 	}
 
-	public void setSelectedDepartmentName(String selectedDepartment) {
-		this.selectedDepartmentName = selectedDepartment;
+	public void setSelectedDepartmentCode(String selectedDepartmentCode) {
+		this.selectedDepartmentCode = selectedDepartmentCode;
 	}
 
 	public List<StudyProgram> getSelectedStudyProgramList() {
