@@ -14,6 +14,7 @@ public class Student extends Person {
 	
 	private long studentNumber;
 	
+	private String departmentCode;
 	private String departmentName;
 	private String studyProgramName;
 	private String applicationsErrorMessage;
@@ -95,6 +96,14 @@ public class Student extends Person {
 
 	public void setStudentNumber(long studentNumber) {
 		this.studentNumber = studentNumber;
+	}
+
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
 	}
 
 	public String getDepartmentName() {
