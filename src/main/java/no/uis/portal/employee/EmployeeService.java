@@ -249,11 +249,11 @@ public class EmployeeService {
 	}
 
 	public List<Application> getMasterApplicationList() {
-		return abamClient.getMasterApplicationList();
+		return abamClient.getMasterApplicationListFromDepartmentCode(getDepartmentCodeFromIndex(selectedDepartmentNumber));
 	}
 
-	public List<Application> getBachelorApplicationList() {
-		return abamClient.getBachelorApplicationList();
+	public List<Application> getBachelorApplicationListFromSelectedDepartmentNumber() {
+		return abamClient.getBachelorApplicationListFromDepartmentCode(getDepartmentCodeFromIndex(selectedDepartmentNumber));
 	}
 
 	public Assignment getAssignmentFromId(int id) {

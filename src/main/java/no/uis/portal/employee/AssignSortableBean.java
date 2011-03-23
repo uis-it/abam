@@ -146,7 +146,7 @@ public class AssignSortableBean implements DisposableBean{
 		setSelectedPriority("all");
 		setDepartmentName(employeeService.getDepartmentNameFromIndex(employeeService.getSelectedDepartmentNumber()));
 		List<Application> applicationList;
-		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
+		if(isBachelor()) applicationList = employeeService.getBachelorApplicationListFromSelectedDepartmentNumber();
 		else applicationList = employeeService.getMasterApplicationList();
 		if(applicationList != null){							
 			applicationInformationArray = new ApplicationInformation[applicationList.size()];
@@ -159,7 +159,7 @@ public class AssignSortableBean implements DisposableBean{
 	public void actionPriorityChange(ValueChangeEvent event) {
 		List<Application> applicationList;
 		List<Application> applicationPriorityList = new ArrayList<Application>();
- 		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
+ 		if(isBachelor()) applicationList = employeeService.getBachelorApplicationListFromSelectedDepartmentNumber();
 		else applicationList = employeeService.getMasterApplicationList();
 		int priority = convertSelectedPriority(event.getNewValue().toString());
 		if(applicationList != null){
