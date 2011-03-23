@@ -198,7 +198,7 @@ public class EmployeeService {
 	}
 
 	public String getDepartmentNameFromIndex(int index) {
-		if(res.getString("language").equals("Norsk")) {
+		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
 			return departmentList.get(index).getOeNavn_Bokmaal();
 		}
 		return departmentList.get(index).getOeNavn_Engelsk();
