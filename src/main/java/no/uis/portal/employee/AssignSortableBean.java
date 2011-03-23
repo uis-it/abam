@@ -49,6 +49,7 @@ public class AssignSortableBean implements DisposableBean{
 	private String fromDateString;
 	private String toDateString;
 	private String selectedPriority;
+	private String departmentName;
 	
 	private EmployeeService employeeService;
 
@@ -143,6 +144,7 @@ public class AssignSortableBean implements DisposableBean{
 
 	public void actionRefreshApplicationInformationArray(ActionEvent event) {
 		setSelectedPriority("all");
+		setDepartmentName(employeeService.getDepartmentNameFromIndex(employeeService.getSelectedDepartmentNumber()));
 		List<Application> applicationList;
 		if(isBachelor()) applicationList = employeeService.getBachelorApplicationList();
 		else applicationList = employeeService.getMasterApplicationList();
@@ -175,6 +177,10 @@ public class AssignSortableBean implements DisposableBean{
 		} else {
 			applicationInformationArray = null;
 		}
+	}
+	
+	public void actionPrepareSetDates(ActionEvent event) {
+		employeeService.getDepartmentListFromWebService();
 	}
 	
 	private int convertSelectedPriority(String priority) {
@@ -376,6 +382,14 @@ public class AssignSortableBean implements DisposableBean{
 	@Override
 	public void dispose() throws Exception {
 	
+	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	
 }

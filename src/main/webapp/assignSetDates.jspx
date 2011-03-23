@@ -23,6 +23,13 @@
 					</ice:selectOneRadio>
 				</td>
 			</tr>
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+				<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}">
+					<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+				</ice:selectOneMenu>
+				</td>
+			</tr>
 		</table>
 		<ice:outputText value="#{msgs.lbl_assign_set_dates}"/>
 		<table>			

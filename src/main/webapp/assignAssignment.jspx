@@ -17,6 +17,10 @@
 					<td><ice:outputText id="type" value="#{assignSortableBean.typeAsString}" /></td>
 				</tr>
 				<tr>
+					<td><ice:outputText id="departmentText" value="#{msgs.lbl_department}"/></td>
+					<td><ice:outputText id="department" value="#{assignSortableBean.departmentName}" /></td>
+				</tr>
+				<tr>
 					<td><ice:outputText id="fromDateText" value="#{msgs.lbl_from_date}"></ice:outputText> </td>
 					<td><ice:outputText id="fromDate" value="#{assignSortableBean.fromDateString }"/> </td>
 				</tr>

@@ -69,9 +69,7 @@ public class EmployeeService {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
 		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
 		for (Assignment assignment : assignmentSet) {
-			System.out.println(assignment.getDepartmentCode());
-			System.out.println("selected: " + selectedDepartmentCode);
-			if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
+				if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
 					|| selectedDepartmentCode.equals("")) {
 				assignment.setDisplayAssignment(true);
 				String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
