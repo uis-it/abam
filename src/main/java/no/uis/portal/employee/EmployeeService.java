@@ -12,7 +12,14 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -44,9 +51,11 @@ public class EmployeeService {
 	
 	private Set<Assignment> assignmentSet;
 	
-	FacesContext context;
-	Locale locale;
-    ResourceBundle res;
+	private FacesContext context;
+	private Locale locale;
+	private ResourceBundle res;
+	
+	private User loggedInUser;
 	
 	public EmployeeService() {	
 		context  = FacesContext.getCurrentInstance();
@@ -352,12 +361,28 @@ public class EmployeeService {
 
 	private void methodForFindingUserInfoToBeUsed() {
 		try {
-			String principal = PrincipalThreadLocal.getName();
-		
+			//String principal = PrincipalThreadLocal.getName();			
+			//System.out.println("principal: " + principal);
 			//String userId = FacesContext.getCurrentInstance().getRemoteUser();
-//			User user = UserLocalServiceUtil.getUser(Long.valueOf(userId));
+			String temp = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
+			System.out.println(temp);
+			User user = UserLocalServiceUtil.getUser(Long.valueOf(temp));
+			List<Role> roles = user.getRoles();
+			boolean isSuperUser = false;
+			for (Role role : roles) {
+				if(role.getName().equals("AbamSuperUser")) {
+					isSuperUser = true;
+				}
+			}
+			System.out.println("User is superUser: " + isSuperUser);
 //			List<Role> roles = user.getRoles();			
 		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
