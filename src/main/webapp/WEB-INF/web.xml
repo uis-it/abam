@@ -72,7 +72,7 @@
 	<context-param>
 		<param-name>com.icesoft.faces.heartbeatTimeout</param-name>
 		<param-value>30000</param-value>
-	</context-param>
+	</context-param>	
 	
 	<filter>
 		<filter-name>Touch Session</filter-name>

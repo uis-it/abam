@@ -1,18 +1,17 @@
-
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
-	<ice:portlet>
+	<ice:portlet>		
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 			<h:outputText value="#{msgs.lbl_search_archive}"/><br/>
 			<br/>
 			<br/>
 			<table border="0">
-				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
-			</table>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>				
+			</table>			
 		</ice:form>
 	</ice:portlet>
 </f:view>

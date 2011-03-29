@@ -23,5 +23,5 @@
 	</licenses>
 	<liferay-versions>
 		<liferay-version>${liferay.version}</liferay-version>
-	</liferay-versions>
+	</liferay-versions>	
 </plugin-package>

@@ -4,5 +4,5 @@
 <display>
 	<category name="${portlet.category}">
 		<portlet id="abam_employee" />
-	</category>
+	</category>	
 </display>

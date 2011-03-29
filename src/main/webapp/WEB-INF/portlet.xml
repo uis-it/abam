@@ -14,14 +14,6 @@
 
 		<portlet-class>com.icesoft.faces.webapp.http.portlet.MainPortlet</portlet-class>
 
-		<!-- init-param>
-			<name>com.icesoft.faces.EDIT</name>
-			<value>/edit.iface</value>
-		</init-param-->
-		<!-- init-param>
-			<name>com.icesoft.faces.HELP</name>
-			<value>/help.iface</value>
-		</init-param-->
 		<init-param>
 			<name>com.icesoft.faces.VIEW</name>
 			<value>/view.iface</value>
@@ -34,9 +26,7 @@
 
 		<supports>
 			<mime-type>text/html</mime-type>
-			<portlet-mode>VIEW</portlet-mode>
-			<!--<portlet-mode>EDIT</portlet-mode>-->
-			<!--<portlet-mode>HELP</portlet-mode>-->
+			<portlet-mode>VIEW</portlet-mode>			
 		</supports>
 
 		<supported-locale>en_GB</supported-locale>
@@ -59,7 +49,7 @@
 			<role-name>power-user</role-name>
 		</security-role-ref>
 		<security-role-ref>
-			<role-name>user</role-name>
-		</security-role-ref>
+			<role-name>user</role-name>			
+		</security-role-ref>		
 	</portlet>
 </portlet-app>

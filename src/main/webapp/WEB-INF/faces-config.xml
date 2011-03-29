@@ -11,7 +11,7 @@
 		</locale-config>
 		<message-bundle>Language_nb</message-bundle>
 		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
-		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>		
 	</application>
 	<factory>
 		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>

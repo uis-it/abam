@@ -7,6 +7,7 @@
 		<instanceable>false</instanceable>
 		<render-weight>1</render-weight>
 		<ajaxable>false</ajaxable>
+		<add-default-resource>true</add-default-resource>	
 	</portlet>
 	<role-mapper>
 		<role-name>administrator</role-name>
@@ -22,6 +23,6 @@
 	</role-mapper>
 	<role-mapper>
 		<role-name>user</role-name>
-		<role-link>User</role-link>
+		<role-link>User</role-link>		
 	</role-mapper>
 </liferay-portlet-app>

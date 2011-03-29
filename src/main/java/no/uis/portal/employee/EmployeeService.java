@@ -15,10 +15,16 @@ import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
 import com.liferay.portal.model.Group;
+import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.ResourceLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
 
 import no.uis.abam.dom.Application;
@@ -360,32 +366,27 @@ public class EmployeeService {
 	}
 
 	private void methodForFindingUserInfoToBeUsed() {
-		try {
-			//String principal = PrincipalThreadLocal.getName();			
-			//System.out.println("principal: " + principal);
 			//String userId = FacesContext.getCurrentInstance().getRemoteUser();
-			String temp = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
-			System.out.println(temp);
-			User user = UserLocalServiceUtil.getUser(Long.valueOf(temp));
-			List<Role> roles = user.getRoles();
-			boolean isSuperUser = false;
-			for (Role role : roles) {
-				if(role.getName().equals("AbamSuperUser")) {
-					isSuperUser = true;
-				}
-			}
-			System.out.println("User is superUser: " + isSuperUser);
-//			List<Role> roles = user.getRoles();			
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (PortalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//String temp = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
+			//User user = UserLocalServiceUtil.getUser(Long.valueOf(temp));
+			checkPermission("TEST");
+			
+	}	
+	
+	public boolean checkPermission(String permissionName) {
+		PermissionChecker pc = PermissionThreadLocal.getPermissionChecker();
+		try {
+			PortletPermissionUtil.check(pc, "employee", permissionName);
+			return true;
+		} catch (PrincipalException e) {
+			return false;
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+			return false;
+		} catch (PortalException e) {
+			e.printStackTrace();
+			return false;
+		}		
 	}
 
 	public List<SelectItem> getDepartmentSelectItemList() {
