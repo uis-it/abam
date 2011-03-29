@@ -10,10 +10,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.portlet.RenderRequest;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Resource;
 import com.liferay.portal.model.Role;
@@ -21,11 +24,15 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.ResourceLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.service.permission.PortletPermissionUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
+import com.liferay.util.bridges.jsf.common.ThemeDisplayManagedBean;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -374,9 +381,9 @@ public class EmployeeService {
 	}	
 	
 	public boolean checkPermission(String permissionName) {
-		PermissionChecker pc = PermissionThreadLocal.getPermissionChecker();
 		try {
-			PortletPermissionUtil.check(pc, "employee", permissionName);
+			PortletPermissionUtil.check(getPermissionChecker(), "employee",
+					permissionName);
 			return true;
 		} catch (PrincipalException e) {
 			return false;
@@ -386,7 +393,13 @@ public class EmployeeService {
 		} catch (PortalException e) {
 			e.printStackTrace();
 			return false;
-		}		
+		}
+	}
+	
+	public PermissionChecker getPermissionChecker() {
+		RenderRequest renderRequest = (RenderRequest)(context.getExternalContext().getRequest());		
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+		return themeDisplay.getPermissionChecker(); 
 	}
 
 	public List<SelectItem> getDepartmentSelectItemList() {
