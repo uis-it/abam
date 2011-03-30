@@ -38,7 +38,7 @@
 			<short-title>Employee Portlet</short-title>
 			<keywords>uis, abam</keywords>
 		</portlet-info>
-		
+				
 		<security-role-ref>
 			<role-name>administrator</role-name>
 		</security-role-ref>

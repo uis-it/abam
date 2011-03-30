@@ -1,6 +1,7 @@
 package no.uis.portal.employee;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -12,27 +13,17 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.RenderRequest;
 
+import org.apache.log4j.Logger;
+
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
-import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.Resource;
+import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.PrincipalException;
-import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
-import com.liferay.portal.service.ResourceLocalServiceUtil;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.service.permission.PortletPermissionUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.bridges.jsf.common.JSFPortletUtil;
-import com.liferay.util.bridges.jsf.common.ThemeDisplayManagedBean;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -47,6 +38,8 @@ public class EmployeeService {
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 
+	private Logger log = Logger.getLogger(EmployeeService.class);
+	
 	private int selectedDepartmentNumber;
 	private int selectedStudyProgramNumber;
 
@@ -69,11 +62,25 @@ public class EmployeeService {
 	private ResourceBundle res;
 	
 	private User loggedInUser;
+	private ThemeDisplay themeDisplay;
+	
 	
 	public EmployeeService() {	
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
 		res = ResourceBundle.getBundle("Language", locale);
+		
+		initializeThemeDisplay();
+	}
+	
+	private void initializeThemeDisplay() {
+		if (themeDisplay == null) {			
+			RenderRequest renderRequest = (RenderRequest) (context
+					.getExternalContext().getRequest());
+			themeDisplay = (ThemeDisplay) renderRequest
+			.getAttribute(WebKeys.THEME_DISPLAY);
+
+		}
 	}
 
 	public void saveAssignment(Assignment assignment) {
@@ -130,8 +137,7 @@ public class EmployeeService {
 			ValueChangeEvent event) {
 		selectedDepartmentNumber = Integer.parseInt(event.getNewValue()
 				.toString());
-		getStudyProgramListFromSelectedDepartment();
-		methodForFindingUserInfoToBeUsed();
+		getStudyProgramListFromSelectedDepartment();		
 
 	}
 
@@ -371,37 +377,36 @@ public class EmployeeService {
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;
 	}
-
-	private void methodForFindingUserInfoToBeUsed() {
-			//String userId = FacesContext.getCurrentInstance().getRemoteUser();
-			//String temp = JSFPortletUtil.getPortletRequest(FacesContext.getCurrentInstance()).getRemoteUser();
-			//User user = UserLocalServiceUtil.getUser(Long.valueOf(temp));
-			checkPermission("TEST");
-			
-	}	
 	
 	public boolean checkPermission(String permissionName) {
-		try {
-			PortletPermissionUtil.check(getPermissionChecker(), "employee",
-					permissionName);
-			return true;
-		} catch (PrincipalException e) {
-			return false;
-		} catch (SystemException e) {
-			e.printStackTrace();
-			return false;
-		} catch (PortalException e) {
-			e.printStackTrace();
-			return false;
+		User user = themeDisplay.getUser();
+		List<Permission> permList = new LinkedList<Permission>();
+		
+		for (Role role : user.getRoles()) {
+			try {
+				permList.addAll(PermissionLocalServiceUtil.getRolePermissions(role.getRoleId()));
+			} catch (SystemException e) {				
+				log.debug(e.getStackTrace());
+			}			
 		}
+
+		for (Permission permission : permList) {
+			if (permission.getActionId().equals(permissionName)) {
+				return true;
+			}			
+		}
+		
+		return false;				
 	}
 	
 	public PermissionChecker getPermissionChecker() {
-		RenderRequest renderRequest = (RenderRequest)(context.getExternalContext().getRequest());		
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		return themeDisplay.getPermissionChecker(); 
 	}
 
+	public boolean isShouldDisplayAssignAssignments() {
+		return checkPermission("ASSIGN_ASSIGNMENTS");						
+	}
+	
 	public List<SelectItem> getDepartmentSelectItemList() {
 		return departmentSelectItemList;
 	}
