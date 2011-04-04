@@ -1,5 +1,6 @@
 package no.uis.portal.employee;
 
+import java.awt.image.VolatileImage;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collection;
@@ -29,9 +30,26 @@ import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.events.ActionException;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.service.GroupLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.expando.model.ExpandoColumnConstants;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
+import com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImpl;
 
 public class EmployeeAssignmentBean implements DisposableBean {
 
+	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
+	
 	private FacesContext context;
 	private EmployeeService employeeService;
 	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
@@ -132,7 +150,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {		
-		debugToLog(Level.ERROR, event);
+		debugToLog(Level.DEBUG, event);
 		
 		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
 		currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
@@ -155,6 +173,44 @@ public class EmployeeAssignmentBean implements DisposableBean {
 					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
 			}
 		}
+		try {
+			currentAssignment.setAuthorEmployeeId(getUserCustomAttribute(employeeService.getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME));
+		} catch (PortalException e) {
+			e.printStackTrace();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getUserFullNameFromEmployeeId(String id) {
+		try {
+			List<Role> roleList = RoleLocalServiceUtil.getUserRoles(employeeService.getThemeDisplay().getUser().getUserId());
+			for (Role role : roleList) {
+				if(role.getName().equals("Abam Scientific Employee")) {
+					Long scientificEmployeeRoleId = role.getRoleId();
+					List<User> userList2 = UserLocalServiceUtil.getRoleUsers(scientificEmployeeRoleId);
+					for (User user : userList2) {
+						String userCustomAttribute = getUserCustomAttribute(user, COLUMN_UIS_LOGIN_NAME);
+						if(userCustomAttribute !=null && userCustomAttribute.equals(id)) {
+							return user.getFullName();
+						}
+					}
+				}
+			}
+		} catch (SystemException e1) {
+			e1.printStackTrace();
+		} catch (PortalException e) {
+			e.printStackTrace();
+		}
+		return "NOT_FOUND";
+	}
+	
+	
+	private String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage
+	    String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
+	      columnName, user.getUserId(), (String)null);
+	   return data;
 	}
 	
 	private void debugToLog(Level level, ActionEvent event) {
@@ -163,7 +219,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.ERROR);
+		log.setLevel(level);
 		if (log.isDebugEnabled()) {
 			log.debug("Title: "+parameterMap.get(clientId+"title"));
 			log.debug("Des: "+parameterMap.get(clientId+"description"));

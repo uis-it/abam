@@ -23,7 +23,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_desc}"/> </td>
-					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.currentAssignment.description}"></ice:inputTextarea></td>
+					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.currentAssignment.description}" ></ice:inputTextarea></td>
 					<td><ice:message for="description" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>

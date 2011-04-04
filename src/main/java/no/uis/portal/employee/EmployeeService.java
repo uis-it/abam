@@ -443,4 +443,9 @@ public class EmployeeService {
 			List<SelectItem> studyProgramSelectItemList) {
 		this.studyProgramSelectItemList = studyProgramSelectItemList;
 	}
+
+	public ThemeDisplay getThemeDisplay() {
+		return themeDisplay;
+	}
+	
 }
