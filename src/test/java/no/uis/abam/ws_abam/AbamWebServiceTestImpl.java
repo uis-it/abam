@@ -12,6 +12,7 @@ import javax.jws.WebService;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.transaction.CannotCreateTransactionException;
 
 import no.uis.abam.dao.DepartmentDAO;
 import no.uis.abam.dom.*;
@@ -24,6 +25,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
+	private List<Employee> employeeList = new ArrayList<Employee>();
 	private DepartmentDAO departmentDao;
  	
 	public AbamWebServiceTestImpl(){
@@ -31,6 +33,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		//createAssignmentListContent();
 		//initializeDepartmentAndStudyProgramLists();
 		initializeStudentList();
+		createEmployeeListContent();
 		//initializeThesisList();
 	}
 	
@@ -49,6 +52,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public void saveAssignment(Assignment assignment){
 		assignmentList.remove(assignment);
 		assignmentList.add(assignment);
+	}
+	
+	private void createEmployeeListContent() {
+		Employee employee = new Employee();
+		employee.setName("Ansatt1 Ansatt1");
+		employee.setEmployeeId("3456789");
+		employeeList.add(employee);
+		employee = new Employee();
+		employee.setName("Ansatt2 Ansatt2");
+		employee.setEmployeeId("2345678");
+		employeeList.add(employee);
 	}
 	
 	private void createAssignmentListContent(){
@@ -246,14 +260,39 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public List<Department> getDepartmentList() {
-		if ((departmentList == null) || (departmentList.isEmpty())) {
-			departmentList = departmentDao.getDepartments();
-			Department blankDepartment = new Department(0, "");
-			blankDepartment.setOeKode("");
-			departmentList.add(0, blankDepartment);
+		try {
+			if ((departmentList == null) || (departmentList.isEmpty())) {
+				departmentList = departmentDao.getDepartments();
+				Department blankDepartment = new Department(0, "");
+				blankDepartment.setOeKode("");
+				departmentList.add(0, blankDepartment);
+				for (int i = 0; i < departmentList.size(); i++) {
+					initializeStudyPrograms(i);
+				}
+			}
+		} catch (CannotCreateTransactionException e) {
+			departmentList = new ArrayList<Department>();
+			Department depToAdd = new Department(new Integer(0), "");
+			depToAdd.setOe2((short)0);
+			departmentList.add(depToAdd);
+			depToAdd = new Department(new Integer(1), "Industriell økonomi, risikostyring og planlegging");
+			depToAdd.setOe2((short)3);
+			departmentList.add(depToAdd);
+			depToAdd = new Department(new Integer(2), "Petroleumsteknologi");
+			depToAdd.setOe2((short)6);
+			departmentList.add(depToAdd);
+			depToAdd = new Department(new Integer(3), "Data- og elektroteknikk");
+			depToAdd.setOe2((short)4);
+			departmentList.add(depToAdd);
+			depToAdd = new Department(new Integer(4), "Konstruksjonsteknikk og materialteknologi");
+			depToAdd.setOe2((short)5);
+			departmentList.add(depToAdd);
+			depToAdd = new Department(new Integer(5), "Matematikk og naturvitskap");
+			depToAdd.setOe2((short)2);
+			departmentList.add(depToAdd);			
 			for (int i = 0; i < departmentList.size(); i++) {
 				initializeStudyPrograms(i);
-			}
+			}					
 		}
 		return departmentList;
 	}
@@ -420,6 +459,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 
 	public void setDepartmentDao(DepartmentDAO departmentDao) {
 		this.departmentDao = departmentDao;
+	}
+
+	public Employee getEmployeeFromUisLoginName(String loginName) {
+		for (Employee employee : employeeList) {
+			if (employee.getEmployeeId().equals(loginName)) {
+				return employee;
+			}
+		}
+		return null;
 	}
 	
 }
