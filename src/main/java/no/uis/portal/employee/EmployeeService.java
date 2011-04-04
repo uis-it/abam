@@ -28,6 +28,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Department;
+import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
@@ -448,4 +449,7 @@ public class EmployeeService {
 		return themeDisplay;
 	}
 	
+	public Employee getEmployeeFromUisLoginName(String loginName) {
+		return abamClient.getEmployeeFromUisLoginName(loginName);
+	}
 }

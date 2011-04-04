@@ -19,6 +19,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.ApplicationInformation;
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
@@ -173,13 +174,23 @@ public class EmployeeAssignmentBean implements DisposableBean {
 					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
 			}
 		}
+		System.out.println(getEmployeeFromUisLoginName());
+		currentAssignment.setAuthor(getEmployeeFromUisLoginName());
+
+	}
+	
+	private Employee getEmployeeFromUisLoginName() {
 		try {
-			currentAssignment.setAuthorEmployeeId(getUserCustomAttribute(employeeService.getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME));
+			String loginName = getUserCustomAttribute(employeeService.getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+			return employeeService.getEmployeeFromUisLoginName(loginName);
 		} catch (PortalException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SystemException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	private String getUserFullNameFromEmployeeId(String id) {
