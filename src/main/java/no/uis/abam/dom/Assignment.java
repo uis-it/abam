@@ -29,6 +29,8 @@ public class Assignment implements Comparable<Assignment>{
 	private String facultySupervisor;
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
+	
+	private String authorEmployeeId;
 
 	private GregorianCalendar addedDate;
 	private GregorianCalendar expireDate;
@@ -245,6 +247,15 @@ public class Assignment implements Comparable<Assignment>{
 
 	public String getDepartmentName() {
 		return departmentName;
+	}
+
+	public String getAuthorEmployeeId() {
+		return authorEmployeeId;
+	}
+
+	public void setAuthorEmployeeId(String authorEmployeeId) {
+		System.out.println("aei:" +authorEmployeeId);
+		this.authorEmployeeId = authorEmployeeId;
 	}
 
 }
