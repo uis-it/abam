@@ -68,8 +68,7 @@ public class EmployeeService {
 	public EmployeeService() {	
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
-		res = ResourceBundle.getBundle("Language", locale);
-		
+		res = ResourceBundle.getBundle("Language", locale);	
 		initializeThemeDisplay();
 	}
 	
@@ -405,6 +404,26 @@ public class EmployeeService {
 
 	public boolean isShouldDisplayAssignAssignments() {
 		return checkPermission("ASSIGN_ASSIGNMENTS");						
+	}
+	
+	public boolean isShouldDisplayAddAssignments() {
+		return checkPermission("ADD_ASSIGNMENTS");						
+	}
+	
+	public boolean isShouldDisplayEditAssignments() {
+		return checkPermission("EDIT_ASSIGNMENTS");						
+	}
+	
+	public boolean isShouldDisplayViewSupervisedThesis() {
+		return checkPermission("VIEW_SUPERVISED_THESIS");						
+	}
+	
+	public boolean isShouldDisplayRenewAssignments() {
+		return checkPermission("RENEW_ASSIGNMENTS");						
+	}
+
+	public boolean isShouldDisplayViewExternalExaminer() {
+		return checkPermission("VIEW_EXTERNAL_EXAMINER");						
 	}
 	
 	public List<SelectItem> getDepartmentSelectItemList() {

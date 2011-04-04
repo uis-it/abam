@@ -3,6 +3,11 @@
 		<portlet-name>employee</portlet-name>
 		<supports>				
 			<action-key>ASSIGN_ASSIGNMENTS</action-key>		
-		</supports>				
+			<action-key>ADD_ASSIGNMENTS</action-key>	
+			<action-key>EDIT_ASSIGNMENTS</action-key>
+			<action-key>VIEW_SUPERVISED_THESIS</action-key>	
+			<action-key>RENEW_ASSIGNMENTS</action-key>				
+			<action-key>VIEW_EXTERNAL_EXAMINER</action-key>	
+		</supports>
 	</portlet-resource>
 </resource-action-mapping>
