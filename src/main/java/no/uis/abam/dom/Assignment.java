@@ -254,7 +254,6 @@ public class Assignment implements Comparable<Assignment>{
 	}
 
 	public void setAuthorEmployeeId(String authorEmployeeId) {
-		System.out.println("aei:" +authorEmployeeId);
 		this.authorEmployeeId = authorEmployeeId;
 	}
 
