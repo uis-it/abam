@@ -34,6 +34,7 @@
 					<tr><td>
 						<ice:commandLink 
 							action="myStudentAssignments" 
+							actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
 							value="#{msgs.link_my_std_assignments}"
 							/>
 					</td></tr>

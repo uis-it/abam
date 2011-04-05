@@ -70,7 +70,6 @@ public class EmployeeService {
 	private Locale locale;
 	private ResourceBundle res;
 	
-	private User loggedInUser;
 	private Employee loggedInEmployee;
 	private ThemeDisplay themeDisplay;
 	
@@ -443,10 +442,6 @@ public class EmployeeService {
 		return checkPermission("EDIT_ASSIGNMENTS");						
 	}
 	
-//	public boolean isUserIsAuthor() {
-//		User
-//	}
-//	
 	public boolean isShouldDisplayViewSupervisedThesis() {
 		return checkPermission("VIEW_SUPERVISED_THESIS");						
 	}
@@ -523,6 +518,10 @@ public class EmployeeService {
 
 	public Set<Assignment> getDisplayAssignmentSet() {
 		return displayAssignmentSet;
+	}
+
+	public Employee getEmployeeFromName(String facultySupervisorName) {		
+		return abamClient.getEmployeeFromFullName(facultySupervisorName);
 	}
 	
 }

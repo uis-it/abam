@@ -213,13 +213,12 @@ public class AssignSortableBean implements DisposableBean{
 			ApplicationInformation appInfo) {
 		Thesis thesis = new Thesis();
 
-		thesis.setAssignedAssignmentId(appInfo.getApplication().getAssignment()
-				.getId());
+		thesis.setAssignedAssignment(appInfo.getApplication().getAssignment());
 		thesis.setDeadlineForSubmissionOfTopic(getFromDate());
 		thesis.setDeadlineForSubmissionForEvalutation(getToDate());
 		thesis.addStudentNumber(appInfo.getApplication()
 				.getApplicantStudentNumber());
-
+		thesis.setFacultySupervisor(employeeService.getEmployeeFromName(appInfo.getFacultySupervisor()));
 		return thesis;
 	}
 	

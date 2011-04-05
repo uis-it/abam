@@ -37,7 +37,7 @@ public class ExternalExaminerBean implements DisposableBean{
 		if(thesisList != null) {
 			for (Thesis thesis : thesisList) {
 				thesisInformation = new ThesisInformation();
-				Assignment assignment = employeeService.getAssignmentFromId(thesis.getAssignedAssignmentId());
+				Assignment assignment = thesis.getAssignedAssignment();
 				if (assignment == null) {
 					Student student = employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1());
 					thesisInformation.setAssignmentTitle(student.getCustomAssignment().getTitle());
