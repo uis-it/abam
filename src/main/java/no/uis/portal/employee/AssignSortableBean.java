@@ -192,9 +192,11 @@ public class AssignSortableBean implements DisposableBean{
 	
 	public void actionGetSelectedRows(ActionEvent event) {
 		selectedApplicationInformationList.clear();
-		for (int i = 0; i < applicationInformationArray.length; i++) {
-			ApplicationInformation ai = applicationInformationArray[i];
-			if(ai.isSelected()) selectedApplicationInformationList.add(ai);
+		if (applicationInformationArray != null) {
+			for (int i = 0; i < applicationInformationArray.length; i++) {
+				ApplicationInformation ai = applicationInformationArray[i];
+				if(ai.isSelected()) selectedApplicationInformationList.add(ai);
+			}
 		}
 	}
 	

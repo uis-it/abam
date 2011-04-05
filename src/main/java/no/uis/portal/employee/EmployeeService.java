@@ -107,11 +107,13 @@ public class EmployeeService {
 	}
 	
 	private void checkIfLoggedInUserIsAuthor() {
-		for (Assignment assignment : assignmentSet) {
-			if (assignment.getAuthor().equals(loggedInEmployee)) {
-				assignment.setLoggedInUserIsAuthor(true);
-			} else {
-				assignment.setLoggedInUserIsAuthor(false);
+		if(assignmentSet != null) {
+			for (Assignment assignment : assignmentSet) {
+				if (assignment.getAuthor().equals(loggedInEmployee)) {
+					assignment.setLoggedInUserIsAuthor(true);
+				} else {
+					assignment.setLoggedInUserIsAuthor(false);
+				}
 			}
 		}
 	}
@@ -120,15 +122,16 @@ public class EmployeeService {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
 		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
 		displayAssignmentSet.clear();
-		for (Assignment assignment : assignmentSet) {
-			if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
-				|| selectedDepartmentCode.equals("")) {
-				displayAssignmentSet.add(assignment);
-				String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
-				assignment.setDepartmentName(depName);
+		if(assignmentSet != null) {
+			for (Assignment assignment : assignmentSet) {
+				if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
+					|| selectedDepartmentCode.equals("")) {
+					displayAssignmentSet.add(assignment);
+					String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
+					assignment.setDepartmentName(depName);
+				}
 			}
 		}
-		//setAllEditExternalExaminerToFalse();
 	}
 
 	public void setSelectedDepartmentAndStudyProgramFromValue(int value) {
@@ -194,10 +197,12 @@ public class EmployeeService {
 			setSelectedDepartmentCode("");
 		if (selectedStudyProgram == null)
 			selectedStudyProgram = "";
-		for (Assignment assignment : assignmentSet) {
-			if (assignmentShouldBeDisplayed(assignment,
-					selectedStudyProgram)) {
-				displayAssignmentSet.add(assignment);
+		if (assignmentSet != null) {
+			for (Assignment assignment : assignmentSet) {
+				if (assignmentShouldBeDisplayed(assignment,
+						selectedStudyProgram)) {
+					displayAssignmentSet.add(assignment);
+				}
 			}
 		}		
 	}
@@ -391,7 +396,9 @@ public class EmployeeService {
 	public Set<Assignment> getActiveAssignmentsSet() {
 		assignmentSet = abamClient.getActiveAssignments();
 		displayAssignmentSet = new TreeSet<Assignment>();
-		displayAssignmentSet.addAll(assignmentSet);
+		if(assignmentSet != null) {
+			displayAssignmentSet.addAll(assignmentSet);
+		}
 		return assignmentSet;
 	}
 
