@@ -63,6 +63,14 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		employee.setName("Ansatt2 Ansatt2");
 		employee.setEmployeeId("2345678");
 		employeeList.add(employee);
+		employee = new Employee();
+		employee.setName("Joe Bloggs");
+		employee.setEmployeeId("1234567");
+		employeeList.add(employee);
+		employee = new Employee();
+		employee.setName("Super Mann");
+		employee.setEmployeeId("1111111");
+		employeeList.add(employee);
 	}
 	
 	private void createAssignmentListContent(){
