@@ -17,7 +17,8 @@ public class Assignment implements Comparable<Assignment>{
 	private boolean master;
 	private boolean bachelor;
 	private boolean displayAssignment = true;
-
+	private boolean loggedInUserIsAuthor;
+	
 	private String title;
 	private String description;
 	private String studyProgramName;
@@ -119,6 +120,14 @@ public class Assignment implements Comparable<Assignment>{
 
 	public boolean isExpired() {
 		return expireDate.before(GregorianCalendar.getInstance());
+	}
+
+	public boolean isLoggedInUserIsAuthor() {
+		return loggedInUserIsAuthor;
+	}
+
+	public void setLoggedInUserIsAuthor(boolean loggedInUserIsAuthor) {
+		this.loggedInUserIsAuthor = loggedInUserIsAuthor;
 	}
 
 	public String getTitle() {

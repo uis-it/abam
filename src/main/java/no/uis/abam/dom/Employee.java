@@ -15,5 +15,8 @@ public class Employee extends Person{
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	
+
+	public boolean equals(Employee employee) {
+		return this.getEmployeeId().equals(employee.getEmployeeId());
+	}
 }
