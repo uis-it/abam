@@ -435,8 +435,8 @@ public class EmployeeService {
 		return checkPermission("ASSIGN_ASSIGNMENTS");						
 	}
 	
-	public boolean isShouldDisplayAddAssignments() {
-		return checkPermission("ADD_ASSIGNMENTS");						
+	public boolean isShouldDisplayCreateAssignments() {
+		return checkPermission("CREATE_ASSIGNMENTS");						
 	}
 	
 	public boolean isShouldDisplayEditAssignments() {

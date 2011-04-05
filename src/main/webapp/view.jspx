@@ -8,13 +8,56 @@
 			<ice:panelGrid columns="2" border="0" width="500">
 				<ice:panelGroup id="menu">
 				<table>
-					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionCreateNewAssignment}" value="#{msgs.link_create_assignment}"/></td></tr>
-					<tr><td><ice:commandLink action="displayAssignments" actionListener="#{employeeService.actionPrepareDisplayAssignments}" value="#{msgs.link_edit_assignment}" /></td></tr>
-					<tr><td><ice:commandLink action="assignSetDates" actionListener="#{assignSortableBean.actionPrepareSetDates}" value="#{msgs.link_assign_assignment}" rendered="#{employeeService.shouldDisplayAssignAssignments}"/></td></tr>
-					<tr><td><ice:commandLink action="myStudentAssignments" value="#{msgs.link_my_std_assignments}"/></td></tr>
-					<tr><td><ice:commandLink action="addExternalExaminer" actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" value="#{msgs.link_add_ext_examiner}"/></td></tr>
-					<tr><td><ice:commandLink action="createAddressLabels" value="#{msgs.link_create_address_lbls}"/></td></tr>
-					<tr><td><ice:commandLink action="searchArchive" value="#{msgs.link_archive}"/></td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="createAssignment" 
+							actionListener="#{assignmentBean.actionCreateNewAssignment}" 
+							value="#{msgs.link_create_assignment}"
+							rendered="#{employeeService.shouldDisplayCreateAssignments}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="displayAssignments" 
+							actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
+							value="#{msgs.link_edit_assignment}" 
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="assignSetDates" 
+							actionListener="#{assignSortableBean.actionPrepareSetDates}" 
+							value="#{msgs.link_assign_assignment}" 
+							rendered="#{employeeService.shouldDisplayAssignAssignments}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="myStudentAssignments" 
+							value="#{msgs.link_my_std_assignments}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="addExternalExaminer" 
+							actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" 
+							value="#{msgs.link_add_ext_examiner}"
+							rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="createAddressLabels" 
+							value="#{msgs.link_create_address_lbls}"
+							rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="searchArchive" 
+							value="#{msgs.link_archive}"
+							/>
+					</td></tr>
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">
