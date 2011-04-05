@@ -9,6 +9,7 @@ public class ThesisInformation {
 	private String coStudent1Name;
 	private String coStudent2Name;
 	private String externalExaminerName;
+	private String evaluationSubmissionDeadlineAsString;
 		
 	private Thesis thesis;
 	
@@ -69,4 +70,14 @@ public class ThesisInformation {
 	public void setExternalExaminerName(String externalExaminerName) {
 		this.externalExaminerName = externalExaminerName;
 	}
+
+	public String getEvaluationSubmissionDeadlineAsString() {
+		return evaluationSubmissionDeadlineAsString;
+	}
+
+	public void setEvaluationSubmissionDeadlineAsString(
+			String evaluationSubmissionDeadlineAsString) {
+		this.evaluationSubmissionDeadlineAsString = evaluationSubmissionDeadlineAsString;
+	}
+	
 }

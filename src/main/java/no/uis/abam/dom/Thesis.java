@@ -7,7 +7,8 @@ import java.util.List;
 
 public class Thesis {
 
-	private int assignedAssignmentId;
+	private Assignment assignedAssignment;
+	
 	private long studentNumber1;
 	private long studentNumber2;
 	private long studentNumber3;
@@ -23,6 +24,8 @@ public class Thesis {
 	private Date deadlineForSubmissionForEvalutation;	
 	private Date actualSubmissionForEvalutation;
 	
+	private Employee facultySupervisor;
+	
 	private ExternalExaminer externalExaminer;
 
 	private List<String> attachedFileList = new ArrayList<String>();
@@ -33,14 +36,6 @@ public class Thesis {
 		fileUploadErrorMessage = "The size limit of an attachment is 40MB";
 	}
 
-	public int getAssignedAssignmentId() {
-		return assignedAssignmentId;
-	}
-
-	public void setAssignedAssignmentId(int assignedAssignmentId) {
-		this.assignedAssignmentId = assignedAssignmentId;
-	}
-	
 	public void addStudentNumber(long studentNumber) {
 		if (studentNumber1 == 0) setStudentNumber1(studentNumber);
 		else if (studentNumber2 == 0) setStudentNumber2(studentNumber);
@@ -148,9 +143,26 @@ public class Thesis {
 	public void setExternalExaminer(ExternalExaminer externalExaminer) {
 		this.externalExaminer = externalExaminer;
 	}
+	
+	public Employee getFacultySupervisor() {
+		return facultySupervisor;
+	}
+
+	public void setFacultySupervisor(Employee facultySupervisor) {
+		this.facultySupervisor = facultySupervisor;
+	}
+
 	public boolean equals(Thesis thesis) {
-		return this.getAssignedAssignmentId() == thesis
-						.getAssignedAssignmentId();
+		return this.getAssignedAssignment().getId() == thesis
+						.getAssignedAssignment().getId();
+	}
+
+	public Assignment getAssignedAssignment() {
+		return assignedAssignment;
+	}
+
+	public void setAssignedAssignment(Assignment assignedAssignment) {
+		this.assignedAssignment = assignedAssignment;
 	}
 
 	public List<String> getAttachedFileList() {
