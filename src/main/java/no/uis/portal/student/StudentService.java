@@ -167,11 +167,15 @@ public class StudentService {
 		String selectedStudyProgram = (String) getStudyProgramName(Integer.parseInt(event.getNewValue().toString()));
 		assignmentList = getAssignmentList();
 		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
-		for (Assignment assignment : assignmentList) {
-			if (checkIfAssignmentShouldBeDisplayed(assignment, selectedStudyProgram)){ 
-				if(currentStudentIsEligibleForAssignment(assignment))
-					assignment.setDisplayAssignment(true);
-			} else assignment.setDisplayAssignment(false);
+		if (assignmentList != null) {
+			for (Assignment assignment : assignmentList) {
+				if (checkIfAssignmentShouldBeDisplayed(assignment,
+						selectedStudyProgram)) {
+					if (currentStudentIsEligibleForAssignment(assignment))
+						assignment.setDisplayAssignment(true);
+				} else
+					assignment.setDisplayAssignment(false);
+			}
 		}		
 	}
 	

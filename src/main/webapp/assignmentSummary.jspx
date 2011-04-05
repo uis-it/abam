@@ -58,7 +58,7 @@
 						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
-						<ice:outputText id="company" value="#{msgs.lbl_compnay}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
 					</ice:column>
 				</ice:dataTable>
