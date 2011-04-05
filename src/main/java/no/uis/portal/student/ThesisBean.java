@@ -40,13 +40,11 @@ public class ThesisBean implements DisposableBean {
 		Student currentStudent = studentService.getCurrentStudent();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
 		if (currentStudentsThesis != null) {
-			if (currentStudentsThesis.getAssignedAssignmentId() == 0) {
+			if (currentStudentsThesis.getAssignedAssignment().getId() == 0) {
 				currentAssignment = studentService.getCurrentStudent()
 						.getCustomAssignment();
 			} else {
-				currentAssignment = studentService
-						.getAssignmentFromId(currentStudentsThesis
-								.getAssignedAssignmentId());
+				currentAssignment = currentStudentsThesis.getAssignedAssignment();
 			}
 			currentAssignment.setDepartmentName(
 					studentService.getDepartmentNameFromIndex(
