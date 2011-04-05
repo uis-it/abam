@@ -137,11 +137,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	private void initializeThesisList() {
 		Thesis testThesis = new Thesis();
-		testThesis.setAssignedAssignmentId(assignmentList.first().getId());
+		testThesis.setAssignedAssignment(assignmentList.first());
 		testThesis.setStudentNumber1(studentList.get(0).getStudentNumber());
 		savedThesesList.add(testThesis);
 		testThesis = new Thesis();
-		testThesis.setAssignedAssignmentId(assignmentList.last().getId());
+		testThesis.setAssignedAssignment(assignmentList.last());
 		testThesis.setStudentNumber2(123456);
 		testThesis.setStudentNumber1(studentList.get(1).getStudentNumber());
 		savedThesesList.add(testThesis);
@@ -472,6 +472,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public Employee getEmployeeFromUisLoginName(String loginName) {
 		for (Employee employee : employeeList) {
 			if (employee.getEmployeeId().equals(loginName)) {
+				return employee;
+			}
+		}
+		return null;
+	}
+
+	public Employee getEmployeeFromFullName(String facultySupervisorName) {
+		for (Employee employee : employeeList) {
+			if (employee.getName().equalsIgnoreCase(facultySupervisorName)) {
 				return employee;
 			}
 		}

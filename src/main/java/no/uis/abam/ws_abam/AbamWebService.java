@@ -56,4 +56,5 @@ public interface AbamWebService {
 	public List<Thesis> getThesisList();
 	public void updateThesis(Thesis thesisToUpdate);
 	public Employee getEmployeeFromUisLoginName(String loginName);
+	public Employee getEmployeeFromFullName(String facultySupervisorName);
 }
