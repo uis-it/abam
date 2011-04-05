@@ -70,7 +70,14 @@
 			<table>
 				<tr>
 				<td><ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButton"/></td>
-				<td><ice:commandButton type="submit" action="assignSavedConfirmation" value="#{msgs.btn_save}" id="assignSelectedSave" actionListener="#{assignSortableBean.actionSaveAssignedApplications }"/> </td>
+				<td><ice:commandButton 
+						type="submit" 
+						action="assignSavedConfirmation" 
+						value="#{msgs.btn_save}" 
+						id="assignSelectedSave" 
+						actionListener="#{assignSortableBean.actionSaveAssignedApplications }"
+						disabled="#{empty assignSortableBean.selectedApplicationInformationList}"
+						/> </td>
 				</tr>
 			</table>
 		</ice:form>

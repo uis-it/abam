@@ -137,7 +137,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:commandButton type="submit" action="assignSetDates" value="#{msgs.btn_back}" id="BackButton"/></td>
-					<td><ice:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="#{msgs.btn_next}" id="assignSelected"/></td>
+					<td><ice:commandButton type="submit" action="assignAssignmentSummary" actionListener="#{assignSortableBean.actionGetSelectedRows}" value="#{msgs.btn_next}" id="assignSelected" disabled="#{empty assignSortableBean.applicationInformationAsArray}"/></td>
 				</tr>
 			</table>
 		</ice:form>
