@@ -6,16 +6,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeSet;
 
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.RenderRequest;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
+import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Permission;
@@ -24,6 +28,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -36,6 +42,7 @@ import no.uis.abam.ws_abam.AbamWebService;
 
 public class EmployeeService {
 	
+	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 
@@ -57,12 +64,14 @@ public class EmployeeService {
 	private HtmlSelectOneMenu studyProgramMenu;
 	
 	private Set<Assignment> assignmentSet;
+	private Set<Assignment> displayAssignmentSet;
 	
 	private FacesContext context;
 	private Locale locale;
 	private ResourceBundle res;
 	
 	private User loggedInUser;
+	private Employee loggedInEmployee;
 	private ThemeDisplay themeDisplay;
 	
 	
@@ -70,7 +79,7 @@ public class EmployeeService {
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
 		res = ResourceBundle.getBundle("Language", locale);	
-		initializeThemeDisplay();
+		initializeThemeDisplay();		
 	}
 	
 	private void initializeThemeDisplay() {
@@ -88,23 +97,36 @@ public class EmployeeService {
 	}
 
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
+		setLoggedInEmployee(getEmployeeFromUisLoginName());
 		getActiveAssignmentsSet();
 		setSelectedStudyProgramNumber(0);
 		setSelectedDepartmentNumber(0);
 		getDepartmentListFromWebService();
+		checkIfLoggedInUserIsAuthor();
+		
+	}
+	
+	private void checkIfLoggedInUserIsAuthor() {
+		for (Assignment assignment : assignmentSet) {
+			if (assignment.getAuthor().equals(loggedInEmployee)) {
+				assignment.setLoggedInUserIsAuthor(true);
+			} else {
+				assignment.setLoggedInUserIsAuthor(false);
+			}
+		}
 	}
 
 	public void actionUpdateStudyProgramList(ValueChangeEvent event) {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
 		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
+		displayAssignmentSet.clear();
 		for (Assignment assignment : assignmentSet) {
-				if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
-					|| selectedDepartmentCode.equals("")) {
-				assignment.setDisplayAssignment(true);
+			if (assignment.getDepartmentCode().equals(selectedDepartmentCode)
+				|| selectedDepartmentCode.equals("")) {
+				displayAssignmentSet.add(assignment);
 				String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
 				assignment.setDepartmentName(depName);
-			} else
-				assignment.setDisplayAssignment(false);
+			}
 		}
 		//setAllEditExternalExaminerToFalse();
 	}
@@ -160,14 +182,12 @@ public class EmployeeService {
 					.toString());
 		}
 		setDisplayAssignments();
-		//setAllEditExternalExaminerToFalse();
 	}
 	
 	public void setDisplayAssignments() {
 		String selectedStudyProgram = getStudyProgramNameFromValue(selectedStudyProgramNumber);
 		
-		
-		//TreeSet<Assignment> assignmentList = abamClient.getAllAssignments();
+		displayAssignmentSet.clear();
 		
 		if (selectedDepartmentCode == null)
 			
@@ -176,12 +196,10 @@ public class EmployeeService {
 			selectedStudyProgram = "";
 		for (Assignment assignment : assignmentSet) {
 			if (assignmentShouldBeDisplayed(assignment,
-					selectedStudyProgram))
-				assignment.setDisplayAssignment(true);
-			else
-				assignment.setDisplayAssignment(false);
-		}
-		//abamClient.setAssignmentList(assignmentSet);
+					selectedStudyProgram)) {
+				displayAssignmentSet.add(assignment);
+			}
+		}		
 	}
 		
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn,
@@ -260,6 +278,7 @@ public class EmployeeService {
 
 	public void removeAssignment(Assignment assignment) {
 		abamClient.removeAssignment(assignment);
+		getActiveAssignmentsSet();
 	}
 
 	public void removeApplication(Application application) {
@@ -371,6 +390,8 @@ public class EmployeeService {
 
 	public Set<Assignment> getActiveAssignmentsSet() {
 		assignmentSet = abamClient.getActiveAssignments();
+		displayAssignmentSet = new TreeSet<Assignment>();
+		displayAssignmentSet.addAll(assignmentSet);
 		return assignmentSet;
 	}
 
@@ -415,6 +436,10 @@ public class EmployeeService {
 		return checkPermission("EDIT_ASSIGNMENTS");						
 	}
 	
+//	public boolean isUserIsAuthor() {
+//		User
+//	}
+//	
 	public boolean isShouldDisplayViewSupervisedThesis() {
 		return checkPermission("VIEW_SUPERVISED_THESIS");						
 	}
@@ -449,7 +474,48 @@ public class EmployeeService {
 		return themeDisplay;
 	}
 	
-	public Employee getEmployeeFromUisLoginName(String loginName) {
-		return abamClient.getEmployeeFromUisLoginName(loginName);
+	public Employee getEmployeeFromUisLoginName() {
+		log.setLevel(Level.ERROR);
+		String loginName = "";
+		try {			
+			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Employee employee = abamClient.getEmployeeFromUisLoginName(loginName);
+		if(employee == null) {
+			employee = new Employee();
+			employee.setEmployeeId("");
+		}
+		return employee;
+	}		
+	
+	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
+		String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
+	      columnName, user.getUserId(), (String)null);
+	   return data;
 	}
+
+	public Employee getLoggedInEmployee() {
+		return loggedInEmployee;
+	}
+
+	public void setLoggedInEmployee(Employee loggedInEmployee) {
+		this.loggedInEmployee = loggedInEmployee;
+	}
+	
+	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent uiComponent, Object object) {				
+//		System.out.println("FacesContext: " + facesContext.getViewRoot().getChildCount());
+//		System.out.println(object.toString());		
+	}
+
+	public Set<Assignment> getDisplayAssignmentSet() {
+		return displayAssignmentSet;
+	}
+	
 }

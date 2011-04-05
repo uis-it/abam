@@ -48,9 +48,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImpl;
 
 public class EmployeeAssignmentBean implements DisposableBean {
-
-	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
-	
+		
 	private FacesContext context;
 	private EmployeeService employeeService;
 	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
@@ -122,6 +120,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		Assignment assignment = (Assignment) getRowFromEvent(event);
 		
 		employeeService.removeAssignment(assignment);
+		
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
@@ -150,8 +149,8 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToAssignAssignment(false);
 	}
 	
-	public void actionUpdateCurrentAssignment(ActionEvent event) {		
-		debugToLog(Level.DEBUG, event);
+	public void actionUpdateCurrentAssignment(ActionEvent event) {				
+		debugToLog(Level.ERROR, event);
 		
 		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
 		currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
@@ -174,23 +173,12 @@ public class EmployeeAssignmentBean implements DisposableBean {
 					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
 			}
 		}
-		System.out.println(getEmployeeFromUisLoginName());
-		currentAssignment.setAuthor(getEmployeeFromUisLoginName());
-
+		currentAssignment.setAuthor(getEmployeeFromUisLoginName());		
 	}
 	
-	private Employee getEmployeeFromUisLoginName() {
-		try {
-			String loginName = getUserCustomAttribute(employeeService.getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
-			return employeeService.getEmployeeFromUisLoginName(loginName);
-		} catch (PortalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	private Employee getEmployeeFromUisLoginName() {				 
+		return employeeService.getEmployeeFromUisLoginName();
+
 	}
 	
 	private String getUserFullNameFromEmployeeId(String id) {
@@ -201,7 +189,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 					Long scientificEmployeeRoleId = role.getRoleId();
 					List<User> userList2 = UserLocalServiceUtil.getRoleUsers(scientificEmployeeRoleId);
 					for (User user : userList2) {
-						String userCustomAttribute = getUserCustomAttribute(user, COLUMN_UIS_LOGIN_NAME);
+						String userCustomAttribute = employeeService.getUserCustomAttribute(user, EmployeeService.COLUMN_UIS_LOGIN_NAME);
 						if(userCustomAttribute !=null && userCustomAttribute.equals(id)) {
 							return user.getFullName();
 						}
@@ -214,14 +202,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 			e.printStackTrace();
 		}
 		return "NOT_FOUND";
-	}
-	
-	
-	private String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
-	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage
-	    String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
-	      columnName, user.getUserId(), (String)null);
-	   return data;
 	}
 	
 	private void debugToLog(Level level, ActionEvent event) {

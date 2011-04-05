@@ -35,66 +35,94 @@
 				<ice:dataTable 
 					id="departmentTable" 
 					var="item" 
-					value="#{employeeService.assignmentSet}" 
+					value="#{employeeService.displayAssignmentSet}" 
 					styleClass="displayAssignmentsTable"
 					columnClasses="displayAssignmentsTable"
 					headerClass="displayAssignmentsTable"
 					rowClasses="displayAssignmentsTable">
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value="#{msgs.lbl_id}"/>
-	                    </ice:headerRow>
-	                </f:facet>
-					<ice:outputText id="itemId" value="#{item.id}" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_id}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:outputText 
+							id="itemId" 
+							value="#{item.id}" 
+							/>
 					</ice:column>
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value="#{msgs.lbl_title}"/>
-	                    </ice:headerRow>
-	                </f:facet>
-					<ice:commandLink id="itemTitle" action="assignmentSummary" actionListener="#{assignmentBean.actionSetSelectedAssignmentFromDisplayAssignments}" value="#{item.title}" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_title}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:commandLink 
+							id="itemTitle" 
+							action="assignmentSummary" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignmentFromDisplayAssignments}" 
+							value="#{item.title}" 
+							/>
 					</ice:column>
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value="#{msgs.lbl_date_added}"/>
-	                    </ice:headerRow>
-                	</f:facet>
-                	<ice:outputText id="itemAddedDate" value="#{item.addedDateAsString}" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_date_added}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:outputText 
+	                		id="itemAddedDate" 
+	                		value="#{item.addedDateAsString}" 
+	                		/>
 					</ice:column>	
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value="#{msgs.lbl_expire_date}"/>
-	                    </ice:headerRow>							
-					</f:facet>
-					<ice:outputText id="itemExpireDate" value="#{item.expireDateAsString}" rendered="#{item.displayAssignment}"/>
-					</ice:column>		
-						<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value="#{msgs.lbl_author}"/>
-	                    </ice:headerRow>							
-					</f:facet>
-					<ice:outputText id="itemAuthor" value="#{item.author.name}" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_expire_date}"/>
+		                    </ice:headerRow>							
+						</f:facet>
+						<ice:outputText 
+							id="itemExpireDate" 
+							value="#{item.expireDateAsString}" 
+							/>
 					</ice:column>		
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value=""/>
-	                    </ice:headerRow>
-					</f:facet>
-					<ice:commandButton id="editAssignment" value="#{msgs.btn_edit}" actionListener="#{assignmentBean.actionSetSelectedAssignment}" action="createAssignment" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_author}"/>
+		                    </ice:headerRow>							
+						</f:facet>
+						<ice:outputText 
+							id="itemAuthor" 
+							value="#{item.author.name}" 
+							/>
+					</ice:column>		
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value=""/>
+		                    </ice:headerRow>
+						</f:facet>
+						<ice:commandButton 
+							id="editAssignment" 
+							value="#{msgs.btn_edit}" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignment}" 
+							action="createAssignment" 
+							rendered="#{item.loggedInUserIsAuthor or employeeService.shouldDisplayEditAssignments}"
+							/>					
 					</ice:column>	
 					<ice:column>
-	                <f:facet name="header">
-	                    <ice:headerRow>
-	                        <ice:outputText value=""/>
-	                    </ice:headerRow>
-					</f:facet>
-					<ice:commandButton id="remove" value="#{msgs.btn_remove}" actionListener="#{assignmentBean.actionRemoveAssignment}" rendered="#{item.displayAssignment}"/>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value=""/>
+		                    </ice:headerRow>
+						</f:facet>
+						<ice:commandButton 
+							id="remove" 
+							value="#{msgs.btn_remove}" 
+							actionListener="#{assignmentBean.actionRemoveAssignment}" 
+							rendered="#{item.loggedInUserIsAuthor or employeeService.shouldDisplayEditAssignments}"
+							/>
 					</ice:column>					
 					
 				</ice:dataTable>
