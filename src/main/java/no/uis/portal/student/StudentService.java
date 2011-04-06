@@ -13,8 +13,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+import javax.portlet.RenderRequest;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 
 import no.uis.abam.dom.*;
@@ -22,8 +33,12 @@ import no.uis.abam.ws_abam.AbamWebService;
 
 public class StudentService {
 
+	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
+	
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
+	
+	private Logger log = Logger.getLogger(StudentService.class);
 	
 	private TreeSet<Assignment> assignmentList; 
 	private Assignment selectedAssignment;
@@ -40,33 +55,60 @@ public class StudentService {
 	
 	private int selectedStudyProgramNumber;
 	
-	private long testStudentNumber = 123456;
+	private ThemeDisplay themeDisplay;
 	
-	FacesContext context;
-	Locale locale;
-    ResourceBundle res;
+	private FacesContext context;
+	private Locale locale;
+    private ResourceBundle res;
 	
 	public StudentService() {
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
 		res = ResourceBundle.getBundle("Language", locale);
+		initializeThemeDisplay();	
 	}
 
+	private void initializeThemeDisplay() {
+		if (themeDisplay == null) {			
+			RenderRequest renderRequest = (RenderRequest) (context
+					.getExternalContext().getRequest());
+			themeDisplay = (ThemeDisplay) renderRequest
+			.getAttribute(WebKeys.THEME_DISPLAY);
+
+		}
+	}
+	
 	public void setCurrentStudentFromLoggedInUser(){
-		currentStudent = new Student();
-		currentStudent.setName("Bachelor Studenten");
-		currentStudent.setBachelor(true);
-		currentStudent.setStudentNumber(123456);
-		currentStudent.setDepartmentCode("TN-IDE");
-		currentStudent.setStudyProgramName("Elektro");
+		log.setLevel(Level.ERROR);
+		String loginName = "";
+		try {			
+			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Student student = abamStudentClient.getStudentFromStudentNumber(loginName);
+		if(student == null) {
+			student = new Student();
+			student.setStudentNumber("");
+		}
+		setCurrentStudent(student);
 	}
 
-//	public void setCurrentStudentFromLoggedInUser(){
-//		currentStudent = new MasterStudent();
-//		currentStudent.setName("Studenten");
-//		currentStudent.setDepartment("Petroleumsteknologi");
-//		currentStudent.setStudyProgram("Boreteknologi");
-//	}
+	public ThemeDisplay getThemeDisplay() {
+		return themeDisplay;
+	}
+	
+	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
+		String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
+	      columnName, user.getUserId(), (String)null);
+	   return data;
+	}
+	
 	
 	
 	public int getNextId(){
@@ -288,7 +330,7 @@ public class StudentService {
 
 	public Student getCurrentStudent() {
 		if (currentStudent == null) {
-			currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber);
+			setCurrentStudentFromLoggedInUser();
 		}
 		return currentStudent;
 	}
@@ -302,7 +344,7 @@ public class StudentService {
 	}
 	
 	public void updateCurrentStudentFromWebService() {
-		currentStudent = abamStudentClient.getStudentFromStudentNumber(testStudentNumber);
+		setCurrentStudentFromLoggedInUser();
 	}
 
 	public List<Application> getApplicationList() {

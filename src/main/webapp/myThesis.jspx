@@ -62,7 +62,7 @@
 						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
 						<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
-						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_numer}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
