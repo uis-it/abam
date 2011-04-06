@@ -276,7 +276,7 @@ public class EmployeeService {
 		return null;
 	}
 
-	public Student getStudentFromStudentNumber(long studentNumber) {
+	public Student getStudentFromStudentNumber(String studentNumber) {
 		return abamClient.getStudentFromStudentNumber(studentNumber);
 	}
 

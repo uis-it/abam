@@ -45,10 +45,10 @@ public class ThesisBean {
 					ThesisInformation ti = new ThesisInformation();
 					
 					ti.setAssignmentTitle(thesis.getAssignedAssignment().getTitle());
-					//ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
-					//ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
-					ti.setCoStudent1Name("");
-					ti.setCoStudent2Name("");
+					if (thesis.getStudentNumber2() != null)
+						ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
+					if (thesis.getStudentNumber3() != null)
+						ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
 					ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
 					//ti.setExternalExaminerName(thesis.getExternalExaminer().getName());
 					ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());

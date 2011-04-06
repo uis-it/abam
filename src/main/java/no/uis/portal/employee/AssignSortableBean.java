@@ -203,8 +203,17 @@ public class AssignSortableBean implements DisposableBean{
 	public void actionSaveAssignedApplications(ActionEvent event) {
 		List<Thesis> thesesToSave = new ArrayList<Thesis>();
 		for (ApplicationInformation appInfo : selectedApplicationInformationList) {
-			thesesToSave
+			boolean alreadyExists = false;
+			for (Thesis thesis : thesesToSave) {
+				if (thesis.getAssignedAssignment().getTitle().equalsIgnoreCase(appInfo.getAssignmentTitle())) {
+					thesis.addStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
+					alreadyExists = true;					
+				}
+			}
+			if (!alreadyExists) {
+				thesesToSave
 					.add(getThesisWithFieldsSetFromApplicationInformation(appInfo));
+			}
 		}
 		employeeService.addThesesFromList(thesesToSave);
 	}
