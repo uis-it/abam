@@ -108,7 +108,7 @@ public class EmployeeService {
 	private void checkIfLoggedInUserIsAuthor() {
 		if(assignmentSet != null) {
 			for (Assignment assignment : assignmentSet) {
-				if (assignment.getAuthor().equals(loggedInEmployee)) {
+				if (assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
 					assignment.setLoggedInUserIsAuthor(true);
 				} else {
 					assignment.setLoggedInUserIsAuthor(false);

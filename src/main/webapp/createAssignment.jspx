@@ -60,7 +60,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
-					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:inputText></td>
+					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:inputText></td>
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>			
 			</table>

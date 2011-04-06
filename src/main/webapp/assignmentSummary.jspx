@@ -49,8 +49,8 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor}"/></td>
-					<td></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/></td>
+					<td><ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"/> </td>
 				</tr>
 				<tr>
 					<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }" styleClass="assignmentSummaryStyle">
@@ -66,6 +66,7 @@
 						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+						<ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty supervisor.name}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
@@ -87,20 +88,12 @@
 						<ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_back}" id="BackButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 						<ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButtonAssign" immediate="true" rendered="#{assignmentBean.backToAssignAssignment}"/>
 						<ice:commandButton type="submit" action="displayAssignments" value="#{msgs.btn_back}" id="BackButtonDisplay" immediate="true" rendered="#{assignmentBean.backToDisplayAssignments}"/>
-						<ice:commandButton type="submit" action="assignmentSavedConfirmation" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
+						<ice:commandButton type="submit" action="assignmentSavedConfirmation" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 					</td>
 				</tr>
 			
 			</table>
-			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
-				<f:facet name="header">
-					<ice:outputText value="Confirmation"/>
-				</f:facet>
-				<f:facet name="body">
-					<ice:commandButton type="submit" action="backToView" value="Ok"/>
-				</f:facet>
-			</ice:panelPopup>
 		</ice:form>
 	</ice:portlet>
 </f:view>

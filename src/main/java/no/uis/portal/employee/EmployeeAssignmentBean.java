@@ -90,6 +90,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		employeeService.getDepartmentListFromWebService();
 		setCurrentAssignment(new Assignment());
 		currentAssignment.setId(employeeService.getNextId());
+		currentAssignment.setFacultySupervisor(getEmployeeFromUisLoginName());
 	}
 	
 	public void actionSaveAssignment(ActionEvent event) {
@@ -173,6 +174,16 @@ public class EmployeeAssignmentBean implements DisposableBean {
 					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
 			}
 		}
+		
+		for (Supervisor supervisor : currentAssignment.getSupervisorList()) {
+			if(!supervisor.isExternal()) {
+				Employee employee = employeeService.getEmployeeFromName(supervisor.getName());
+				supervisor.setName(employee.getName());
+			}
+		}
+		
+		currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
+		
 		currentAssignment.setAuthor(getEmployeeFromUisLoginName());		
 	}
 	

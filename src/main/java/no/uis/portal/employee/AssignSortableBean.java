@@ -134,7 +134,7 @@ public class AssignSortableBean implements DisposableBean{
 		appInfo.setCoStudent1Name(application.getCoStudentName1());
 		appInfo.setCoStudent2Name(application.getCoStudentName2());
 		appInfo.setFacultySupervisor(application.getAssignment()
-				.getFacultySupervisor());
+				.getFacultySupervisor().getName());
 		appInfo.setPriority(application.getPriority());
 		appInfo.setStudentName(employeeService.getStudentFromStudentNumber(
 				application.getApplicantStudentNumber()).getName());
