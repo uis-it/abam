@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
-
 import javax.jws.WebService;
-
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.CannotCreateTransactionException;
-
 import no.uis.abam.dao.DepartmentDAO;
 import no.uis.abam.dom.*;
+import no.uis.abam.util.LevenshteinDistance;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
 public class AbamWebServiceTestImpl implements AbamWebService {
@@ -85,7 +80,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		test1.setDepartmentNumber(2);
 		test1.setStudyProgramName("Data");
 		test1.setStudyProgramNumber(1);
-		test1.setFacultySupervisor("Louis Lane");
+		Employee emp = new Employee();
+		emp.setName("Lois Lane");
+		test1.setFacultySupervisor(emp);
 		test1.getSupervisorList().get(0).setName("Superman");
 		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
 		GregorianCalendar dato = test1.getAddedDate();
@@ -117,7 +114,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				test2.setStudyProgramName("Elektro");
 				test2.setStudyProgramNumber(2);
 				test2.setId(id);
-				test2.setFacultySupervisor("Robin");
+				emp = new Employee();
+				emp.setName("Robin");
+				test2.setFacultySupervisor(emp);
 				test2.getSupervisorList().get(0).setName("Batman");
 				test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
 				dato = test2.getAddedDate();
@@ -479,12 +478,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public Employee getEmployeeFromFullName(String facultySupervisorName) {
+		int lowestLevenshteinDistance = 3;
+		Employee foundEmployee = new Employee();
+		foundEmployee.setName("");
 		for (Employee employee : employeeList) {
-			if (employee.getName().equalsIgnoreCase(facultySupervisorName)) {
-				return employee;
+			String employeeName = employee.getName();
+			int currentDistance = LevenshteinDistance.getLevenshteinDistance(employeeName, facultySupervisorName); 
+			if (currentDistance < lowestLevenshteinDistance) {
+				foundEmployee = employee;
+				lowestLevenshteinDistance = currentDistance;
 			}
 		}
-		return null;
+		return foundEmployee;
 	}
-	
 }
