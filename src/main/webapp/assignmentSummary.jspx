@@ -44,7 +44,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:outputText></td>
-					<td><ice:outputText style="color:red" value="#{msgs.lbl_faculty_supervisor_not_found}" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"/> </td>
+					<td><ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"/> </td>
 				</tr>
 				<tr>
 					<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }">
@@ -60,7 +60,7 @@
 						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
 						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
-						<ice:outputText style="color:red" value="#{msgs.lbl_faculty_supervisor_not_found}" rendered="#{empty supervisor.name}"/>
+						<ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty supervisor.name}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>
