@@ -43,8 +43,8 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor}"></ice:outputText></td>
-					<td></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:outputText></td>
+					<td><ice:outputText style="color:red" value="#{msgs.lbl_faculty_supervisor_not_found}" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"/> </td>
 				</tr>
 				<tr>
 					<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList }">
@@ -78,8 +78,22 @@
 					<td></td>
 					<td>
 						<ice:commandButton type="submit" action="createAssignment" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-						<ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" value="#{msgs.btn_apply_for_assignment}" id="ApplyButton" rendered="#{!studentService.currentStudent.appliedForThreeAssignments}"/>
-						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true"/>
+						<ice:commandButton 
+							type="submit" 
+							action="applyForAssignment" 
+							actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" 
+							value="#{msgs.btn_apply_for_assignment}" 
+							id="ApplyButton" 
+							rendered="#{!studentService.currentStudent.appliedForThreeAssignments}"
+							disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"
+						/>
+						<ice:commandButton 
+							type="submit" 
+							action="backToView" 
+							value="#{msgs.btn_cancel}" 
+							id="CancelButton" 
+							immediate="true"
+						/>
 						<ice:outputText value="#{studentService.currentStudent.applicationsErrorMessage }" rendered="#{studentService.currentStudent.appliedForThreeAssignments}" />
 					</td>
 				</tr>

@@ -41,7 +41,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.facultySupervisor}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.facultySupervisor.name}"></ice:outputText></td>
 					<td></td>
 				</tr>
 				<tr><td>

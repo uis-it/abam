@@ -397,8 +397,10 @@ public class StudentService {
 			ArrayList<SelectItem> studyProgramSelectItemList) {
 		this.studyProgramSelectItemList = studyProgramSelectItemList;
 	}
-	
-	
+
+	public Employee getEmployeeFromFullName(String name) {
+		return abamStudentClient.getEmployeeFromFullName(name);
+	}
 }
 
 

@@ -117,6 +117,10 @@ public class StudentAssignmentBean implements DisposableBean {
 		currentAssignment.setExpireDate(calendar);
 		currentAssignment.updateType(studentService.getCurrentStudent().getType());
 		
+		currentAssignment.setFacultySupervisor(
+				studentService.getEmployeeFromFullName(
+						currentAssignment.getFacultySupervisor().getName()));
+		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
 	}
