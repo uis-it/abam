@@ -10,6 +10,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
@@ -120,6 +121,13 @@ public class StudentAssignmentBean implements DisposableBean {
 		currentAssignment.setFacultySupervisor(
 				studentService.getEmployeeFromFullName(
 						currentAssignment.getFacultySupervisor().getName()));
+		
+		for (Supervisor supervisor : currentAssignment.getSupervisorList()) {
+			if(!supervisor.isExternal()) {
+				Employee employee = studentService.getEmployeeFromFullName(supervisor.getName());
+				supervisor.setName(employee.getName());
+			}
+		}
 		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
