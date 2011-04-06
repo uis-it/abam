@@ -89,7 +89,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		dato.add(Calendar.MONTH, 6);
 		test1.setExpireDate(dato);
 		Application app = new Application();
-		app.setApplicantStudentNumber((123456));
+		app.setApplicantStudentNumber("123456");
 		app.setApplicationDate(new GregorianCalendar());				
 		app.setPriority(1);		
 		app.setAssignment(test1);
@@ -100,7 +100,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		for (int j = 0, id = 2; j < 2; j++) {
 			
 			for (int i = 0; i < 3; i++) {
-				app.setApplicantStudentNumber((123456+j));
+				app.setApplicantStudentNumber("123457");
 				app.setApplicationDate(new GregorianCalendar());				
 				app.setPriority(i+1);		
 				test2 = new Assignment();
@@ -141,7 +141,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		savedThesesList.add(testThesis);
 		testThesis = new Thesis();
 		testThesis.setAssignedAssignment(assignmentList.last());
-		testThesis.setStudentNumber2(123456);
+		testThesis.setStudentNumber2("123456");
 		testThesis.setStudentNumber1(studentList.get(1).getStudentNumber());
 		savedThesesList.add(testThesis);
 	}
@@ -198,7 +198,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private void initializeStudentList() { 
 		Student newStudent = new Student();
 		newStudent.setName("Bachelor Studenten");
-		newStudent.setStudentNumber(123456);
+		newStudent.setStudentNumber("123456");
+		newStudent.setBachelor(true);
+		newStudent.setDepartmentCode("TN-IDE");
+		newStudent.setStudyProgramName("Elektro");
+		studentList.add(newStudent);
+		
+		newStudent = new Student();
+		newStudent.setName("Annen Student");
+		newStudent.setStudentNumber("234567");
 		newStudent.setBachelor(true);
 		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
@@ -206,7 +214,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		
 		newStudent = new Student();
 		newStudent.setName("Master Studenten");
-		newStudent.setStudentNumber(123457);
+		newStudent.setStudentNumber("123457");
 		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
 		newStudent.setBachelor(false);
@@ -416,19 +424,32 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 	}
 	
-	public Student getStudentFromStudentNumber(long studentNumber) {
+	public Student getStudentFromStudentNumber(String studentNumber) {
 		for (Student student : studentList) {
-			if (student.getStudentNumber() == studentNumber) return student;
+			if (student.getStudentNumber().equals(studentNumber)) {
+				return student;
+			}
 		}
 		return null;
 	}
 	
-	public void addThesesFromList(List<Thesis> thesesToAdd) {
-		for (Thesis thesis : thesesToAdd) {
-			savedThesesList.add(thesis);
+	public void addThesesFromList(List<Thesis> thesesToAdd) {		
+		for (Thesis thesis : thesesToAdd) {			
+			savedThesesList.add(thesis);			
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
-			student.setAssignedThesis(thesis);
+			System.out.println("I WS: "+ thesis.getStudentNumber1());
+			student.setAssignedThesis(thesis);			
 			removeStudentsApplicationFromList(student);
+			if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty()) {
+				student = getStudentFromStudentNumber(thesis.getStudentNumber2());
+				student.setAssignedThesis(thesis);			
+				removeStudentsApplicationFromList(student);
+			}
+			if (thesis.getStudentNumber3() != null && !thesis.getStudentNumber3().isEmpty()) {
+				student = getStudentFromStudentNumber(thesis.getStudentNumber3());
+				student.setAssignedThesis(thesis);			
+				removeStudentsApplicationFromList(student);
+			}
 		}
 	}
 	
@@ -478,7 +499,12 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public Employee getEmployeeFromFullName(String facultySupervisorName) {
-		int lowestLevenshteinDistance = 3;
+		
+		int countNames = (facultySupervisorName.split(" ")).length;
+		int lengthOfName = facultySupervisorName.length();		
+				
+		int lowestLevenshteinDistance = lengthOfName/10 + countNames;
+		
 		Employee foundEmployee = new Employee();
 		foundEmployee.setName("");
 		for (Employee employee : employeeList) {

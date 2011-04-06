@@ -48,7 +48,7 @@ public interface AbamWebService {
 	public void updateApplicationsFromCurrentStudent(
 			Application[] tempApplicationPriorityArray);
 	
-	public Student getStudentFromStudentNumber(long studentNumber);
+	public Student getStudentFromStudentNumber(String studentNumber);
 	
 	public void addThesesFromList(List<Thesis> thesesToAdd);
 	public Assignment getAssignmentFromId(int id);
