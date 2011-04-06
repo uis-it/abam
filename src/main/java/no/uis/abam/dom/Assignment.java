@@ -27,11 +27,11 @@ public class Assignment implements Comparable<Assignment>{
 	private String type;
 	private String numberOfStudents;
 	private String numberOfStudentsError;
-	private String facultySupervisor;
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
 	
-	private Employee author;
+	private Person author;
+	private Employee facultySupervisor;
 
 	private GregorianCalendar addedDate;
 	private GregorianCalendar expireDate;
@@ -45,7 +45,9 @@ public class Assignment implements Comparable<Assignment>{
 
 		attachedFileList = new ArrayList<String>();
 		supervisorList = new ArrayList<Supervisor>();		
-		supervisorList.add(new Supervisor());			
+		supervisorList.add(new Supervisor());	
+		
+		facultySupervisor = new Employee();
 	}
 
 	public void updateType(String type) {
@@ -178,14 +180,6 @@ public class Assignment implements Comparable<Assignment>{
 		this.numberOfStudentsError = numberOfStudentsError;
 	}
 
-	public String getFacultySupervisor() {
-		return facultySupervisor;
-	}
-
-	public void setFacultySupervisor(String facultySupervisor) {
-		this.facultySupervisor = facultySupervisor;
-	}
-
 	public String getAttachedFilePath() {
 		return attachedFilePath;
 	}
@@ -258,12 +252,20 @@ public class Assignment implements Comparable<Assignment>{
 		return departmentName;
 	}
 
-	public Employee getAuthor() {
+	public Person getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Employee author) {
+	public void setAuthor(Person author) {
 		this.author = author;
+	}
+
+	public Employee getFacultySupervisor() {
+		return facultySupervisor;
+	}
+
+	public void setFacultySupervisor(Employee facultySupervisor) {
+		this.facultySupervisor = facultySupervisor;
 	}
 
 }
