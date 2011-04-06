@@ -9,16 +9,15 @@ public class Thesis {
 
 	private Assignment assignedAssignment;
 	
-	private long studentNumber1;
-	private long studentNumber2;
-	private long studentNumber3;
-	
 	private boolean submitted;
 	private boolean editExternalExaminer = false;
 	
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
-
+	private String studentNumber1;
+	private String studentNumber2;
+	private String studentNumber3;
+	
 	
 	private Date deadlineForSubmissionOfTopic;
 	private Date deadlineForSubmissionForEvalutation;	
@@ -36,33 +35,33 @@ public class Thesis {
 		fileUploadErrorMessage = "The size limit of an attachment is 40MB";
 	}
 
-	public void addStudentNumber(long studentNumber) {
-		if (studentNumber1 == 0) setStudentNumber1(studentNumber);
-		else if (studentNumber2 == 0) setStudentNumber2(studentNumber);
-		else if (studentNumber3 == 0) setStudentNumber3(studentNumber);
+	public void addStudentNumber(String studentNumber) {
+		if (studentNumber1 == null || studentNumber1.isEmpty()) setStudentNumber1(studentNumber);
+		else if (studentNumber2 == null || studentNumber2.isEmpty()) setStudentNumber2(studentNumber);
+		else if (studentNumber3 == null || studentNumber3.isEmpty()) setStudentNumber3(studentNumber);
 	}
 
-	public long getStudentNumber1() {
+	public String getStudentNumber1() {
 		return studentNumber1;
 	}
 
-	public void setStudentNumber1(long studentNumber1) {
+	public void setStudentNumber1(String studentNumber1) {
 		this.studentNumber1 = studentNumber1;
 	}
 
-	public long getStudentNumber2() {
+	public String getStudentNumber2() {
 		return studentNumber2;
 	}
 
-	public void setStudentNumber2(long studentNumber2) {
+	public void setStudentNumber2(String studentNumber2) {
 		this.studentNumber2 = studentNumber2;
 	}
 
-	public long getStudentNumber3() {
+	public String getStudentNumber3() {
 		return studentNumber3;
 	}
 
-	public void setStudentNumber3(long studentNumber3) {
+	public void setStudentNumber3(String studentNumber3) {
 		this.studentNumber3 = studentNumber3;
 	}
 

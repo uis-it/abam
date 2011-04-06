@@ -80,4 +80,12 @@ public class ThesisInformation {
 		this.evaluationSubmissionDeadlineAsString = evaluationSubmissionDeadlineAsString;
 	}
 	
+	public String getAllStudents() {
+		StringBuilder allStudents = new StringBuilder();
+		allStudents.append(getStudentName());
+		if(coStudent1Name != null && !coStudent1Name.isEmpty()) allStudents.append(", "+coStudent1Name);
+		if(coStudent2Name != null && !coStudent2Name.isEmpty()) allStudents.append(", "+coStudent2Name);
+		return allStudents.toString();
+	}
+	
 }

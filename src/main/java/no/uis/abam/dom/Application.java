@@ -5,10 +5,10 @@ import java.util.GregorianCalendar;
 public class Application {
 	
 	private int priority;
-	private long applicantStudentNumber;
 	
 	private boolean assigned;
 	
+	private String applicantStudentNumber;
 	private String coStudentName1;
 	private String coStudentName2;
 	
@@ -29,11 +29,11 @@ public class Application {
 		this.priority = priority;
 	}
 	
-	public long getApplicantStudentNumber() {
+	public String getApplicantStudentNumber() {
 		return applicantStudentNumber;
 	}
 
-	public void setApplicantStudentNumber(long applicantStudentNumber) {
+	public void setApplicantStudentNumber(String applicantStudentNumber) {
 		this.applicantStudentNumber = applicantStudentNumber;
 	}
 	

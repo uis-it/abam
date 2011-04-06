@@ -12,8 +12,7 @@ public class Student extends Person {
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
-	private long studentNumber;
-	
+	private String studentNumber;
 	private String departmentCode;
 	private String departmentName;
 	private String studyProgramName;
@@ -90,11 +89,11 @@ public class Student extends Person {
 		return null;
 	}
 	
-	public long getStudentNumber() {
+	public String getStudentNumber() {
 		return studentNumber;
 	}
 
-	public void setStudentNumber(long studentNumber) {
+	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
 
@@ -193,6 +192,6 @@ public class Student extends Person {
 	}
 	
 	public boolean equals(Student student) {
-		return this.getStudentNumber() == student.getStudentNumber();
+		return this.getStudentNumber().equals(student.getStudentNumber());
 	}
 }
