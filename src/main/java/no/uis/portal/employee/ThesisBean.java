@@ -28,7 +28,10 @@ public class ThesisBean {
 	
 	public void actionPrepareMyStudentTheses(ActionEvent event) {
 		thesisList = new ArrayList<Thesis>();		
-		thesisList.addAll(employeeService.getThesisList());
+		List<Thesis> tempList = employeeService.getThesisList();
+		if (tempList != null && !tempList.isEmpty()) {
+			thesisList.addAll(tempList);
+		}
 		createThesisInformationFromThesis();
 	}
 
@@ -36,21 +39,23 @@ public class ThesisBean {
 		log.setLevel(Level.DEBUG);
 		thesisInformationList = new ArrayList<ThesisInformation>();
 		Employee employee = employeeService.getEmployeeFromUisLoginName();
-		for (Thesis thesis : thesisList) {
-			if(thesis.getFacultySupervisor().getName().equals(employee.getName())) {
-				ThesisInformation ti = new ThesisInformation();
-				
-				ti.setAssignmentTitle(thesis.getAssignedAssignment().getTitle());
-				//ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
-				//ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
-				ti.setCoStudent1Name("");
-				ti.setCoStudent2Name("");
-				ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
-				//ti.setExternalExaminerName(thesis.getExternalExaminer().getName());
-				ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
-				thesisInformationList.add(ti);
-			}
-		}		
+		if (!thesisList.isEmpty()) {
+			for (Thesis thesis : thesisList) {
+				if(thesis.getFacultySupervisor().getName().equals(employee.getName())) {
+					ThesisInformation ti = new ThesisInformation();
+					
+					ti.setAssignmentTitle(thesis.getAssignedAssignment().getTitle());
+					//ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
+					//ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
+					ti.setCoStudent1Name("");
+					ti.setCoStudent2Name("");
+					ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
+					//ti.setExternalExaminerName(thesis.getExternalExaminer().getName());
+					ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
+					thesisInformationList.add(ti);
+				}
+			}		
+		}
 	}
 	
 	public List<Thesis> getThesisList() {
