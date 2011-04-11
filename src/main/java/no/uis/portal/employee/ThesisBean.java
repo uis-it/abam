@@ -43,7 +43,6 @@ public class ThesisBean {
 	public void actionPrepareThesisStatusList(ActionEvent event) {
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
 		setThesisStatusList(selectedThesis.getThesis().getStatusList());
-		System.out.println(thesisStatusList.size());
 	}
 	
 	private Object getRowFromEvent(ActionEvent event) {

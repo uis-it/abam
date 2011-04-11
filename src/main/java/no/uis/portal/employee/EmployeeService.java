@@ -222,15 +222,7 @@ public class EmployeeService {
 		}
 	}
 
-//	public void addNewDepartment() {
-//		Department newDepartment = new Department(new Integer(
-//				departmentList.size()), "");
-//		newDepartment.setEditable(true);
-//		departmentList.add(newDepartment);
-//	}
-
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
-		System.out.println("addThesesFromList: " + thesesToAdd.get(0).getStatusList().size());
 		abamClient.addThesesFromList(thesesToAdd);
 	}
 
