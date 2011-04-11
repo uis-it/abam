@@ -7,8 +7,10 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisStatus;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
@@ -39,6 +41,7 @@ public class ThesisBean implements DisposableBean {
 		studentService.updateCurrentStudentFromWebService();
 		Student currentStudent = studentService.getCurrentStudent();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
+
 		if (currentStudentsThesis != null) {
 			if (currentStudentsThesis.getAssignedAssignment().getId() == 0) {
 				currentAssignment = studentService.getCurrentStudent()
@@ -79,10 +82,58 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionSetThesisIsAccepted(ActionEvent event) {
 		studentService.getCurrentStudent().setActualSubmissionOfTopic(GregorianCalendar.getInstance().getTime());
-		studentService.getCurrentStudent().setAssignedThesis(currentStudentsThesis);
 		studentService.getCurrentStudent().setAcceptedThesis(true);
 		studentService.updateStudentInWebServiceFromCurrentStudent();
+		if (allStudentsHaveAccepted()) {
+			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.ACCEPTED, studentService.getCurrentStudent().getName()));
+		} else {
+			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.PARTIALLY_ACCEPTED, studentService.getCurrentStudent().getName()));
+		}		
+		updateThesisForInvolvedStudents();
+		studentService.updateThesis(currentStudentsThesis);
 		actionInitMyThesisPage(event);
+	}
+	
+	private void updateThesisForInvolvedStudents() {		
+		studentService.getCurrentStudent().setAssignedThesis(currentStudentsThesis);
+		Student std = null;
+		if (currentStudentsThesis.getStudentNumber1() != null && !currentStudentsThesis.getStudentNumber1().isEmpty()) {
+			std = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber1());
+			std.setAssignedThesis(currentStudentsThesis);
+			studentService.updateStudent(std);
+		}
+		if (currentStudentsThesis.getStudentNumber2() != null && !currentStudentsThesis.getStudentNumber2().isEmpty()) {
+			std = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber2());
+			std.setAssignedThesis(currentStudentsThesis);
+			studentService.updateStudent(std);
+		}
+		if (currentStudentsThesis.getStudentNumber3() != null && !currentStudentsThesis.getStudentNumber3().isEmpty()) {
+			std = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber3());
+			std.setAssignedThesis(currentStudentsThesis);
+			studentService.updateStudent(std);
+		}
+	}
+	
+	private boolean allStudentsHaveAccepted() {
+		boolean allHaveAccepted = false;
+		
+		if(currentStudentsThesis.getStudentNumber2() == null || currentStudentsThesis.getStudentNumber2().isEmpty()) {
+			allHaveAccepted = true;
+		} else if (currentStudentsThesis.getStudentNumber3() == null || currentStudentsThesis.getStudentNumber3().isEmpty()) {
+			Student std1 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber1());
+			Student std2 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber2());
+			if (std1.isAcceptedThesis() && std2.isAcceptedThesis()) {
+				allHaveAccepted = true;
+			}
+		} else {
+			Student std1 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber1());
+			Student std2 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber2());
+			Student std3 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber3());
+			if (std1.isAcceptedThesis() && std2.isAcceptedThesis() && std3.isAcceptedThesis()) {
+				allHaveAccepted = true;
+			}
+		}
+		return allHaveAccepted;
 	}
 	
 	public void actionInitMyThesisPage(ActionEvent event) {

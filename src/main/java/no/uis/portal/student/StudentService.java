@@ -453,6 +453,19 @@ public class StudentService {
 	public Employee getEmployeeFromFullName(String name) {
 		return abamStudentClient.getEmployeeFromFullName(name);
 	}
+
+	public Student getStudentFromStudentNumber(String studentNumber) {
+		return abamStudentClient.getStudentFromStudentNumber(studentNumber);
+	}
+
+	public void updateThesis(Thesis thesis) {
+		abamStudentClient.updateThesis(thesis);
+		
+	}
+	
+	public void updateStudent(Student std) {
+		abamStudentClient.updateStudent(std);
+	}
 }
 
 
