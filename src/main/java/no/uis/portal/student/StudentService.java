@@ -238,18 +238,28 @@ public class StudentService {
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
 		updateCurrentStudentFromWebService();
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());			
-		updateStudyProgramList(findDepartmentNumberForCurrentStudent());		
+		updateStudyProgramList(findDepartmentOe2ForCurrentStudent());		
 		getStudyProgramList();
 	}
 	
-	public int findDepartmentNumberForCurrentStudent() {
+	public int findDepartmentOe2ForCurrentStudent() {
 		String code = getCurrentStudent().getDepartmentCode();
 		List<Department> tempList = getDepartmentList();
 		for (Department department : tempList) {
 			if(department.getOeKode().equalsIgnoreCase(code)) 
-				return tempList.indexOf(department);
+				return department.getOe2();
 		}
 		return 0;
+	}
+	
+	public String findDepartmentCodeForCurrentStudent() {
+		String code = getCurrentStudent().getDepartmentCode();
+		List<Department> tempList = getDepartmentList();
+		for (Department department : tempList) {
+			if(department.getOeKode().equalsIgnoreCase(code)) 
+				return department.getOeKode();
+		}
+		return "";
 	}
 	
 	public void actionSaveApplications(ActionEvent event) {
@@ -283,7 +293,7 @@ public class StudentService {
 	}
 
 	public List<StudyProgram> getStudyProgramList() {
-		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(findDepartmentNumberForCurrentStudent());
+		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(findDepartmentOe2ForCurrentStudent());
 		studyProgramSelectItemList.clear();
 		for (int i = 0; i < studyProgramList.size(); i++) {
 			studyProgramSelectItemList.add(new SelectItem(i,studyProgramList.get(i).getName()));
@@ -292,7 +302,7 @@ public class StudentService {
 	}
 	
 	public String getStudyProgramName(int index) {
-		return abamStudentClient.getStudyProgram(findDepartmentNumberForCurrentStudent(),index);
+		return abamStudentClient.getStudyProgram(findDepartmentOe2ForCurrentStudent(),index);
 	}
 	
 	public String getDepartmentNameFromIndex(int index) {

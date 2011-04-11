@@ -40,7 +40,8 @@ public class StudentAssignmentBean implements DisposableBean {
 		Student student = studentService.getCurrentStudent(); 
 		student.setDepartmentName(studentService
 				.getDepartmentNameFromIndex(studentService
-						.findDepartmentNumberForCurrentStudent()));
+						.findDepartmentOe2ForCurrentStudent()));
+		//student.setDepartmentCode(studentService.findDepartmentCodeForCurrentStudent());
 		if(assignment == null) {
 			assignment = new Assignment();
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
@@ -97,19 +98,11 @@ public class StudentAssignmentBean implements DisposableBean {
 		
 		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
-		log.setLevel(Level.ERROR);
-		if (log.isDebugEnabled()) {
-			log.debug("Title: "+parameterMap.get(clientId+"title"));
-			log.debug("Des: "+parameterMap.get(clientId+"description"));
-			log.debug("Supervisor: "+parameterMap.get(clientId+"supervisor"));
-			log.debug("FacultySupervisor: "+parameterMap.get(clientId+"facultySupervisor"));
-			log.debug("Department: "+parameterMap.get(clientId+"department"));
-			log.debug("StudyProgram: "+parameterMap.get(clientId+"studyProgram"));
-			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
-			log.debug("type: "+parameterMap.get(clientId+"type"));
-		}
-		currentAssignment.setDepartmentCode(studentService.getCurrentStudent().getDepartmentCode());
-		currentAssignment.setDepartmentName(studentService.getCurrentStudent().getDepartmentName());
+		log.setLevel(Level.DEBUG);
+		currentAssignment.setDepartmentCode(studentService.findDepartmentCodeForCurrentStudent());
+		currentAssignment.setDepartmentName(studentService
+				.getDepartmentNameFromIndex(studentService
+						.findDepartmentOe2ForCurrentStudent()));
 		currentAssignment.setStudyProgramName(studentService.getCurrentStudent().getStudyProgramName());
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();
