@@ -6,6 +6,9 @@ import java.util.Date;
 
 public class ThesisStatus {
 
+	public static final String ASSIGNED_TO_STUDENT = "Assigned to student(s)";
+	
+	
 	private String status; 
 	private String responsible;
 	
@@ -13,10 +16,14 @@ public class ThesisStatus {
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
+	public ThesisStatus() {
+	}
+	
 	public ThesisStatus(String status, String responsible) {
 		this.status = status;
 		this.responsible = responsible;
 		this.date = createDate();
+		System.out.println("Ansavrlig: " + responsible);
 	}
 	
 	private Date createDate() {
@@ -38,4 +45,17 @@ public class ThesisStatus {
 	public String getDateAsString() {
 		return simpleDateFormatter.format(date);
 	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setResponsible(String responsible) {
+		this.responsible = responsible;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
 }

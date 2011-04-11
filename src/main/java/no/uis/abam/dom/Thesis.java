@@ -173,11 +173,19 @@ public class Thesis {
 		this.attachedFileList = attachedFileList;
 	}
 
-	public List<ThesisStatus> getStatusList() {
+	public List<ThesisStatus> getStatusList() {		
 		return statusList;
+	}
+
+	public void setStatusList(List<ThesisStatus> statusList) {		
+		this.statusList = statusList;
 	}
 	
 	public void addThesisStatus(ThesisStatus ts) {
-		statusList.add(ts);
+		statusList.add(ts);		
+	}
+	
+	public ThesisStatus getLastStatus() {
+		return statusList.get(statusList.size()-1);
 	}
 }
