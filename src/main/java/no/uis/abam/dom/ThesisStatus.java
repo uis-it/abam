@@ -7,7 +7,8 @@ import java.util.Date;
 public class ThesisStatus {
 
 	public static final String ASSIGNED_TO_STUDENT = "Assigned to student(s)";
-	
+	public static final String ACCEPTED = "Accepted";
+	public static final String PARTIALLY_ACCEPTED = "Partially accepted";
 	
 	private String status; 
 	private String responsible;
@@ -23,7 +24,6 @@ public class ThesisStatus {
 		this.status = status;
 		this.responsible = responsible;
 		this.date = createDate();
-		System.out.println("Ansavrlig: " + responsible);
 	}
 	
 	private Date createDate() {
