@@ -28,6 +28,7 @@ public class Thesis {
 	private ExternalExaminer externalExaminer;
 
 	private List<String> attachedFileList = new ArrayList<String>();
+	private List<ThesisStatus> statusList = new ArrayList<ThesisStatus>();
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
@@ -171,5 +172,12 @@ public class Thesis {
 	public void setAttachedFileList(List<String> attachedFileList) {
 		this.attachedFileList = attachedFileList;
 	}
+
+	public List<ThesisStatus> getStatusList() {
+		return statusList;
+	}
 	
+	public void addThesisStatus(ThesisStatus ts) {
+		statusList.add(ts);
+	}
 }
