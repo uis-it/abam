@@ -91,7 +91,13 @@
 		<table>
 			<tr>
 				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
-				<td><ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_next}" actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" id="assignSelected"/></td>
+				<td><h:commandButton 
+						id="assignSelected"
+						action="assignAssignment" 
+						actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" 
+						type="submit" 
+						value="#{msgs.btn_next}" 
+						/></td>
 			</tr>
 		</table> 
 		</ice:form>

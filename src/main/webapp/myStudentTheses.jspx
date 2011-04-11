@@ -28,7 +28,7 @@
 						<ice:commandLink 
 							id="itemTitle" 
 							action="assignmentSummary" 
-							actionListener="#{assignmentBean.actionSetSelectedAssignmentFromDisplayAssignments}" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignmentFromMyStudentTheses}" 
 							value="#{item.assignmentTitle}" 
 							/>
 					</ice:column>

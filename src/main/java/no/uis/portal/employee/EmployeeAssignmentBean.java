@@ -23,6 +23,7 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisInformation;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -58,6 +59,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private boolean backToAssignAssignment;
 	private boolean backToDisplayAssignments;
 	private boolean backToAssignmentAttachment;
+	private boolean backToMyStudentThesis;
 	
 	private boolean showExpired;
 	
@@ -117,6 +119,19 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		actionPrepareBackButtonFromDisplayAssignments(event);
 	}
 	
+	public void actionSetSelectedAssignmentFromMyStudentTheses(ActionEvent event){
+		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
+		
+		log.setLevel(Level.ERROR);
+		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
+		setCurrentAssignment(selectedAssignment);
+		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		
+		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		actionPrepareBackButtonFromMyStudentTheses(event);
+	}
+	
 	public void actionRemoveAssignment(ActionEvent event) {
 		Assignment assignment = (Assignment) getRowFromEvent(event);
 		
@@ -136,18 +151,28 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToAssignmentAttachment(true);
 		setBackToAssignAssignment(false);
 		setBackToDisplayAssignments(false);
+		setBackToMyStudentThesis(false);
 	}
 	
 	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
 		setBackToAssignAssignment(true);
 		setBackToAssignmentAttachment(false);
 		setBackToDisplayAssignments(false);
+		setBackToMyStudentThesis(false);
 	}
 	
 	public void actionPrepareBackButtonFromDisplayAssignments(ActionEvent event) {
 		setBackToDisplayAssignments(true);
 		setBackToAssignmentAttachment(false);
 		setBackToAssignAssignment(false);
+		setBackToMyStudentThesis(false);
+	}
+	
+	public void actionPrepareBackButtonFromMyStudentTheses(ActionEvent event) {
+		setBackToDisplayAssignments(false);
+		setBackToAssignmentAttachment(false);
+		setBackToAssignAssignment(false);
+		setBackToMyStudentThesis(true);
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {				
@@ -333,4 +358,13 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
 	}
+
+	public boolean isBackToMyStudentThesis() {
+		return backToMyStudentThesis;
+	}
+
+	public void setBackToMyStudentThesis(boolean backToMyStudentThesis) {
+		this.backToMyStudentThesis = backToMyStudentThesis;
+	}
+	
 }

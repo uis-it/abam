@@ -88,6 +88,7 @@
 						<ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_back}" id="BackButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 						<ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButtonAssign" immediate="true" rendered="#{assignmentBean.backToAssignAssignment}"/>
 						<ice:commandButton type="submit" action="displayAssignments" value="#{msgs.btn_back}" id="BackButtonDisplay" immediate="true" rendered="#{assignmentBean.backToDisplayAssignments}"/>
+						<ice:commandButton type="submit" action="myStudentTheses" value="#{msgs.btn_back}" id="BackButtonStudentTheses" immediate="true" rendered="#{assignmentBean.backToMyStudentThesis}"/>
 						<ice:commandButton type="submit" action="assignmentSavedConfirmation" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 					</td>

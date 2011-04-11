@@ -259,6 +259,7 @@ public class EmployeeService {
 
 	//TODO Må kanskje endre litt på denne metoden.
 	public Department getDepartmentFromValue(int value) {
+		getDepartmentListFromWebService();
 		for (Department department : departmentList) {
 			if (departmentList.indexOf(department) == value) {
 				return department;

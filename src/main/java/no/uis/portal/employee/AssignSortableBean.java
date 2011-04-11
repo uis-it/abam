@@ -146,7 +146,9 @@ public class AssignSortableBean implements DisposableBean{
 		setSelectedPriority("all");
 		setDepartmentName(employeeService.getDepartmentNameFromIndex(employeeService.getSelectedDepartmentNumber()));
 		List<Application> applicationList;
-		if(isBachelor()) applicationList = employeeService.getBachelorApplicationListFromSelectedDepartmentNumber();
+		if(isBachelor()){ 			
+			applicationList = employeeService.getBachelorApplicationListFromSelectedDepartmentNumber();			
+		}
 		else applicationList = employeeService.getMasterApplicationList();
 		if(applicationList != null){							
 			applicationInformationArray = new ApplicationInformation[applicationList.size()];

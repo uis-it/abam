@@ -52,6 +52,7 @@ public class ThesisBean {
 					ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
 					//ti.setExternalExaminerName(thesis.getExternalExaminer().getName());
 					ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
+					ti.setThesis(thesis);
 					thesisInformationList.add(ti);
 				}
 			}		

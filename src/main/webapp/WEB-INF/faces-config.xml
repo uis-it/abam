@@ -39,8 +39,8 @@
 			<to-view-id>/editInformation.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>myStudentAssignments</from-outcome>
-			<to-view-id>/myStudentAssignments.jspx</to-view-id>
+			<from-outcome>myStudentTheses</from-outcome>
+			<to-view-id>/myStudentTheses.jspx</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>searchArchive</from-outcome>

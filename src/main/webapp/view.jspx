@@ -20,7 +20,7 @@
 						<ice:commandLink 
 							action="displayAssignments" 
 							actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
-							value="#{msgs.link_edit_assignment}" 
+							value="#{msgs.link_view_assignment}" 
 							/>
 					</td></tr>
 					<tr><td>
@@ -33,7 +33,7 @@
 					</td></tr>
 					<tr><td>
 						<ice:commandLink 
-							action="myStudentAssignments" 
+							action="myStudentTheses" 
 							actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
 							value="#{msgs.link_my_std_assignments}"
 							/>
