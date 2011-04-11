@@ -289,21 +289,27 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			departmentList = new ArrayList<Department>();
 			Department depToAdd = new Department(new Integer(0), "");
 			depToAdd.setOe2((short)0);
+			depToAdd.setOeKode("TN-ABC");
 			departmentList.add(depToAdd);
 			depToAdd = new Department(new Integer(1), "Industriell økonomi, risikostyring og planlegging");
+			depToAdd.setOeKode("TN-ABC");
 			depToAdd.setOe2((short)3);
 			departmentList.add(depToAdd);
 			depToAdd = new Department(new Integer(2), "Petroleumsteknologi");
 			depToAdd.setOe2((short)6);
+			depToAdd.setOeKode("TN-ABC");
 			departmentList.add(depToAdd);
 			depToAdd = new Department(new Integer(3), "Data- og elektroteknikk");
 			depToAdd.setOe2((short)4);
+			depToAdd.setOeKode("TN-IDE");
 			departmentList.add(depToAdd);
 			depToAdd = new Department(new Integer(4), "Konstruksjonsteknikk og materialteknologi");
 			depToAdd.setOe2((short)5);
+			depToAdd.setOeKode("TN-ABC");
 			departmentList.add(depToAdd);
 			depToAdd = new Department(new Integer(5), "Matematikk og naturvitskap");
 			depToAdd.setOe2((short)2);
+			depToAdd.setOeKode("TN-ABC");
 			departmentList.add(depToAdd);			
 			for (int i = 0; i < departmentList.size(); i++) {
 				initializeStudyPrograms(i);
@@ -437,7 +443,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		for (Thesis thesis : thesesToAdd) {			
 			savedThesesList.add(thesis);			
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
-			System.out.println("I WS: "+ thesis.getStudentNumber1());
 			student.setAssignedThesis(thesis);			
 			removeStudentsApplicationFromList(student);
 			if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty()) {
