@@ -86,6 +86,11 @@
 			<from-outcome>assignmentAttachment</from-outcome>
 			<to-view-id>/assignmentAttachment.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>thesisStatus</from-outcome>
+			<to-view-id>/thesisStatus.jspx</to-view-id>
+		</navigation-case>
+		
 	</navigation-rule>
 	
 	<managed-bean>

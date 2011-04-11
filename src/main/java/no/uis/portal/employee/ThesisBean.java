@@ -3,15 +3,19 @@ package no.uis.portal.employee;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.icesoft.faces.component.ext.HtmlDataTable;
+
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisInformation;
+import no.uis.abam.dom.ThesisStatus;
 
 public class ThesisBean {
 
@@ -19,6 +23,7 @@ public class ThesisBean {
 	
 	private List<Thesis> thesisList;
 	private List<ThesisInformation> thesisInformationList;
+	private List<ThesisStatus> thesisStatusList; 
 	
 	private EmployeeService employeeService;
 	
@@ -33,6 +38,18 @@ public class ThesisBean {
 			thesisList.addAll(tempList);
 		}
 		createThesisInformationFromThesis();
+	}
+	
+	public void actionPrepareThesisStatusList(ActionEvent event) {
+		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
+		setThesisStatusList(selectedThesis.getThesis().getStatusList());
+		System.out.println(thesisStatusList.size());
+	}
+	
+	private Object getRowFromEvent(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		return table.getRowData();
 	}
 
 	private void createThesisInformationFromThesis() {
@@ -78,6 +95,14 @@ public class ThesisBean {
 
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
+	}
+
+	public List<ThesisStatus> getThesisStatusList() {
+		return thesisStatusList;
+	}
+
+	public void setThesisStatusList(List<ThesisStatus> thesisStatusList) {
+		this.thesisStatusList = thesisStatusList;
 	}
 	
 }

@@ -53,7 +53,21 @@
 	                		id="itemAddedDate" 
 	                		value="#{item.evaluationSubmissionDeadlineAsString}" 
 	                		/>
-					</ice:column>									
+					</ice:column>	
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_status}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:commandLink 
+	                		id="itemStatus" 
+	                		value="#{item.thesis.lastStatus.status}"
+	                		action="thesisStatus"
+	                		actionListener="#{thesisBean.actionPrepareThesisStatusList}"
+	                		/>
+					</ice:column>		
+												
 				</ice:dataTable>
 			
 			<table border="0">

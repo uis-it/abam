@@ -230,6 +230,7 @@ public class EmployeeService {
 //	}
 
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
+		System.out.println("addThesesFromList: " + thesesToAdd.get(0).getStatusList().size());
 		abamClient.addThesesFromList(thesesToAdd);
 	}
 
@@ -504,9 +505,9 @@ public class EmployeeService {
 	   return data;
 	}
 
-	public Employee getLoggedInEmployee() {
-		return loggedInEmployee;
-	}
+//	public Employee getLoggedInEmployee() {
+//		return loggedInEmployee;
+//	}
 
 	public void setLoggedInEmployee(Employee loggedInEmployee) {
 		this.loggedInEmployee = loggedInEmployee;

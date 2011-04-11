@@ -230,6 +230,8 @@ public class AssignSortableBean implements DisposableBean{
 		thesis.addStudentNumber(appInfo.getApplication()
 				.getApplicantStudentNumber());
 		thesis.setFacultySupervisor(employeeService.getEmployeeFromName(appInfo.getFacultySupervisor()));
+		thesis.addThesisStatus(new ThesisStatus(ThesisStatus.ASSIGNED_TO_STUDENT, employeeService.getEmployeeFromUisLoginName().getName()));
+		System.out.println("thesis lages: " + thesis.getStatusList().size());
 		return thesis;
 	}
 	
