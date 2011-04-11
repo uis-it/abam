@@ -440,7 +440,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	public void addThesesFromList(List<Thesis> thesesToAdd) {		
-		for (Thesis thesis : thesesToAdd) {			
+		for (Thesis thesis : thesesToAdd) {	
 			savedThesesList.add(thesis);			
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
 			student.setAssignedThesis(thesis);			
