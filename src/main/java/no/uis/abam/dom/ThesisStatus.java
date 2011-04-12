@@ -9,13 +9,14 @@ public class ThesisStatus {
 	public static final String ASSIGNED_TO_STUDENT = "Assigned to student(s)";
 	public static final String ACCEPTED = "Accepted";
 	public static final String PARTIALLY_ACCEPTED = "Partially accepted";
+	public static final String SUBMITTED = "Submitted";
 	
 	private String status; 
 	private String responsible;
 	
 	private Date date;
 	
-	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 	
 	public ThesisStatus() {
 	}
