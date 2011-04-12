@@ -197,7 +197,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	private void initializeStudentList() { 
 		Student newStudent = new Student();
-		newStudent.setName("Bachelor Studenten");
+		newStudent.setName("Elev1 Elev1");
 		newStudent.setStudentNumber("123456");
 		newStudent.setBachelor(true);
 		newStudent.setDepartmentCode("TN-IDE");
@@ -205,7 +205,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		studentList.add(newStudent);
 		
 		newStudent = new Student();
-		newStudent.setName("Annen Student");
+		newStudent.setName("Elev2 Elev2");
 		newStudent.setStudentNumber("234567");
 		newStudent.setBachelor(true);
 		newStudent.setDepartmentCode("TN-IDE");
@@ -213,11 +213,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		studentList.add(newStudent);
 		
 		newStudent = new Student();
-		newStudent.setName("Master Studenten");
+		newStudent.setName("Elev3 Elev3");
 		newStudent.setStudentNumber("123457");
 		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
-		newStudent.setBachelor(false);
+		newStudent.setBachelor(true);
 		studentList.add(newStudent);
 		
 	}
