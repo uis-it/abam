@@ -448,6 +448,16 @@ public class EmployeeService {
 		return checkPermission("VIEW_EXTERNAL_EXAMINER");						
 	}
 	
+	public boolean isAdministrativeEmployee() {
+		User user = themeDisplay.getUser();
+		for (Role role : user.getRoles()) {
+			if(role.getName().equalsIgnoreCase("Abam Administrative Employee")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public List<SelectItem> getDepartmentSelectItemList() {
 		return departmentSelectItemList;
 	}

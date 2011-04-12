@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.icesoft.faces.component.ext.HtmlDataTable;
 
 import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisInformation;
 import no.uis.abam.dom.ThesisStatus;
@@ -31,13 +32,22 @@ public class ThesisBean {
 		
 	}
 	
+	public void actionPrepareAllStudentTheses(ActionEvent event) {
+		thesisList = new ArrayList<Thesis>();		
+		List<Thesis> tempList = employeeService.getThesisList();
+		if (tempList != null && !tempList.isEmpty()) {
+			thesisList.addAll(tempList);
+		}
+		createThesisInformationFromThesis(true);
+	}	
+	
 	public void actionPrepareMyStudentTheses(ActionEvent event) {
 		thesisList = new ArrayList<Thesis>();		
 		List<Thesis> tempList = employeeService.getThesisList();
 		if (tempList != null && !tempList.isEmpty()) {
 			thesisList.addAll(tempList);
 		}
-		createThesisInformationFromThesis();
+		createThesisInformationFromThesis(false);
 	}
 	
 	public void actionPrepareThesisStatusList(ActionEvent event) {
@@ -51,13 +61,14 @@ public class ThesisBean {
 		return table.getRowData();
 	}
 
-	private void createThesisInformationFromThesis() {
+	private void createThesisInformationFromThesis(boolean isAdministrative) {
 		log.setLevel(Level.DEBUG);
 		thesisInformationList = new ArrayList<ThesisInformation>();
 		Employee employee = employeeService.getEmployeeFromUisLoginName();
 		if (!thesisList.isEmpty()) {
 			for (Thesis thesis : thesisList) {
-				if(thesis.getFacultySupervisor().getName().equals(employee.getName())) {
+				if(isAdministrative || thesis.getFacultySupervisor().getName().equals(employee.getName())
+						|| loggedInUserIsSupervisor(thesis.getAssignedAssignment().getSupervisorList()) ) {
 					ThesisInformation ti = new ThesisInformation();
 					
 					ti.setAssignmentTitle(thesis.getAssignedAssignment().getTitle());
@@ -66,7 +77,6 @@ public class ThesisBean {
 					if (thesis.getStudentNumber3() != null)
 						ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
 					ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
-					//ti.setExternalExaminerName(thesis.getExternalExaminer().getName());
 					ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
 					ti.setThesis(thesis);
 					thesisInformationList.add(ti);
@@ -75,6 +85,19 @@ public class ThesisBean {
 		}
 	}
 	
+	private boolean loggedInUserIsSupervisor(
+			ArrayList<Supervisor> supervisorList) {
+		
+		Employee employee = employeeService.getEmployeeFromUisLoginName();
+		
+		for (Supervisor supervisor : supervisorList) {
+			if(!supervisor.isExternal() && supervisor.getName().equalsIgnoreCase(employee.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public List<Thesis> getThesisList() {
 		return thesisList;
 	}

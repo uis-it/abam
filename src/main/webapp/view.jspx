@@ -36,6 +36,15 @@
 							action="myStudentTheses" 
 							actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
 							value="#{msgs.link_my_std_assignments}"
+							rendered="#{employeeService.shouldDisplayViewSupervisedThesis}"
+							/>
+					</td></tr>
+					<tr><td>
+						<ice:commandLink 
+							action="myStudentTheses" 
+							actionListener="#{thesisBean.actionPrepareAllStudentTheses}"
+							value="#{msgs.link_all_std_assignments}"							
+							rendered="#{employeeService.administrativeEmployee}"													
 							/>
 					</td></tr>
 					<tr><td>
