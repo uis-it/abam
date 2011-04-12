@@ -7,7 +7,7 @@
 	<ice:portlet>
 		<ice:form>
 		
-			<ice:outputText value="#{msgs.lbl_submit_thesis}"/><br/>
+			<ice:outputText value="#{lbl_submit_thesis_saved}"/><br/>
 			<br/>
 			<br/>
 			<table border="0" >				
@@ -23,11 +23,6 @@
 				</tr>
 			</table>
 			<table>
-			<tr>
-					<td><ice:outputText value="#{msgs.lbl_attachment} "/> </td>
-					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}" /> </td>
-					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.fileUploadErrorMessage}"/> </td>
-				</tr>
 				<tr>
 					<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachedFileList }">
 					<ice:column>
@@ -35,20 +30,13 @@
 						<ice:outputText value="#{msgs.lbl_attachments}"/>
 					</f:facet>
 						<ice:outputText id="nameInput" value="#{attachment}"/>
-						<ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{thesisBean.actionRemoveAttachment}"/>
 					</ice:column>
 				</ice:dataTable>
 				</tr>	
 			</table>
 
-			<ice:commandButton type="submit" action="myThesis" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-			<ice:commandButton 
-				type="submit" 
-				action="submitThesisSavedConfirmation" 
-				actionListener="#{thesisBean.actionSaveThesis}" 
-				value="#{msgs.btn_save}" 
-				id="SubmitButton" 
-			/>
+			<ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" id="mainMenuButton" immediate="true"/>
 		</ice:form>
 	</ice:portlet>
 </f:view>

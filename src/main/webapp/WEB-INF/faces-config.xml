@@ -65,6 +65,11 @@
 			<from-outcome>submitThesis</from-outcome>
 			<to-view-id>/submitThesis.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>submitThesisSavedConfirmation</from-outcome>
+			<to-view-id>/submitThesisSavedConfirmation.jspx</to-view-id>
+		</navigation-case>		
+		
 		</navigation-rule>
 	
 	<managed-bean>

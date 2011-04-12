@@ -67,6 +67,11 @@ public class ThesisBean implements DisposableBean {
 		renderAcceptButton = false;
 	}
 	
+	public void actionSaveThesis(ActionEvent event) {
+		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.SUBMITTED,studentService.getCurrentStudent().getName()));
+		studentService.updateThesis(currentStudentsThesis);
+	}
+	
 	public void actionCheckBoxChanges(ValueChangeEvent event) {
 		String id = event.getComponent().getId();
 		if (id.equals("readRules1")) {
