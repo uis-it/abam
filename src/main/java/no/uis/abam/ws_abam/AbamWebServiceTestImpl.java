@@ -1,20 +1,38 @@
 package no.uis.abam.ws_abam;
 
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.TreeSet;
 import javax.jws.WebService;
+import javax.xml.ws.BindingProvider;
+
+import org.apache.log4j.Logger;
 import org.springframework.transaction.CannotCreateTransactionException;
 import no.uis.abam.dao.DepartmentDAO;
 import no.uis.abam.dom.*;
 import no.uis.abam.util.LevenshteinDistance;
+import no.uis.service.affiliation.AffiliationDataType;
+import no.uis.service.person.PersonType;
+import no.uis.service.person.ws.PersonService;
+import no.uis.service.person.ws.PersonWebService;
+import no.uis.service.person.ws.WebServiceException_Exception;
+import no.uis.service.student.AcademicAffiliationType;
+import no.uis.service.student.ProgramLinkType;
+import no.uis.service.student.StudentDataType;
+import no.uis.service.student.TeachingLinkType;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
 public class AbamWebServiceTestImpl implements AbamWebService {
 
+	private Logger log = Logger.getLogger(AbamWebServiceTestImpl.class);
+	
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
 	private List<Department> departmentList;
 	private List<Application> applicationList = new ArrayList<Application>();
@@ -23,11 +41,13 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private DepartmentDAO departmentDao;
  	
+	private PersonWebService personWebService;
+	
 	public AbamWebServiceTestImpl(){
-		
+		personWebService = getWS();
 		//createAssignmentListContent();
 		//initializeDepartmentAndStudyProgramLists();
-		initializeStudentList();
+		//initializeStudentList();
 		createEmployeeListContent();
 		//initializeThesisList();
 	}
@@ -429,8 +449,100 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			}
 		}
 	}
-	
+		
 	public Student getStudentFromStudentNumber(String studentNumber) {
+		Student student = getStudentFromAbamStudentList(studentNumber);
+		if (student == null) {
+			PersonType person = null;
+			try {
+				person = personWebService
+						.getPersonByStudentNumber(studentNumber);
+				student = getStudentFromPersonTypeObject(person);
+				studentList.add(student);
+			} catch (WebServiceException_Exception e) {
+				log.debug("getStudentFromStudentNumber: " + e.getMessage());
+			}
+		}
+		return student;
+	}
+	
+	private Student getStudentFromPersonTypeObject(PersonType person) {
+		StudentDataType sdt = getStudentDataTypeFromPersonType(person);
+		Student student = new Student();
+		student.setBachelor(personIsBachelorStudent(sdt));
+		student.setDepartmentCode(getDepartmentCodeFromAcademicATList(sdt.getAcademicAffiliation()));
+		student.setStudyProgramName(getStudyProgramNameFromAcademicATList(sdt.getAcademicAffiliation()));
+		student.setName(person.getFirstName() + " " + person.getLastName());
+		student.setStudentNumber(sdt.getStudentNumber());	
+		return student;
+	}
+	
+	private String getStudyProgramNameFromAcademicATList(
+			List<AcademicAffiliationType> academicAffiliation) {
+		for (AcademicAffiliationType academicAffiliationType : academicAffiliation) {
+			List<ProgramLinkType> programLink = academicAffiliationType.getProgramLink();
+			for (ProgramLinkType programLinkType : programLink) {
+				String ref = programLinkType.getRef();
+				return getStudyProgramNameFromProgramLinkRef(ref);
+			}
+		}
+		return "";
+	}
+
+	private String getStudyProgramNameFromProgramLinkRef(String ref) {
+		if (ref.contains("DATA")) {
+			return "Data";
+		} else if (ref.contains("ELEKTRO")) {
+			return "Elektro";
+		}
+		return "";
+	}
+
+	private StudentDataType getStudentDataTypeFromPersonType(PersonType person) {
+		List<AffiliationDataType> affiliationData = person.getAffiliationData();
+		for (AffiliationDataType affiliationDataType : affiliationData) {
+			if(affiliationDataType instanceof StudentDataType) {
+				return (StudentDataType)affiliationDataType;
+			}	
+		}
+		return null;
+	}
+
+	private String getDepartmentCodeFromAcademicATList(List<AcademicAffiliationType> aatList) {		
+		for (AcademicAffiliationType academicAffiliationType : aatList) {
+			List<ProgramLinkType> programLink = academicAffiliationType.getProgramLink();
+			for (ProgramLinkType programLinkType : programLink) {
+				String ref = programLinkType.getRef();
+				return getDepartmentCodeFromProgramLinkRef(ref);
+			}
+		}
+		return "";
+	}
+	
+	//TODO: Dette bør ikke være hardkodet inn, bør fikses. Burde være f.eks. Oe2 i stedet.
+	private String getDepartmentCodeFromProgramLinkRef(String ref) {
+		if (ref.contains("DATA") || ref.contains("ELEKTRO")) {
+			return "TN-IDE";
+		}
+		return "";
+	}
+
+	private boolean personIsBachelorStudent(StudentDataType sdt) {
+		List<AcademicAffiliationType> academicAT = sdt.getAcademicAffiliation();
+
+		for (AcademicAffiliationType academicAffiliationType : academicAT) {
+			List<TeachingLinkType> tLT = academicAffiliationType.getTeachingLink();
+			for (TeachingLinkType teachingLinkType : tLT) {
+				if (teachingLinkType.getRef().contains("BAC")) {
+					return true;
+				}
+			}
+
+		}		
+		return false;
+	}
+
+	private Student getStudentFromAbamStudentList(String studentNumber) {
 		for (Student student : studentList) {
 			if (student.getStudentNumber().equals(studentNumber)) {
 				return student;
@@ -438,7 +550,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 		return null;
 	}
-	
+
 	public void addThesesFromList(List<Thesis> thesesToAdd) {		
 		for (Thesis thesis : thesesToAdd) {	
 			savedThesesList.add(thesis);			
@@ -522,4 +634,49 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 		return foundEmployee;
 	}
+	
+	public void runPersonWS() throws Exception {
+		PersonWebService personWS = getWS();
+		PersonType person = personWS.getPersonByStudentNumber("202551");
+		
+		List<AffiliationDataType> test = person.getAffiliationData();
+		for (AffiliationDataType affiliationDataType : test) {
+			if(affiliationDataType instanceof StudentDataType) {
+				StudentDataType sdt = (StudentDataType)affiliationDataType;
+				List<AcademicAffiliationType> test2 = sdt.getAcademicAffiliation();
+				for (AcademicAffiliationType academicAffiliationType : test2) {
+					List<TeachingLinkType> test3 = academicAffiliationType.getTeachingLink();
+					for (TeachingLinkType teachingLinkType : test3) {
+					}
+				}
+			}
+			System.out.println(affiliationDataType.getAffiliation().getClass());
+			
+		}		
+	}
+	
+	private PersonWebService getWS() {
+		//String targetUrl = "http://wsapps-test01.uis.no/ws-person/person";
+		InputStream cfgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
+		Properties props = new Properties();
+		try {
+			props.load(cfgStream);
+		} catch (IOException e) {
+			log.debug("I getWS: " + e.getMessage());
+		}
+		
+		PersonService ps = new PersonService();
+		PersonWebService port = ps.getPersonServicePort();
+		
+		String targetUrl = props.getProperty("personws.target.url");
+		if (targetUrl != null) {
+			BindingProvider bp = (BindingProvider) port;
+			bp.getRequestContext().put(
+					BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					targetUrl);
+		}
+
+		return port;
+	}
+
 }
