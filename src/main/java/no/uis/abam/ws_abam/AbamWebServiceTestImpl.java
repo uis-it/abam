@@ -562,7 +562,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
 			student.setAssignedThesis(thesis);			
 			removeStudentsApplicationFromList(student);
-			removeAssignmentFromApplicationList(thesis.getAssignedAssignment());
 			if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty()) {
 				student = getStudentFromStudentNumber(thesis.getStudentNumber2());
 				student.setAssignedThesis(thesis);			
@@ -573,14 +572,19 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				student.setAssignedThesis(thesis);			
 				removeStudentsApplicationFromList(student);
 			}
+			removeAssignmentFromApplicationList(thesis.getAssignedAssignment());
+			
 		}
+		
 	}
 	
 	private void removeAssignmentFromApplicationList(
 			Assignment assignedAssignment) {
-		for (Application application: applicationList) {
-			if(application.getAssignment().equals(assignedAssignment)) {
-				applicationList.remove(application);
+		if(!applicationList.isEmpty()) {
+			for (Application application: applicationList) {
+				if(application.getAssignment().equals(assignedAssignment)) {
+					applicationList.remove(application);
+				}
 			}
 		}
 	}
@@ -590,11 +594,24 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			if(thesis.equals(thesisToUpdate)) {
 				savedThesesList.remove(thesis);
 				savedThesesList.add(thesisToUpdate);
+				updateThesisForInvolvedStudents(thesisToUpdate);
 				return;
 			}
 		}
+		
 	}
 	
+	private void updateThesisForInvolvedStudents(Thesis thesisToUpdate) {
+		Student std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber1());
+		if(std != null) std.setAssignedThesis(thesisToUpdate);
+		
+		std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber2());
+		if(std != null) std.setAssignedThesis(thesisToUpdate);
+		
+		std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber3());
+		if(std != null) std.setAssignedThesis(thesisToUpdate);
+	}
+
 	private void removeStudentsApplicationFromList(Student student) {
 		for (Application application : student.getApplicationPriorityArray()) {
 			if (application != null) {
