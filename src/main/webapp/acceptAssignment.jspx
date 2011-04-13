@@ -127,8 +127,9 @@
 			
 			<table border="0">
 				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"></ice:commandButton>
-				<ice:outputText value="#{msgs.lbl_please_check_all}" rendered="#{!thesisBean.renderAcceptButton and !studentService.currentStudent.acceptedThesis}" />
-				<ice:commandButton type="submit" action="myThesis" value="#{msgs.btn_accept_thesis}" id="acceptThesis" actionListener="#{thesisBean.actionSetThesisIsAccepted}" rendered="#{thesisBean.renderAcceptButton}"></ice:commandButton>
+				<ice:outputText value="#{msgs.lbl_please_check_all}" rendered="#{!thesisBean.renderAcceptButton and !studentService.currentStudent.acceptedThesis and !thesisBean.deadlineForSubmissionOfTopicReached}" />
+				<ice:commandButton type="submit" action="myThesis" value="#{msgs.btn_accept_thesis}" id="acceptThesis" actionListener="#{thesisBean.actionSetThesisIsAccepted}" rendered="#{thesisBean.renderAcceptButton}" disabled="#{thesisBean.deadlineForSubmissionOfTopicReached}"/>
+				<ice:outputText value="#{msgs.lbl_deadline_for_accepting_reached}" rendered="#{thesisBean.deadlineForSubmissionOfTopicReached}" style="color:red"/>
 			</table>
 		</ice:form>
 	</ice:portlet>

@@ -85,7 +85,7 @@
 							actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" 
 							value="#{msgs.btn_apply_for_assignment}" 
 							id="ApplyButton" 
-							rendered="#{!studentService.deadlineForApplyingReached and !studentService.currentStudent.appliedForThreeAssignments}"
+							rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.appliedForThreeAssignments}"
 							disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"
 						/>
 						<ice:commandButton 

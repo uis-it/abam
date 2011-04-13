@@ -288,6 +288,10 @@ public class ThesisBean implements DisposableBean {
 			ThesisInformation currentThesisInformation) {
 		this.currentThesisInformation = currentThesisInformation;
 	}
+	
+	public boolean isDeadlineForSubmissionOfTopicReached() {
+		return currentStudentsThesis.getDeadlineForSubmissionOfTopic().before(GregorianCalendar.getInstance().getTime());
+	}
 
 	public void dispose() throws Exception {}
 
