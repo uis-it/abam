@@ -33,6 +33,8 @@ public class StudentAssignmentBean implements DisposableBean {
 	
 	private String customAssignmentStudentNumber;
 	
+	private boolean renderGetCustomAssignment;
+	
 	public StudentAssignmentBean(){
 	}
 			
@@ -138,6 +140,10 @@ public class StudentAssignmentBean implements DisposableBean {
 		}
 	}
 	
+	public void actionRadioListener(ValueChangeEvent event) {
+		setRenderGetCustomAssignment((Boolean) event.getNewValue());
+	}
+	
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -212,6 +218,14 @@ public class StudentAssignmentBean implements DisposableBean {
 	public void setCustomAssignmentStudentNumber(
 			String customAssignmentStudentNumber) {
 		this.customAssignmentStudentNumber = customAssignmentStudentNumber;
+	}
+
+	public boolean isRenderGetCustomAssignment() {
+		return renderGetCustomAssignment;
+	}
+
+	public void setRenderGetCustomAssignment(boolean renderGetCustomAssignment) {
+		this.renderGetCustomAssignment = renderGetCustomAssignment;
 	}
 	
 }

@@ -5,17 +5,42 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:form>
-		
+			
 			<ice:outputText value="#{msgs.lbl_create_custom_assignment}"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">		
+			<table border="0" width="800">	
 				<tr>
-				<td><ice:outputText value="#{msgs.lbl_get_assignment_from_studentnumber}" /></td>
-				<td>
-					<ice:inputText size="10" value="#{assignmentBean.customAssignmentStudentNumber}" partialSubmit="true"/>
-					<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton" action="assignmentSummary"/>
-				</td></tr>
+					<td>
+						<ice:selectOneRadio 
+							id="type" 
+							required="true" 
+							styleClass="selectRadio" 
+							value="#{assignmentBean.renderGetCustomAssignment}" 			 
+							valueChangeListener="#{assignmentBean.actionRadioListener}" 
+							layout="pageDirection"
+							partialSubmit="true">
+								<f:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
+								<f:selectItem itemValue="#{true}" itemLabel="#{msgs.lbl_get_assignment_from_studentnumber}" />
+						</ice:selectOneRadio>
+					</td>
+				</tr>
+			</table>
+			</ice:form>
+			<ice:form rendered="#{assignmentBean.renderGetCustomAssignment }">
+			<table border="0">
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_student_number}" /></td>
+					<td>
+						<ice:inputText size="10" value="#{assignmentBean.customAssignmentStudentNumber}" partialSubmit="true"/>
+						<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton" action="assignmentSummary"/>
+					</td>
+				</tr>
+			</table>
+			</ice:form>
+			<ice:form rendered="#{!assignmentBean.renderGetCustomAssignment}">
+			<table border="0" width="800">	
+				
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
 					<td>
