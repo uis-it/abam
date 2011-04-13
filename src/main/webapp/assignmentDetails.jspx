@@ -69,7 +69,7 @@
 					<td></td>
 					<td>
 						<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-						<ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" value="#{msgs.btn_apply_for_assignment}" rendered="#{!studentService.currentStudent.appliedForThreeAssignments}" id="ApplyButton"/>
+						<ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" value="#{msgs.btn_apply_for_assignment}" rendered="#{!studentService.currentStudent.appliedForThreeAssignments and !applicationBean.deadlineForApplyingReached}" id="ApplyButton"/>
 						<ice:outputText value="#{studentService.currentStudent.applicationsErrorMessage }" rendered="#{studentService.currentStudent.appliedForThreeAssignments}" />
 					</td>
 				</tr>

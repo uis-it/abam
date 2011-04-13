@@ -1,6 +1,9 @@
 package no.uis.portal.student;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -470,6 +473,7 @@ public class StudentService {
 	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
 		return abamStudentClient.getCustomAssignmentFromStudentNumber(studentNumber);
 	}
+	
 }
 
 

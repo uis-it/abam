@@ -89,7 +89,10 @@
 			<ice:form rendered="#{thesisBean.renderMyThesis or thesisBean.currentStudentsThesis.accepted}">
 				<table>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/> </td>
+					<td>						
+						<ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/> 						
+					</td>
+						
 					<td></td>
 					<td></td>
 				</tr>

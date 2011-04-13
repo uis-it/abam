@@ -1,5 +1,9 @@
 package no.uis.portal.student;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
@@ -11,6 +15,11 @@ import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.context.DisposableBean;
 
 public class ApplicationBean implements DisposableBean {
+	
+	private static final Date APPLICATION_DEADLINE_MASTER = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR), Calendar.DECEMBER, 1).getTime();
+	private static final Date APPLICATION_DEADLINE_BACHELOR = new GregorianCalendar(
+			GregorianCalendar.getInstance().get(Calendar.YEAR), Calendar.NOVEMBER, 15).getTime();
 	
 	private StudentService studentService;
 	
@@ -117,5 +126,12 @@ public class ApplicationBean implements DisposableBean {
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
 	}
-
+	
+	public boolean isDeadlineForApplyingReached() {
+		if (studentService.getCurrentStudent().isBachelor()) {			
+			return APPLICATION_DEADLINE_BACHELOR.before(GregorianCalendar.getInstance().getTime());
+		} else {
+			return APPLICATION_DEADLINE_MASTER.before(GregorianCalendar.getInstance().getTime());
+		}		
+	}
 }
