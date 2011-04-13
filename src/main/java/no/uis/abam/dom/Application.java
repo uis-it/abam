@@ -74,7 +74,7 @@ public class Application {
 	}
 	
 	public boolean equals(Application inApplication) {
-		return this.getApplicantStudentNumber() == inApplication.getApplicantStudentNumber() 
+		return this.getApplicantStudentNumber().equals(inApplication.getApplicantStudentNumber()) 
 		&& this.getAssignment().equals(inApplication.getAssignment());
 	}
 	
