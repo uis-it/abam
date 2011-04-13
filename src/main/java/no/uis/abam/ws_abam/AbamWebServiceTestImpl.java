@@ -562,6 +562,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
 			student.setAssignedThesis(thesis);			
 			removeStudentsApplicationFromList(student);
+			removeAssignmentFromApplicationList(thesis.getAssignedAssignment());
 			if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty()) {
 				student = getStudentFromStudentNumber(thesis.getStudentNumber2());
 				student.setAssignedThesis(thesis);			
@@ -575,6 +576,15 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 	}
 	
+	private void removeAssignmentFromApplicationList(
+			Assignment assignedAssignment) {
+		for (Application application: applicationList) {
+			if(application.getAssignment().equals(assignedAssignment)) {
+				applicationList.remove(application);
+			}
+		}
+	}
+
 	public void updateThesis(Thesis thesisToUpdate) {
 		for (Thesis thesis : savedThesesList) {
 			if(thesis.equals(thesisToUpdate)) {
