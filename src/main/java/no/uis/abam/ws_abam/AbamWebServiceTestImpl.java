@@ -441,6 +441,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return null;
 	}
 	
+	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
+		Student std = getStudentFromStudentNumber(studentNumber);
+		return std.getCustomAssignment();
+	}
+	
 	public void updateApplicationsFromCurrentStudent(
 			Application[] tempApplicationPriorityArray) {
 		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
@@ -650,8 +655,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 					}
 				}
 			}
-			System.out.println(affiliationDataType.getAffiliation().getClass());
-			
 		}		
 	}
 	
