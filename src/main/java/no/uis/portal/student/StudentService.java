@@ -466,6 +466,10 @@ public class StudentService {
 	public void updateStudent(Student std) {
 		abamStudentClient.updateStudent(std);
 	}
+	
+	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
+		return abamStudentClient.getCustomAssignmentFromStudentNumber(studentNumber);
+	}
 }
 
 

@@ -9,10 +9,18 @@
 			<ice:outputText value="#{msgs.lbl_create_custom_assignment}"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">				
+			<table border="0" width="800">		
+				<tr>
+				<td><ice:outputText value="#{msgs.lbl_get_assignment_from_studentnumber}" /></td>
+				<td>
+					<ice:inputText size="10" value="#{assignmentBean.customAssignmentStudentNumber}" partialSubmit="true"/>
+					<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton" action="assignmentSummary"/>
+				</td></tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
-					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
+					<td>
+						<ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText>
+					</td>
 					<td><ice:message for="title" showSummary="true" showDetail="false" ></ice:message></td>
 				</tr>
 				<tr>

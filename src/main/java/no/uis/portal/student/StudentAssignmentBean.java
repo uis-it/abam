@@ -11,7 +11,6 @@ import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
 
@@ -31,6 +30,8 @@ public class StudentAssignmentBean implements DisposableBean {
 	private Logger log = Logger.getLogger(StudentAssignmentBean.class); 
 	
 	private Assignment currentAssignment;
+	
+	private String customAssignmentStudentNumber;
 	
 	public StudentAssignmentBean(){
 	}
@@ -126,6 +127,17 @@ public class StudentAssignmentBean implements DisposableBean {
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
 	}
 	
+	public void actionGetCustomAssignmentFromStudentNumber(ActionEvent event) {
+		Assignment assignment = studentService.getCustomAssignmentFromStudentNumber(getCustomAssignmentStudentNumber());
+		if (assignment != null) {
+			setCurrentAssignment(assignment);
+			studentService.setSelectedAssignment(assignment);
+			//actionUpdateCurrentAssignment(event);
+			studentService.getCurrentStudent().setCustomAssignment(assignment);
+			studentService.updateStudentInWebServiceFromCurrentStudent();
+		}
+	}
+	
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -192,4 +204,14 @@ public class StudentAssignmentBean implements DisposableBean {
 		this.studentService = studentService;
 		context = FacesContext.getCurrentInstance();
 	}
+
+	public String getCustomAssignmentStudentNumber() {
+		return customAssignmentStudentNumber;
+	}
+
+	public void setCustomAssignmentStudentNumber(
+			String customAssignmentStudentNumber) {
+		this.customAssignmentStudentNumber = customAssignmentStudentNumber;
+	}
+	
 }
