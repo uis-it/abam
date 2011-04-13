@@ -1,5 +1,6 @@
 package no.uis.portal.student;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.faces.component.UIComponent;
@@ -92,6 +93,8 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionSaveThesis(ActionEvent event) {
 		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.SUBMITTED,studentService.getCurrentStudent().getName()));
+		currentStudentsThesis.setSubmitted(true);
+		currentStudentsThesis.setActualSubmissionForEvalutation(Calendar.getInstance().getTime());
 		studentService.updateThesis(currentStudentsThesis);
 	}
 	
