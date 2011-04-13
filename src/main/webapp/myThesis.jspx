@@ -130,10 +130,11 @@
 				</table>			
 			</ice:form>			
 						
-			<ice:form>
+			<ice:form rendered="#{thesisBean.renderMyThesis}">
 			<table border="0">
 				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
-				<ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_submit_thesis}" id="SubmitButton"/>
+				<ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_submit_thesis}" id="SubmitButton" disabled="#{thesisBean.deadlineForSubmissionForEvalutationReached}"/>
+				<ice:outputText value="#{msgs.lbl_deadline_for_submission_reached}" rendered="#{thesisBean.deadlineForSubmissionForEvalutationReached}" style="color:red"/>
 			</table>
 		</ice:form>
 	</ice:portlet>

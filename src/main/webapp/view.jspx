@@ -13,7 +13,6 @@
 					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}" value="#{msgs.link_create_custom_assignment}"/></td></tr>
 					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/></td></tr>
 					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/></td></tr>
-					<tr><td><ice:commandLink action="searchArchive" value="#{msgs.link_search}"/></td></tr>
 				</table>
 				</ice:panelGroup>
 				<ice:panelGroup id="content">

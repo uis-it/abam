@@ -290,7 +290,17 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public boolean isDeadlineForSubmissionOfTopicReached() {
-		return currentStudentsThesis.getDeadlineForSubmissionOfTopic().before(GregorianCalendar.getInstance().getTime());
+		if(currentStudentsThesis != null) {
+			return currentStudentsThesis.getDeadlineForSubmissionOfTopic().before(GregorianCalendar.getInstance().getTime());
+		}
+		return false;
+	}
+	
+	public boolean isDeadlineForSubmissionForEvalutationReached() {
+		if(currentStudentsThesis != null) {
+			return currentStudentsThesis.getDeadlineForSubmissionForEvalutation().before(GregorianCalendar.getInstance().getTime());
+		}
+		return false;
 	}
 
 	public void dispose() throws Exception {}
