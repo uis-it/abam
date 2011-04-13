@@ -7,9 +7,9 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisInformation;
 import no.uis.abam.dom.ThesisStatus;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
@@ -21,6 +21,7 @@ public class ThesisBean implements DisposableBean {
 
 	private StudentService studentService;
 	
+	private ThesisInformation currentThesisInformation;
 	private Thesis currentStudentsThesis;
 	private Assignment currentAssignment;
 	
@@ -41,7 +42,8 @@ public class ThesisBean implements DisposableBean {
 		studentService.updateCurrentStudentFromWebService();
 		Student currentStudent = studentService.getCurrentStudent();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
-
+		
+		
 		if (currentStudentsThesis != null) {
 			if (currentStudentsThesis.getAssignedAssignment().getId() == 0) {
 				currentAssignment = studentService.getCurrentStudent()
@@ -57,12 +59,33 @@ public class ThesisBean implements DisposableBean {
 				readRules2 = true;
 				readRules3 = true;
 			}
+			currentThesisInformation = createThesisInformation();
 			renderNotAssigned = false;
 		} else {
 			renderNotAssigned = true;
-		}
+		}		
 	}
 	
+	private ThesisInformation createThesisInformation() {
+		ThesisInformation ti = new ThesisInformation();
+		ti.setAssignmentTitle(currentAssignment.getTitle());
+		
+		Student student = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber1());
+		if (student != null) 
+			ti.setStudentName(student.getName());
+		
+		student = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber2());
+		if (student != null)
+			ti.setCoStudent1Name(student.getName());
+		
+		student = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber3());
+		if (student != null)
+			ti.setCoStudent2Name(student.getName());
+		
+		ti.setThesis(currentStudentsThesis);
+		return ti;
+	}
+
 	private void setRenderAcceptButtonFalse() {
 		renderAcceptButton = false;
 	}
@@ -142,6 +165,7 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public void actionInitMyThesisPage(ActionEvent event) {
+		actionGetInformationForStudent(null);
 		if (currentStudentsThesis == null) {
 			renderMyThesis = false;
 		} else {
@@ -251,6 +275,15 @@ public class ThesisBean implements DisposableBean {
 
 	public void setRenderMyThesis(boolean renderMyThesis) {
 		this.renderMyThesis = renderMyThesis;
+	}
+
+	public ThesisInformation getCurrentThesisInformation() {
+		return currentThesisInformation;
+	}
+
+	public void setCurrentThesisInformation(
+			ThesisInformation currentThesisInformation) {
+		this.currentThesisInformation = currentThesisInformation;
 	}
 
 	public void dispose() throws Exception {}
