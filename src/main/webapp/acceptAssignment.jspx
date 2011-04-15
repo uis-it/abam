@@ -109,7 +109,7 @@
 				<tr> 
 					<td>
 					</td>
-					<td> <ice:outputLink value="http://student.uis.no/studieinformasjon/tn/oppgaveskriving/" target="_blank"> Press here for rules </ice:outputLink> </td> 
+					<td> <ice:outputLink value="http://student.uis.no/studieinformasjon/tn/oppgaveskriving/" target="_blank"><ice:outputText value="#{msgs.lbl_press_for_rules}"/> </ice:outputLink> </td> 
 				</tr>
 				<tr>
 					<td> <ice:selectBooleanCheckbox id="readRules1" value="#{thesisBean.readRules1}" valueChangeListener="#{thesisBean.actionCheckBoxChanges}" partialSubmit="true" disabled="#{studentService.currentStudent.acceptedThesis}"/> </td>

@@ -44,6 +44,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:outputText></td>
+					<!-- td><ice:outputLink value="http://student.uis.no/om_uis/finn_ansatt/" style="color:red" target="_blank" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"><ice:outputText value="#{msgs.lbl_supervisor_not_found}"/></ice:outputLink></td-->
 					<td><ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"/> </td>
 				</tr>
 				<tr>

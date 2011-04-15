@@ -108,10 +108,14 @@ public class StudentAssignmentBean implements DisposableBean {
 						.findDepartmentOe2ForCurrentStudent()));
 		currentAssignment.setStudyProgramName(studentService.getCurrentStudent().getStudyProgramName());
 		currentAssignment.setFileUploadErrorMessage("");
-		GregorianCalendar calendar = new GregorianCalendar();
+		
+		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 		currentAssignment.setAddedDate(calendar);
+		
+		calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
+		
 		currentAssignment.updateType(studentService.getCurrentStudent().getType());
 		
 		currentAssignment.setFacultySupervisor(
