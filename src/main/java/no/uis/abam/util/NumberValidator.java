@@ -12,8 +12,8 @@ public class NumberValidator {
 	
 	private static String[] allowedIntervalSymbols = {"-", "<", ">", "/", "\\"};
 	
-	private static int maxLength;
-	private static int maxValue;	
+	private static int maxLength = DEFAULT_MAX_LENGTH;
+	private static int maxValue = DEFAULT_HIGHEST_ALLOWED_NUMBER;	
 	private static int[] numbersParsedFromString;
 		
 	private static String stringToValidate;
@@ -22,13 +22,8 @@ public class NumberValidator {
 	private static String[] inputSplitted;
 	
 	public NumberValidator() {
-		this(DEFAULT_MAX_LENGTH, DEFAULT_HIGHEST_ALLOWED_NUMBER);			
+					
 	}
-	
-	public NumberValidator(int maxLength, int maxValue) {
-		NumberValidator.maxLength = maxLength;
-		NumberValidator.maxValue = maxValue;		
-	}	
 	
 	public static boolean isValid(String stringToValidate) {
 		clearErrorMessage();
@@ -41,18 +36,19 @@ public class NumberValidator {
 	}
 	
 	private static void clearErrorMessage() {
-		System.out.println("Blir clearet..");
 		errorMessage = DEFAULT_ERROR_MESSAGE;		
 	}
 	
 	private static void splitInputString() {
 		for (String splitSymbol : allowedIntervalSymbols) {
-			if (stringToValidate.contains(splitSymbol)) {
+			if (stringToValidate.contains(splitSymbol)) {				
 				inputSplitted = stringToValidate.split(splitSymbol);
 				numbersParsedFromString = new int[inputSplitted.length];
 				return;
 			}
 		}
+		inputSplitted = new String[]{stringToValidate};
+		numbersParsedFromString = new int[inputSplitted.length];
 	}
 	
 	private static boolean inputIsToLong() {
@@ -68,8 +64,10 @@ public class NumberValidator {
 			try {
 				numbersParsedFromString[i] = Integer.parseInt(inputSplitted[i]);
 			} catch (NumberFormatException e) {
-				errorMessage = ERROR_NOT_NUMBER;
-				return false;
+				if (!inputSplitted[i].isEmpty()) {
+					errorMessage = ERROR_NOT_NUMBER;
+					return false;
+				}				
 			}
 		}
 		return true;
