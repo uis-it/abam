@@ -12,7 +12,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -24,6 +26,7 @@ import no.uis.abam.dom.ExternalExaminer;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisInformation;
+import no.uis.abam.util.NumberValidator;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -310,6 +313,15 @@ public class EmployeeAssignmentBean implements DisposableBean {
 			currentAssignment.setType("Bachelor");
 			currentAssignment.setNumberOfStudentsError("");
 		}
+	}
+	
+	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
+		String text = object.toString();
+        if (!NumberValidator.isValid(text)) {
+        	((UIInput)validate).setValid(false);
+        	FacesMessage msg = new FacesMessage(NumberValidator.getErrorMessage());
+        	context.addMessage(validate.getClientId(context), msg);
+        }
 	}
 	
 	public void actionRemoveAttachment(ActionEvent event){

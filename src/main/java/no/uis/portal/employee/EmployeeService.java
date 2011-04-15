@@ -8,7 +8,9 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -38,6 +40,7 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
+import no.uis.abam.util.NumberValidator;
 import no.uis.abam.ws_abam.AbamWebService;
 
 public class EmployeeService {
@@ -515,11 +518,6 @@ public class EmployeeService {
 		this.loggedInEmployee = loggedInEmployee;
 	}
 	
-	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent uiComponent, Object object) {				
-//		System.out.println("FacesContext: " + facesContext.getViewRoot().getChildCount());
-//		System.out.println(object.toString());		
-	}
-
 	public Set<Assignment> getDisplayAssignmentSet() {
 		return displayAssignmentSet;
 	}
