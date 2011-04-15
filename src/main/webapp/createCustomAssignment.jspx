@@ -88,7 +88,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_number_of_students}"/> </td>
-					<td><ice:inputText id="numberOfStudents" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+					<td><ice:inputText id="numberOfStudents" disabled="#{assignmentBean.currentAssignment.master}" value="#{assignmentBean.currentAssignment.numberOfStudents}" validator="#{assignmentBean.validateNumberOfStudentsField}"></ice:inputText></td>
 					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
