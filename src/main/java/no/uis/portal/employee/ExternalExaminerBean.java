@@ -44,9 +44,9 @@ public class ExternalExaminerBean implements DisposableBean{
 				} else {
 					thesisInformation.setAssignmentTitle(assignment.getTitle());
 				}
-				if (!thesis.getStudentNumber2().isEmpty())
+				if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty())
 					thesisInformation.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
-				if (!thesis.getStudentNumber3().isEmpty())
+				if (thesis.getStudentNumber3() != null && !thesis.getStudentNumber3().isEmpty())
 					thesisInformation.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
 				
 				ExternalExaminer examiner = thesis.getExternalExaminer();
