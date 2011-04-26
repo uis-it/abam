@@ -21,6 +21,7 @@ public class AssignSortableBean implements DisposableBean{
 	private static final String studentColumnName = "Student";
 	private static final String priorityNumberColumnName = "Priority";
 	private static final String facultySupervisorColumnName = "Faculty Supervisor";
+	private static final String studyProgramColumnName = "Study program";
 	
 	private static final Date FROM_DATE_MASTER_DEFAULT = new GregorianCalendar(
 			GregorianCalendar.getInstance().get(Calendar.YEAR)+1, Calendar.FEBRUARY, 1).getTime();
@@ -100,6 +101,12 @@ public class AssignSortableBean implements DisposableBean{
 					return ascending ? 
 							facultySuperVisor1.compareTo(facultySuperVisor2) :
 								facultySuperVisor2.compareTo(facultySuperVisor1);
+				} else if(sortColumnName.equals(studyProgramColumnName)){
+					String studyProgram1 = app1.getStudyProgramName();
+					String studyProgram2 = app2.getStudyProgramName();
+					return ascending ? 
+							studyProgram1.compareTo(studyProgram2) :
+								studyProgram2.compareTo(studyProgram1);
 				} else return 0;
 			}
 		};
@@ -136,8 +143,11 @@ public class AssignSortableBean implements DisposableBean{
 		appInfo.setFacultySupervisor(application.getAssignment()
 				.getFacultySupervisor().getName());
 		appInfo.setPriority(application.getPriority());
-		appInfo.setStudentName(employeeService.getStudentFromStudentNumber(
-				application.getApplicantStudentNumber()).getName());
+		
+		Student student = employeeService.getStudentFromStudentNumber(
+				application.getApplicantStudentNumber()); 
+		appInfo.setStudentName(student.getName());
+		appInfo.setStudyProgramName(student.getStudyProgramName());
 		
 		return appInfo;
 	}
@@ -280,6 +290,10 @@ public class AssignSortableBean implements DisposableBean{
 
 	public String getFacultySupervisorColumnName() {
 		return facultySupervisorColumnName;
+	}
+	
+	public String getStudyProgramColumnName() {
+		return studyProgramColumnName;
 	}
 
 	public String getSortColumnName() {

@@ -117,6 +117,17 @@
             
             <ice:column>
                 <f:facet name="header">
+                    <ice:commandSortHeader
+                            columnName="#{assignSortableBean.studyProgramColumnName}"
+                            arrow="true">
+                        <ice:outputText value="#{msgs.lbl_std_prg}"/>
+                    </ice:commandSortHeader>
+                </f:facet>
+                <ice:outputText value="#{item.studyProgramName}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
                     <ice:headerRow>
                         <ice:outputText value="#{msgs.lbl_co_std}"/>
                     </ice:headerRow>
