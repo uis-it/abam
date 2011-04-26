@@ -6,8 +6,21 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		
+		<ice:form rendered="#{employeeService.administrativeEmployee}">
+			<table>
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+						<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{thesisBean.actionDisplayDepartmentTheses}" partialSubmit="true" immediate="true">
+							<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+						</ice:selectOneMenu>
+				</td>
+			</tr>
+			</table>
+		</ice:form>
+		
 		<ice:form partialSubmit="true" >
-			<h:outputText value="#{msgs.lbl_my_std_assignment}"/><br/>
+			<h:outputText value="#{msgs.lbl_my_std_assignment}" rendered="#{!employeeService.administrativeEmployee}"/><br/>
 			<br/>
 			<br/>
 			<ice:dataTable 

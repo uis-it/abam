@@ -526,4 +526,7 @@ public class EmployeeService {
 		return abamClient.getEmployeeFromFullName(facultySupervisorName);
 	}
 	
+	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
+		return abamClient.getThesisListFromDepartmentCode(depCode);
+	}
 }

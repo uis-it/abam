@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -40,6 +41,15 @@ public class ThesisBean {
 		}
 		createThesisInformationFromThesis(true);
 	}	
+	
+	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
+		thesisList = employeeService.getThesisListFromDepartmentCode(
+				employeeService.getDepartmentCodeFromIndex(
+						Integer.parseInt(event.getNewValue().toString())
+						));
+		if(thesisList != null) createThesisInformationFromThesis(true);
+		else thesisInformationList.clear();
+	}
 	
 	public void actionPrepareMyStudentTheses(ActionEvent event) {
 		thesisList = new ArrayList<Thesis>();		
