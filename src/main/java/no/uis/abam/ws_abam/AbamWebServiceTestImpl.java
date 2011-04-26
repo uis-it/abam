@@ -1,6 +1,5 @@
 package no.uis.abam.ws_abam;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.TreeSet;
 import javax.jws.WebService;
 import javax.xml.ws.BindingProvider;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.CannotCreateTransactionException;
 import no.uis.abam.dao.DepartmentDAO;
@@ -218,7 +218,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private void initializeStudentList() { 
 		Student newStudent = new Student();
 		newStudent.setName("Elev1 Elev1");
-		newStudent.setStudentNumber("123456");
+		newStudent.setStudentNumber("202551");
 		newStudent.setBachelor(true);
 		newStudent.setDepartmentCode("TN-IDE");
 		newStudent.setStudyProgramName("Elektro");
@@ -456,7 +456,8 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 		
 	public Student getStudentFromStudentNumber(String studentNumber) {
-		Student student = getStudentFromAbamStudentList(studentNumber);
+		log.setLevel(Level.ERROR);
+		Student student = getStudentFromAbamStudentList(studentNumber);		
 		if (student == null) {
 			PersonType person = null;
 			try {
