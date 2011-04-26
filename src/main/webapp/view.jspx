@@ -9,8 +9,8 @@
 				<ice:panelGroup id="menu">
 				<table>
 					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" /></td></tr>
-					<tr><td><ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" /></td></tr>
-					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}" value="#{msgs.link_create_custom_assignment}"/></td></tr>
+					<tr><td><ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}" /></td></tr>
+					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionGetCustomAssignment}" value="#{msgs.link_create_custom_assignment}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}"/></td></tr>
 					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/></td></tr>
 					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/></td></tr>
 				</table>

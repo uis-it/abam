@@ -128,6 +128,10 @@ public class StudentAssignmentBean implements DisposableBean {
 			}
 		}
 		
+		//Using negative studentNumber as id on custom assignment.
+		int stdNr = Integer.parseInt(studentService.getCurrentStudent().getStudentNumber());
+		currentAssignment.setId(-stdNr);		
+		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
 	}
