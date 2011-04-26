@@ -18,9 +18,10 @@
 					<ice:outputText id="title" value="-"/>
 					<ice:outputText id="titleOutput" value="#{application.assignment.title}"/>
 					
-					<ice:commandButton type="submit" value='/\' id="UpButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityHigher}"/>
-					<ice:commandButton type="submit" value="\/" id="DownButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityLower}"/>
-					<ice:commandButton type="submit" value="X" id="RemoveButton" immediate="true" actionListener="#{studentService.actionRemoveApplication}"/>
+					<ice:commandButton type="submit" value='/\' id="UpButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityHigher}" image="/img/Raise.gif"/>
+					
+					<ice:commandButton type="submit" value="\/" id="DownButton" immediate="true" actionListener="#{studentService.actionSetApplicationPriorityLower}" image="/img/Fall.gif"/>
+					<ice:commandButton type="submit" value="X" id="RemoveButton" immediate="true" actionListener="#{studentService.actionRemoveApplication}" image="/img/Erase.gif"/>
 					
 				</ice:column>										
 			</ice:dataTable>
