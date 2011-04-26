@@ -634,6 +634,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public List<Thesis> getThesisList() {
 		return savedThesesList;
 	}
+	
+	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
+		List<Thesis> listToReturn = new ArrayList<Thesis>();
+		for (Thesis thesis : savedThesesList) {
+			if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
+				listToReturn.add(thesis);
+			}
+		}
+		return listToReturn;
+	}
+
 
 	public void setDepartmentDao(DepartmentDAO departmentDao) {
 		this.departmentDao = departmentDao;

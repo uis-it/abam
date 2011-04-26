@@ -45,6 +45,7 @@ public interface AbamWebService {
 	public void addThesesFromList(List<Thesis> thesesToAdd);
 
 	public List<Thesis> getThesisList();
+	public List<Thesis> getThesisListFromDepartmentCode(String depCode);
 	public void updateThesis(Thesis thesisToUpdate);
 	
 	public Employee getEmployeeFromUisLoginName(String loginName);
