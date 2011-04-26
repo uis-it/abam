@@ -209,7 +209,7 @@ public class AssignSortableBean implements DisposableBean{
 			for (Thesis thesis : thesesToSave) {
 				if (thesis.getAssignedAssignment().getTitle().equalsIgnoreCase(appInfo.getAssignmentTitle())) {
 					thesis.addStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
-					alreadyExists = true;					
+					alreadyExists = true;		
 				}
 			}
 			if (!alreadyExists) {

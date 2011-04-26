@@ -1,6 +1,8 @@
 package no.uis.portal.employee;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -23,9 +25,16 @@ public class ThesisBean {
 
 	private Logger log = Logger.getLogger(ThesisBean.class);
 	
+	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
+	
 	private List<Thesis> thesisList;
 	private List<ThesisInformation> thesisInformationList;
 	private List<ThesisStatus> thesisStatusList; 
+	
+	private ThesisInformation selectedThesisInformation;
+	
+	private Date deadlineDate;	
+	private String deadlineDateAsString;
 	
 	private EmployeeService employeeService;
 	
@@ -69,6 +78,21 @@ public class ThesisBean {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		return table.getRowData();
+	}
+	
+	public void actionPreparePostponeDeadline(ActionEvent event) {
+		selectedThesisInformation = (ThesisInformation) getRowFromEvent(event);		
+	}
+	
+	public void actionUpdateDate(ValueChangeEvent event) {		
+		setDeadlineDate((Date)event.getNewValue());		
+	}
+	
+	public void actionSaveDeadlineDate(ActionEvent event) {
+		Thesis updateThesis = selectedThesisInformation.getThesis();
+		updateThesis.setDeadlineForSubmissionForEvalutation(getDeadlineDate());
+		employeeService.updateThesis(updateThesis);
+		actionPrepareAllStudentTheses(event);
 	}
 
 	private void createThesisInformationFromThesis(boolean isAdministrative) {
@@ -136,5 +160,28 @@ public class ThesisBean {
 	public void setThesisStatusList(List<ThesisStatus> thesisStatusList) {
 		this.thesisStatusList = thesisStatusList;
 	}
+
+	public Date getDeadlineDate() {
+		return deadlineDate;
+	}
+
+	public void setDeadlineDate(Date deadlineDate) {
+		deadlineDateAsString = simpleDateFormatter.format(deadlineDate);
+		this.deadlineDate = deadlineDate;
+	}
+
+	public String getDeadlineDateAsString() {
+		return deadlineDateAsString;
+	}
+
+	public ThesisInformation getSelectedThesisInformation() {
+		return selectedThesisInformation;
+	}
+
+	public void setSelectedThesisInformation(
+			ThesisInformation selectedThesisInformation) {
+		this.selectedThesisInformation = selectedThesisInformation;
+	}
+	
 	
 }

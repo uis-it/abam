@@ -1,0 +1,90 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:form>
+		<table>
+			<tr>
+				<td> <ice:outputText value="#{msgs.lbl_deadline_evalutation}"/></td>
+				<td> <ice:outputText value="#{thesisBean.selectedThesisInformation.evaluationSubmissionDeadlineAsString}"/> </td>
+			</tr>	
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_title}"/></td>
+				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.assignmentTitle}"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
+				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.thesis.facultySupervisor.name}"/></td>
+				<td></td>
+			</tr>
+				<tr>
+					<td>						
+						<ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/> 						
+					</td>					
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.studentName}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent1Name}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent2Name}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+	
+			<tr>
+				<td> 
+					<ice:outputText id="toDateText" value="#{msgs.lbl_new_date}"></ice:outputText>
+				</td>
+				<td>
+				<ice:panelGroup panelTooltip="changeDate">
+					<ice:outputText id="deadlineDate" value="#{thesisBean.deadlineDateAsString}"/>
+					<ice:panelTooltip id="changeDate" hideOn="mouseout" hoverDelay="500" moveWithMouse="true" style="background-color: white; border: 1px solid black;">
+						<f:facet name="body">
+							<ice:outputText value="#{msgs.lbl_click_here_to_change_date}"></ice:outputText>
+						</f:facet>
+					</ice:panelTooltip>
+				</ice:panelGroup>
+				</td>
+				<td>
+					<ice:selectInputDate
+						id="toDateInput" 
+						title="Deadline:" 
+						valueChangeListener="#{thesisBean.actionUpdateDate}" 						 
+						renderAsPopup="false" 
+						renderMonthAsDropdown="true" 
+						renderYearAsDropdown="true" 
+						styleClass="selectInputDate"						
+					/>
+				</td>
+				
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td><ice:commandButton type="submit" action="myStudentTheses" value="#{msgs.btn_back}" id="BackButton"/></td>
+				<td><h:commandButton 
+						id="assignSelected"
+						type="submit" 
+						action="myStudentTheses"
+						actionListener="#{thesisBean.actionSaveDeadlineDate}"
+						value="#{msgs.btn_save}" 
+						/></td>
+			</tr>
+		</table> 
+		</ice:form>
+	</ice:portlet>
+</f:view>

@@ -90,6 +90,10 @@
 			<from-outcome>thesisStatus</from-outcome>
 			<to-view-id>/thesisStatus.jspx</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>postponeThesisDeadline</from-outcome>
+			<to-view-id>/postponeThesisDeadline.jspx</to-view-id>
+		</navigation-case>
 		
 	</navigation-rule>
 	

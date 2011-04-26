@@ -80,7 +80,14 @@
 	                		actionListener="#{thesisBean.actionPrepareThesisStatusList}"
 	                		/>
 					</ice:column>		
-												
+					<ice:column rendered="#{employeeService.administrativeEmployee}">
+						<f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_postpone}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:commandButton value="#{msgs.lbl_postpone}" action="postponeThesisDeadline" actionListener="#{thesisBean.actionPreparePostponeDeadline}"/>
+					</ice:column>							
 				</ice:dataTable>
 			
 			<table border="0">
