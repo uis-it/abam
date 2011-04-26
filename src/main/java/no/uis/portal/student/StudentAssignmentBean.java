@@ -67,24 +67,23 @@ public class StudentAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionSetSelectedAssignment(ActionEvent event){
-		UIComponent uic = event.getComponent();
-
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Assignment selectedAssignment = (Assignment)table.getRowData();
+		Assignment selectedAssignment = (Assignment) getRowFromActionEvent(event);
 		
 		setCurrentAssignment(selectedAssignment);
 		
 		studentService.updateSelectedAssignmentInformation(selectedAssignment);
 	}
 	
-	public void actionRemoveAssignment(ActionEvent event) {
-		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		Assignment assignment = (Assignment)table.getRowData();
+	public void actionRemoveAssignment(ActionEvent event) {		
+		Assignment assignment = (Assignment) getRowFromActionEvent(event);
 		
 		studentService.removeAssignment(assignment);
+	}
+	
+	private Object getRowFromActionEvent(ActionEvent event) {
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		return table.getRowData();
 	}
 	
 	public void actionAddSupervisor(ActionEvent event) {
@@ -92,10 +91,7 @@ public class StudentAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionRemoveSupervisor(ActionEvent event) {
-		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-		currentAssignment.getSupervisorList().remove(table.getRowData());		
+		currentAssignment.getSupervisorList().remove(getRowFromActionEvent(event));		
 	}
 	
 	public void actionUpdateCurrentAssignment(ActionEvent event) {
@@ -192,10 +188,7 @@ public class StudentAssignmentBean implements DisposableBean {
 	}
 	
 	public void actionRemoveAttachment(ActionEvent event){
-		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
-		
-	    currentAssignment.getAttachedFileList().remove(table.getRowData());		
+	    currentAssignment.getAttachedFileList().remove(getRowFromActionEvent(event));		
 	}
 	
 	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
