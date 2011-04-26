@@ -1,12 +1,7 @@
 package no.uis.portal.employee;
 
-import java.awt.image.VolatileImage;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -19,13 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import no.uis.abam.dom.ApplicationInformation;
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.ExternalExaminer;
-import no.uis.abam.dom.Supervisor;
-import no.uis.abam.dom.Thesis;
-import no.uis.abam.dom.ThesisInformation;
+import no.uis.abam.dom.*;
 import no.uis.abam.util.NumberValidator;
 
 import org.apache.log4j.Level;
@@ -37,19 +26,10 @@ import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
-import com.liferay.portal.kernel.events.ActionException;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.PrincipalThreadLocal;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portlet.expando.model.ExpandoColumnConstants;
-import com.liferay.portlet.expando.model.ExpandoTableConstants;
-import com.liferay.portlet.expando.service.ExpandoColumnLocalServiceUtil;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImpl;
 
 public class EmployeeAssignmentBean implements DisposableBean {
 		
@@ -187,6 +167,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		currentAssignment.setFileUploadErrorMessage("");
 		GregorianCalendar calendar = new GregorianCalendar();
 		currentAssignment.setAddedDate(calendar);
+		calendar = new GregorianCalendar();
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
 		currentAssignment.setType("Bachelor");
