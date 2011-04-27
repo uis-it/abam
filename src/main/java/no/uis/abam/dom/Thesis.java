@@ -197,7 +197,6 @@ public class Thesis {
 		gc.setTime(inactiveDate);
 		gc.add(Calendar.MONTH, 4);
 		inactiveDate = gc.getTime();
-		System.out.println("inactiveDate: " + inactiveDate);
 		return inactiveDate.after(GregorianCalendar.getInstance().getTime());
 	}
 }
