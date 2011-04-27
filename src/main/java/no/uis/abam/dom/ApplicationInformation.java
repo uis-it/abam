@@ -11,6 +11,7 @@ public class ApplicationInformation {
 	private String coStudent1Name;
 	private String coStudent2Name;
 	private String facultySupervisor;
+	private String studyProgramName;
 		
 	private Application application;
 	
@@ -79,5 +80,14 @@ public class ApplicationInformation {
 	public void setApplication(Application application) {
 		this.application = application;
 	}
-	
+
+	public String getStudyProgramName() {
+		return studyProgramName;
+	}
+
+	public void setStudyProgramName(String studyProgramName) {
+		this.studyProgramName = studyProgramName;
+	}
+
+
 }
