@@ -43,12 +43,17 @@
 					<td><ice:outputText value="#{msgs.lbl_student_number}" /></td>
 					<td>
 						<ice:inputText size="10" value="#{assignmentBean.customAssignmentStudentNumber}" partialSubmit="true"/>
-						<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton" action="assignmentSummary"/>
+						<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton"/>
+					</td>
+					<td>
+						<ice:outputText value="#{msgs.lbl_custom_assignment_not_found}" style="Color:red" rendered="#{assignmentBean.displayCustomAssignmentFailedError}"/>
+						<ice:outputText value="#{msgs.lbl_custom_assignment_found}" rendered="#{!assignmentBean.displayCustomAssignmentFailedError and !assignmentBean.getCustomAssignmentFailed}"/>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+						<ice:commandButton type="submit" action="assignmentSummary" value="#{msgs.btn_next}" id="NextButton" immediate="true" disabled="#{assignmentBean.getCustomAssignmentFailed}"/>
 					</td>
 				</tr>
 			</table>

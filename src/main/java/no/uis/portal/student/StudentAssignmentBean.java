@@ -37,11 +37,16 @@ public class StudentAssignmentBean implements DisposableBean {
 	private String customAssignmentStudentNumber;
 	
 	private boolean renderGetCustomAssignment;
+	private boolean getCustomAssignmentFailed;
+	private boolean displayCustomAssignmentFailedError;
 	
 	public StudentAssignmentBean(){
 	}
 			
 	public void actionGetCustomAssignment(ActionEvent event) {
+		setGetCustomAssignmentFailed(true);
+		setDisplayCustomAssignmentFailedError(false);
+		setCustomAssignmentStudentNumber("");
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
 		Student student = studentService.getCurrentStudent(); 
 		student.setDepartmentName(studentService
@@ -138,12 +143,17 @@ public class StudentAssignmentBean implements DisposableBean {
 	
 	public void actionGetCustomAssignmentFromStudentNumber(ActionEvent event) {
 		Assignment assignment = studentService.getCustomAssignmentFromStudentNumber(getCustomAssignmentStudentNumber());
-		if (assignment != null) {
+		if (assignment != null && !assignment.getTitle().isEmpty()) {
 			setCurrentAssignment(assignment);
 			studentService.setSelectedAssignment(assignment);
 			//actionUpdateCurrentAssignment(event);
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
 			studentService.updateStudentInWebServiceFromCurrentStudent();
+			setGetCustomAssignmentFailed(false);
+			setDisplayCustomAssignmentFailedError(false);
+		} else {
+			setDisplayCustomAssignmentFailedError(true);
+			setGetCustomAssignmentFailed(true);
 		}
 	}
 	
@@ -239,6 +249,23 @@ public class StudentAssignmentBean implements DisposableBean {
 
 	public void setRenderGetCustomAssignment(boolean renderGetCustomAssignment) {
 		this.renderGetCustomAssignment = renderGetCustomAssignment;
+	}
+
+	public boolean isGetCustomAssignmentFailed() {
+		return getCustomAssignmentFailed;
+	}
+
+	public void setGetCustomAssignmentFailed(boolean getCustomAssignmentFailed) {
+		this.getCustomAssignmentFailed = getCustomAssignmentFailed;
+	}
+
+	public boolean isDisplayCustomAssignmentFailedError() {
+		return displayCustomAssignmentFailedError;
+	}
+
+	public void setDisplayCustomAssignmentFailedError(
+			boolean displayCustomAssignmentFailedError) {
+		this.displayCustomAssignmentFailedError = displayCustomAssignmentFailedError;
 	}
 	
 }
