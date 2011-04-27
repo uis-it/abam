@@ -38,6 +38,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
 	
 	private Assignment currentAssignment;
+	private Thesis currentThesis;
 	
 	private boolean backToAssignAssignment;
 	private boolean backToDisplayAssignments;
@@ -104,7 +105,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	
 	public void actionSetSelectedAssignmentFromMyStudentTheses(ActionEvent event){
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
-		
+		setCurrentThesis(selectedThesis.getThesis());
 		log.setLevel(Level.ERROR);
 		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
 		setCurrentAssignment(selectedAssignment);
@@ -358,6 +359,14 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 	public void setBackToMyStudentThesis(boolean backToMyStudentThesis) {
 		this.backToMyStudentThesis = backToMyStudentThesis;
+	}
+
+	public Thesis getCurrentThesis() {
+		return currentThesis;
+	}
+
+	public void setCurrentThesis(Thesis currentThesis) {
+		this.currentThesis = currentThesis;
 	}
 	
 }
