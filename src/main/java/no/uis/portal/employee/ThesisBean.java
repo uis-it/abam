@@ -43,6 +43,7 @@ public class ThesisBean {
 	}
 	
 	public void actionPrepareAllStudentTheses(ActionEvent event) {
+		employeeService.getDepartmentListFromWebService();
 		thesisList = new ArrayList<Thesis>();		
 		List<Thesis> tempList = employeeService.getThesisList();
 		if (tempList != null && !tempList.isEmpty()) {

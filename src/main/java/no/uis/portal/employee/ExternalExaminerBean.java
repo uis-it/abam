@@ -31,6 +31,7 @@ public class ExternalExaminerBean implements DisposableBean{
 	}
 	
 	public void actionPrepareAddExternalExaminer(ActionEvent event) {
+		employeeService.getDepartmentListFromWebService();
 		thesisInformationList.clear();
 		setShowSavedConfirmation(false);
 		setExternalExaminer(new ExternalExaminer());
