@@ -57,13 +57,6 @@
 					</td></tr>
 					<tr><td>
 						<ice:commandLink 
-							action="createAddressLabels" 
-							value="#{msgs.link_create_address_lbls}"
-							rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
 							action="searchArchive" 
 							value="#{msgs.link_archive}"
 							/>
