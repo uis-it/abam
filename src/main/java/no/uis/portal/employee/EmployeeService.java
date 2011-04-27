@@ -529,4 +529,8 @@ public class EmployeeService {
 	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
 		return abamClient.getThesisListFromDepartmentCode(depCode);
 	}
+	
+	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
+		return abamClient.getArchivedThesisListFromDepartmentCode(depCode);
+	}
 }

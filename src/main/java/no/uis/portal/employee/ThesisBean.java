@@ -28,7 +28,7 @@ public class ThesisBean {
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private List<Thesis> thesisList;
-	private List<ThesisInformation> thesisInformationList;
+	private List<ThesisInformation> thesisInformationList = new ArrayList<ThesisInformation>();
 	private List<ThesisStatus> thesisStatusList; 
 	
 	private ThesisInformation selectedThesisInformation;
@@ -54,6 +54,15 @@ public class ThesisBean {
 	
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
 		thesisList = employeeService.getThesisListFromDepartmentCode(
+				employeeService.getDepartmentCodeFromIndex(
+						Integer.parseInt(event.getNewValue().toString())
+						));
+		if(thesisList != null) createThesisInformationFromThesis(true);
+		else thesisInformationList.clear();
+	}
+	
+	public void actionDisplayDepartmentThesesArchive(ValueChangeEvent event) {
+		thesisList = employeeService.getArchivedThesisListFromDepartmentCode(
 				employeeService.getDepartmentCodeFromIndex(
 						Integer.parseInt(event.getNewValue().toString())
 						));
