@@ -56,5 +56,5 @@ public interface AbamWebService {
 	public Student getStudentFromStudentNumber(String studentNumber);
 	public void updateStudent(Student studentToUpdate);
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode);
-	
+	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName);
 }

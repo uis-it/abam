@@ -636,6 +636,13 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	public List<Thesis> getThesisList() {
+		List<Thesis> listToArchive = new ArrayList<Thesis>();
+		for (Thesis thesis : savedThesesList) {
+			if(!thesis.isActive()) {
+				listToArchive.add(thesis);
+			}
+		}
+		if (!listToArchive.isEmpty()) archiveTheses(listToArchive);
 		return savedThesesList;
 	}
 	
@@ -665,6 +672,16 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		List<Thesis> listToReturn = new ArrayList<Thesis>();
 		for (Thesis thesis : archivedThesesList) {
 			if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
+				listToReturn.add(thesis);
+			}
+		}
+		return listToReturn;
+	}
+	
+	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName) {
+		List<Thesis> listToReturn = new ArrayList<Thesis>();
+		for (Thesis thesis : archivedThesesList) {
+			if(thesis.getFacultySupervisor().getEmployeeId().equals(uisLoginName)) {
 				listToReturn.add(thesis);
 			}
 		}
