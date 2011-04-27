@@ -487,23 +487,28 @@ public class EmployeeService {
 	}
 	
 	public Employee getEmployeeFromUisLoginName() {
-		log.setLevel(Level.ERROR);
-		String loginName = "";
-		try {			
-			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
-		} catch (PortalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (loggedInEmployee != null && !loggedInEmployee.getEmployeeId().isEmpty()) return loggedInEmployee;
+		else {
+			log.setLevel(Level.ERROR);
+			
+			String loginName = "";
+			try {			
+				loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+			} catch (PortalException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SystemException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Employee employee = abamClient.getEmployeeFromUisLoginName(loginName);
+			if(employee == null) {
+				employee = new Employee();
+				employee.setEmployeeId("");
+			}
+			setLoggedInEmployee(employee);
+			return employee;
 		}
-		Employee employee = abamClient.getEmployeeFromUisLoginName(loginName);
-		if(employee == null) {
-			employee = new Employee();
-			employee.setEmployeeId("");
-		}
-		return employee;
 	}		
 	
 	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
