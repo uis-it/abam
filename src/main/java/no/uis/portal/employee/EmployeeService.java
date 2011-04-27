@@ -495,10 +495,8 @@ public class EmployeeService {
 			try {			
 				loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
 			} catch (PortalException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SystemException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Employee employee = abamClient.getEmployeeFromUisLoginName(loginName);
