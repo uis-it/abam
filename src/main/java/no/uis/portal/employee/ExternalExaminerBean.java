@@ -3,7 +3,9 @@ package no.uis.portal.employee;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.ExternalExaminer;
@@ -11,6 +13,7 @@ import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisInformation;
 
+import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.context.DisposableBean;
 
 public class ExternalExaminerBean implements DisposableBean{
@@ -31,8 +34,11 @@ public class ExternalExaminerBean implements DisposableBean{
 		thesisInformationList.clear();
 		setShowSavedConfirmation(false);
 		setExternalExaminer(new ExternalExaminer());
-		//TODO: don't get all theses.
 		List<Thesis> thesisList = employeeService.getThesisList();
+		createThesisInformationFromThesis(thesisList);
+	}
+	
+	private void createThesisInformationFromThesis(List<Thesis> thesisList) {
 		ThesisInformation thesisInformation;
 		if(thesisList != null) {
 			for (Thesis thesis : thesisList) {
@@ -73,6 +79,34 @@ public class ExternalExaminerBean implements DisposableBean{
 			}
 		}
 		setShowSavedConfirmation(true);
+	}
+	
+	public void actionClearFields(ActionEvent event) {
+		setExternalExaminer(new ExternalExaminer());
+	}
+	
+	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
+		List<Thesis> thesisList = employeeService.getThesisList();
+		
+		thesisList = employeeService.getThesisListFromDepartmentCode(
+				employeeService.getDepartmentCodeFromIndex(
+						Integer.parseInt(event.getNewValue().toString())
+						));
+		if(thesisList != null) createThesisInformationFromThesis(thesisList);
+		else thesisInformationList.clear();
+		actionClearFields(null);
+	}
+	
+	
+	public void actionSetFields(ActionEvent event) {
+		ThesisInformation ti = (ThesisInformation) getRowFromEvent(event);
+		setExternalExaminer(ti.getThesis().getExternalExaminer());
+	}
+	
+	private Object getRowFromEvent(ActionEvent event) {
+		UIComponent uic = event.getComponent();		
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		return table.getRowData();
 	}
 
 	public boolean isShowSavedConfirmation() {

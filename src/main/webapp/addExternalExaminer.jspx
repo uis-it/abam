@@ -7,6 +7,18 @@
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:form>
+			<table>
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+						<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{externalExaminerBean.actionDisplayDepartmentTheses}" partialSubmit="true" immediate="true">
+							<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+						</ice:selectOneMenu>
+				</td>
+			</tr>
+			</table>
+		</ice:form>
+		
 		<ice:form partialSubmit="true" >
 			<ice:outputText value="#{msgs.lbl_add_edit_ext_examiner}"/>
 			<br/>
@@ -67,7 +79,12 @@
 					<td>
 							<ice:inputText id="examinerPhoneNumberValue" value="#{externalExaminerBean.externalExaminer.phoneNumber}"/>
 					</td>
-				</tr>								
+				</tr>		
+				<tr>
+					<td>
+						<ice:commandButton id="cleanButton" value="#{msgs.btn_clear}" actionListener="#{externalExaminerBean.actionClearFields}"/>
+					</td>
+				</tr>						
 								
 				<tr>
 				<ice:dataTable 
@@ -100,7 +117,7 @@
 		                		<ice:outputText value="#{msgs.lbl_std}"/>
 		                    </ice:headerRow>
 		                </f:facet>
-		                <ice:outputText id="itemStudentName" value="#{item.studentName}"/>
+		                <ice:outputText id="itemStudentName" value="#{item.student1NameAndStudentNumber}"/>
 					</ice:column>	
 					<ice:column>
 		                <f:facet name="header">
@@ -108,7 +125,7 @@
 		                		<ice:outputText value="#{msgs.lbl_co_std}"/>
 		                    </ice:headerRow>
 		                </f:facet>
-		                <ice:outputText id="itemCoStudentName1" value="#{item.coStudent1Name}"/>
+		                <ice:outputText id="itemCoStudentName1" value="#{item.student2NameAndStudentNumber}"/>
 					</ice:column>	
 					<ice:column>
 		                <f:facet name="header">
@@ -116,7 +133,7 @@
 		                		<ice:outputText value="#{msgs.lbl_co_std}"/>
 		                    </ice:headerRow>
 		                </f:facet>
-		                <ice:outputText id="itemCoStudentName2" value="#{item.coStudent2Name}"/>
+		                <ice:outputText id="itemCoStudentName2" value="#{item.student3NameAndStudentNumber}"/>
 					</ice:column>	
 					<ice:column>
 		                <f:facet name="header">
@@ -124,7 +141,7 @@
 		                		<ice:outputText value="#{msgs.lbl_examiner}"/>
 		                    </ice:headerRow>
 		                </f:facet>
-		                <ice:outputText id="itemExaminerName" value="#{item.externalExaminerName}"/>
+		                <ice:commandLink id="itemExaminerName" value="#{item.externalExaminerName}" actionListener="#{externalExaminerBean.actionSetFields}"/>
 					</ice:column>						
 				</ice:dataTable>
 				</tr>			
