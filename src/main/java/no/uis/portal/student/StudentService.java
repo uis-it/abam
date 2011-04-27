@@ -87,10 +87,8 @@ public class StudentService {
 		try {			
 			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
 		} catch (PortalException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SystemException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Student student = abamStudentClient.getStudentFromStudentNumber(loginName);
@@ -112,12 +110,9 @@ public class StudentService {
 	   return data;
 	}
 	
-	
-	
 	public int getNextId(){
 		return abamStudentClient.getNextId();
 	}
-	
 	
 	public void saveAssignment(Assignment assignment) {
 		getCurrentStudent().setCustomAssignment(assignment);
