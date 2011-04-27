@@ -443,7 +443,8 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
 		Student std = getStudentFromStudentNumber(studentNumber);
-		return std.getCustomAssignment();
+		if (std != null) return std.getCustomAssignment();
+		return null;
 	}
 	
 	public void updateApplicationsFromCurrentStudent(
@@ -463,8 +464,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 			try {
 				person = personWebService
 						.getPersonByStudentNumber(studentNumber);
-				student = getStudentFromPersonTypeObject(person);
-				studentList.add(student);
+				if (person != null) {
+					student = getStudentFromPersonTypeObject(person);
+					studentList.add(student);
+				}
 			} catch (WebServiceException_Exception e) {
 				log.debug("getStudentFromStudentNumber: " + e.getMessage());
 			}
