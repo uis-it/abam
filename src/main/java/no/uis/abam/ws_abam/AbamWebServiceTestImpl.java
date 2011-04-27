@@ -38,6 +38,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
+	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
 	private List<Employee> employeeList = new ArrayList<Employee>();
 	private DepartmentDAO departmentDao;
  	
@@ -640,15 +641,40 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
 		List<Thesis> listToReturn = new ArrayList<Thesis>();
+		List<Thesis> listToArchive = new ArrayList<Thesis>();
 		for (Thesis thesis : savedThesesList) {
+			if(!thesis.isActive()) {
+				listToArchive.add(thesis);
+			} else if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
+				listToReturn.add(thesis);
+			}
+		}
+		if (!listToArchive.isEmpty()) archiveTheses(listToArchive);
+		return listToReturn;
+	}
+	
+	private void archiveTheses(List<Thesis> thesesList) {
+		for (Thesis thesis : thesesList) {
+			if(archivedThesesList.add(thesis)) {
+				savedThesesList.remove(thesis);
+			}
+		}
+	}
+	
+	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
+		List<Thesis> listToReturn = new ArrayList<Thesis>();
+		for (Thesis thesis : archivedThesesList) {
 			if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
 				listToReturn.add(thesis);
 			}
 		}
 		return listToReturn;
 	}
-
-
+	
+	public List<Thesis> getArchivedThesesList() {
+		return archivedThesesList;
+	}
+	
 	public void setDepartmentDao(DepartmentDAO departmentDao) {
 		this.departmentDao = departmentDao;
 	}

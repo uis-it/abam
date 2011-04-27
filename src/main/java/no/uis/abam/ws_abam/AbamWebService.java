@@ -55,6 +55,6 @@ public interface AbamWebService {
 			Application[] tempApplicationPriorityArray);
 	public Student getStudentFromStudentNumber(String studentNumber);
 	public void updateStudent(Student studentToUpdate);
+	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode);
 	
-
 }
