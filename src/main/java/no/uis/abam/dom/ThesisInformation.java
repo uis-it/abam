@@ -88,4 +88,18 @@ public class ThesisInformation {
 		return allStudents.toString();
 	}
 	
+	public String getStudent1NameAndStudentNumber() {
+		if (thesis.getStudentNumber1() == null) return "";
+		return thesis.getStudentNumber1() + " - " + getStudentName();
+	}
+	
+	public String getStudent2NameAndStudentNumber() {
+		if (thesis.getStudentNumber2() == null) return "";
+		return thesis.getStudentNumber2() + " - " + getCoStudent1Name();
+	}
+	
+	public String getStudent3NameAndStudentNumber() {
+		if (thesis.getStudentNumber3() == null) return "";
+		else return thesis.getStudentNumber3() + " - " + getCoStudent2Name();
+	}
 }
