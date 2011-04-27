@@ -59,6 +59,7 @@
 						<ice:commandLink 
 							action="searchArchive" 
 							value="#{msgs.link_archive}"
+							actionListener="#{thesisBean.actionPrepareArchive}"
 							/>
 					</td></tr>
 				</table>

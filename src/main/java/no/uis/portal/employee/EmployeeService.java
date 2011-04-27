@@ -1,9 +1,11 @@
 package no.uis.portal.employee;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
@@ -31,6 +33,7 @@ import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import no.uis.abam.dom.Application;
@@ -504,10 +507,12 @@ public class EmployeeService {
 	}		
 	
 	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
-	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
-		String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
-	      columnName, user.getUserId(), (String)null);
-	   return data;
+		//workaround for Liferay bug LPS-2568, by James Falkner.
+		int excount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
+		List<ExpandoValue> vals = ExpandoValueLocalServiceUtil.getExpandoValues(0, excount-1);
+		Map <String, Serializable> attrs = user.getExpandoBridge().getAttributes();
+		String data = (String)attrs.get(columnName);
+		return data;
 	}
 
 //	public Employee getLoggedInEmployee() {
@@ -532,5 +537,18 @@ public class EmployeeService {
 	
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
 		return abamClient.getArchivedThesisListFromDepartmentCode(depCode);
+	}
+	
+	public List<Thesis> getArchivedThesisListFromUisLoginName() {
+		String uisLoginName;
+		try {
+			uisLoginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+			return abamClient.getArchivedThesisListFromUisLoginName(uisLoginName);
+		} catch (PortalException e) {
+			e.printStackTrace();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

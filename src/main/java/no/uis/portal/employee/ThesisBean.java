@@ -36,6 +36,8 @@ public class ThesisBean {
 	private Date deadlineDate;	
 	private String deadlineDateAsString;
 	
+	private boolean displayActiveThesis = true;
+	
 	private EmployeeService employeeService;
 	
 	public ThesisBean() {
@@ -84,6 +86,12 @@ public class ThesisBean {
 		setThesisStatusList(selectedThesis.getThesis().getStatusList());
 	}
 	
+	public void actionPrepareArchive(ActionEvent event) {
+		employeeService.getDepartmentListFromWebService();
+		if (thesisList != null) thesisList.clear();
+		if (thesisInformationList != null) thesisInformationList.clear();
+	}
+	
 	private Object getRowFromEvent(ActionEvent event) {
 		UIComponent uic = event.getComponent();		
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
@@ -103,6 +111,24 @@ public class ThesisBean {
 		updateThesis.setDeadlineForSubmissionForEvalutation(getDeadlineDate());
 		employeeService.updateThesis(updateThesis);
 		actionPrepareAllStudentTheses(event);
+	}
+
+	public void actionDisplayActiveRadioListener(ValueChangeEvent event) {
+		displayActiveThesis = (Boolean) event.getNewValue();
+		if(displayActiveThesis) {
+			actionPrepareMyStudentTheses(null);
+		} else {
+			displayArchivedThesis();
+		}
+	}
+	
+	private void displayArchivedThesis() {
+		thesisList = new ArrayList<Thesis>();		
+		List<Thesis> tempList = employeeService.getArchivedThesisListFromUisLoginName();
+		if (tempList != null && !tempList.isEmpty()) {
+			thesisList.addAll(tempList);
+		}
+		createThesisInformationFromThesis(false);
 	}
 
 	private void createThesisInformationFromThesis(boolean isAdministrative) {
@@ -192,6 +218,12 @@ public class ThesisBean {
 			ThesisInformation selectedThesisInformation) {
 		this.selectedThesisInformation = selectedThesisInformation;
 	}
-	
-	
+
+	public boolean isDisplayActiveThesis() {
+		return displayActiveThesis;
+	}
+
+	public void setDisplayActiveThesis(boolean displayActiveThesis) {
+		this.displayActiveThesis = displayActiveThesis;
+	}
 }

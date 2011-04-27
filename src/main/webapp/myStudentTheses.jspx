@@ -22,6 +22,16 @@
 		<ice:form partialSubmit="true" >
 			<h:outputText value="#{msgs.lbl_my_std_assignment}" rendered="#{!employeeService.administrativeEmployee}"/><br/>
 			<br/>
+			<ice:selectOneRadio 
+						id="type" 
+						required="true" 
+						styleClass="selectRadio" 
+						value="#{thesisBean.displayActiveThesis}" 			 
+						valueChangeListener="#{thesisBean.actionDisplayActiveRadioListener}" 
+						partialSubmit="true">
+							<f:selectItem itemValue="#{true}" itemLabel="#{msgs.link_my_std_assignments}" />
+							<f:selectItem itemValue="#{false}" itemLabel="#{msgs.link_archive}" />
+					</ice:selectOneRadio>
 			<br/>
 			<ice:dataTable 
 					id="thesisTable" 
