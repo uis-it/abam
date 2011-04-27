@@ -2,7 +2,9 @@ package no.uis.abam.dom;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Thesis {
@@ -187,5 +189,15 @@ public class Thesis {
 	
 	public ThesisStatus getLastStatus() {
 		return statusList.get(statusList.size()-1);
+	}
+
+	public boolean isActive() {
+		Date inactiveDate = new Date(getDeadlineForSubmissionForEvalutation().getTime());
+		GregorianCalendar gc = (GregorianCalendar) GregorianCalendar.getInstance();
+		gc.setTime(inactiveDate);
+		gc.add(Calendar.MONTH, 4);
+		inactiveDate = gc.getTime();
+		System.out.println("inactiveDate: " + inactiveDate);
+		return inactiveDate.after(GregorianCalendar.getInstance().getTime());
 	}
 }
