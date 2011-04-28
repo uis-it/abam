@@ -9,17 +9,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 
-import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.Supervisor;
-import no.uis.abam.dom.Thesis;
-import no.uis.abam.dom.ThesisInformation;
-import no.uis.abam.dom.ThesisStatus;
+import no.uis.abam.dom.*;
 
 public class ThesisBean {
 

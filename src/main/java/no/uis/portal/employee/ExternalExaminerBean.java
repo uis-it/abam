@@ -7,11 +7,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.ExternalExaminer;
-import no.uis.abam.dom.Student;
-import no.uis.abam.dom.Thesis;
-import no.uis.abam.dom.ThesisInformation;
+import no.uis.abam.dom.*;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.context.DisposableBean;

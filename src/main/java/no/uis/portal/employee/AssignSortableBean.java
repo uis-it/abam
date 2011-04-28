@@ -16,7 +16,8 @@ import com.icesoft.faces.context.DisposableBean;
 import no.uis.abam.dom.*;
 
 /**
- * @author Bente
+ * @author Stig Rune Malterud
+ * @author Bente Cecilie Andorsen
  *
  */
 public class AssignSortableBean implements DisposableBean{

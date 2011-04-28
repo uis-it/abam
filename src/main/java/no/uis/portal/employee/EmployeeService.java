@@ -1,18 +1,8 @@
 package no.uis.portal.employee;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -26,24 +16,14 @@ import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Permission;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.model.User;
+import com.liferay.portal.model.*;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
-import no.uis.abam.dom.Application;
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Department;
-import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.Student;
-import no.uis.abam.dom.StudyProgram;
-import no.uis.abam.dom.Thesis;
-import no.uis.abam.util.NumberValidator;
+import no.uis.abam.dom.*;
 import no.uis.abam.ws_abam.AbamWebService;
 
 public class EmployeeService {

@@ -10,6 +10,7 @@
 				<table>
 					<tr><td>
 						<ice:commandLink 
+							id="createAssignment"
 							action="createAssignment" 
 							actionListener="#{assignmentBean.actionCreateNewAssignment}" 
 							value="#{msgs.link_create_assignment}"
