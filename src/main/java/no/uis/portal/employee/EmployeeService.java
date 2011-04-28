@@ -240,10 +240,6 @@ public class EmployeeService {
 		departmentList.remove(department);
 	}
 
-	public void saveDepartmentListToWebService() {
-		abamClient.setDepartmentList(departmentList);
-	}
-
 	public String getDepartmentNameFromIndex(int index) {
 		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
 			return departmentList.get(index).getOeNavn_Bokmaal();
