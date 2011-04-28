@@ -43,7 +43,11 @@ public class StudentAssignmentBean implements DisposableBean {
 	public StudentAssignmentBean(){
 	}
 			
-	public void actionGetCustomAssignment(ActionEvent event) {
+	/**
+	 * ActionListener that prepares create custom assignment.
+	 * @param event
+	 */
+	public void actionPrepareCreateCustomAssignment(ActionEvent event) {
 		setGetCustomAssignmentFailed(true);
 		setDisplayCustomAssignmentFailedError(false);
 		setCustomAssignmentStudentNumber("");
@@ -52,7 +56,6 @@ public class StudentAssignmentBean implements DisposableBean {
 		student.setDepartmentName(studentService
 				.getDepartmentNameFromIndex(studentService
 						.findDepartmentOe2ForCurrentStudent()));
-		//student.setDepartmentCode(studentService.findDepartmentCodeForCurrentStudent());
 		if(assignment == null) {
 			assignment = new Assignment();
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
@@ -62,15 +65,10 @@ public class StudentAssignmentBean implements DisposableBean {
 		setCurrentAssignment(assignment);
 	}
 	
-	public void actionCreateNewAssignment(ActionEvent event) {		
-		setCurrentAssignment(new Assignment());
-		currentAssignment.setId(studentService.getNextId());
-	}
-	
-	public void actionSaveAssignment(ActionEvent event) {
-		studentService.saveAssignment(currentAssignment);
-	}
-	
+	/**
+	 * ActionListener that prepares to display the clicked assignment
+	 * @param event
+	 */
 	public void actionSetSelectedAssignment(ActionEvent event){
 		Assignment selectedAssignment = (Assignment) getRowFromActionEvent(event);
 		
@@ -79,26 +77,32 @@ public class StudentAssignmentBean implements DisposableBean {
 		studentService.updateSelectedAssignmentInformation(selectedAssignment);
 	}
 	
-	public void actionRemoveAssignment(ActionEvent event) {		
-		Assignment assignment = (Assignment) getRowFromActionEvent(event);
-		
-		studentService.removeAssignment(assignment);
-	}
-	
 	private Object getRowFromActionEvent(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
 		return table.getRowData();
 	}
 	
+	/**
+	 * ActionListener that adds a new Supervisor object to currentAssignment
+	 * @param event
+	 */
 	public void actionAddSupervisor(ActionEvent event) {
 		currentAssignment.getSupervisorList().add(new Supervisor());
 	}
 	
+	/**
+	 * ActionListener that removes a Supervisor object from currentAssignment
+	 * @param event
+	 */	
 	public void actionRemoveSupervisor(ActionEvent event) {
 		currentAssignment.getSupervisorList().remove(getRowFromActionEvent(event));		
 	}
 	
+	/**
+	 * ActionListener that sets all fields on currentAssignment
+	 * @param event
+	 */
 	public void actionUpdateCurrentAssignment(ActionEvent event) {
 		String clientId = event.getComponent().getClientId(context);
 		clientId = clientId.replaceAll("CreateButton", "");
@@ -141,12 +145,16 @@ public class StudentAssignmentBean implements DisposableBean {
 		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
 	}
 	
+	
+	/**
+	 * ActionListener that gets a custom assignment from a student number
+	 * @param event
+	 */
 	public void actionGetCustomAssignmentFromStudentNumber(ActionEvent event) {
 		Assignment assignment = studentService.getCustomAssignmentFromStudentNumber(getCustomAssignmentStudentNumber());
 		if (assignment != null && !assignment.getTitle().isEmpty()) {
 			setCurrentAssignment(assignment);
 			studentService.setSelectedAssignment(assignment);
-			//actionUpdateCurrentAssignment(event);
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
 			studentService.updateStudentInWebServiceFromCurrentStudent();
 			setGetCustomAssignmentFailed(false);
@@ -157,10 +165,18 @@ public class StudentAssignmentBean implements DisposableBean {
 		}
 	}
 	
-	public void actionRadioListener(ValueChangeEvent event) {
+	/**
+	 * ValueChangeListener to set if get custom assignment should be rendered
+	 * @param event
+	 */
+	public void actionCustomAssignmentRadioListener(ValueChangeEvent event) {
 		setRenderGetCustomAssignment((Boolean) event.getNewValue());
 	}
 	
+	/**
+	 * ActionListener that handles file uploading
+	 * @param event
+	 */
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -188,23 +204,20 @@ public class StudentAssignmentBean implements DisposableBean {
         }
 	}
 	
-	public void radioListener(ValueChangeEvent event){
-		if (event.getNewValue().equals(false)){
-			currentAssignment.setMaster(true);
-			currentAssignment.setBachelor(false);
-			currentAssignment.setType("Master");
-		} else {
-			currentAssignment.setMaster(false);
-			currentAssignment.setBachelor(true);
-			currentAssignment.setType("Bachelor");
-			currentAssignment.setNumberOfStudentsError("");
-		}
-	}
-	
+	/**
+	 * ActionListener that removes an uploaded attachment
+	 * @param event
+	 */
 	public void actionRemoveAttachment(ActionEvent event){
 	    currentAssignment.getAttachedFileList().remove(getRowFromActionEvent(event));		
 	}
 	
+	/**
+	 * Validator that checks that number of students is valid
+	 * @param facesContext
+	 * @param validate
+	 * @param object
+	 */
 	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
 		String text = object.toString();
         if (!NumberValidator.isValid(text)) {
@@ -212,9 +225,6 @@ public class StudentAssignmentBean implements DisposableBean {
         	FacesMessage msg = new FacesMessage(NumberValidator.getErrorMessage());
         	context.addMessage(validate.getClientId(context), msg);
         }
-	}
-
-	public void dispose() throws Exception {
 	}
 
 	public Assignment getCurrentAssignment() {
@@ -267,5 +277,8 @@ public class StudentAssignmentBean implements DisposableBean {
 			boolean displayCustomAssignmentFailedError) {
 		this.displayCustomAssignmentFailedError = displayCustomAssignmentFailedError;
 	}
-	
+
+	public void dispose() throws Exception {
+	}
+
 }

@@ -27,7 +27,7 @@
 							required="true" 
 							styleClass="selectRadio" 
 							value="#{assignmentBean.renderGetCustomAssignment}" 			 
-							valueChangeListener="#{assignmentBean.actionRadioListener}" 
+							valueChangeListener="#{assignmentBean.actionCustomAssignmentRadioListener}" 
 							layout="pageDirection"
 							partialSubmit="true">
 								<f:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
