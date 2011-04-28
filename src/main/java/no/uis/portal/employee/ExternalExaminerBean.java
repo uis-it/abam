@@ -30,6 +30,10 @@ public class ExternalExaminerBean implements DisposableBean{
 		
 	}
 	
+	/**
+	 * ActionListener that prepares the addExternalExaminer.jspx
+	 * @param event
+	 */
 	public void actionPrepareAddExternalExaminer(ActionEvent event) {
 		employeeService.getDepartmentListFromWebService();
 		thesisInformationList.clear();
@@ -71,6 +75,10 @@ public class ExternalExaminerBean implements DisposableBean{
 		}
 	}
 	
+	/**
+	 * ActionListener that saves Examiner to selected Rows
+	 * @param event
+	 */
 	public void actionSaveExaminerToSelectedRows(ActionEvent event) {
 		for (ThesisInformation thesisInformation : thesisInformationList) {
 			if (thesisInformation.isSelected()) {
@@ -82,10 +90,18 @@ public class ExternalExaminerBean implements DisposableBean{
 		setShowSavedConfirmation(true);
 	}
 	
+	/**
+	 * ActionListener that clears all fields in addExternalExaminer.jspx
+	 * @param event
+	 */
 	public void actionClearFields(ActionEvent event) {
 		setExternalExaminer(new ExternalExaminer());
 	}
 	
+	/**
+	 * ValueChangeListener that displays ThesisInformation objects for selected department
+	 * @param event
+	 */
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
 		List<Thesis> thesisList = employeeService.getThesisList();
 		
@@ -99,6 +115,10 @@ public class ExternalExaminerBean implements DisposableBean{
 	}
 	
 	
+	/**
+	 * ActionListener that sets fields with external examiner information in addExternalExaminer.jspx from selected ThesisInformation
+	 * @param event
+	 */
 	public void actionSetFields(ActionEvent event) {
 		ThesisInformation ti = (ThesisInformation) getRowFromEvent(event);
 		setExternalExaminer(ti.getThesis().getExternalExaminer());
@@ -146,5 +166,4 @@ public class ExternalExaminerBean implements DisposableBean{
 	@Override
 	public void dispose() throws Exception {
 	}
-
 }
