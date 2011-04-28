@@ -69,7 +69,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		ApplicationInformation applicationInformation = (ApplicationInformation)table.getRowData();
 		Assignment selectedAssignment = applicationInformation.getApplication().getAssignment();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
 		
 		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
@@ -102,7 +102,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionSetSelectedAssignment(ActionEvent event){		
 		Assignment selectedAssignment = (Assignment) getRowFromEvent(event);
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
 		
 		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
@@ -133,7 +133,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		log.setLevel(Level.ERROR);
 		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
 		
 		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());

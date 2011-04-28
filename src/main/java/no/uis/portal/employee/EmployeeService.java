@@ -97,10 +97,20 @@ public class EmployeeService {
 		}
 	}
 
+	
+	/**
+	 * @param assignment that should be saved
+	 */
 	public void saveAssignment(Assignment assignment) {
 		abamClient.saveAssignment(assignment);
 	}
 
+	
+	/**
+	 * ActionListener that prepares displayAssignments.jspx
+	 * 
+	 * @param event
+	 */
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
 		setLoggedInEmployee(getEmployeeFromUisLoginName());
 		getActiveAssignmentsSet();
@@ -123,6 +133,10 @@ public class EmployeeService {
 		}
 	}
 
+	/**
+	 * ValueChangeListener that updates the StudyProgram List and Assignment Set based on the selected Department
+	 * @param event
+	 */
 	public void actionUpdateStudyProgramList(ValueChangeEvent event) {
 		setSelectedDepartmentAndStudyProgramFromValue(Integer.parseInt(event.getNewValue().toString()));
 		if(studyProgramMenu != null) studyProgramMenu.setValue(getSelectedStudyProgramNumber());
@@ -139,9 +153,9 @@ public class EmployeeService {
 		}
 	}
 
-	public void setSelectedDepartmentAndStudyProgramFromValue(int value) {
+	private void setSelectedDepartmentAndStudyProgramFromValue(int value) {
 		setSelectedDepartmentNumber(value);
-		Department selectedDepartment = getDepartmentFromValue(selectedDepartmentNumber);
+		Department selectedDepartment = getDepartmentFromIndex(selectedDepartmentNumber);
 		setSelectedDepartmentCode(selectedDepartment.getOeKode());
 		
 		setSelectedStudyProgramNumber(0);
@@ -163,6 +177,11 @@ public class EmployeeService {
 		return "";
 	}
 	
+	
+	/**
+	 * ValueChangeListener that updates the StudyProgram List from createAssignment.jspx
+	 * @param event
+	 */
 	public void actionUpdateStudyProgramListFromCreateAssignment(
 			ValueChangeEvent event) {
 		selectedDepartmentNumber = Integer.parseInt(event.getNewValue()
@@ -172,7 +191,7 @@ public class EmployeeService {
 	}
 
 	private void getStudyProgramListFromSelectedDepartment() {
-		selectedStudyProgramList = getDepartmentFromValue(
+		selectedStudyProgramList = getDepartmentFromIndex(
 				selectedDepartmentNumber).getStudyPrograms();
 		studyProgramSelectItemList.clear();
 		for (int i = 0; i < selectedStudyProgramList.size(); i++) {
@@ -181,6 +200,12 @@ public class EmployeeService {
 		
 	}
 
+	
+	/**
+	 * ValueChangeListener that updates the Set with Assignments based on the selected StudyProgram
+	 * 
+	 * @param event
+	 */
 	public void actionSetDisplayAssignment(ValueChangeEvent event) {
 
 		if (event.getNewValue() == null) {
@@ -192,8 +217,12 @@ public class EmployeeService {
 		setDisplayAssignments();
 	}
 	
+	
+	/**
+	 * Updates the Set with DisplayAssignments based on selected StudyProgram 
+	 */
 	public void setDisplayAssignments() {
-		String selectedStudyProgram = getStudyProgramNameFromValue(selectedStudyProgramNumber);
+		String selectedStudyProgram = getStudyProgramNameFromIndex(selectedStudyProgramNumber);
 		
 		displayAssignmentSet.clear();
 		
@@ -221,13 +250,6 @@ public class EmployeeService {
 				|| getSelectedDepartmentCode().equals("");
 	}
 
-	public void setAllEditExternalExaminerToFalse() {
-		// TODO Only get logged in teacher's students theses
-		for (Thesis thesis : abamClient.getThesisList()) {
-			thesis.setEditExternalExaminer(false);
-		}
-	}
-
 	public void addThesesFromList(List<Thesis> thesesToAdd) {
 		abamClient.addThesesFromList(thesesToAdd);
 	}
@@ -236,10 +258,11 @@ public class EmployeeService {
 		abamClient.updateThesis(thesisToUpdate);
 	}
 
-	public void removeDepartment(Department department) {
-		departmentList.remove(department);
-	}
-
+	
+	/**
+	 * @param index of Department to get the name for
+	 * @return name of the Department
+	 */
 	public String getDepartmentNameFromIndex(int index) {
 		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
 			return departmentList.get(index).getOeNavn_Bokmaal();
@@ -247,25 +270,36 @@ public class EmployeeService {
 		return departmentList.get(index).getOeNavn_Engelsk();
 	}
 	
+	/**
+	 * @param index of Department to get the code for
+	 * @return code of the Department
+	 */
 	public String getDepartmentCodeFromIndex(int index) {		
 		return departmentList.get(index).getOeKode();
-
 	}
 
-	//TODO Må kanskje endre litt på denne metoden.
-	public Department getDepartmentFromValue(int value) {
+	
+	/**
+	 * @param index of Department to get
+	 * @return Department object, or null if not found
+	 */
+	public Department getDepartmentFromIndex(int index) {
 		getDepartmentListFromWebService();
 		for (Department department : departmentList) {
-			if (departmentList.indexOf(department) == value) {
+			if (departmentList.indexOf(department) == index) {
 				return department;
 			}
 		}
 		return null;
 	}
 
-	public String getStudyProgramNameFromValue(int value) {
+	/**
+	 * @param index of StudyProgram to get
+	 * @return name of StudyProgram, or null if not found
+	 */
+	public String getStudyProgramNameFromIndex(int index) {
 		for (StudyProgram studyProgram : selectedStudyProgramList) {
-			if (selectedStudyProgramList.indexOf(studyProgram) == value) {
+			if (selectedStudyProgramList.indexOf(studyProgram) == index) {
 				return studyProgram.getName();
 			}
 		}
@@ -289,9 +323,9 @@ public class EmployeeService {
 		return selectedStudyProgramList.get(index).getName();
 	}
 
-	public void setSelectedStudyProgramListFromDepartmentNumber(
-			int departmentNumber) {
-		setSelectedStudyProgramList(getDepartmentFromValue(departmentNumber)
+	public void setSelectedStudyProgramListFromDepartmentIndex(
+			int departmentIndex) {
+		setSelectedStudyProgramList(getDepartmentFromIndex(departmentIndex)
 				.getStudyPrograms());
 	}
 
@@ -307,6 +341,10 @@ public class EmployeeService {
 		return abamClient.getAssignmentFromId(id);
 	}
 
+	
+	/**
+	 * Gets the Departments from the webservice, and sets the name based on selected language 
+	 */
 	public void getDepartmentListFromWebService() {
 		departmentList = abamClient.getDepartmentList();
 		departmentSelectItemList.clear();
@@ -351,8 +389,16 @@ public class EmployeeService {
 		return selectedStudyProgramList;
 	}
 
+	
+	/**
+	 * @param list of StudyPrograms to set
+	 */
 	public void setSelectedStudyProgramList(List<StudyProgram> list) {
 		this.selectedStudyProgramList = list;
+		updateStudyProgramSelectItemList();
+	}
+	
+	private void updateStudyProgramSelectItemList() {
 		studyProgramSelectItemList.clear();
 		for (int i = 0; i < selectedStudyProgramList.size(); i++) {
 			studyProgramSelectItemList.add(new SelectItem(i,selectedStudyProgramList.get(i).getName()));
@@ -388,6 +434,10 @@ public class EmployeeService {
 		this.studyProgramMenu = studyProgramMenu;
 	}
 
+	
+	/**
+	 * @return a Set containing all active Assignments
+	 */
 	public Set<Assignment> getActiveAssignmentsSet() {
 		assignmentSet = abamClient.getActiveAssignments();
 		displayAssignmentSet = new TreeSet<Assignment>();
@@ -401,6 +451,11 @@ public class EmployeeService {
 		this.abamClient = abamClient;
 	}
 	
+	
+	/**
+	 * @param permissionName 
+	 * @return true if user has permission, false if not
+	 */
 	public boolean checkPermission(String permissionName) {
 		User user = themeDisplay.getUser();
 		List<Permission> permList = new LinkedList<Permission>();
@@ -450,6 +505,10 @@ public class EmployeeService {
 		return checkPermission("VIEW_EXTERNAL_EXAMINER");						
 	}
 	
+	
+	/**
+	 * @return true if user is administrative employee, false if not
+	 */
 	public boolean isAdministrativeEmployee() {
 		User user = themeDisplay.getUser();
 		for (Role role : user.getRoles()) {
@@ -482,6 +541,10 @@ public class EmployeeService {
 		return themeDisplay;
 	}
 	
+	/**
+	 * Finds the logged in Employee based on employee id 
+	 * @return Employee object if found, null if not found
+	 */
 	public Employee getEmployeeFromUisLoginName() {
 		if (loggedInEmployee != null && !loggedInEmployee.getEmployeeId().isEmpty()) return loggedInEmployee;
 		else {
@@ -505,7 +568,7 @@ public class EmployeeService {
 		}
 	}		
 	
-	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+	private String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
 		//workaround for Liferay bug LPS-2568, by James Falkner.
 		int excount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
 		List<ExpandoValue> vals = ExpandoValueLocalServiceUtil.getExpandoValues(0, excount-1);
@@ -513,10 +576,6 @@ public class EmployeeService {
 		String data = (String)attrs.get(columnName);
 		return data;
 	}
-
-//	public Employee getLoggedInEmployee() {
-//		return loggedInEmployee;
-//	}
 
 	public void setLoggedInEmployee(Employee loggedInEmployee) {
 		this.loggedInEmployee = loggedInEmployee;
@@ -537,17 +596,12 @@ public class EmployeeService {
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
 		return abamClient.getArchivedThesisListFromDepartmentCode(depCode);
 	}
-	
+		
+	/**
+	 * @return a List containing the archived Theses for logged in Employee
+	 */
 	public List<Thesis> getArchivedThesisListFromUisLoginName() {
-		String uisLoginName;
-		try {
-			uisLoginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
-			return abamClient.getArchivedThesisListFromUisLoginName(uisLoginName);
-		} catch (PortalException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
-		}
-		return null;
+		Employee employee = getEmployeeFromUisLoginName();		
+		return abamClient.getArchivedThesisListFromUisLoginName(employee.getEmployeeId());		
 	}
 }
