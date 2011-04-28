@@ -58,6 +58,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		context = FacesContext.getCurrentInstance();		
 	}
 	
+	/**
+	 * ActionListener that prepares the assignment summary from assignAssignment.jspx
+	 * @param event
+	 */
 	public void actionSetSelectedAssignmentFromAssignAssignment(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
@@ -72,6 +76,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		actionPrepareBackButtonFromAssignAssignemnt(event);
 	}
 	
+	/**
+	 * ActionListener that crates a new Assignment object and fills in id and employee name.
+	 * @param event
+	 */
 	public void actionCreateNewAssignment(ActionEvent event) {	
 		employeeService.getDepartmentListFromWebService();
 		setCurrentAssignment(new Assignment());
@@ -79,10 +87,18 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		currentAssignment.setFacultySupervisor(getEmployeeFromUisLoginName());
 	}
 	
+	/**
+	 * ActionListener that saves currentAssignemnt
+	 * @param event
+	 */
 	public void actionSaveAssignment(ActionEvent event) {
 		employeeService.saveAssignment(currentAssignment);
 	}
 	
+	/**
+	 * ActionListener that gets the Assignment and sets to currentAssignment
+	 * @param event
+	 */
 	public void actionSetSelectedAssignment(ActionEvent event){		
 		Assignment selectedAssignment = (Assignment) getRowFromEvent(event);
 		setCurrentAssignment(selectedAssignment);
@@ -98,11 +114,19 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		return table.getRowData();
 	}
 	
+	/**
+	 * ActionListener that prepares the assignment summary from displayAssignments.jspx
+	 * @param event
+	 */
 	public void actionSetSelectedAssignmentFromDisplayAssignments(ActionEvent event){
 		actionSetSelectedAssignment(event);
 		actionPrepareBackButtonFromDisplayAssignments(event);
 	}
 	
+	/**
+	 * ActionListener that prepares the assignment summary from myStudentTheses.jspx
+	 * @param event
+	 */
 	public void actionSetSelectedAssignmentFromMyStudentTheses(ActionEvent event){
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
 		setCurrentThesis(selectedThesis.getThesis());
@@ -116,6 +140,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		actionPrepareBackButtonFromMyStudentTheses(event);
 	}
 	
+	/**
+	 * ActionListener that removes selected assignment
+	 * @param event
+	 */
 	public void actionRemoveAssignment(ActionEvent event) {
 		Assignment assignment = (Assignment) getRowFromEvent(event);
 		
@@ -123,14 +151,25 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		
 	}
 	
+	/**
+	 * ActionListener that adds a new Supervisor object to currentAssignment
+	 * @param event
+	 */
 	public void actionAddSupervisor(ActionEvent event) {
 		currentAssignment.getSupervisorList().add(new Supervisor());
 	}
-	
+	/**
+	 * ActionListener that removes a Supervisor object from currentAssignment
+	 * @param event
+	 */	
 	public void actionRemoveSupervisor(ActionEvent event) {
 		currentAssignment.getSupervisorList().remove(getRowFromEvent(event));		
 	}
 	
+	/**
+	 * ActionListener that prepares back button from assignmentAttachment.jspx
+	 * @param event
+	 */
 	public void actionPrepareBackButtonFromAssignmentAttachment(ActionEvent event) {
 		setBackToAssignmentAttachment(true);
 		setBackToAssignAssignment(false);
@@ -138,6 +177,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToMyStudentThesis(false);
 	}
 	
+	/**
+	 * ActionListener that prepares back button from assignAssignment.jspx
+	 * @param event
+	 */	
 	public void actionPrepareBackButtonFromAssignAssignemnt(ActionEvent event) {
 		setBackToAssignAssignment(true);
 		setBackToAssignmentAttachment(false);
@@ -145,6 +188,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToMyStudentThesis(false);
 	}
 	
+	/**
+	 * ActionListener that prepares back button from displayAssignments.jspx
+	 * @param event
+	 */
 	public void actionPrepareBackButtonFromDisplayAssignments(ActionEvent event) {
 		setBackToDisplayAssignments(true);
 		setBackToAssignmentAttachment(false);
@@ -152,6 +199,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToMyStudentThesis(false);
 	}
 	
+	/**
+	 * ActionListener that prepares back button from myStudentTheses.jspx
+	 * @param event
+	 */
 	public void actionPrepareBackButtonFromMyStudentTheses(ActionEvent event) {
 		setBackToDisplayAssignments(false);
 		setBackToAssignmentAttachment(false);
@@ -159,6 +210,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToMyStudentThesis(true);
 	}
 	
+	/**
+	 * ActionListener that sets all fields on currentAssignment
+	 * @param event
+	 */
 	public void actionUpdateCurrentAssignment(ActionEvent event) {				
 		debugToLog(Level.ERROR, event);
 		
@@ -202,29 +257,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 
 	}
 	
-	private String getUserFullNameFromEmployeeId(String id) {
-		try {
-			List<Role> roleList = RoleLocalServiceUtil.getUserRoles(employeeService.getThemeDisplay().getUser().getUserId());
-			for (Role role : roleList) {
-				if(role.getName().equals("Abam Scientific Employee")) {
-					Long scientificEmployeeRoleId = role.getRoleId();
-					List<User> userList2 = UserLocalServiceUtil.getRoleUsers(scientificEmployeeRoleId);
-					for (User user : userList2) {
-						String userCustomAttribute = employeeService.getUserCustomAttribute(user, EmployeeService.COLUMN_UIS_LOGIN_NAME);
-						if(userCustomAttribute !=null && userCustomAttribute.equals(id)) {
-							return user.getFullName();
-						}
-					}
-				}
-			}
-		} catch (SystemException e1) {
-			e1.printStackTrace();
-		} catch (PortalException e) {
-			e.printStackTrace();
-		}
-		return "NOT_FOUND";
-	}
-	
 	private void debugToLog(Level level, ActionEvent event) {
 		String clientId = event.getComponent().getClientId(context);
 		clientId = clientId.replaceAll("CreateButton", "");
@@ -244,6 +276,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		}
 	}
 	
+	/**
+	 * ValueChangeListener updates list of Assignments on user action
+	 * @param event
+	 */
 	public void actionShowExpired(ValueChangeEvent event) {
 		if(event.getNewValue().equals(true)) {
 			employeeService.getAllAssignmentsSet();			
@@ -253,6 +289,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		employeeService.setDisplayAssignments();
 	}
 	
+	
+	/**
+	 * ActionListener that handles file uploading
+	 * @param event
+	 */
 	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
         FileInfo fileInfo = inputFile.getFileInfo();
@@ -284,7 +325,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
         }        
 	}
 	
-	public void radioListener(ValueChangeEvent event){
+	/**
+	 * ValueChangeListener to set assignment type
+	 * @param event
+	 */
+	public void actionChangeAssignmentTypeRadioListener(ValueChangeEvent event){
 		if (event.getNewValue().equals(false)){
 			currentAssignment.setMaster(true);
 			currentAssignment.setBachelor(false);
@@ -297,6 +342,12 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		}
 	}
 	
+	/**
+	 * Validator that checks that number of students is valid
+	 * @param facesContext
+	 * @param validate
+	 * @param object
+	 */
 	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
 		String text = object.toString();
         if (!NumberValidator.isValid(text)) {
@@ -306,6 +357,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
         }
 	}
 	
+	/**
+	 * ActionListener that removes an uploaded attachment
+	 * @param event
+	 */
 	public void actionRemoveAttachment(ActionEvent event){
 		currentAssignment.getAttachedFileList().remove(getRowFromEvent(event));		
 	}
@@ -342,9 +397,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		this.showExpired = showExpired;
 	}
 
-	public void dispose() throws Exception {
-	}
-
 	public Assignment getCurrentAssignment() {
 		return currentAssignment;
 	}
@@ -368,5 +420,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void setCurrentThesis(Thesis currentThesis) {
 		this.currentThesis = currentThesis;
 	}
-	
+
+	public void dispose() throws Exception {
+	}	
 }

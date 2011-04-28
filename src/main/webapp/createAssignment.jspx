@@ -46,7 +46,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
 				<td>				
-				<ice:selectOneRadio id="type" required="false" styleClass="selectRadio" value="#{assignmentBean.currentAssignment.bachelor}" valueChangeListener="#{assignmentBean.radioListener}" partialSubmit="true">
+				<ice:selectOneRadio id="type" required="false" styleClass="selectRadio" value="#{assignmentBean.currentAssignment.bachelor}" valueChangeListener="#{assignmentBean.actionChangeAssignmentTypeRadioListener}" partialSubmit="true">
 					<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
 					<f:selectItem itemValue="#{false}" itemLabel="Master" />
 				</ice:selectOneRadio>
