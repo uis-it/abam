@@ -263,7 +263,7 @@ public class StudentService {
 	public void actionSaveApplications(ActionEvent event) {
 		removeDeletedApplications();
 		getCurrentStudent().setApplicationPriorityArray(tempApplicationPriorityArray);
-		abamStudentClient.updateApplicationsFromCurrentStudent(tempApplicationPriorityArray);		
+		abamStudentClient.updateApplications(tempApplicationPriorityArray);		
 	}
 	
 	private void removeDeletedApplications() {
@@ -291,7 +291,7 @@ public class StudentService {
 	}
 
 	public List<StudyProgram> getStudyProgramList() {
-		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramList(findDepartmentOe2ForCurrentStudent());
+		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramListFromDepartmentIndex(findDepartmentOe2ForCurrentStudent());
 		studyProgramSelectItemList.clear();
 		for (int i = 0; i < studyProgramList.size(); i++) {
 			studyProgramSelectItemList.add(new SelectItem(i,studyProgramList.get(i).getName()));
@@ -300,7 +300,7 @@ public class StudentService {
 	}
 	
 	public String getStudyProgramName(int index) {
-		return abamStudentClient.getStudyProgram(findDepartmentOe2ForCurrentStudent(),index);
+		return abamStudentClient.getStudyProgramName(findDepartmentOe2ForCurrentStudent(),index);
 	}
 	
 	public String getDepartmentNameFromIndex(int index) {
@@ -357,10 +357,6 @@ public class StudentService {
 
 	public List<Application> getApplicationList() {
 		return abamStudentClient.getApplicationList();
-	}
-
-	public void setApplicationList(ArrayList<Application> applicationList) {
-		abamStudentClient.setApplicationList(applicationList);
 	}
 
 	public void saveApplication(Application application) {
