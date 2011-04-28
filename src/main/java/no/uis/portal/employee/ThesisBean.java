@@ -44,6 +44,10 @@ public class ThesisBean {
 		
 	}
 	
+	/**
+	 * ActionListener that prepares all students theses
+	 * @param event
+	 */
 	public void actionPrepareAllStudentTheses(ActionEvent event) {
 		employeeService.getDepartmentListFromWebService();
 		thesisList = new ArrayList<Thesis>();		
@@ -54,6 +58,10 @@ public class ThesisBean {
 		createThesisInformationFromThesis(true);
 	}	
 	
+	/**
+	 * ValueChangeListener that updates theses list based on selected department
+	 * @param event
+	 */
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
 		thesisList = employeeService.getThesisListFromDepartmentCode(
 				employeeService.getDepartmentCodeFromIndex(
@@ -62,7 +70,11 @@ public class ThesisBean {
 		if(thesisList != null) createThesisInformationFromThesis(true);
 		else thesisInformationList.clear();
 	}
-	
+
+	/**
+	 * ValueChangeListener that updates theses list based on selected department and only archived thesis objects
+	 * @param event
+	 */
 	public void actionDisplayDepartmentThesesArchive(ValueChangeEvent event) {
 		thesisList = employeeService.getArchivedThesisListFromDepartmentCode(
 				employeeService.getDepartmentCodeFromIndex(
@@ -72,6 +84,10 @@ public class ThesisBean {
 		else thesisInformationList.clear();
 	}
 	
+	/**
+	 * ActionListener that prepares students theses for a employee
+	 * @param event
+	 */
 	public void actionPrepareMyStudentTheses(ActionEvent event) {
 		thesisList = new ArrayList<Thesis>();		
 		List<Thesis> tempList = employeeService.getThesisList();
@@ -81,11 +97,19 @@ public class ThesisBean {
 		createThesisInformationFromThesis(false);
 	}
 	
+	/**
+	 * ActionListener that prepares the thesisStatus.jspx
+	 * @param event
+	 */
 	public void actionPrepareThesisStatusList(ActionEvent event) {
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
 		setThesisStatusList(selectedThesis.getThesis().getStatusList());
 	}
 	
+	/**
+	 * ActionListener that prepares the searchArchive.jspx
+	 * @param event
+	 */
 	public void actionPrepareArchive(ActionEvent event) {
 		employeeService.getDepartmentListFromWebService();
 		if (thesisList != null) thesisList.clear();
@@ -98,14 +122,26 @@ public class ThesisBean {
 		return table.getRowData();
 	}
 	
+	/**
+	 * ActionListner that prepares the postponeThesisDeadline.jspx
+	 * @param event
+	 */
 	public void actionPreparePostponeDeadline(ActionEvent event) {
 		selectedThesisInformation = (ThesisInformation) getRowFromEvent(event);		
 	}
 	
+	/**
+	 * ValueChangeListener that displays the selected date in postponeThesisDeadline.jspx
+	 * @param event
+	 */
 	public void actionUpdateDate(ValueChangeEvent event) {		
 		setDeadlineDate((Date)event.getNewValue());		
 	}
 	
+	/**
+	 * ActionListner that saves the selected date in postponeThesisDeadline.jspx
+	 * @param event
+	 */
 	public void actionSaveDeadlineDate(ActionEvent event) {
 		Thesis updateThesis = selectedThesisInformation.getThesis();
 		updateThesis.setDeadlineForSubmissionForEvalutation(getDeadlineDate());
@@ -113,6 +149,10 @@ public class ThesisBean {
 		actionPrepareAllStudentTheses(event);
 	}
 
+	/**
+	 * ValueChangeListener that displays active theses or archived theses
+	 * @param event
+	 */
 	public void actionDisplayActiveRadioListener(ValueChangeEvent event) {
 		displayActiveThesis = (Boolean) event.getNewValue();
 		if(displayActiveThesis) {
