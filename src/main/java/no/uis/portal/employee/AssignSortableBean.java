@@ -15,6 +15,10 @@ import com.icesoft.faces.context.DisposableBean;
 
 import no.uis.abam.dom.*;
 
+/**
+ * @author Bente
+ *
+ */
 public class AssignSortableBean implements DisposableBean{
 
 	private static final String assignmentTitleColumnName = "Assignment Title";
@@ -57,6 +61,7 @@ public class AssignSortableBean implements DisposableBean{
 	private ApplicationInformation[] applicationInformationArray;
 	private List<ApplicationInformation> selectedApplicationInformationList = new ArrayList<ApplicationInformation>();	
 	
+	
 	public AssignSortableBean() {
 		sortColumnName = assignmentTitleColumnName;
 		ascending = true;
@@ -69,7 +74,7 @@ public class AssignSortableBean implements DisposableBean{
 		setToDate(TO_DATE_BACHELOR_DEFAULT);
 	}
 
-	public void sort() {
+	private void sort() {
 		Comparator comparator = new Comparator(){
 			public int compare(Object obj1, Object obj2) {
 				ApplicationInformation app1 = (ApplicationInformation)obj1;
@@ -115,6 +120,10 @@ public class AssignSortableBean implements DisposableBean{
 		}
 	}
 
+	
+	/**
+	 * @return an array of sorted ApplicationInformation objects
+	 */
 	public Object[] getApplicationInformationAsArray() {
 		if (!oldSort.equals(sortColumnName) ||
 				oldAscending != ascending){
@@ -152,7 +161,13 @@ public class AssignSortableBean implements DisposableBean{
 		return appInfo;
 	}
 
-	public void actionRefreshApplicationInformationArray(ActionEvent event) {
+	
+	/**
+	 * ActionListener that prepares the array with ApplicationInformation objects
+	 * 
+	 * @param event
+	 */
+	public void actionPrepareApplicationInformationArray(ActionEvent event) {
 		setSelectedPriority("all");
 		setDepartmentName(employeeService.getDepartmentNameFromIndex(employeeService.getSelectedDepartmentNumber()));
 		List<Application> applicationList;
@@ -168,6 +183,12 @@ public class AssignSortableBean implements DisposableBean{
 		}
 	}
 	
+	
+	/**
+	 * ValueChangeListener that updates the array with ApplicationInformation objects based on priority 
+	 * 
+	 * @param event
+	 */
 	public void actionPriorityChange(ValueChangeEvent event) {
 		List<Application> applicationList;
 		List<Application> applicationPriorityList = new ArrayList<Application>();
@@ -191,6 +212,12 @@ public class AssignSortableBean implements DisposableBean{
 		}
 	}
 	
+	
+	/**
+	 * ActionListener that makes sure Departments are gotten from webservice when entering setDates.jspxs
+	 * 
+	 * @param event
+	 */
 	public void actionPrepareSetDates(ActionEvent event) {
 		employeeService.getDepartmentListFromWebService();
 	}
@@ -202,6 +229,12 @@ public class AssignSortableBean implements DisposableBean{
 		else return 0;
 	}
 	
+	
+	/**
+	 * ActionListener that gets the selected ApplicationInformation objects and puts it into a List
+	 * 
+	 * @param event
+	 */
 	public void actionGetSelectedRows(ActionEvent event) {
 		selectedApplicationInformationList.clear();
 		if (applicationInformationArray != null) {
@@ -212,6 +245,12 @@ public class AssignSortableBean implements DisposableBean{
 		}
 	}
 	
+	
+	/**
+	 * ActionListener that creates Thesis objects from the selected Applications and saves the Thesis objects to the webservice
+	 * 
+	 * @param event
+	 */
 	public void actionSaveAssignedApplications(ActionEvent event) {
 		List<Thesis> thesesToSave = new ArrayList<Thesis>();
 		for (ApplicationInformation appInfo : selectedApplicationInformationList) {
@@ -244,6 +283,11 @@ public class AssignSortableBean implements DisposableBean{
 		return thesis;
 	}
 	
+	/**
+	 * ActionListener that toggles the calendar in the setDates.jspx
+	 * 
+	 * @param event
+	 */
 	public void actionToggleCalendar(ActionEvent event) {
 		Object compId = event.getComponent().getId();
 		if (compId.equals("fromDate")) {
@@ -254,6 +298,11 @@ public class AssignSortableBean implements DisposableBean{
 		
 	}
 	
+	/**
+	 * ValueChangeListener that updates the Date with the selected Date from a calendar 
+	 * 
+	 * @param event
+	 */
 	public void actionUpdateDate(ValueChangeEvent event) {
 		String componentId = event.getComponent().getId();
 		if(componentId.equals("fromDateInput")) {
@@ -265,7 +314,13 @@ public class AssignSortableBean implements DisposableBean{
 		}
 	}
 	
-	public void radioListener(ValueChangeEvent event) {
+	
+	/**
+	 * ValueChangeEvent that updates the default Dates used in assignSetDates.jspx 
+	 * 
+	 * @param event
+	 */
+	public void actionUpdateDefaultDates(ValueChangeEvent event) {
 		bachelor = (Boolean) event.getNewValue();
 		if(bachelor) {
 			setToDate(TO_DATE_BACHELOR_DEFAULT);
@@ -406,17 +461,17 @@ public class AssignSortableBean implements DisposableBean{
 		return "Master";
 	}
 
-	@Override
-	public void dispose() throws Exception {
-	
-	}
-
 	public String getDepartmentName() {
 		return departmentName;
 	}
 
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
+	}
+
+	@Override
+	public void dispose() throws Exception {
+	
 	}
 	
 }

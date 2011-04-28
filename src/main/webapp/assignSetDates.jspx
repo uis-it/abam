@@ -16,7 +16,7 @@
 						required="true" 
 						styleClass="selectRadio" 
 						value="#{assignSortableBean.bachelor}" 			 
-						valueChangeListener="#{assignSortableBean.radioListener}" 
+						valueChangeListener="#{assignSortableBean.actionUpdateDefaultDates}" 
 						partialSubmit="true">
 							<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
 							<f:selectItem itemValue="#{false}" itemLabel="Master" />
@@ -94,7 +94,7 @@
 				<td><h:commandButton 
 						id="assignSelected"
 						action="assignAssignment" 
-						actionListener="#{assignSortableBean.actionRefreshApplicationInformationArray}" 
+						actionListener="#{assignSortableBean.actionPrepareApplicationInformationArray}" 
 						type="submit" 
 						value="#{msgs.btn_next}" 
 						/></td>
