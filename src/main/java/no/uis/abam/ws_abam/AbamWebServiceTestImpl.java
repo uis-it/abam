@@ -339,28 +339,20 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return departmentList;
 	}
 
-	public List<StudyProgram> getStudyProgramList(int departmentIndex) {
+	public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex) {
 		return departmentList.get(departmentIndex).getStudyPrograms();
 	}
 
-	public String getStudyProgram(int departmentIndex, int studyProgramIndex) {
-		return getStudyProgramList(departmentIndex).get(studyProgramIndex).getName();
+	public String getStudyProgramName(int departmentIndex, int studyProgramIndex) {
+		return getStudyProgramListFromDepartmentIndex(departmentIndex).get(studyProgramIndex).getName();
 	}
 
-	public String getDepartment(int index) {
+	public String getDepartmentName(int index) {
 		return  departmentList.get(index).getOeNavn_Engelsk();
 	}
 	
 	public void removeDepartment(Department department){
 		departmentList.remove(department);
-	}
-	
-//	public void setDepartmentList(ArrayList<Department> departmentList){
-//		this.departmentList = departmentList;
-//	}
-	
-	public void setDepartmentList(List<Department> departmentList) {
-		this.departmentList = departmentList;
 	}
 	
 	public List<Application> getApplicationList() {
@@ -386,10 +378,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 		return bachelorApplicationList;
 	
-	}
-	
-	public void setApplicationList(List<Application> applicationList) {
-		this.applicationList = applicationList;
 	}
 	
 	public void saveApplication(Application application) {
@@ -419,10 +407,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return assignmentList.size()+1;
 	}
 
-	public void setAssignmentList(TreeSet<Assignment> assignmentList) {
-		this.assignmentList = assignmentList;
-	}
-
 	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentCode) {
 		TreeSet<Assignment> assignmentsToReturn = new TreeSet<Assignment>();
 		for (Assignment assignment : assignmentList) {
@@ -448,7 +432,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return null;
 	}
 	
-	public void updateApplicationsFromCurrentStudent(
+	public void updateApplications(
 			Application[] tempApplicationPriorityArray) {
 		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
 			if(tempApplicationPriorityArray[i].getAssignment() != null) {
