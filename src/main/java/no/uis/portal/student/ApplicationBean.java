@@ -28,6 +28,11 @@ public class ApplicationBean implements DisposableBean {
 	
 	public ApplicationBean() {}
 	
+	
+	/**
+	 * ActionListener that sets custom Assignment to existing or new Application
+	 * @param event
+	 */
 	public void actionSetCustomAssignmentToApplication(ActionEvent event) {
 		Assignment selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
 		currentAssignment = selectedAssignment;
@@ -38,6 +43,10 @@ public class ApplicationBean implements DisposableBean {
 		}
 	}
 	
+	/**
+	 * ActionListener that sets a selected Assignment to existing or new Application
+	 * @param event
+	 */
 	public void actionSetSelectedAssignmentToApplication(ActionEvent event) {
 		UIComponent uic = event.getComponent();
 
@@ -73,6 +82,10 @@ public class ApplicationBean implements DisposableBean {
 		return studentService.getCurrentStudent().assignmentIsAlreadyAppliedFor(selectedAssignment);
 	}
 	
+	/**
+	 * ActionListener that edits an Application
+	 * @param event
+	 */
 	public void actionEditApplication(ActionEvent event){
 		UIComponent uic = event.getComponent();
 
@@ -95,12 +108,15 @@ public class ApplicationBean implements DisposableBean {
 		}
 	}
 	
+	
+	/**
+	 * ActionListener that saves the current Application and sets it to the Student
+	 * 
+	 * @param event
+	 */
 	public void actionSaveApplication(ActionEvent event) {
 		studentService.setApplicationToStudent(currentApplication);
 		studentService.saveApplication(currentApplication);
-	}
-	
-	public void dispose() throws Exception {
 	}
 
 	public StudentService getStudentService() {
@@ -134,4 +150,8 @@ public class ApplicationBean implements DisposableBean {
 			return APPLICATION_DEADLINE_MASTER.before(GregorianCalendar.getInstance().getTime());
 		}		
 	}
+		
+	public void dispose() throws Exception {
+	}
+
 }
