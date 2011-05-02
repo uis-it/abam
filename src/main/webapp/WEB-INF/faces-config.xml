@@ -10,7 +10,7 @@
 			<supported-locale>nb_NO</supported-locale>
 		</locale-config>
 		<message-bundle>Language_nb</message-bundle>
-		<message-bundle>Language_en</message-bundle>
+		<message-bundle>Language_en</message-bundle>		
 		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
 		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>		
 	</application>

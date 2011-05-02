@@ -58,13 +58,13 @@
 					<f:facet name="header">
 						<ice:outputText value="#{msgs.lbl_supervisor}"/>
 					</f:facet>
-						<ice:outputText id="name" value="#{msgs.lbl_name}"/>
+						<ice:outputText id="name" value="#{msgs.lbl_name}" style="font-weight: bold;"/>
 						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
-						<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="Email" value="#{msgs.lbl_email}" style="font-weight: bold;" rendered="#{supervisor.external}"/>
 						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
-						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" style="font-weight: bold;" rendered="#{supervisor.external}"/>
 						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
-						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
+						<ice:outputText id="company" value="#{msgs.lbl_company}" style="font-weight: bold;" rendered="#{supervisor.external}"/>
 						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
 						<ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty supervisor.name}"/>
 					</ice:column>

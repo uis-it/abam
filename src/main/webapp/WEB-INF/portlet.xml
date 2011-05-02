@@ -23,7 +23,6 @@
 		    <value>/view.iface</value>  
 		</init-param> 
 
-
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>VIEW</portlet-mode>			

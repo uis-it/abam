@@ -104,7 +104,7 @@ public class EmployeeService {
 	private void checkIfLoggedInUserIsAuthor() {
 		if(assignmentSet != null) {
 			for (Assignment assignment : assignmentSet) {
-				if (assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
+				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
 					assignment.setLoggedInUserIsAuthor(true);
 				} else {
 					assignment.setLoggedInUserIsAuthor(false);
@@ -457,9 +457,9 @@ public class EmployeeService {
 		return false;				
 	}
 	
-	public PermissionChecker getPermissionChecker() {
-		return themeDisplay.getPermissionChecker(); 
-	}
+//	public PermissionChecker getPermissionChecker() {
+//		return themeDisplay.getPermissionChecker(); 
+//	}
 
 	public boolean isShouldDisplayAssignAssignments() {
 		return checkPermission("ASSIGN_ASSIGNMENTS");						
