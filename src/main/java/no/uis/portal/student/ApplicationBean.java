@@ -48,6 +48,7 @@ public class ApplicationBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionSetSelectedAssignmentToApplication(ActionEvent event) {
+
 		UIComponent uic = event.getComponent();
 
 		Object parent = uic.getParent();
@@ -71,6 +72,7 @@ public class ApplicationBean implements DisposableBean {
 	}
 	
 	private void createNewApplication(Assignment selectedAssignment) {
+
 		Application newApplication = new Application();
 		newApplication.setAssignment(selectedAssignment);
 		newApplication.setApplicantStudentNumber(studentService.getCurrentStudent().getStudentNumber());
@@ -118,7 +120,7 @@ public class ApplicationBean implements DisposableBean {
 		studentService.setApplicationToStudent(currentApplication);
 		studentService.saveApplication(currentApplication);
 	}
-
+	
 	public StudentService getStudentService() {
 		return studentService;
 	}
