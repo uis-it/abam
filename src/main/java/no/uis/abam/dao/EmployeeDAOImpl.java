@@ -22,6 +22,17 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	    uas = (UserAccountService)factory.getBean("userAccountService");
 	}
 	
+	public Employee findEmployeeByEmployeeFullName(String employeeFullName) {
+		Person person = new Person();
+		person.setFullName(employeeFullName);
+		List<Person> list = uas.findPersonByExample(person, false);
+		if (list.size() > 0) {
+			person = list.get(0);
+			return convertPersonToEmployee(person);
+		}
+		return null;
+	}
+	
 	public Employee findEmployeeByEmployeeNumber(String employeeNumber) {
 		Person person = new Person();
 		person.setUserId(employeeNumber);
