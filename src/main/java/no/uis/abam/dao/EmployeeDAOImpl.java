@@ -49,12 +49,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		List<Employee> employeeList = new ArrayList<Employee>();
 		person.setFullName("*");
 		List<Person> personList = uas.findPersonByExample(person, true);
-		System.out.println("personList: "+personList.size());
 		for (Person person2 : personList) {
 			if(personWorksAtTekNat(person2)) {
 				Employee employee = convertPersonToEmployee(person2);
-				employeeList.add(employee);
-				System.out.println(employee.getName() + " " + employee.getEmployeeId() + " " + employee.getGroupMembership().size());
+				employeeList.add(employee);				
 			}
 		}
 		return employeeList;
