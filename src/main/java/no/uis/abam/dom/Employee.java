@@ -5,7 +5,7 @@ import java.util.List;
 public class Employee extends Person{
 
 	private String employeeId;
-	private List<Group> groupMembership;
+	private List<String> groupMembership;
 	
 	public Employee() {
 		
@@ -23,11 +23,11 @@ public class Employee extends Person{
 		return this.getEmployeeId().equals(employee.getEmployeeId());
 	}
 
-	public List<Group> getGroupMembership() {
+	public List<String> getGroupMembership() {
 		return groupMembership;
 	}
 
-	public void setGroupMembership(List<Group> groupMembership) {
+	public void setGroupMembership(List<String> groupMembership) {
 		this.groupMembership = groupMembership;
 	}
 	

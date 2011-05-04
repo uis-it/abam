@@ -10,14 +10,10 @@ import javax.naming.directory.Attributes;
 
 import org.springframework.ldap.core.DirContextOperations;
 
-import no.uis.abam.dom.Employee;
-import no.uis.service.model.Email;
 import no.uis.service.model.EmployeeData;
 import no.uis.service.model.GroupData;
 import no.uis.service.model.Person;
-import no.uis.service.model.StudentData;
 import no.uis.service.model.TypeOfAffiliation;
-import no.uis.service.model.TypeOfEmail;
 import no.uis.service.useraccount.impl.LdapUserContextMapper;
 
 public class LdapUserContextMapperAbam extends LdapUserContextMapper{
@@ -30,9 +26,10 @@ public class LdapUserContextMapperAbam extends LdapUserContextMapper{
 		
 		Attributes attributes = context.getAttributes();
 		
-		person.setFullName(getAttributeValue(attributes, "displayName"));
-		person.setUserId(getAttributeValue(attributes, "userId"));
-		person.setFirstName("test@woho");
+		person.setFullName(getAttributeValue(attributes, "fullName"));
+		person.setUserId(getAttributeValue(attributes, "uid"));		
+		person.setFirstName(getAttributeValue(attributes, "givenName"));
+		person.setLastName(getAttributeValue(attributes, "sn"));
 		
 		ed = new EmployeeData();
 		ed.setAffiliation(TypeOfAffiliation.EMPLOYEE);
