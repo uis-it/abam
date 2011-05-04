@@ -16,6 +16,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.CannotCreateTransactionException;
 import no.uis.abam.dao.DepartmentDAO;
+import no.uis.abam.dao.EmployeeDAO;
+import no.uis.abam.dao.EmployeeDAOImpl;
 import no.uis.abam.dom.*;
 import no.uis.abam.util.LevenshteinDistance;
 import no.uis.service.affiliation.AffiliationDataType;
@@ -49,7 +51,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		//createAssignmentListContent();
 		//initializeDepartmentAndStudyProgramLists();
 		//initializeStudentList();
-		createEmployeeListContent();
+		//createEmployeeListContent();
 		//initializeThesisList();
 	}
 	
@@ -681,6 +683,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public Employee getEmployeeFromUisLoginName(String loginName) {
+		
+		if (employeeList.isEmpty()) {
+			EmployeeDAO edao = new EmployeeDAOImpl();
+			employeeList = edao.getAllTNEmployeesFromLdap();
+		}
 		for (Employee employee : employeeList) {
 			if (employee.getEmployeeId().equals(loginName)) {
 				return employee;
@@ -690,6 +697,11 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 
 	public Employee getEmployeeFromFullName(String facultySupervisorName) {
+		
+		if (employeeList.isEmpty()) {
+			EmployeeDAO edao = new EmployeeDAOImpl();
+			employeeList = edao.getAllTNEmployeesFromLdap();
+		}
 		
 		int countNames = (facultySupervisorName.split(" ")).length;
 		int lengthOfName = facultySupervisorName.length();		
