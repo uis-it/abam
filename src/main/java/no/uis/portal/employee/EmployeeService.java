@@ -35,6 +35,9 @@ public class EmployeeService {
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 	private static final String SCIENTIFIC_EMPLOYEE_GROUP_NAME_FROM_LDAP = "alle-vit";
+	private static final String ADMINISTRATIVE_EMPLOYEE_GROUP_NAME_FROM_LDAP = "alle-adm";
+	private static final String ABAM_SCIENTIFIC_ROLE_NAME = "Abam Scientific Employee";
+	private static final String ABAM_ADMINISTRATIVE_ROLE_NAME = "Abam Administrative Employee";
 
 	private Logger log = Logger.getLogger(EmployeeService.class);
 	
@@ -68,7 +71,7 @@ public class EmployeeService {
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
 		res = ResourceBundle.getBundle("Language", locale);	
-		initializeThemeDisplay();		
+		initializeThemeDisplay();			
 	}
 	
 	private void initializeThemeDisplay() {
@@ -101,8 +104,7 @@ public class EmployeeService {
 		setSelectedStudyProgramNumber(0);
 		setSelectedDepartmentNumber(0);
 		getDepartmentListFromWebService();
-		checkIfLoggedInUserIsAuthor();
-		addRoleToEmployee();
+		checkIfLoggedInUserIsAuthor();		
 	}
 	
 	private void checkIfLoggedInUserIsAuthor() {
@@ -433,6 +435,9 @@ public class EmployeeService {
 
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;
+		//After the abamClient is set we get the loggedInEmployee and make sure it has the correct Liferay roles.
+		setLoggedInEmployee(getEmployeeFromUisLoginName());
+		addRoleToEmployee();
 	}
 	
 	
@@ -495,8 +500,8 @@ public class EmployeeService {
 	 */
 	public boolean isAdministrativeEmployee() {
 		User user = themeDisplay.getUser();
-		for (Role role : user.getRoles()) {
-			if(role.getName().equalsIgnoreCase("Abam Administrative Employee")) {
+		for (Role role : user.getRoles()) {			
+			if(role.getName().equalsIgnoreCase(ABAM_ADMINISTRATIVE_ROLE_NAME)) {
 				return true;
 			}
 		}
@@ -505,25 +510,39 @@ public class EmployeeService {
 	
 	public void addRoleToEmployee() {
 		if (loggedInEmployee != null) {
-
 			if (loggedInEmployeeIsScientificEmployee()) {
-				long companyId = themeDisplay.getCompanyId();
-				try {
-
-					List<Role> roleList = RoleLocalServiceUtil.getRoles(companyId);
-					for (Role role : roleList) {
-						if (role.getName().equals("Abam Scientific Employee")) {
-							long[] roleId = {role.getRoleId()};							
-							RoleLocalServiceUtil.addUserRoles(themeDisplay.getUserId(), roleId); 
-						}
-					}
-				} catch (SystemException e) {
-					e.printStackTrace();
-				}
+				addRoleToLiferayUser(ABAM_SCIENTIFIC_ROLE_NAME);
+			} else if (loggedInEmployeeIsAdministrativeEmployee()) {
+				addRoleToLiferayUser(ABAM_ADMINISTRATIVE_ROLE_NAME);
 			}
 		}
 	}
+
+	private void addRoleToLiferayUser(String roleName) {
+		long companyId = themeDisplay.getCompanyId();
+		try {
+
+			List<Role> roleList = RoleLocalServiceUtil.getRoles(companyId);
+			for (Role role : roleList) {
+				if (role.getName().equals(roleName)) {
+					long[] roleId = {role.getRoleId()};							
+					RoleLocalServiceUtil.addUserRoles(themeDisplay.getUserId(), roleId); 
+				}
+			}
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	private boolean loggedInEmployeeIsAdministrativeEmployee() {
+		for (String groupName : loggedInEmployee.getGroupMembership()) {
+			if (groupName.contains(ADMINISTRATIVE_EMPLOYEE_GROUP_NAME_FROM_LDAP)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private boolean loggedInEmployeeIsScientificEmployee() {
 		for (String groupName : loggedInEmployee.getGroupMembership()) {
 			if (groupName.contains(SCIENTIFIC_EMPLOYEE_GROUP_NAME_FROM_LDAP)) {
