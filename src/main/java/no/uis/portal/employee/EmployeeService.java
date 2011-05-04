@@ -18,7 +18,10 @@ import com.liferay.portal.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.*;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
+import com.liferay.portal.service.RoleLocalServiceUtil;
+import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
@@ -31,6 +34,7 @@ public class EmployeeService {
 	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
+	private static final String SCIENTIFIC_EMPLOYEE_GROUP_NAME_FROM_LDAP = "alle-vit";
 
 	private Logger log = Logger.getLogger(EmployeeService.class);
 	
@@ -98,7 +102,7 @@ public class EmployeeService {
 		setSelectedDepartmentNumber(0);
 		getDepartmentListFromWebService();
 		checkIfLoggedInUserIsAuthor();
-		
+		addRoleToEmployee();
 	}
 	
 	private void checkIfLoggedInUserIsAuthor() {
@@ -499,6 +503,36 @@ public class EmployeeService {
 		return false;
 	}
 	
+	public void addRoleToEmployee() {
+		if (loggedInEmployee != null) {
+
+			if (loggedInEmployeeIsScientificEmployee()) {
+				long companyId = themeDisplay.getCompanyId();
+				try {
+
+					List<Role> roleList = RoleLocalServiceUtil.getRoles(companyId);
+					for (Role role : roleList) {
+						if (role.getName().equals("Abam Scientific Employee")) {
+							long[] roleId = {role.getRoleId()};							
+							RoleLocalServiceUtil.addUserRoles(themeDisplay.getUserId(), roleId); 
+						}
+					}
+				} catch (SystemException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private boolean loggedInEmployeeIsScientificEmployee() {
+		for (String groupName : loggedInEmployee.getGroupMembership()) {
+			if (groupName.contains(SCIENTIFIC_EMPLOYEE_GROUP_NAME_FROM_LDAP)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public List<SelectItem> getDepartmentSelectItemList() {
 		return departmentSelectItemList;
 	}
