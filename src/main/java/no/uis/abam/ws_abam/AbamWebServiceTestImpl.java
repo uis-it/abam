@@ -718,29 +718,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				lowestLevenshteinDistance = currentDistance;
 			}
 		}
+		
+		if (foundEmployee.getName().equals("")) {
+			EmployeeDAO edao = new EmployeeDAOImpl();
+			Employee emp = edao.findEmployeeByEmployeeFullName(facultySupervisorName);
+			if (emp != null) foundEmployee = emp;
+		}
+		
 		return foundEmployee;
 	}
 	
-	public void runPersonWS() throws Exception {
-		PersonWebService personWS = getWS();
-		PersonType person = personWS.getPersonByStudentNumber("202551");
-		
-		List<AffiliationDataType> test = person.getAffiliationData();
-		for (AffiliationDataType affiliationDataType : test) {
-			if(affiliationDataType instanceof StudentDataType) {
-				StudentDataType sdt = (StudentDataType)affiliationDataType;
-				List<AcademicAffiliationType> test2 = sdt.getAcademicAffiliation();
-				for (AcademicAffiliationType academicAffiliationType : test2) {
-					List<TeachingLinkType> test3 = academicAffiliationType.getTeachingLink();
-					for (TeachingLinkType teachingLinkType : test3) {
-					}
-				}
-			}
-		}		
-	}
-	
 	private PersonWebService getWS() {
-		//String targetUrl = "http://wsapps-test01.uis.no/ws-person/person";
 		InputStream cfgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
 		Properties props = new Properties();
 		try {
