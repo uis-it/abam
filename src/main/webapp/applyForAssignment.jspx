@@ -4,11 +4,12 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle5.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_apply_for_assignment}" styleClass="titleStyle"/><br/>
 		<ice:form partialSubmit="true" >
-			<ice:outputText value="#{msgs.lbl_apply_for_assignment}"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">				
+			<table>				
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
 					<td><ice:outputText value="#{applicationBean.currentAssignment.title}"></ice:outputText></td>
@@ -50,14 +51,14 @@
 							<f:facet name="header">
 								<ice:outputText value="#{msgs.lbl_supervisor}"/>
 							</f:facet>
-							<ice:outputText id="name" value="#{msgs.lbl_name}"/>
+							<ice:outputText id="name" value="#{msgs.lbl_name}" styleClass="supervisorHeaderStyle"/>
 							<ice:outputText id="nameInput" value="#{supervisor.name}"/>
-							<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
-							<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"/>
+							<ice:outputText id="Email" value="#{msgs.lbl_email}" styleClass="supervisorHeaderStyle" rendered="#{supervisor.external and !empty supervisor.email}"/>
+							<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external and !empty supervisor.email}"/>
+							<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" styleClass="supervisorHeaderStyle" rendered="#{supervisor.external and !empty supervisor.phoneNumber}"/>
+							<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external and !empty supervisor.phoneNumber}"/>
+							<ice:outputText id="company" value="#{msgs.lbl_company}" styleClass="supervisorHeaderStyle" rendered="#{supervisor.external and !empty supervisor.companyName}"/>
+							<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external and !empty supervisor.companyName}"/>
 						</ice:column>
 					</ice:dataTable></td>
 					<td></td>
@@ -74,24 +75,19 @@
 					<td></td>
 				</tr>		
 				<tr>
-					<td></td>
-					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" id="BackButton" immediate="true"/>
-						<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}" id="SaveButton"/>
-						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true"/>
+						<table>
+							<tr><td>
+						<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" id="BackButton" immediate="true"/></td>
+						<td><ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}" id="SaveButton"/></td>
+						<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true"/></td>
+						</tr>
+						</table>
 					</td>
+					<td></td>
+					<td></td>
 				</tr>
-			
 			</table>
-			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
-				<f:facet name="header">
-					<ice:outputText value="#{msgs.lbl_confirmation}"/>
-				</f:facet>
-				<f:facet name="body">
-					<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_ok}"/>
-				</f:facet>
-			</ice:panelPopup>
 		</ice:form>
 	</ice:portlet>
 </f:view>

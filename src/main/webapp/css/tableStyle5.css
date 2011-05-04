@@ -1,0 +1,71 @@
+
+/* common to all columns*/
+.assignColumn, .titleColumn, .studentColumn, .priorityColumn, .facultySupervisorColumn, .coStudentColumn{
+    border-right: 1px solid #666666;
+    border-bottom: 1px solid #666666;
+    border: 1px solid #666666;    
+}
+
+.assignColumn{
+    width: 45px;
+}
+
+.titleColumn{
+    width: 300px;
+}
+
+.studentColumn{
+    width: 225px;
+}
+
+.priorityColumn{
+    width: 150px;
+}
+
+.facultySupervisorColumn{
+    width: 130px;
+}
+
+.coStudentColumn{
+    width: 75px;
+}
+
+.tableStyle{
+    border: 1px solid #666666;
+}
+
+.oddRow{
+    background-color: #F5F5F5;
+}
+
+.evenRow{
+    background-color: #F0F8FF;
+}
+
+.headerStyle{
+	border: 1px solid #666666;
+}
+
+.supervisorHeaderStyle{
+	font-weight: bold; 	
+}
+
+.titleStyle{
+	font-size: 18px;	
+}
+
+.selectRadio{
+	border: 0px;	
+}
+
+td{
+	padding: 5px;	
+}
+
+form{
+	margin: 25px 0px;
+}
+
+table{
+
+}
