@@ -21,13 +21,11 @@
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-digester/commons-digester/1.8/commons-digester-1.8.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-el/commons-el/1.0/commons-el-1.0.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-lang/commons-lang/2.1/commons-lang-2.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/mail/mail/1.4/mail-1.4.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar</webClassPathEntry>
-        <webClassPathEntry>C:/Users/Bente/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/log4j/log4j/1.2.15/log4j-1.2.15.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/no/uis/portal/portlet/portlet-util/2.0.10/portlet-util-2.0.10.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/apache/commons/ssl/not-yet-commons-ssl/0.3.9/not-yet-commons-ssl-0.3.9.jar</webClassPathEntry>
@@ -56,5 +54,6 @@
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/springframework/spring-expression/3.0.4.RELEASE/spring-expression-3.0.4.RELEASE.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/org/springframework/spring-web/3.0.4.RELEASE/spring-web-3.0.4.RELEASE.jar</webClassPathEntry>
         <webClassPathEntry>C:/Users/Bente/.m2/repository/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar</webClassPathEntry>
+        <webClassPathEntry>C:/Users/Bente/.m2/repository/xml-resolver/xml-resolver/1.2/xml-resolver-1.2.jar</webClassPathEntry>
     </webClassPathEntries>
 </tomcatProjectProperties>
