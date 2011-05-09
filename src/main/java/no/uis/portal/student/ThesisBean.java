@@ -198,7 +198,7 @@ public class ThesisBean implements DisposableBean {
             	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
             }
             if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment can only be a pdf, zip, gif, png, jpeg, jpg, doc or docx file.");
+            	currentStudentsThesis.setFileUploadErrorMessage("The attachment can only be a pdf, zip, doc or docx file.");
             }
         }
 	}

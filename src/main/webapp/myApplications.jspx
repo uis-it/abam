@@ -5,7 +5,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:outputStyle href="/css/tableStyle5.css" id="tableStyle"/>
+		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_my_applications}" styleClass="titleStyle"/>
 		<ice:form>
 			<ice:dataTable var="application" value="#{studentService.currentStudent.applicationPriorityArray}">

@@ -5,12 +5,10 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>		
+		<ice:outputText value="#{lbl_submit_thesis_saved}" styleClass="titleStyle"/>
 		<ice:form>
-		
-			<ice:outputText value="#{lbl_submit_thesis_saved}"/><br/>
-			<br/>
-			<br/>
-			<table border="0" >				
+			<table>				
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_submit_thesis}"/></td>
 					<td><ice:outputText id="title" value="#{thesisBean.currentAssignment.title}"/></td>					
@@ -34,9 +32,12 @@
 				</ice:dataTable>
 				</tr>	
 			</table>
-
-			<ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" id="mainMenuButton" immediate="true"/>
+			<table>
+				<tr>
+					<td><ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_back}" id="BackButton" immediate="true"/></td>
+					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" id="mainMenuButton" immediate="true"/></td>
+				</tr>
+			</table>
 		</ice:form>
 	</ice:portlet>
 </f:view>

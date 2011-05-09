@@ -58,8 +58,10 @@ public class StudentAssignmentBean implements DisposableBean {
 						.findDepartmentOe2ForCurrentStudent()));
 		if(assignment == null) {
 			assignment = new Assignment();
+			assignment.setFacultySupervisor(new Employee());
 			studentService.getCurrentStudent().setCustomAssignment(assignment);
 			studentService.updateStudentInWebServiceFromCurrentStudent();
+			
 		}
 		studentService.setSelectedAssignment(assignment);
 		setCurrentAssignment(assignment);
@@ -96,7 +98,9 @@ public class StudentAssignmentBean implements DisposableBean {
 	 * @param event
 	 */	
 	public void actionRemoveSupervisor(ActionEvent event) {
-		currentAssignment.getSupervisorList().remove(getRowFromActionEvent(event));		
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable) uic.getParent().getParent().getParent().getParent().getParent();
+		currentAssignment.getSupervisorList().remove(table.getRowData());		
 	}
 	
 	/**
@@ -209,7 +213,9 @@ public class StudentAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionRemoveAttachment(ActionEvent event){
-	    currentAssignment.getAttachedFileList().remove(getRowFromActionEvent(event));		
+		UIComponent uic = event.getComponent();
+		HtmlDataTable table = (HtmlDataTable) uic.getParent().getParent().getParent().getParent();
+	    currentAssignment.getAttachedFileList().remove(table.getRowData());		
 	}
 	
 	/**

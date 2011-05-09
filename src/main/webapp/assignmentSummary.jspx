@@ -5,12 +5,10 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_assignment_summary}" styleClass="titleStyle"/><br/>
 		<ice:form partialSubmit="true" >
-		
-			<ice:outputText value="#{msgs.lbl_assignment_summary}"/><br/>
-			<br/>
-			<br/>
-			<table border="0" width="800">
+			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.title}"></ice:outputText></td>
@@ -78,36 +76,48 @@
 					<td></td>
 					<td></td>
 					<td>
-						<ice:commandButton type="submit" action="createAssignment" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-						<ice:commandButton 
-							type="submit" 
-							action="applyForAssignment" 
-							actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" 
-							value="#{msgs.btn_apply_for_assignment}" 
-							id="ApplyButton" 
-							rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.appliedForThreeAssignments}"
-							disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"
-						/>
-						<ice:commandButton 
-							type="submit" 
-							action="backToView" 
-							value="#{msgs.btn_cancel}" 
-							id="CancelButton" 
-							immediate="true"
-						/>
-						<ice:outputText value="#{studentService.currentStudent.applicationsErrorMessage }" rendered="#{studentService.currentStudent.appliedForThreeAssignments}" />
+					<table>
+						<tr>
+							<td>
+								<ice:commandButton 
+									type="submit" 
+									action="createAssignment" 
+									value="#{msgs.btn_back}" 
+									id="BackButton" 
+									immediate="true"
+									/>
+							</td>
+							<td>
+								<ice:commandButton 
+									type="submit" 
+									action="applyForAssignment" 
+									actionListener="#{applicationBean.actionSetCustomAssignmentToApplication}" 
+									value="#{msgs.btn_apply_for_assignment}" 
+									id="ApplyButton" 
+									rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.appliedForThreeAssignments}"
+									disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}"
+									/>
+							</td>
+							<td>
+								<ice:commandButton 
+									type="submit" 
+									action="backToView" 
+									value="#{msgs.btn_cancel}" 
+									id="CancelButton" 
+									immediate="true"
+									/>
+							</td>
+							<td>
+								<ice:outputText 
+									value="#{studentService.currentStudent.applicationsErrorMessage}" 
+									rendered="#{studentService.currentStudent.appliedForThreeAssignments}" 
+									/>
+							</td>
+						</tr>
+					</table>
 					</td>
 				</tr>
-			
 			</table>
-			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
-				<f:facet name="header">
-					<ice:outputText value="#{msgs.lbl_confirmation}"/>
-				</f:facet>
-				<f:facet name="body">
-					<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_ok}"/>
-				</f:facet>
-			</ice:panelPopup>
 		</ice:form>
 	</ice:portlet>
 </f:view>
