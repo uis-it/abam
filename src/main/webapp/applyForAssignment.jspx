@@ -5,10 +5,8 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>
-		<ice:outputText value="#{msgs.lbl_apply_for_assignment}" styleClass="titleStyle"/><br/>
+		<ice:outputText value="#{msgs.lbl_apply_for_assignment}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true" >
-			<br/>
-			<br/>
 			<table>				
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
@@ -45,6 +43,10 @@
 					<td><ice:outputText value="#{applicationBean.currentAssignment.facultySupervisor.name}"></ice:outputText></td>
 					<td></td>
 				</tr>
+			</table>
+		</ice:form>
+		<ice:form>
+			<table>
 				<tr><td>
 					<ice:dataTable var="supervisor" value="#{applicationBean.currentAssignment.supervisorList }">
 						<ice:column>
