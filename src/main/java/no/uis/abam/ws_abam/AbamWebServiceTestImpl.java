@@ -48,6 +48,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public AbamWebServiceTestImpl(){
 		personWebService = getWS();
+		fillEmployeeListIfEmpty();
 		//createAssignmentListContent();
 		//initializeDepartmentAndStudyProgramLists();
 		//initializeStudentList();
@@ -684,10 +685,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 
 	public Employee getEmployeeFromUisLoginName(String loginName) {
 		
-		if (employeeList.isEmpty()) {
-			EmployeeDAO edao = new EmployeeDAOImpl();
-			employeeList = edao.getAllTNEmployeesFromLdap();
-		}
+		fillEmployeeListIfEmpty();
 		for (Employee employee : employeeList) {
 			if (employee.getEmployeeId().equals(loginName)) {
 				return employee;
@@ -698,10 +696,7 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 
 	public Employee getEmployeeFromFullName(String facultySupervisorName) {
 		
-		if (employeeList.isEmpty()) {
-			EmployeeDAO edao = new EmployeeDAOImpl();
-			employeeList = edao.getAllTNEmployeesFromLdap();
-		}
+		fillEmployeeListIfEmpty();
 		
 		int countNames = (facultySupervisorName.split(" ")).length;
 		int lengthOfName = facultySupervisorName.length();		
@@ -726,6 +721,13 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		}
 		
 		return foundEmployee;
+	}
+
+	private void fillEmployeeListIfEmpty() {
+		if (employeeList.isEmpty()) {
+			EmployeeDAO edao = new EmployeeDAOImpl();
+			employeeList = edao.getAllTNEmployeesFromLdap();
+		}
 	}
 	
 	private PersonWebService getWS() {
