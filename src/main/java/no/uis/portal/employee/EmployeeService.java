@@ -509,7 +509,7 @@ public class EmployeeService {
 	}
 	
 	public void addRoleToEmployee() {
-		if (loggedInEmployee != null) {
+		if (loggedInEmployee != null && loggedInEmployee.getGroupMembership() != null) {
 			if (loggedInEmployeeIsScientificEmployee()) {
 				addRoleToLiferayUser(ABAM_SCIENTIFIC_ROLE_NAME);
 			} else if (loggedInEmployeeIsAdministrativeEmployee()) {
