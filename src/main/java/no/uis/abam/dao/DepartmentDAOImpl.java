@@ -23,7 +23,11 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<Department> getDepartments() {
-		Query query = entityManager.createQuery("FROM no.uis.abam.dom.Department WHERE oe1=8 AND oeNivaa=2 AND oeNavn_Engelsk LIKE 'Department%'");
+		Query query = entityManager.createQuery(
+				"FROM no.uis.abam.dom.Department " +
+				"WHERE oe1=8 AND oeNivaa=2 " +
+				"AND oeNavn_Engelsk LIKE 'Department%'"
+		);
 		return query.getResultList();
 	}
 	
