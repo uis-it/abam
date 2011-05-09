@@ -5,9 +5,9 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form>
-			<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}"/><br/>
+			<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}" styleClass="titleStyle"/><br/>
 			<br/>
 			<br/>
 			<table border="0" width="800">

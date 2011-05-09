@@ -41,6 +41,7 @@ public class ExternalExaminerBean implements DisposableBean{
 	
 	private void createThesisInformationFromThesis(List<Thesis> thesisList) {
 		ThesisInformation thesisInformation;
+		thesisInformationList.clear();
 		if(thesisList != null) {
 			for (Thesis thesis : thesisList) {
 				thesisInformation = new ThesisInformation();

@@ -4,9 +4,9 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>		
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>		
-		<ice:form >
-			<h:outputText value="#{msgs.lbl_search_archive}"/><br/>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>		
+		<ice:outputText value="#{msgs.lbl_search_archive}" styleClass="titleStyle"/>
+		<ice:form>
 			<table>
 			<tr>
 				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
@@ -18,9 +18,7 @@
 			</table>
 		</ice:form>
 		
-		<ice:form partialSubmit="true" >
-			<br/>
-			<br/>
+		<ice:form partialSubmit="true" >			
 			<ice:dataTable 
 					id="thesisTable" 
 					var="item" 
@@ -87,9 +85,12 @@
 	                	<ice:commandButton value="#{msgs.lbl_postpone}" action="postponeThesisDeadline" actionListener="#{thesisBean.actionPreparePostponeDeadline}"/>
 					</ice:column>							
 				</ice:dataTable>
-			
-			<table border="0">
-				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
+		</ice:form>
+		<ice:form>
+			<table>
+				<tr>				
+					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
+				</tr>
 			</table>
 		</ice:form>
 	</ice:portlet>

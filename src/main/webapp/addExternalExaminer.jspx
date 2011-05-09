@@ -5,8 +5,9 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/tableStyle3.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="#{msgs.lbl_add_edit_ext_examiner}" styleClass="titleStyle"/>
 		<ice:form>
 			<table>
 			<tr>
@@ -20,10 +21,7 @@
 		</ice:form>
 		
 		<ice:form partialSubmit="true" >
-			<ice:outputText value="#{msgs.lbl_add_edit_ext_examiner}"/>
-			<br/>
-			<br/>
-			<table border="0">
+			<table>
 				<tr>
 					<td>
 						<ice:outputText id="examinerName" value="#{msgs.lbl_name}" />
@@ -85,7 +83,10 @@
 						<ice:commandButton id="cleanButton" value="#{msgs.btn_clear}" actionListener="#{externalExaminerBean.actionClearFields}"/>
 					</td>
 				</tr>						
-								
+			</table>
+		</ice:form>
+		<ice:form partialSubmit="true">
+			<table>				
 				<tr>
 				<ice:dataTable 
 					id="ThesisTable" 
@@ -146,6 +147,8 @@
 				</ice:dataTable>
 				</tr>			
 			</table>
+		</ice:form>
+		<ice:form>
 			<table>
 				<tr>
 					<td>

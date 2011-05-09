@@ -8,7 +8,7 @@
 		<ice:outputStyle href="/css/assignmentSummaryStyle.css" id="assignmentSummaryStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 		
-			<ice:outputText value="#{msgs.lbl_assignment_summary}"/><br/>
+			<ice:outputText value="#{msgs.lbl_assignment_summary}" styleClass="titleStyle"/><br/>
 			<br/>
 			<br/>
 			<table>

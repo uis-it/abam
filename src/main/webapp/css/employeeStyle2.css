@@ -5,7 +5,15 @@ table, td{
 }
 
 td {
-	padding: 5px;
+	padding: 3px;
+}
+
+form{
+	margin: 10px 0px;
+}
+
+.titleStyle{
+	font-size: 18px;	
 }
 
 .selectRadio {

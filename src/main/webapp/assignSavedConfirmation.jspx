@@ -5,15 +5,15 @@
 
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/style3.css" id="tableStyle"></ice:outputStyle>
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/tableStyle3.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
-			<ice:outputText value="#{msgs.lbl_assign_assignments_confirmation}"/><br/>
+			<ice:outputText value="#{msgs.lbl_assign_assignments_confirmation}" styleClass="titleStyle"/><br/>
 			<br/>
 			<br/>
 			<ice:dataTable 
 				id="SummaryData"
-                columnClasses="titleColumn, studentColumn, priorityColumn, facultySupervisorColumn, coStudentColumn, coStudentColumn"
+                columnClasses="titleColumn, studentColumn, priorityColumn, facultySupervisorColumn"
                 rowClasses="oddRow, evenRow"
                 headerClass="headerStyle"
                 styleClass="tableStyle"

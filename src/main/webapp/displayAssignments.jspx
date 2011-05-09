@@ -5,7 +5,8 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true" >
 			<br/>
 			
@@ -31,7 +32,6 @@
 					<td><ice:selectBooleanCheckbox value="#{assignmentBean.showExpired}" valueChangeListener="#{assignmentBean.actionShowExpired}" partialSubmit="true"/></td>
 				</tr>
 				<tr>
-				<ice:outputText value="#{msgs.lbl_assignments}"/>
 				<ice:dataTable 
 					id="departmentTable" 
 					var="item" 

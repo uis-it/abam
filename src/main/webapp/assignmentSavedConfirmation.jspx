@@ -5,10 +5,10 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true" >
 		
-			<ice:outputText value="#{msgs.lbl_assignment_successfully_saved}"/><br/>
+			<ice:outputText value="#{msgs.lbl_assignment_successfully_saved}" styleClass="titleStyle"/><br/>
 			<br/>
 			<br/>
 			<ice:commandButton type="submit" actionListener="#{assignmentBean.actionCreateNewAssignment}" action="createAssignment" value="#{msgs.btn_create_new}"/>						
