@@ -10,7 +10,7 @@
 			<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}" styleClass="titleStyle"/><br/>
 			<br/>
 			<br/>
-			<table border="0" width="800">
+			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
 					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
@@ -64,6 +64,9 @@
 					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
 				</tr>			
 			</table>
+			</ice:form>
+			<ice:form>
+			<table>
 			<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList}" styleClass="superVisorTable">
 				<ice:column>
 				<f:facet name="header">
@@ -105,9 +108,15 @@
 				</ice:column>										
 			</ice:dataTable>
 			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="#{msgs.btn_add_row}" immediate="true"/>
-			<br/><br/>
-			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
-			<ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_next}" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" id="CreateButton" />
+			</table>
+			</ice:form>
+			<ice:form>
+			<table>
+			<tr>
+				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/> </td>
+				<td><ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_next}" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" id="CreateButton" /></td>
+				</tr>
+			</table>
 		</ice:form>
 	</ice:portlet>
 </f:view>
