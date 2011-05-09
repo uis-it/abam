@@ -6,7 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>		
-		<ice:outputText value="#{lbl_submit_thesis_saved}" styleClass="titleStyle"/>
+		<ice:outputText value="#{msgs.lbl_submit_thesis_saved}" styleClass="titleStyle"/>
 		<ice:form>
 			<table>				
 				<tr>
@@ -20,6 +20,8 @@
 				<tr>
 				</tr>
 			</table>
+		</ice:form>
+		<ice:form>
 			<table>
 				<tr>
 					<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachedFileList }">
@@ -32,6 +34,8 @@
 				</ice:dataTable>
 				</tr>	
 			</table>
+		</ice:form>
+		<ice:form>
 			<table>
 				<tr>
 					<td><ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_back}" id="BackButton" immediate="true"/></td>

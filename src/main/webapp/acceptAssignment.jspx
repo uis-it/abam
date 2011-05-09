@@ -6,9 +6,13 @@
 		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_accept_assignment}" styleClass="titleStyle"/>
 		<ice:form rendered="#{thesisBean.renderNotAssigned}">
-			<ice:outputText value="#{msgs.lbl_not_assigned_thesis_yet}" />
-			<ice:commandButton type="submit" action="backToView"
-				value="#{msgs.btn_back}" id="BackButton" />
+			<table>
+			<tr>
+			<td><ice:outputText value="#{msgs.lbl_not_assigned_thesis_yet}" /></td>
+			<td><ice:commandButton type="submit" action="backToView"
+				value="#{msgs.btn_back}" id="BackButton" /> </td>
+			</tr>
+			</table>
 		</ice:form>
 		<ice:form partialSubmit="true"
 			rendered="#{!thesisBean.renderNotAssigned}">
@@ -39,7 +43,7 @@
 				</tr>
 			</table>
 		</ice:form>
-		<ice:form>
+		<ice:form rendered="#{!thesisBean.renderNotAssigned}">
 			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}" /></td>
@@ -74,7 +78,7 @@
 				</tr>
 				</table>
 			</ice:form>
-			<ice:form>
+			<ice:form rendered="#{!thesisBean.renderNotAssigned}">
 				<ice:dataTable var="supervisor"
 					value="#{thesisBean.currentAssignment.supervisorList }">
 					<ice:column>
@@ -179,7 +183,7 @@
 				</tr>
 			</table>
 		</ice:form>
-		<ice:form>
+		<ice:form rendered="#{!thesisBean.renderNotAssigned}">
 			<table>
 				<tr>				
 					<td><ice:commandButton type="submit" action="backToView"

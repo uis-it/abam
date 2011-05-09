@@ -205,7 +205,7 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionRemoveAttachment(ActionEvent event){
 		UIComponent uic = event.getComponent();		
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent().getParent().getParent();
 		
 		currentStudentsThesis.getAttachedFileList().remove(table.getRowData());		
 	}

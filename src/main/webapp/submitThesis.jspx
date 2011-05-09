@@ -27,24 +27,25 @@
 					<td><ice:outputText value="#{msgs.lbl_add_attachments}" style="font-weight: bold; vertical-align: text-top;"/> </td>
 				</tr>
 				<tr>
-					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}" /> </td>
+					<td> <ice:inputFile fileNamePattern=".+\.pdf|.+\.zip|.+\.doc|.+\.docx" actionListener="#{thesisBean.actionFileUpload}" height="50"/> </td>
 					<td><ice:outputText value="#{thesisBean.currentStudentsThesis.fileUploadErrorMessage}"/> </td>
 				</tr>
 			</table>
 		</ice:form>
 		<ice:form>
 			<table>
-				<tr>
+				
 					<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachedFileList }">
 					<ice:column>
 					<f:facet name="header">
 						<ice:outputText value="#{msgs.lbl_submitted_attachments}" rendered="#{!empty thesisBean.currentStudentsThesis.attachedFileList}"/>
 					</f:facet>
-						<ice:outputText id="nameInput" value="#{attachment}"/>
-						<ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{thesisBean.actionRemoveAttachment}"/>
+					<tr>
+						<td><ice:outputText id="nameInput" value="#{attachment}"/> </td>
+						<td><ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{thesisBean.actionRemoveAttachment}"/> </td>
+					</tr>
 					</ice:column>
 				</ice:dataTable>
-				</tr>	
 			</table>
 		</ice:form>
 		<ice:form>
@@ -63,6 +64,7 @@
 							action="submitThesisSavedConfirmation" 
 							actionListener="#{thesisBean.actionSaveThesis}" 
 							value="#{msgs.btn_save}" 
+							disabled="#{empty thesisBean.currentStudentsThesis.attachedFileList}"
 							id="SubmitButton" 
 							/>
 					</td>
