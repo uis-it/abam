@@ -1,120 +1,164 @@
 
-<f:view 
-	xmlns:f="http://java.sun.com/jsf/core"
+<f:view xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />	
+	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}"
+			styleClass="titleStyle" />
+		<br />
 		<ice:form>
-			<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}" styleClass="titleStyle"/><br/>
-			<br/>
-			<br/>
 			<table>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
-					<td><ice:inputText id="id" size="10" disabled="true" required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
-					<td><ice:message for="id" showSummary="true" showDetail="false" ></ice:message></td>
+					<td><ice:outputText value="#{msgs.lbl_id}" /></td>
+					<td><ice:inputText id="id" size="10" disabled="true"
+						required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
+					<td><ice:message for="id" showSummary="true"
+						showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
-					<td><ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
-					<td><ice:message for="title" showSummary="true" showDetail="false" ></ice:message></td>
+					<td><ice:outputText value="#{msgs.lbl_title}" /></td>
+					<td><ice:inputText id="title" size="100" required="true"
+						value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
+					<td><ice:message for="title" showSummary="true"
+						showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_desc}"/> </td>
-					<td><ice:inputTextarea id="description" cols="96" rows="6" required="true" value="#{assignmentBean.currentAssignment.description}" ></ice:inputTextarea></td>
-					<td><ice:message for="description" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:outputText value="#{msgs.lbl_desc}" /></td>
+					<td><ice:inputTextarea id="description" cols="96" rows="6"
+						required="true"
+						value="#{assignmentBean.currentAssignment.description}"></ice:inputTextarea></td>
+					<td><ice:message for="description" showSummary="true"
+						showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-					<td><ice:selectOneMenu id="departmentInput" value="#{assignmentBean.currentAssignment.departmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}" partialSubmit="true">
-						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
-					</ice:selectOneMenu>
-					</td>
-					
-					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:outputText value="#{msgs.lbl_department}" /></td>
+					<td><ice:selectOneMenu id="departmentInput"
+						value="#{assignmentBean.currentAssignment.departmentNumber}"
+						valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}"
+						partialSubmit="true">
+						<f:selectItems id="departmentInputContent"
+							value="#{employeeService.departmentSelectItemList}" />
+					</ice:selectOneMenu></td>
+
+					<td><ice:message for="departmentInput" showSummary="true"
+						showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_std_prg}"/> </td>
-					<td><ice:selectOneMenu id="studyProgramInput" value="#{assignmentBean.currentAssignment.studyProgramNumber}">
-						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramSelectItemList}"/>
+					<td><ice:outputText value="#{msgs.lbl_std_prg}" /></td>
+					<td><ice:selectOneMenu id="studyProgramInput"
+						value="#{assignmentBean.currentAssignment.studyProgramNumber}">
+						<f:selectItems id="studyProgramContent"
+							value="#{employeeService.studyProgramSelectItemList}" />
 					</ice:selectOneMenu></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
-				<td>				
-				<ice:selectOneRadio id="type" required="false" styleClass="selectRadio" value="#{assignmentBean.currentAssignment.bachelor}" valueChangeListener="#{assignmentBean.actionChangeAssignmentTypeRadioListener}" partialSubmit="true">
-					<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
-					<f:selectItem itemValue="#{false}" itemLabel="Master" />
-				</ice:selectOneRadio>
-			
-				</td>
+					<td><ice:outputText value="#{msgs.lbl_type}" /></td>
+					<td><ice:selectOneRadio id="type" required="false"
+						styleClass="selectRadio"
+						value="#{assignmentBean.currentAssignment.bachelor}"
+						valueChangeListener="#{assignmentBean.actionChangeAssignmentTypeRadioListener}"
+						partialSubmit="true">
+						<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
+						<f:selectItem itemValue="#{false}" itemLabel="Master" />
+					</ice:selectOneRadio></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_no_of_std}"/> </td>
-					<td><ice:inputText id="numberOfStudents" required="true" disabled="#{assignmentBean.currentAssignment.master}" validator="#{assignmentBean.validateNumberOfStudentsField}" value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
-					<td><ice:message for="numberOfStudents" showSummary="true" showDetail="false"></ice:message></td>
+					<td><ice:outputText value="#{msgs.lbl_no_of_std}" /></td>
+					<td><ice:inputText id="numberOfStudents" required="true"
+						disabled="#{assignmentBean.currentAssignment.master}"
+						validator="#{assignmentBean.validateNumberOfStudentsField}"
+						value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+					<td><ice:message for="numberOfStudents" showSummary="true"
+						showDetail="false"></ice:message></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
-					<td><ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:inputText></td>
-					<td><ice:message for="facultySupervisor" showSummary="true" showDetail="false"></ice:message></td>
-				</tr>			
+					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}" />
+					</td>
+					<td><ice:inputText id="facultySupervisor" size="100"
+						required="true"
+						value="#{assignmentBean.currentAssignment.facultySupervisor.name}"></ice:inputText></td>
+					<td><ice:message for="facultySupervisor" showSummary="true"
+						showDetail="false"></ice:message></td>
+				</tr>
 			</table>
-			</ice:form>
-			<ice:form>
 			<table>
-			<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList}" styleClass="superVisorTable">
-				<ice:column>
-				<f:facet name="header">
-						<ice:outputText value="#{msgs.lbl_supervisor}"/>
-				</f:facet>
-				
-					<ice:outputText id="name" value="#{msgs.lbl_name}"/>
-				</ice:column>
-				<ice:column>
-					<ice:inputText id="nameInput" value="#{supervisor.name}" required="true" partialSubmit="true"/>
-				</ice:column>
-				<ice:column>
-					<ice:outputText value="#{msgs.lbl_external}" />
-				</ice:column>
-				<ice:column>
-					<ice:selectBooleanCheckbox id="external" value="#{supervisor.external}" partialSubmit="true" styleClass="selectBoolean" />
-				</ice:column>
-				<ice:column>
-					<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external}"/>
-				</ice:column>
-				<ice:column>	
-					<ice:inputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external}" partialSubmit="true"/>
-				</ice:column>
-				<ice:column>
-					<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external}"/>
-				</ice:column>
-				<ice:column>
-					<ice:inputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"  partialSubmit="true"/>
-				</ice:column>
-				<ice:column>
-					<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external}"/>
-				</ice:column>
-				<ice:column>
-					<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}"  partialSubmit="true"/>
-				</ice:column>
-				<ice:column>
-					<ice:commandButton id="removeNewSupervisor" actionListener="#{assignmentBean.actionRemoveSupervisor}" value="#{msgs.btn_remove_row}" immediate="true"/>
-					<td><ice:message for="nameInput" showSummary="true" showDetail="false"></ice:message> </td>
-				</ice:column>										
-			</ice:dataTable>
-			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="#{msgs.btn_add_row}" immediate="true"/>
+				<ice:dataTable var="supervisor"
+					value="#{assignmentBean.currentAssignment.supervisorList}"
+					styleClass="superVisorTable"
+					style="margin-top: 10px;">
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="#{msgs.lbl_supervisor}" />
+						</f:facet>
+
+						<ice:outputText id="name" value="#{msgs.lbl_name}" />
+					</ice:column>
+					<ice:column>
+						<ice:inputText id="nameInput" value="#{supervisor.name}"
+							required="true" partialSubmit="true" />
+					</ice:column>
+					<ice:column>
+						<ice:outputText value="#{msgs.lbl_external}" />
+					</ice:column>
+					<ice:column>
+						<ice:selectBooleanCheckbox id="external"
+							value="#{supervisor.external}" partialSubmit="true"
+							styleClass="selectBoolean" />
+					</ice:column>
+					<ice:column>
+						<ice:outputText id="Email" value="#{msgs.lbl_email}"
+							rendered="#{supervisor.external}" />
+					</ice:column>
+					<ice:column>
+						<ice:inputText id="emailInput" value="#{supervisor.email}"
+							rendered="#{supervisor.external}" partialSubmit="true" />
+					</ice:column>
+					<ice:column>
+						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}"
+							rendered="#{supervisor.external}" />
+					</ice:column>
+					<ice:column>
+						<ice:inputText id="phoneNumberInput"
+							value="#{supervisor.phoneNumber}"
+							rendered="#{supervisor.external}" partialSubmit="true" />
+					</ice:column>
+					<ice:column>
+						<ice:outputText id="company" value="#{msgs.lbl_company}"
+							rendered="#{supervisor.external}" />
+					</ice:column>
+					<ice:column>
+						<ice:inputText id="companyInput" value="#{supervisor.companyName}"
+							rendered="#{supervisor.external}" partialSubmit="true" />
+					</ice:column>
+					<ice:column>
+						<ice:commandButton id="removeNewSupervisor"
+							actionListener="#{assignmentBean.actionRemoveSupervisor}"
+							value="#{msgs.btn_remove_row}" immediate="true" />
+						<td><ice:message for="nameInput" showSummary="true"
+							showDetail="false"></ice:message></td>
+					</ice:column>
+				</ice:dataTable>
 			</table>
-			</ice:form>
-			<ice:form>
 			<table>
-			<tr>
-				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/> </td>
-				<td><ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_next}" actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" id="CreateButton" /></td>
+				<tr>
+					<td><ice:commandButton id="addNewSupervisor"
+							actionListener="#{assignmentBean.actionAddSupervisor}"
+							value="#{msgs.btn_add_row}" immediate="true" /></td>
+				</tr>
+			</table>
+			<table style="margin-top: 10px;">
+				<tr>
+					<td><ice:commandButton type="submit" action="backToView"
+						value="#{msgs.btn_back}" id="BackButton" immediate="true" /></td>
+					<td><ice:commandButton type="submit"
+						action="assignmentAttachment" value="#{msgs.btn_next}"
+						immediate="false"
+						actionListener="#{assignmentBean.actionUpdateCurrentAssignment}"
+						id="CreateButton" /></td>
 				</tr>
 			</table>
 		</ice:form>

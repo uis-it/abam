@@ -7,10 +7,8 @@
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle3.css" id="tableStyle"></ice:outputStyle>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="#{msgs.lbl_assign_assignments_confirmation}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true">
-			<ice:outputText value="#{msgs.lbl_assign_assignments_confirmation}" styleClass="titleStyle"/><br/>
-			<br/>
-			<br/>
 			<ice:dataTable 
 				id="SummaryData"
                 columnClasses="titleColumn, studentColumn, priorityColumn, facultySupervisorColumn"
@@ -66,8 +64,10 @@
                 <ice:outputText value="#{item.coStudent2Name}"/>
             </ice:column>
             
-			</ice:dataTable>
-			<table>
+		</ice:dataTable>
+		</ice:form>
+		<ice:form>
+		<table>
 			<tr>
 				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" id="BackButton"/></td>
 			</tr>

@@ -6,12 +6,8 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
-		
+		<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="titleStyle"/><br/>			
 		<ice:form partialSubmit="true" >
-		
-			<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="titleStyle"/><br/>
-			<br/>
-			<br/>
 			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
@@ -34,6 +30,7 @@
 						<ice:inputFile 
 							fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" 
 							actionListener="#{assignmentBean.actionFileUpload}"
+							height="50"
 							/>
 					</td>
 					<td><ice:outputText value="#{assignmentBean.currentAssignment.fileUploadErrorMessage}"/> </td>
@@ -44,18 +41,22 @@
 				styleClass="displayAttachmentStyle" 
 				rowClasses="displayAttachmentStyle" 
 				columnClasses="displayAttachmentStyle"
-				value="#{assignmentBean.currentAssignment.attachedFileList }">
+				value="#{assignmentBean.currentAssignment.attachedFileList }"
+				rendered="#{!empty assignmentBean.currentAssignment.attachedFileList}">
 				<ice:column>
-				<f:facet name="header">
-					<ice:outputText value="#{msgs.lbl_uploaded_attachments}"/>
-				</f:facet>						
-					<ice:outputText id="nameInput" value="#{attachment}"/>
-				</ice:column>
-				<ice:column>
-					<ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{assignmentBean.actionRemoveAttachment}"/>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_uploaded_attachments}"/>
+					</f:facet>											
+					<table>
+						<tr>
+							<td><ice:outputText id="nameInput" value="#{attachment}"/></td>
+							<td><ice:commandButton type="submit" value="#{msgs.btn_remove}" actionListener="#{assignmentBean.actionRemoveAttachment}"/></td>
+						</tr>
+					</table>
 				</ice:column>
 			</ice:dataTable>
-					
+		</ice:form>
+		<ice:form>
 			<table>	
 				<tr>									
 					<td>
@@ -65,16 +66,7 @@
 						<ice:commandButton type="submit" action="assignmentSummary" value="#{msgs.btn_next}" id="Next" actionListener="#{assignmentBean.actionPrepareBackButtonFromAssignmentAttachment }"/>
 					</td>
 				</tr>
-			
 			</table>
-			<ice:panelPopup draggable="true" autoCentre="true" style="z-index: 1000;width: 300px;height: 150px;background-color: grey" rendered="false">
-				<f:facet name="header">
-					<ice:outputText value="Confirmation"/>
-				</f:facet>
-				<f:facet name="body">
-					<ice:commandButton type="submit" action="backToView" value="Ok"/>
-				</f:facet>
-			</ice:panelPopup>
 		</ice:form>
 	</ice:portlet>
 </f:view>

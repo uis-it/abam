@@ -9,7 +9,7 @@ td {
 }
 
 form{
-	margin: 10px 0px;
+	margin-top: 10px;
 }
 
 .titleStyle{
@@ -21,7 +21,7 @@ form{
 }
 
 .superVisorTable {
-	border: 1px solid silver;
+	border: 0px solid silver;
 }
 
 .displayAssignmentsTable {

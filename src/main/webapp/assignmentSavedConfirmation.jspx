@@ -6,11 +6,8 @@
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
-		<ice:form partialSubmit="true" >
-		
-			<ice:outputText value="#{msgs.lbl_assignment_successfully_saved}" styleClass="titleStyle"/><br/>
-			<br/>
-			<br/>
+		<ice:outputText value="#{msgs.lbl_assignment_successfully_saved}" styleClass="titleStyle"/>
+		<ice:form partialSubmit="true" >		
 			<ice:commandButton type="submit" actionListener="#{assignmentBean.actionCreateNewAssignment}" action="createAssignment" value="#{msgs.btn_create_new}"/>						
 			<ice:commandButton type="submit" action="displayAssignments" value="#{msgs.btn_view_assignments}" actionListener="#{employeeService.actionPrepareDisplayAssignments}"/>	
 			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}"/>
