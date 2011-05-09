@@ -6,11 +6,10 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/tableStyle3.css" id="tableStyle"></ice:outputStyle>
 		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true" >
-			<br/>
-			
-			<table border="0">
+			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
 					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true" immediate="true">
@@ -31,15 +30,19 @@
 					<td><ice:outputText value="#{msgs.lbl_show_expired_assignments}" /></td>
 					<td><ice:selectBooleanCheckbox value="#{assignmentBean.showExpired}" valueChangeListener="#{assignmentBean.actionShowExpired}" partialSubmit="true"/></td>
 				</tr>
+			</table>
+		</ice:form>
+		<ice:form partialSubmit="true">
+			<table>
 				<tr>
 				<ice:dataTable 
 					id="departmentTable" 
 					var="item" 
 					value="#{employeeService.displayAssignmentSet}" 
-					styleClass="displayAssignmentsTable"
-					columnClasses="displayAssignmentsTable"
-					headerClass="displayAssignmentsTable"
-					rowClasses="displayAssignmentsTable">
+					columnClasses="assignColumn, titleColumn, facultySupervisorColumn, facultySupervisorColumn, facultySupervisorColumn, assignColumn, assignColumn"
+                	rowClasses="oddRow, evenRow"
+                	headerClass="headerStyle"
+                	styleClass="tableStyle">
 					<ice:column>
 		                <f:facet name="header">
 		                    <ice:headerRow>
@@ -128,6 +131,8 @@
 				</ice:dataTable>
 				</tr>
 			</table>
+		</ice:form>
+		<ice:form>
 			<table>	
 				<tr>					
 					<td>
