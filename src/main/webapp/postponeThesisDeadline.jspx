@@ -6,7 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
-		<ice:outputText value="Utsette innleveringsfrist" styleClass="titleStyle"/>
+		<ice:outputText value="#{msgs.lbl_postpone_submission_date}" styleClass="titleStyle"/>
 		<ice:form>
 		<table>
 			<tr>
