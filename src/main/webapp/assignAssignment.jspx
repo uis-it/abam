@@ -56,7 +56,7 @@
 			<ice:dataTable id="dataSortData"
 				sortColumn="#{assignSortableBean.sortColumnName}"
 				sortAscending="#{assignSortableBean.ascending}"
-				columnClasses="assignColumn, titleColumn, studentColumn, priorityColumn, facultySupervisorColumn, coStudentColumn, coStudentColumn"
+				columnClasses="assignColumn, titleColumn, studentColumn, coStudentColumn, facultySupervisorColumn, coStudentColumn, coStudentColumn"
 				rowClasses="oddRow, evenRow" headerClass="headerStyle"
 				styleClass="tableStyle"
 				value="#{assignSortableBean.applicationInformationAsArray}"
