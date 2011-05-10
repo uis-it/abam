@@ -135,7 +135,7 @@
 				</tr>
 			</table>
 		</ice:form>
-		<ice:form>
+		<ice:form rendered="#{!assignmentBean.renderGetCustomAssignment and !applicationBean.deadlineForApplyingReached}">
 			<table>
 				<ice:dataTable var="attachment" value="#{assignmentBean.currentAssignment.attachedFileList }" rendered="#{!empty assignmentBean.currentAssignment.attachedFileList}">
 					<ice:column>

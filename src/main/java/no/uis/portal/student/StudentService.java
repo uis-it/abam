@@ -153,7 +153,7 @@ public class StudentService {
 	
 	private Application getApplicationFromEvent(ActionEvent event) {
 		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+		HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent().getParent();
 		return (Application)table.getRowData();
 	}
 	 

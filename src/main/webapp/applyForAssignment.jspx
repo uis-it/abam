@@ -65,7 +65,11 @@
 					</ice:dataTable></td>
 					<td></td>
 					<td></td>
-				</tr>		
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form partialSubmit="true">
+			<table>		
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_i_want_to_write_together}" rendered="#{!studentService.currentStudent.masterStudent}"/> </td>
 					<td><ice:inputText id="studentName1" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName1}"></ice:inputText></td>
@@ -75,7 +79,11 @@
 					<td></td>
 					<td><ice:inputText id="studentName2" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName2}"></ice:inputText></td>
 					<td></td>
-				</tr>		
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form>
+			<table>		
 				<tr>
 					<td>
 						<table>
