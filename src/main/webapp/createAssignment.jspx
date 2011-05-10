@@ -7,7 +7,6 @@
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
 		<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}"
 			styleClass="titleStyle" />
-		<br />
 		<ice:form>
 			<table>
 				<tr>
@@ -72,7 +71,7 @@
 					<td><ice:inputText id="numberOfStudents" required="true"
 						disabled="#{assignmentBean.currentAssignment.master}"
 						validator="#{assignmentBean.validateNumberOfStudentsField}"
-						value="#{assignmentBean.currentAssignment.numberOfStudents}"></ice:inputText></td>
+						value="#{assignmentBean.currentAssignment.numberOfStudents}"/></td>
 					<td><ice:message for="numberOfStudents" showSummary="true"
 						showDetail="false"></ice:message></td>
 				</tr>
