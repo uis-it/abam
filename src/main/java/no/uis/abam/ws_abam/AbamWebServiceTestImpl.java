@@ -3,15 +3,12 @@ package no.uis.abam.ws_abam;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.TreeSet;
 import javax.jws.WebService;
 import javax.xml.ws.BindingProvider;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.CannotCreateTransactionException;
@@ -49,11 +46,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public AbamWebServiceTestImpl(){
 		personWebService = getWS();
 		fillEmployeeListIfEmpty();
-		//createAssignmentListContent();
-		//initializeDepartmentAndStudyProgramLists();
-		//initializeStudentList();
-		//createEmployeeListContent();
-		//initializeThesisList();
 	}
 	
 	public TreeSet<Assignment> getAllAssignments() {
@@ -71,179 +63,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	public void saveAssignment(Assignment assignment){
 		assignmentList.remove(assignment);
 		assignmentList.add(assignment);
-	}
-	
-	private void createEmployeeListContent() {
-		Employee employee = new Employee();
-		employee.setName("Ansatt1 Ansatt1");
-		employee.setEmployeeId("3456789");
-		employeeList.add(employee);
-		employee = new Employee();
-		employee.setName("Ansatt2 Ansatt2");
-		employee.setEmployeeId("2345678");
-		employeeList.add(employee);
-		employee = new Employee();
-		employee.setName("Joe Bloggs");
-		employee.setEmployeeId("1234567");
-		employeeList.add(employee);
-		employee = new Employee();
-		employee.setName("Super Mann");
-		employee.setEmployeeId("1111111");
-		employeeList.add(employee);
-	}
-	
-	private void createAssignmentListContent(){
-		Assignment test1 = new Assignment();
-		test1.setTitle("IDE Data oppgave");
-		test1.setMaster(false);
-		test1.setBachelor(true);
-		test1.setDescription("Beskrivelse av test1");
-		test1.setNumberOfStudents("2-3");
-		test1.setId(1);
-		test1.setDepartmentCode("TN-IDE");
-		test1.setDepartmentNumber(2);
-		test1.setStudyProgramName("Data");
-		test1.setStudyProgramNumber(1);
-		Employee emp = new Employee();
-		emp.setName("Lois Lane");
-		test1.setFacultySupervisor(emp);
-		test1.getSupervisorList().get(0).setName("Superman");
-		test1.setAddedDate(new GregorianCalendar(10, 11, 10));
-		GregorianCalendar dato = test1.getAddedDate();
-		dato.add(Calendar.MONTH, 6);
-		test1.setExpireDate(dato);
-		Application app = new Application();
-		app.setApplicantStudentNumber("123456");
-		app.setApplicationDate(new GregorianCalendar());				
-		app.setPriority(1);		
-		app.setAssignment(test1);
-		applicationList.add(app);
-		
-		Assignment test2 = null;
-		app = new Application();
-		for (int j = 0, id = 2; j < 2; j++) {
-			
-			for (int i = 0; i < 3; i++) {
-				app.setApplicantStudentNumber("123457");
-				app.setApplicationDate(new GregorianCalendar());				
-				app.setPriority(i+1);		
-				test2 = new Assignment();
-				test2.setTitle("IDE El oppgave " +i);
-				test2.setBachelor(true);
-				test2.setMaster(false);
-				test2.setDescription("Beskrivelse av test" +i);
-				test2.setNumberOfStudents("1");
-				test2.setDepartmentCode("TN-IDE");
-				test2.setDepartmentNumber(3);
-				test2.setStudyProgramName("Elektro");
-				test2.setStudyProgramNumber(2);
-				test2.setId(id);
-				emp = new Employee();
-				emp.setName("Robin");
-				test2.setFacultySupervisor(emp);
-				test2.getSupervisorList().get(0).setName("Batman");
-				test2.setAddedDate(new GregorianCalendar(2010, 10, 10));
-				dato = test2.getAddedDate();
-				dato.add(Calendar.MONTH, 6);
-				test2.setExpireDate(dato);
-				assignmentList.add(test2);
-				app.setAssignment(test2);
-				//applicationList.add(app);
-				app = new Application();	
-				id++;
-			}
-		}
-		
-		assignmentList.add(test1);
-		
-	}
-	
-	private void initializeThesisList() {
-		Thesis testThesis = new Thesis();
-		testThesis.setAssignedAssignment(assignmentList.first());
-		testThesis.setStudentNumber1(studentList.get(0).getStudentNumber());
-		savedThesesList.add(testThesis);
-		testThesis = new Thesis();
-		testThesis.setAssignedAssignment(assignmentList.last());
-		testThesis.setStudentNumber2("123456");
-		testThesis.setStudentNumber1(studentList.get(1).getStudentNumber());
-		savedThesesList.add(testThesis);
-	}
-	
-	private void initializeDepartmentAndStudyProgramLists(){
-		departmentList = new ArrayList<Department>();
-		
-		departmentList.add(new Department(new Integer(0), ""));
-		departmentList.add(new Department(new Integer(1), "Institutt for industriell økonomi, risikostyring og planlegging"));
-		departmentList.add(new Department(new Integer(2), "Petroleumsteknologi"));
-		departmentList.add(new Department(new Integer(3), "Data- og elektroteknikk"));
-		departmentList.add(new Department(new Integer(4), "Institutt for konstruksjonsteknikk og materialteknologi"));
-		departmentList.add(new Department(new Integer(5), "Matematikk og naturvitskap"));
-		
-		List<StudyProgram> listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		departmentList.get(0).setStudyPrograms(listToAdd);
-		
-		listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		listToAdd.add(new StudyProgram(new Integer(1), "Industriell økonomi"));
-		departmentList.get(1).setStudyPrograms(listToAdd);
-		
-	
-		listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		listToAdd.add(new StudyProgram(new Integer(1), "Boreteknologi"));
-		listToAdd.add(new StudyProgram(new Integer(2), "Petroleumsgeologi"));
-		departmentList.get(2).setStudyPrograms(listToAdd);
-		
-		listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		listToAdd.add(new StudyProgram(new Integer(1), "Data"));
-		listToAdd.add(new StudyProgram(new Integer(2), "Elektro"));
-		listToAdd.add(new StudyProgram(new Integer(3), "Informasjonsteknologi"));
-		departmentList.get(3).setStudyPrograms(listToAdd);
-		
-	
-		listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		listToAdd.add(new StudyProgram(new Integer(1), "Byggeteknikk"));
-		listToAdd.add(new StudyProgram(new Integer(2), "Maskinteknikk"));
-		listToAdd.add(new StudyProgram(new Integer(3), "Offshoreteknologi"));
-		departmentList.get(4).setStudyPrograms(listToAdd);
-		
-		listToAdd = new ArrayList<StudyProgram>();
-		listToAdd.add(new StudyProgram(new Integer(0), ""));
-		listToAdd.add(new StudyProgram(new Integer(1), "Matematikk"));
-		listToAdd.add(new StudyProgram(new Integer(2), "Fysikk"));
-		departmentList.get(5).setStudyPrograms(listToAdd);
-		//studyProgramList = departmentList.get(0).getStudyPrograms();	
-	}
-	
-	private void initializeStudentList() { 
-		Student newStudent = new Student();
-		newStudent.setName("Elev1 Elev1");
-		newStudent.setStudentNumber("202551");
-		newStudent.setBachelor(true);
-		newStudent.setDepartmentCode("TN-IDE");
-		newStudent.setStudyProgramName("Elektro");
-		studentList.add(newStudent);
-		
-		newStudent = new Student();
-		newStudent.setName("Elev2 Elev2");
-		newStudent.setStudentNumber("234567");
-		newStudent.setBachelor(true);
-		newStudent.setDepartmentCode("TN-IDE");
-		newStudent.setStudyProgramName("Elektro");
-		studentList.add(newStudent);
-		
-		newStudent = new Student();
-		newStudent.setName("Elev3 Elev3");
-		newStudent.setStudentNumber("123457");
-		newStudent.setDepartmentCode("TN-IDE");
-		newStudent.setStudyProgramName("Elektro");
-		newStudent.setBachelor(true);
-		studentList.add(newStudent);
-		
 	}
 	
 	private void initializeStudyPrograms(int departmentIndex) {
