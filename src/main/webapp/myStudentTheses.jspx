@@ -20,14 +20,15 @@
 			</table>
 		</ice:form>
 		<ice:outputText value="#{msgs.lbl_my_std_assignment}" rendered="#{!employeeService.administrativeEmployee}" styleClass="titleStyle"/>			
-		<ice:form partialSubmit="true" >
+		<ice:form partialSubmit="true">
 			<ice:selectOneRadio 
 						id="type" 
 						required="true" 
 						styleClass="selectRadio" 
 						value="#{thesisBean.displayActiveThesis}" 			 
 						valueChangeListener="#{thesisBean.actionDisplayActiveRadioListener}" 
-						partialSubmit="true">
+						partialSubmit="true"
+						rendered="#{!employeeService.administrativeEmployee}">
 							<f:selectItem itemValue="#{true}" itemLabel="#{msgs.link_my_std_assignments}" />
 							<f:selectItem itemValue="#{false}" itemLabel="#{msgs.link_archive}" />
 					</ice:selectOneRadio>

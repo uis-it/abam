@@ -6,6 +6,7 @@
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="Utsette innleveringsfrist" styleClass="titleStyle"/>
 		<ice:form>
 		<table>
 			<tr>
@@ -22,29 +23,36 @@
 				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.thesis.facultySupervisor.name}"/></td>
 				<td></td>
 			</tr>
-				<tr>
-					<td>						
-						<ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/> 						
-					</td>					
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.studentName}"/></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent1Name}"/></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent2Name}"/></td>
-					<td></td>
-					<td></td>
-				</tr>
-	
+		</table>
+		</ice:form>
+		<ice:form>
+		<table>
+			<tr>
+				<td>						
+					<ice:outputText value="#{msgs.lbl_students_assigned_thesis}" style="font-weight: bold;"/> 						
+				</td>					
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.studentName}"/></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent1Name}"/></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><ice:outputText value="#{thesisBean.selectedThesisInformation.coStudent2Name}"/></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+		</ice:form>
+		<ice:form>
+		<table>
 			<tr>
 				<td> 
 					<ice:outputText id="toDateText" value="#{msgs.lbl_new_date}"></ice:outputText>

@@ -27,6 +27,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_desc}" /></td>
 					<td><ice:inputTextarea id="description" cols="96" rows="6"
+						style="width: 517px; height: 60px; padding: 2px;"
 						required="true"
 						value="#{assignmentBean.currentAssignment.description}"></ice:inputTextarea></td>
 					<td><ice:message for="description" showSummary="true"
