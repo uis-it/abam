@@ -260,6 +260,7 @@ public class StudentService {
 		removeDeletedApplications();
 		getCurrentStudent().setApplicationPriorityArray(tempApplicationPriorityArray);
 		abamStudentClient.updateApplications(tempApplicationPriorityArray);		
+		abamStudentClient.updateStudent(getCurrentStudent());
 	}
 	
 	private void removeDeletedApplications() {
