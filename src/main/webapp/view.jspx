@@ -65,9 +65,6 @@
 					</td></tr>
 				</table>
 				</ice:panelGroup>
-				<ice:panelGroup id="content">
-					<ice:outputText value="Welcome employee" />
-				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>
