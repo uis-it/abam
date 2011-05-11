@@ -16,9 +16,6 @@ public interface AbamWebService {
 	 */
 	public TreeSet<Assignment> getAllAssignments();
 	
-	
-	//public void setAssignmentList(TreeSet<Assignment> assignmentList);
-	
 	/**
 	 * @param departmentCode - Which Department to return Assignments from
 	 * @return a TreeSet containing all Assignment objects for the given Department
@@ -96,7 +93,6 @@ public interface AbamWebService {
 	 */
 	public List<Application> getBachelorApplicationListFromDepartmentCode(String code);
 	
-
 	/**
 	 * @param application object that will be saved
 	 */
@@ -134,6 +130,18 @@ public interface AbamWebService {
 	public void updateThesis(Thesis thesisToUpdate);
 	
 	/**
+	 * @param departmentCode
+	 * @return A List of Thesis objects that are archived for the given department
+	 */
+	public List<Thesis> getArchivedThesisListFromDepartmentCode(String departmentCode);
+	
+	/**
+	 * @param uisLoginName - employee id
+	 * @return A List of Thesis objects that are archived for the given employee
+	 */
+	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName);
+	
+	/**
 	 * @param loginName - id of the employee 
 	 * @return Employee object if found, null if not found
 	 */
@@ -161,17 +169,5 @@ public interface AbamWebService {
 	 * @param studentToUpdate - Student object with new information that needs to be saved in webservice
 	 */
 	public void updateStudent(Student studentToUpdate);
-	
-	/**
-	 * @param departmentCode
-	 * @return A List of Thesis objects that are archived for the given department
-	 */
-	public List<Thesis> getArchivedThesisListFromDepartmentCode(String departmentCode);
-	
-	/**
-	 * @param uisLoginName - employee id
-	 * @return A List of Thesis objects that are archived for the given employee
-	 */
-	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName);
 	
 }
