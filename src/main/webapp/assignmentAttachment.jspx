@@ -5,7 +5,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="titleStyle"/><br/>			
 		<ice:form partialSubmit="true" >
 			<table>

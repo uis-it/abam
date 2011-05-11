@@ -5,8 +5,8 @@
 
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/tableStyle3.css" id="tableStyle"></ice:outputStyle>
-		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:form partialSubmit="true">
 			<ice:dataTable 
 				id="dataSortData"

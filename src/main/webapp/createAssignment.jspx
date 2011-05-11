@@ -4,7 +4,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
-		<ice:outputStyle href="/css/employeeStyle2.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:outputText value="#{msgs.lbl_create_edit_an_assignment}"
 			styleClass="titleStyle" />
 		<ice:form>
