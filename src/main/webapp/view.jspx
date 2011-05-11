@@ -15,9 +15,6 @@
 					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/></td></tr>
 				</table>
 				</ice:panelGroup>
-				<ice:panelGroup id="content">
-					<ice:outputText value="#{msgs.lbl_welcome_std}" />
-				</ice:panelGroup>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>
