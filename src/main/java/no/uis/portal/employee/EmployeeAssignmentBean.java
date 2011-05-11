@@ -208,7 +208,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionUpdateCurrentAssignment(ActionEvent event) {				
-		debugToLog(Level.ERROR, event);
 		
 		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
 		currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
@@ -248,25 +247,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private Employee getEmployeeFromUisLoginName() {				 
 		return employeeService.getEmployeeFromUisLoginName();
 
-	}
-	
-	private void debugToLog(Level level, ActionEvent event) {
-		String clientId = event.getComponent().getClientId(context);
-		clientId = clientId.replaceAll("CreateButton", "");
-		
-		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
-		
-		log.setLevel(level);
-		if (log.isDebugEnabled()) {
-			log.debug("Title: "+parameterMap.get(clientId+"title"));
-			log.debug("Des: "+parameterMap.get(clientId+"description"));
-			log.debug("Supervisor: "+parameterMap.get(clientId+"supervisor"));
-			log.debug("FacultySupervisor: "+parameterMap.get(clientId+"facultySupervisor"));
-			log.debug("Department: "+parameterMap.get(clientId+"department"));
-			log.debug("StudyProgram: "+parameterMap.get(clientId+"studyProgram"));
-			log.debug("NumberOfStudents: "+parameterMap.get(clientId+"numberOfStudents"));
-			log.debug("type: "+parameterMap.get(clientId+"type"));
-		}
 	}
 	
 	/**
