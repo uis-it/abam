@@ -4,7 +4,7 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
-		<ice:outputStyle href="/css/tableStyle6.css" id="tableStyle"/>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_create_custom_assignment}" styleClass="titleStyle"/>
 		<ice:form rendered="#{applicationBean.deadlineForApplyingReached}">
 			<table>
