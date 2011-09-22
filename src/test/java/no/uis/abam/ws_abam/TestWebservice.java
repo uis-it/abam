@@ -2,75 +2,84 @@ package no.uis.abam.ws_abam;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.matchers.JUnitMatchers.*;
+import static org.hamcrest.CoreMatchers.*;
+
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.ws.BindingProvider;
+import no.uis.abam.dom.Department;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Student;
+import no.uis.service.idm.ws.IdmWebService;
+import no.uis.service.idm.ws.impl.IdmWebServiceImpl;
 
-import no.uis.service.affiliation.AffiliationDataType;
-import no.uis.service.person.PersonType;
-import no.uis.service.person.ws.PersonService;
-import no.uis.service.person.ws.PersonWebService;
-import no.uis.service.student.AcademicAffiliationType;
-import no.uis.service.student.StudentDataType;
-import no.uis.service.student.TeachingLinkType;
-
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsEqual;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestWebservice {
 
+  private static AbamWebService abamService;
+  private static Properties testData;
+
+  @BeforeClass
+  public static void initSpring() {
+    
+    System.setProperty("catalina.base", "x:");
+    ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/abam-ws/beans.xml");
+    abamService = ctx.getBean("abamService", AbamWebService.class);
+    
+    testData = ctx.getBean("config-props", Properties.class);
+  }
+  
 	@Test
-	public void runPersonWS() throws Exception {
-		PersonWebService personWS = getWS();
-		// PersonService ws = new PersonService();
-		// PersonWebService personWS = ws.getPersonServicePort();
-		PersonType person = personWS.getPersonByStudentNumber("202551");
-		System.out.println(person.getAffiliationData());
-		List<AffiliationDataType> test = person.getAffiliationData();
-		for (AffiliationDataType affiliationDataType : test) {
-			if(affiliationDataType instanceof StudentDataType) {
-				StudentDataType sdt = (StudentDataType)affiliationDataType;
-				List<AcademicAffiliationType> test2 = sdt.getAcademicAffiliation();
-				for (AcademicAffiliationType academicAffiliationType : test2) {
-					List<TeachingLinkType> test3 = academicAffiliationType.getTeachingLink();
-					for (TeachingLinkType teachingLinkType : test3) {
-						if (teachingLinkType.getRef().contains("BAC")) {
-							System.out.println(teachingLinkType.getRef());
-						}
-					}
-				}
-			}
-			System.out.println(affiliationDataType.getAffiliation().getClass());
-			
-		}
-		assertNotNull(person);
+	public void testDepartmentList() throws Exception {
+	  
+	  List<Department> departmentList = abamService.getDepartmentList();
+	  
+	  assertThat(departmentList, is(notNullValue(List.class)));
+	  
+	  assertThat(departmentList, hasItem(new BaseMatcher<Department>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText(" has valid name ");
+      }
+      @Override
+      public boolean matches(Object item) {
+        
+        String name = ((Department)item).getOeKode();
+        if (name != null && name.equals(testData.getProperty("test.departmentlist.1"))) {
+          return true;
+        }
+        return false;
+      }
+	  }));
 	}
 	
-	private PersonWebService getWS() {
-		//String targetUrl = "http://wsapps-test01.uis.no/ws-person/person";
-		InputStream cfgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
-		Properties props = new Properties();
-		try {
-			props.load(cfgStream);
-		} catch (IOException e) {
-			System.out.println("Dette gikk ikke bra!!!");
-			e.printStackTrace();
-		}
-		
-		PersonService ps = new PersonService();
-		PersonWebService port = ps.getPersonServicePort();
-		
-		String targetUrl = props.getProperty("personws.target.url");
-		if (targetUrl != null) {
-			BindingProvider bp = (BindingProvider) port;
-			bp.getRequestContext().put(
-					BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-					targetUrl);
-		}
-
-		return port;
+	@Test
+	public void testEmployee() throws Exception {
+	  String testUid = testData.getProperty("test.employee.1");
+	  Employee employee = abamService.getEmployeeFromUisLoginName(testUid);
+	  assertThat(employee, is(notNullValue()));
+	  String testOu = testData.getProperty("test.employee.2");
+    assertThat(employee.getGroupMembership(), hasItem(testOu));
 	}
-
+	
+	@Test
+	public void testStudent() throws Exception {
+	  String studNo = testData.getProperty("test.student.1");
+	  Student student = abamService.getStudentFromStudentNumber(studNo);
+	  
+	  assertThat(student, is(notNullValue()));
+	  
+	  String deptName = testData.getProperty("test.student.2");
+	  assertThat(student.getDepartmentCode(), is(equalTo(deptName)));
+	}
 }

@@ -5,22 +5,98 @@
   <artifactId>ws-abam</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>Simple CXF project using spring configuration</name>
+  <name>Abam Web Service</name>
+  
+  <parent>
+  	<groupId>no.uis.service</groupId>
+  	<artifactId>parent-pom</artifactId>
+  	<version>1.0.12</version>
+  </parent>
   
   <properties>
-  <ws.person.version>1.0.6</ws.person.version>
+  	<ws.idm.version>1.0.0-SNAPSHOT</ws.idm.version>
+  	<spring.version>3.0.6.RELEASE</spring.version>
+  	<beanutils.version>1.8.0</beanutils.version>
+  	<cxf.version>2.3.1</cxf.version>
+  	<junit.version>4.8.2</junit.version>
+  	<jaxb.impl.version>2.2.1</jaxb.impl.version>
+  	<log4j.version>1.2.15</log4j.version>
+  	<commons.lang.version>2.4</commons.lang.version>
+  	<commons.collections.version>3.1</commons.collections.version>
+  	<slf4j.version>1.5.10</slf4j.version>
+  	<commons.logging.version>1.1.1</commons.logging.version>
   </properties>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-core</artifactId>
+  			<version>${spring.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-web</artifactId>
+  			<version>${spring.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-orm</artifactId>
+  			<version>${spring.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.springframework</groupId>
+  			<artifactId>spring-tx</artifactId>
+  			<version>${spring.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>commons-beanutils</groupId>
+  			<artifactId>commons-beanutils</artifactId>
+  			<version>${beanutils.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>log4j</groupId>
+  			<artifactId>log4j</artifactId>
+  			<version>${log4j.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>commons-lang</groupId>
+  			<artifactId>commons-lang</artifactId>
+  			<version>${commons.lang.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>commons-collections</groupId>
+  			<artifactId>commons-collections</artifactId>
+  			<version>${commons.collections.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>commons-logging</groupId>
+  			<artifactId>commons-logging</artifactId>
+  			<version>${commons.logging.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.slf4j</groupId>
+  			<artifactId>slf4j-api</artifactId>
+  			<version>${slf4j.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.sun.xml.bind</groupId>
+  			<artifactId>jaxb-impl</artifactId>
+  			<version>${jaxb.impl.version}</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
   
   <dependencies>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
-      <version>2.3.0</version>
+      <version>${cxf.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http</artifactId>
-      <version>2.3.0</version>
+      <version>${cxf.version}</version>
     </dependency>
     <dependency>
 		<groupId>no.uis.abam</groupId>
@@ -30,8 +106,20 @@
 	<dependency>
 		<groupId>junit</groupId>
 		<artifactId>junit</artifactId>
-		<version>4.7</version>
+		<version>${junit.version}</version>
 		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>no.uis.service.ws</groupId>
+		<artifactId>idm</artifactId>
+		<version>${ws.idm.version}</version>
+		<!--classifier>client</classifier-->
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
 	</dependency>
   </dependencies>
 
@@ -39,14 +127,6 @@
     <pluginManagement>
       <plugins>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-          </configuration>
-        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
@@ -59,34 +139,6 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>2.3.0</version>
-                <executions>
-                    <execution>
-                        <id>create-from-wsdl</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                	<wsdlArtifact>
-	            						<groupId>no.uis.service.ws</groupId>
-	            						<artifactId>person</artifactId>
-	            						<version>${ws.person.version}</version>
-            						</wsdlArtifact>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-    
-    </plugins>
   </build>
 
 </project>

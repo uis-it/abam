@@ -30,10 +30,7 @@ public interface AbamWebService {
 	/**
 	 * @param assignment - Assignment that should be saved
 	 */
-	public void saveAssignment(
-			//@WebParam(targetNamespace="http://localhost/AbamWebService/AbamWebService", 
-            //name="assignmentToSave",mode=Mode.IN)
-            Assignment assignment);
+	public void saveAssignment(Assignment assignment);
 	
 	/**
 	 * @param assignment - Assignment that should be removed
@@ -61,6 +58,7 @@ public interface AbamWebService {
 	 * @param departmentIndex to get study programs for
 	 * @return a List containing StudyProgram objects
 	 */
+	@Deprecated
 	public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex);
 	
 	/**
@@ -68,12 +66,14 @@ public interface AbamWebService {
 	 * @param studyProgramIndex to get study program name for
 	 * @return String with name of given studyProgram in given Department.
 	 */
+  @Deprecated
 	public String getStudyProgramName(int departmentIndex, int studyProgramIndex);
 	
 	/**
 	 * @param index of department to get name from
 	 * @return name of department
 	 */
+  @Deprecated
 	public String getDepartmentName(int index); 
 	
 	/**
@@ -151,6 +151,7 @@ public interface AbamWebService {
 	 * @param name of the employee
 	 * @return returns a Employee object for the correct employee if name is found, if not it returns a Employee object with empty name.
 	 */
+	@Deprecated
 	public Employee getEmployeeFromFullName(String name);
 
 	/**
