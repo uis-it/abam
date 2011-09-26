@@ -21,7 +21,7 @@
 	<import resource="classpath:idm-ws/beans.xml"/>
 	<import resource="classpath:department-beans.xml"/>
 	
-	<bean id="abamService" class="no.uis.abam.ws_abam.AbamWebServiceTestImpl">
+	<bean id="abamService" class="no.uis.abam.ws_abam.AbamWebServiceImpl">
 		<property name="idmService" ref="idmWS"/>
 		<property name="departmentDao" ref="departmentDAO"/>
 		<property name="employeeDao">

@@ -3,6 +3,7 @@ package no.uis.abam.ws_abam;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
@@ -18,22 +19,18 @@ import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.util.LevenshteinDistance;
 import no.uis.service.idm.ws.IdmWebService;
+import no.uis.service.model.BaseText;
+import no.uis.service.model.Organization;
 import no.uis.service.model.Person;
 
 import org.apache.commons.lang.NotImplementedException;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.CannotCreateTransactionException;
 
-/**
- * This class will eventually be deleted in favor of {@link AbamWebServiceImpl}.
- * For now it is kept as a test tool.
- */
-@Deprecated
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
-public class AbamWebServiceTestImpl implements AbamWebService {
+public class AbamWebServiceImpl implements AbamWebService {
 
-	private Logger log = Logger.getLogger(AbamWebServiceTestImpl.class);
+	private Logger log = Logger.getLogger(AbamWebServiceImpl.class);
 	
 	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
 	private List<Application> applicationList = new ArrayList<Application>();
@@ -46,12 +43,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	private DepartmentDAO departmentDao;
 	private EmployeeDAO employeeDao;
  	
-//	private PersonWebService personWebService;
 	private IdmWebService idmService;
 	
-	public AbamWebServiceTestImpl(){
-//		personWebService = getPersonWebService();
-		//fillEmployeeListIfEmpty();
+	public AbamWebServiceImpl(){
 	}
 	
 	public TreeSet<Assignment> getAllAssignments() {
@@ -104,12 +98,10 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		try {
 			if ((departmentList == null) || (departmentList.isEmpty())) {
 				departmentList = departmentDao.getDepartments();
+				supplyStudyPrograms(departmentList, idmService);
 				Department blankDepartment = new Department(0, "");
 				blankDepartment.setOeKode("");
 				departmentList.add(0, blankDepartment);
-				for (int i = 0; i < departmentList.size(); i++) {
-					initializeStudyPrograms(i);
-				}
 			}
 		} catch (CannotCreateTransactionException e) {
 				
@@ -117,61 +109,39 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		return departmentList;
 	}	
 		
-	private void initializeStudyPrograms(int departmentIndex) {
-		
-		List<StudyProgram> listToAdd = new ArrayList<StudyProgram>();
-		if ( departmentList.get(departmentIndex).getOe2() == 3) {
-			listToAdd = new ArrayList<StudyProgram>();
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			listToAdd.add(new StudyProgram(new Integer(1), "Industriell Økonomi"));
-			getDepartmentFromOe2(3).setStudyPrograms(listToAdd);
-		} else if (departmentList.get(departmentIndex).getOe2() == 6) {
-			listToAdd = new ArrayList<StudyProgram>();
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			listToAdd.add(new StudyProgram(new Integer(1), "Boreteknologi"));
-			listToAdd.add(new StudyProgram(new Integer(2), "Petroleumsgeologi"));
-			getDepartmentFromOe2(6).setStudyPrograms(listToAdd);
-		} else if (departmentList.get(departmentIndex).getOe2() == 4) {
-			listToAdd = new ArrayList<StudyProgram>();
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			listToAdd.add(new StudyProgram(new Integer(1), "Data"));
-			listToAdd.add(new StudyProgram(new Integer(2), "Elektro"));
-			listToAdd.add(new StudyProgram(new Integer(3), "Informasjonsteknologi"));
-			getDepartmentFromOe2(4).setStudyPrograms(listToAdd);
-		} else if (departmentList.get(departmentIndex).getOe2() == 5) {
-			listToAdd = new ArrayList<StudyProgram>();
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			listToAdd.add(new StudyProgram(new Integer(1), "Byggeteknikk"));
-			listToAdd.add(new StudyProgram(new Integer(2), "Maskinteknikk"));
-			listToAdd.add(new StudyProgram(new Integer(3), "Offshoreteknologi"));
-			getDepartmentFromOe2(5).setStudyPrograms(listToAdd);
-		} else if(departmentList.get(departmentIndex).getOe2() == 2) {
-			listToAdd = new ArrayList<StudyProgram>();
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			listToAdd.add(new StudyProgram(new Integer(1), "Matematikk"));
-			listToAdd.add(new StudyProgram(new Integer(2), "Fysikk"));
-			getDepartmentFromOe2(2).setStudyPrograms(listToAdd);
-		} else {
-			listToAdd.add(new StudyProgram(new Integer(0), ""));
-			departmentList.get(0).setStudyPrograms(listToAdd);			
-		}
+	private static void supplyStudyPrograms(List<Department> departments, IdmWebService idmService) {
+	  for (Department department : departments) {
+	    String departmentCode = getDepartmentFSCode(department);
+	    List<no.uis.service.model.StudyProgram> progs = idmService.getProgramsForOrganization(departmentCode);
+	    List<StudyProgram> abamProgs = new ArrayList<StudyProgram>(progs.size());
+	    int count = 0; 
+	    for (no.uis.service.model.StudyProgram prog : progs) {
+	      
+        abamProgs.add(new StudyProgram(count++, prog.getName().get(0).getValue()));
+      }
+      department.setStudyPrograms(abamProgs);
+    }
+  }
 
-	}
 	
-	private Department getDepartmentFromOe2(int oe2) {
-		for (Department dep : departmentList) {
-			if(dep.getOe2() == oe2) return dep;
-		}
-		return departmentList.get(0);
-	}
-	
-	public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex) {
+  private static String getDepartmentFSCode(Department department) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(department.getOeInstKode());
+    sb.append('_');
+    sb.append(department.getOe1());
+    sb.append('_');
+    sb.append(department.getOe2());
+    sb.append('_');
+    sb.append(department.getOe3());
+    return sb.toString();
+  }
+
+  public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex) {
 		return departmentList.get(departmentIndex).getStudyPrograms();
 	}
 
 	public String getStudyProgramName(int departmentIndex, int studyProgramIndex) {
-	  throw new NotImplementedException(getClass());
-		//return getStudyProgramListFromDepartmentIndex(departmentIndex).get(studyProgramIndex).getName();
+		return getStudyProgramListFromDepartmentIndex(departmentIndex).get(studyProgramIndex).getName();
 	}
 
 	public String getDepartmentName(int index) {
@@ -298,7 +268,9 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				listToReturn.add(thesis);
 			}
 		}
-		if (!listToArchive.isEmpty()) archiveTheses(listToArchive);
+		if (!listToArchive.isEmpty()) {
+		  archiveTheses(listToArchive);
+		}
 		return listToReturn;
 	}
 
@@ -311,18 +283,23 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 				return;
 			}
 		}
-		
 	}
 	
 	private void updateThesisForInvolvedStudents(Thesis thesisToUpdate) {
 		Student std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber1());
-		if(std != null) std.setAssignedThesis(thesisToUpdate);
+		if(std != null) {
+		  std.setAssignedThesis(thesisToUpdate);
+		}
 		
 		std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber2());
-		if(std != null) std.setAssignedThesis(thesisToUpdate);
+		if(std != null) {
+		  std.setAssignedThesis(thesisToUpdate);
+		}
 		
 		std = getStudentFromStudentNumber(thesisToUpdate.getStudentNumber3());
-		if(std != null) std.setAssignedThesis(thesisToUpdate);
+		if(std != null) {
+		  std.setAssignedThesis(thesisToUpdate);
+		}
 	}
 	
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
@@ -347,19 +324,21 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	
 	public Employee getEmployeeFromUisLoginName(String loginName) {
 		
-		//fillEmployeeListIfEmpty();
 	  return employeeDao.findEmployeeByEmployeeNumber(loginName);
 	}
 	
-	private void fillEmployeeListIfEmpty() {
-		if (employeeList.isEmpty()) {
-			//employeeList = employeeDao.getAllTNEmployeesFromLdap();
-		}
-	}
-
+	/*
+	 * TODO use employee number for employees and zero for external persons 
+	 */
 	public Employee getEmployeeFromFullName(String facultySupervisorName) {
-		
-	  throw new NotImplementedException(getClass());
+
+	  Employee employee = employeeDao.findEmployeeByEmployeeFullName(facultySupervisorName);
+	  if (employee == null) {
+	    employee = new Employee();
+	    employee.setName("");
+	  }
+    return employee;
+	  //throw new NotImplementedException(getClass());
 	  /*
 		fillEmployeeListIfEmpty();
 		
@@ -403,7 +382,6 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 	}
 	
 	private Student getStudentFromPersonTypeObject(Person person) {
-//		StudentDataType sdt = getStudentDataTypeFromPersonType(person);
 		Student student = new Student();
 		
 		// TODO the logic behind this is not quite good
@@ -432,77 +410,17 @@ public class AbamWebServiceTestImpl implements AbamWebService {
 		} else {
 		  throw new java.lang.IllegalStateException("neither student nor master");
 		}
-		student.setDepartmentCode(person.getPrimaryOrgUnit());
+		Organization org = idmService.getOrganizationByDN(person.getPrimaryOrgUnit());
+		if (org != null) {
+		  student.setDepartmentCode(org.getAcronym());
+		  student.setDepartmentName(getDefaultText(org.getName()));
+		}
 		
 		student.setName(person.getFullName());
 		student.setStudentNumber(person.getUserId());
 		student.setStudyProgramName(programName);
+		
 		return student;
-	}
-	
-//	private StudentDataType getStudentDataTypeFromPersonType(Person person) {
-//		List<AffiliationDataType> affiliationData = person.getAffiliationData();
-//		for (AffiliationDataType affiliationDataType : affiliationData) {
-//			if(affiliationDataType instanceof StudentDataType) {
-//				return (StudentDataType)affiliationDataType;
-//			}	
-//		}
-//		return null;
-//	}
-	
-//	private boolean personIsBachelorStudent(StudentDataType sdt) {
-//		List<AcademicAffiliationType> academicAT = sdt.getAcademicAffiliation();
-//
-//		for (AcademicAffiliationType academicAffiliationType : academicAT) {
-//			List<TeachingLinkType> tLT = academicAffiliationType.getTeachingLink();
-//			for (TeachingLinkType teachingLinkType : tLT) {
-//				if (teachingLinkType.getRef().contains("BAC")) {
-//					return true;
-//				}
-//			}
-//
-//		}		
-//		return false;
-//	}
-	
-//	private String getDepartmentCodeFromAcademicATList(List<AcademicAffiliationType> aatList) {		
-//		for (AcademicAffiliationType academicAffiliationType : aatList) {
-//			List<ProgramLinkType> programLink = academicAffiliationType.getProgramLink();
-//			for (ProgramLinkType programLinkType : programLink) {
-//				String ref = programLinkType.getRef();
-//				return getDepartmentCodeFromProgramLinkRef(ref);
-//			}
-//		}
-//		return "";
-//	}
-//	
-	//TODO: Dette bør ikke være hardkodet inn, bør fikses. Burde være f.eks. Oe2 i stedet.
-	private String getDepartmentCodeFromProgramLinkRef(String ref) {
-		if (ref.contains("DATA") || ref.contains("ELEKTRO")) {
-			return "TN-IDE";
-		}
-		return "";
-	}
-	
-//	private String getStudyProgramNameFromAcademicATList(
-//			List<AcademicAffiliationType> academicAffiliation) {
-//		for (AcademicAffiliationType academicAffiliationType : academicAffiliation) {
-//			List<ProgramLinkType> programLink = academicAffiliationType.getProgramLink();
-//			for (ProgramLinkType programLinkType : programLink) {
-//				String ref = programLinkType.getRef();
-//				return getStudyProgramNameFromProgramLinkRef(ref);
-//			}
-//		}
-//		return "";
-//	}
-//
-	private String getStudyProgramNameFromProgramLinkRef(String ref) {
-		if (ref.contains("DATA")) {
-			return "Data";
-		} else if (ref.contains("ELEKTRO")) {
-			return "Elektro";
-		}
-		return "";
 	}
 	
 	public void updateStudent(Student studentToUpdate) {
@@ -526,27 +444,14 @@ public class AbamWebServiceTestImpl implements AbamWebService {
   public void setIdmService(IdmWebService idmService) {
 	  this.idmService = idmService;
 	}
-//	private PersonWebService getPersonWebService() {
-//		InputStream cfgStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("config.properties");
-//		Properties props = new Properties();
-//		try {
-//			props.load(cfgStream);
-//		} catch (IOException e) {
-//			log.debug("In getPersonWebService: " + e.getMessage());
-//		}
-//		
-//		PersonService ps = new PersonService();
-//		PersonWebService port = ps.getPersonServicePort();
-//		
-//		String targetUrl = props.getProperty("personws.target.url");
-//		if (targetUrl != null) {
-//			BindingProvider bp = (BindingProvider) port;
-//			bp.getRequestContext().put(
-//					BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-//					targetUrl);
-//		}
-//
-//		return port;
-//	}
-
+  
+  private String getDefaultText(List<BaseText> txtList) {
+    String lang = Locale.getDefault().getLanguage();
+    for (BaseText txt : txtList) {
+      if (txt.getLang().equals(lang)) {
+        return txt.getValue();
+      }
+    }
+    return txtList.get(0).getValue();
+  }
 }

@@ -8,7 +8,7 @@
 <web-app>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/cxf-beans.xml,classpath:department-beans.xml</param-value>
+		<param-value>WEB-INF/abam-ws-beans.xml</param-value>
 	</context-param>
 
 	<listener>

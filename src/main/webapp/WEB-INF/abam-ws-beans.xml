@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<bean id="config-props" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="ignoreResourceNotFound" value="true"/>
+		<property name="locations">
+			<list>
+				<value>file:${user.home}/ws-abam.properties</value>
+				<value>file:${catalina.base}/conf/ws-abam.properties</value>
+			</list>
+		</property>
+	</bean>
+		
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="config-props"/>
+	</bean>
+	
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:department-beans.xml"/>
+	<import resource="classpath:idm-ws/beans.xml"/>
+	
+	<jaxws:endpoint 
+	  id="abamWebService" 
+	  implementor="#abamWS" 
+	  address="/AbamWebService" />
+	  
+	<bean id="abamWS" class="no.uis.abam.ws_abam.AbamWebServiceImpl">
+		<property name="departmentDao" ref="departmentDAO"/>
+		<property name="idmService" ref="idmWS"/>
+		<property name="employeeDao" ref="employeeDao"/>
+	</bean>
+
+	<bean id="employeeDao" class="no.uis.abam.dao.EmployeeDAOImpl">
+		<property name="idmService" ref="idmWS"/>
+	</bean>	
+</beans>
