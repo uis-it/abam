@@ -221,9 +221,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		currentAssignment.setType("Bachelor");
 		
 		String numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
-		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
-		String typeAssignment = currentAssignment.isBachelor() ? "true" : "false";
-		if(typeAssignment != null && typeAssignment.equals("false")){
+		if (numberOfStudentsInput == null) {
+		  numberOfStudentsInput = "1";
+		}
+		if(!currentAssignment.isBachelor()){
 			if(!numberOfStudentsInput.equals("1")){
 				currentAssignment.setNumberOfStudents("1");
 				currentAssignment.setType("Master");
