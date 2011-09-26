@@ -12,10 +12,7 @@
 			<table border="0">
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}" /></td>
-					<td><ice:selectOneMenu id="departmentInput" disabled="true">
-						<f:selectItems id="departmentInputContent"
-							value="#{studentService.departmentSelectItemList}" />
-					</ice:selectOneMenu></td>
+					<td><ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/></td>
 
 					<td><ice:message for="departmentInput" showSummary="true"
 						showDetail="false"></ice:message></td>
@@ -26,9 +23,9 @@
 						value="#{studentService.selectedStudyProgramNumber}"
 						valueChangeListener="#{studentService.actionSetDisplayAssignment}"
 						partialSubmit="true">
-						<f:selectItems id="studyProgramContent"
-							value="#{studentService.studyProgramSelectItemList}" />
-					</ice:selectOneMenu></td>
+							<f:selectItems id="studyProgramContent"
+								value="#{studentService.studyProgramSelectItemList}" />
+						</ice:selectOneMenu></td>
 					<td><ice:message for="studyProgramInput" showSummary="true"
 						showDetail="false"></ice:message></td>
 

@@ -26,6 +26,8 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 
 import no.uis.abam.dom.*;
 import no.uis.abam.ws_abam.AbamWebService;
@@ -78,16 +80,16 @@ public class StudentService {
 	}
 	
 	public void setCurrentStudentFromLoggedInUser(){
-		log.setLevel(Level.ERROR);
-		String loginName = "";
+		String loginName = null;
 		try {			
 			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
-		} catch (PortalException e) {
-			e.printStackTrace();
-		} catch (SystemException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+		  log.warn(loginName, e);
 		}
-		Student student = abamStudentClient.getStudentFromStudentNumber(loginName);
+		Student student = null;
+		if (loginName != null) {
+		  student = abamStudentClient.getStudentFromStudentNumber(loginName);
+		}
 		if(student == null) {
 			student = new Student();
 			student.setStudentNumber("");
@@ -289,10 +291,15 @@ public class StudentService {
 
 	public List<StudyProgram> getStudyProgramList() {
 		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramListFromDepartmentIndex(findDepartmentOe2ForCurrentStudent());
+		
 		studyProgramSelectItemList.clear();
-		for (int i = 0; i < studyProgramList.size(); i++) {
-			studyProgramSelectItemList.add(new SelectItem(i,studyProgramList.get(i).getName()));
+		if (studyProgramList == null) {
+		  return Collections.emptyList();
 		}
+		int count = 0;
+		for (StudyProgram program : studyProgramList) {
+		  studyProgramSelectItemList.add(new SelectItem(count++,program.getName()));
+    }
 		return studyProgramList;
 	}
 	
@@ -427,6 +434,13 @@ public class StudentService {
 		return departmentSelectItemList;
 	}
 
+	public String getStudentInstitute() {
+	  if (this.currentStudent != null) {
+	    return this.currentStudent.getDepartmentName();
+	  }
+	  return "";
+	}
+	
 	public void setDepartmentSelectItemList(
 			ArrayList<SelectItem> departmentSelectItemList) {
 		this.departmentSelectItemList = departmentSelectItemList;
