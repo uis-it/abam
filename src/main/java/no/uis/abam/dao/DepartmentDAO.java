@@ -5,6 +5,7 @@ import java.util.List;
 import no.uis.abam.dom.Department;
 import no.uis.abam.dom.StudyProgram;
 
+@Deprecated
 public interface DepartmentDAO {
 
 	public abstract List<Department> getDepartments();

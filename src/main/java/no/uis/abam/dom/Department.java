@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.*;
 
 
+@Deprecated
 @Entity(name = "Department")
 @Table(name = "OrgEnhet")
 public class Department {
@@ -227,10 +228,12 @@ public class Department {
 		this.name = name;
 	}
 
+	@Deprecated
 	public List<StudyProgram> getStudyPrograms() {
 		return studyPrograms;
 	}
 
+	@Deprecated
 	public void setStudyPrograms(List<StudyProgram> studyPrograms) {
 		this.studyPrograms = studyPrograms;
 	}

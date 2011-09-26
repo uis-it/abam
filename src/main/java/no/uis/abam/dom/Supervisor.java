@@ -1,13 +1,11 @@
 package no.uis.abam.dom;
 
-public class Supervisor extends Person{
+
+public class Supervisor extends AbamPerson {
 	
 	private boolean external;
 	
 	private String companyName;
-	
-	public Supervisor() {
-	}
 	
 	public boolean isExternal() {
 		return external;

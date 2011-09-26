@@ -1,5 +1,6 @@
 package no.uis.abam.util;
 
+@Deprecated
 public class NumberValidator {
 
 	public static final String ERROR_NOT_NUMBER = "Input must be a number.";

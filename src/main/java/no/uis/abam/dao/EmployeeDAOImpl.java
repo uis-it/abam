@@ -4,89 +4,75 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.uis.abam.dom.Employee;
-import no.uis.service.model.AffiliationData;
-import no.uis.service.model.EmployeeData;
-import no.uis.service.model.GroupData;
+import no.uis.service.idm.ws.IdmWebService;
+import no.uis.service.model.Organization;
 import no.uis.service.model.Person;
-import no.uis.service.useraccount.UserAccountService;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.apache.commons.lang.NotImplementedException;
+import org.apache.log4j.Logger;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 	
-	private UserAccountService uas;
+  private static Logger log = Logger.getLogger(EmployeeDAOImpl.class);
+  
+  private IdmWebService idmService;
 	
 	public EmployeeDAOImpl() {
-		BeanFactory factory = new ClassPathXmlApplicationContext("employee-beans.xml");
-	    uas = (UserAccountService)factory.getBean("userAccountService");
+//		BeanFactory factory = new ClassPathXmlApplicationContext("employee-beans.xml");
+//	    uas = (UserAccountService)factory.getBean("userAccountService");
+	}
+
+	public void setIdmService(IdmWebService idmService) {
+	  this.idmService = idmService;
 	}
 	
 	public Employee findEmployeeByEmployeeFullName(String employeeFullName) {
-		Person person = new Person();
-		person.setFullName(employeeFullName);
-		List<Person> list = uas.findPersonByExample(person, false);
-		if (list.size() > 0) {
-			person = list.get(0);
-			return convertPersonToEmployee(person);
-		}
-		return null;
+	  try {
+	    Person p = idmService.findPersonByFullName(employeeFullName);
+	    return convertPersonToEmployee(p);
+	  } catch (Exception e) {
+	    log.warn(employeeFullName, e);
+	  }
+	  return null;
 	}
 	
 	public Employee findEmployeeByEmployeeNumber(String employeeNumber) {
-		Person person = new Person();
-		person.setUserId(employeeNumber);
-		List<Person> list = uas.findPersonByExample(person, false);
-		if (list.size() > 0) {
-			person = list.get(0);
+	  Person person = idmService.getPersonByEmployeeNumber(employeeNumber);
+	  if (person != null) {
 			return convertPersonToEmployee(person);
 		}
 		return null;
 	}
 	
+	
 	public List<Employee> getAllTNEmployeesFromLdap() {
-		Person person = new Person();
-		List<Employee> employeeList = new ArrayList<Employee>();
-		person.setFullName("*");
-		List<Person> personList = uas.findPersonByExample(person, true);
-		for (Person person2 : personList) {
-			if(personWorksAtTekNat(person2)) {
-				Employee employee = convertPersonToEmployee(person2);
-				employeeList.add(employee);				
-			}
-		}
-		return employeeList;
+	  throw new NotImplementedException(getClass());
+//		Person person = new Person();
+//		List<Employee> employeeList = new ArrayList<Employee>();
+//		person.setFullName("*");
+//		List<Person> personList = uas.findPersonByExample(person, true);
+//		for (Person person2 : personList) {
+//			if(personWorksAtTekNat(person2)) {
+//				Employee employee = convertPersonToEmployee(person2);
+//				employeeList.add(employee);				
+//			}
+//		}
+//		return employeeList;
 	}
 	
-	private boolean personWorksAtTekNat(Person person){
-		List<AffiliationData> affData = person.getAffiliationData();
-		for (AffiliationData affiliationData : affData) {
-			if(affiliationData instanceof EmployeeData) {
-				EmployeeData ed = (EmployeeData) affiliationData;
-				for (GroupData gd : ed.getGroup()) {
-					if (gd.getDescription().contains("o-tn")) return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private Employee convertPersonToEmployee(Person person2) {
+	private Employee convertPersonToEmployee(Person person) {
 		Employee employee = new Employee();
-		employee.setName(person2.getFullName());
-		employee.setEmployeeId(person2.getUserId());
-		
-		List<String> gl = new ArrayList<String>();
-		List<AffiliationData> affData = person2.getAffiliationData();
-		for (AffiliationData affiliationData : affData) {
-			if(affiliationData instanceof EmployeeData) {
-				EmployeeData ed = (EmployeeData) affiliationData;
-				for (GroupData gd : ed.getGroup()) {
-					gl.add(gd.getDescription());
-				}
-			}
-		}
-		employee.setGroupMembership(gl);
+		employee.setName(person.getFullName());
+		employee.setEmployeeId(person.getUserId());
+
+		List<Organization> gl = new ArrayList<Organization>();
+		List<String> orgUnits = person.getOrgUnits();
+		for (String orgUnit : orgUnits) {
+		  Organization org = idmService.getOrganizationByDN(orgUnit);
+		  gl.add(org);
+    }
+		// TODO either save the DN, the ID or the Organization object
+		employee.setGroupMembership(orgUnits);
 		return employee;
 	}
 

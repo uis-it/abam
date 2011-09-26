@@ -1,5 +1,6 @@
 package no.uis.abam.dom;
 
+@Deprecated
 public class StudyProgram {
 
 	private static final long serialVersionUID = 1L;

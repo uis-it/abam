@@ -30,7 +30,7 @@ public class Assignment implements Comparable<Assignment>{
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
 	
-	private Person author;
+	private AbamPerson author;
 	private Employee facultySupervisor;
 
 	private GregorianCalendar addedDate;
@@ -45,9 +45,9 @@ public class Assignment implements Comparable<Assignment>{
 
 		attachedFileList = new ArrayList<String>();
 		supervisorList = new ArrayList<Supervisor>();		
-		supervisorList.add(new Supervisor());	
+		//supervisorList.add(new Supervisor());	
 		
-		facultySupervisor = new Employee();
+		//facultySupervisor = new Employee();
 	}
 
 	public void updateType(String type) {
@@ -252,11 +252,11 @@ public class Assignment implements Comparable<Assignment>{
 		return departmentName;
 	}
 
-	public Person getAuthor() {
+	public AbamPerson getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Person author) {
+	public void setAuthor(AbamPerson author) {
 		this.author = author;
 	}
 

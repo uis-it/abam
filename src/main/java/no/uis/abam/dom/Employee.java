@@ -2,7 +2,7 @@ package no.uis.abam.dom;
 
 import java.util.List;
 
-public class Employee extends Person{
+public class Employee extends AbamPerson{
 
 	private String employeeId;
 	private List<String> groupMembership;

@@ -3,7 +3,7 @@ package no.uis.abam.dom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Student extends Person {
+public class Student extends AbamPerson {
 
 	private static final String MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED = 
 		"You have applied for the maximum allowed assignments, remove at least one and try again";
@@ -191,7 +191,12 @@ public class Student extends Person {
 		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
 	}
 	
-	public boolean equals(Student student) {
-		return this.getStudentNumber().equals(student.getStudentNumber());
+	@Override
+  public boolean equals(Object obj) {
+	  if (obj instanceof Student) {
+	    Student student = (Student)obj;
+	    return this.getStudentNumber().equals(student.getStudentNumber());
+	  }
+	  return false;
 	}
 }

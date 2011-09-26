@@ -1,6 +1,6 @@
 package no.uis.abam.dom;
 
-public class ExternalExaminer extends Person{
+public class ExternalExaminer extends AbamPerson {
 	
 	private String title;
 	private String streetAddress;
