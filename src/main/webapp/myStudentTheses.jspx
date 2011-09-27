@@ -12,7 +12,7 @@
 			<table>
 			<tr>
 				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-						<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}" valueChangeListener="#{thesisBean.actionDisplayDepartmentTheses}" partialSubmit="true" immediate="true">
+						<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentCode}" valueChangeListener="#{thesisBean.actionDisplayDepartmentTheses}" partialSubmit="true" immediate="true">
 							<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
 						</ice:selectOneMenu>
 				</td>

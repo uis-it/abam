@@ -26,12 +26,12 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.departmentName}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignmentDepartmentCode}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_std_prg}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgramName}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignmentStudyProgramCode}"/></td>
 					<td></td>
 				</tr>
 				<tr>

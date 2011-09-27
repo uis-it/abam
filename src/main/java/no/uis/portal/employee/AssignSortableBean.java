@@ -170,7 +170,7 @@ public class AssignSortableBean implements DisposableBean{
 	 */
 	public void actionPrepareApplicationInformationArray(ActionEvent event) {
 		setSelectedPriority("all");
-		setDepartmentName(employeeService.getDepartmentNameFromIndex(employeeService.getSelectedDepartmentNumber()));
+		setDepartmentName(employeeService.getDepartmentNameFromCode(employeeService.getSelectedDepartmentCode()));
 		List<Application> applicationList;
 		if(isBachelor()){ 			
 			applicationList = employeeService.getBachelorApplicationListFromSelectedDepartmentNumber();			

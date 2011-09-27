@@ -101,13 +101,14 @@ public class ExternalExaminerBean implements DisposableBean{
 	 */
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
 		List<Thesis> thesisList = employeeService.getThesisList();
+		String deptCode = event.getNewValue().toString();
 		
-		thesisList = employeeService.getThesisListFromDepartmentCode(
-				employeeService.getDepartmentCodeFromIndex(
-						Integer.parseInt(event.getNewValue().toString())
-						));
-		if(thesisList != null) createThesisInformationFromThesis(thesisList);
-		else thesisInformationList.clear();
+		thesisList = employeeService.getThesisListFromDepartmentCode(deptCode);
+		if(thesisList != null) {
+		  createThesisInformationFromThesis(thesisList);
+		} else {
+		  thesisInformationList.clear();
+		}
 		actionClearFields(null);
 	}
 	

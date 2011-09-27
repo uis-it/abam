@@ -58,12 +58,13 @@ public class ThesisBean {
 	 * @param event
 	 */
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
-		thesisList = employeeService.getThesisListFromDepartmentCode(
-				employeeService.getDepartmentCodeFromIndex(
-						Integer.parseInt(event.getNewValue().toString())
-						));
-		if(thesisList != null) createThesisInformationFromThesis(true);
-		else thesisInformationList.clear();
+		String deptCode = event.getNewValue().toString();
+    thesisList = employeeService.getThesisListFromDepartmentCode(deptCode);
+		if(thesisList != null) {
+		  createThesisInformationFromThesis(true);
+		} else {
+		  thesisInformationList.clear();
+		}
 	}
 
 	/**
@@ -71,12 +72,13 @@ public class ThesisBean {
 	 * @param event
 	 */
 	public void actionDisplayDepartmentThesesArchive(ValueChangeEvent event) {
-		thesisList = employeeService.getArchivedThesisListFromDepartmentCode(
-				employeeService.getDepartmentCodeFromIndex(
-						Integer.parseInt(event.getNewValue().toString())
-						));
-		if(thesisList != null) createThesisInformationFromThesis(true);
-		else thesisInformationList.clear();
+		String deptCode = event.getNewValue().toString();
+    thesisList = employeeService.getArchivedThesisListFromDepartmentCode(deptCode);
+		if(thesisList != null) {
+		  createThesisInformationFromThesis(true);
+		} else {
+		  thesisInformationList.clear();
+		}
 	}
 	
 	/**

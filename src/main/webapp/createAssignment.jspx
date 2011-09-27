@@ -37,7 +37,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}" /></td>
 					<td><ice:selectOneMenu id="departmentInput"
-						value="#{assignmentBean.currentAssignment.departmentNumber}"
+						value="#{assignmentBean.currentAssignment.departmentCode}"
 						valueChangeListener="#{employeeService.actionUpdateStudyProgramListFromCreateAssignment}"
 						partialSubmit="true">
 						<f:selectItems id="departmentInputContent"
@@ -50,7 +50,7 @@
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_std_prg}" /></td>
 					<td><ice:selectOneMenu id="studyProgramInput"
-						value="#{assignmentBean.currentAssignment.studyProgramNumber}">
+						value="#{assignmentBean.currentAssignment.studyProgramCode}">
 						<f:selectItems id="studyProgramContent"
 							value="#{employeeService.studyProgramSelectItemList}" />
 					</ice:selectOneMenu></td>
@@ -70,7 +70,6 @@
 					<td><ice:outputText value="#{msgs.lbl_no_of_std}" /></td>
 					<td><ice:inputText id="numberOfStudents" required="true"
 						disabled="#{assignmentBean.currentAssignment.master}"
-						validator="#{assignmentBean.validateNumberOfStudentsField}"
 						value="#{assignmentBean.currentAssignment.numberOfStudents}"/></td>
 					<td><ice:message for="numberOfStudents" showSummary="true"
 						showDetail="false"></ice:message></td>

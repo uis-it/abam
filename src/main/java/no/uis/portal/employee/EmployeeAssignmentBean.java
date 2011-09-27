@@ -62,10 +62,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		ApplicationInformation applicationInformation = (ApplicationInformation)table.getRowData();
 		Assignment selectedAssignment = applicationInformation.getApplication().getAssignment();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentCode(selectedAssignment.getDepartmentCode());
+		//employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentCode());
 		
-		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
-		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		employeeService.setSelectedDepartmentCode(selectedAssignment.getDepartmentCode());
+		employeeService.setSelectedStudyProgramCode(selectedAssignment.getStudyProgramCode());
 		actionPrepareBackButtonFromAssignAssignemnt(event);
 	}
 	
@@ -75,9 +76,13 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 */
 	public void actionCreateNewAssignment(ActionEvent event) {	
 		employeeService.getDepartmentListFromWebService();
-		setCurrentAssignment(new Assignment());
-		currentAssignment.setId(employeeService.getNextId());
-		currentAssignment.setFacultySupervisor(getEmployeeFromUisLoginName());
+		Assignment ass = new Assignment();
+		ass.setId(employeeService.getNextId());
+		ass.setFacultySupervisor(getEmployeeFromUisLoginName());
+		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());
+		ass.setStudyProgramCode(employeeService.getSelectedStudyProgramCode());
+
+		setCurrentAssignment(ass);
 	}
 	
 	/**
@@ -95,10 +100,11 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionSetSelectedAssignment(ActionEvent event){		
 		Assignment selectedAssignment = (Assignment) getRowFromEvent(event);
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
-		
-		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
-		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		//employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentCode(selectedAssignment.getDepartmentCode());
+		employeeService.setSelectedDepartmentCode(selectedAssignment.getDepartmentCode());
+		employeeService.setSelectedStudyProgramCode(selectedAssignment.getStudyProgramCode());
+		//employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
 	}
 	
 	private Object getRowFromEvent(ActionEvent event) {
@@ -126,10 +132,10 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		log.setLevel(Level.ERROR);
 		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
 		setCurrentAssignment(selectedAssignment);
-		employeeService.setSelectedStudyProgramListFromDepartmentIndex(selectedAssignment.getDepartmentNumber());
+		employeeService.setSelectedStudyProgramListFromDepartmentCode(selectedAssignment.getDepartmentCode());
 		
-		employeeService.setSelectedDepartmentNumber(selectedAssignment.getDepartmentNumber());
-		employeeService.setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		employeeService.setSelectedDepartmentCode(selectedAssignment.getDepartmentCode());
+		employeeService.setSelectedStudyProgramCode(selectedAssignment.getStudyProgramCode());
 		actionPrepareBackButtonFromMyStudentTheses(event);
 	}
 	
@@ -208,29 +214,29 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionUpdateCurrentAssignment(ActionEvent event) {				
-		
-		currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
-		currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
-		currentAssignment.setStudyProgramName(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramNumber()));
+
+	  // TODO what is this?
+		//currentAssignment.setDepartmentName(employeeService.getDepartmentNameFromIndex(currentAssignment.getDepartmentNumber()));
+		//currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
+	  //employeeService.getStudyProgramNameFromCode(currentAssignment.getStudyProgramCode());
+		//currentAssignment.setStudyProgramName(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramCode()));
 		currentAssignment.setFileUploadErrorMessage("");
-		GregorianCalendar calendar = new GregorianCalendar();
+		Calendar calendar = Calendar.getInstance();
 		currentAssignment.setAddedDate(calendar);
-		calendar = new GregorianCalendar();
+		calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
 		currentAssignment.setType("Bachelor");
 		
-		String numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
-		if (numberOfStudentsInput == null) {
-		  numberOfStudentsInput = "1";
+		int numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
+		if (numberOfStudentsInput <= 0) {
+		  numberOfStudentsInput = 1;
 		}
-		if(!currentAssignment.isBachelor()){
-			if(!numberOfStudentsInput.equals("1")){
-				currentAssignment.setNumberOfStudents("1");
-				currentAssignment.setType("Master");
-				if(!numberOfStudentsInput.equals(""))
-					currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
-			}
+		if(!currentAssignment.isBachelor() && numberOfStudentsInput > 1) {
+			currentAssignment.setNumberOfStudents(1);
+			currentAssignment.setType("Master");
+			// TODO use FacesMessage
+			currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
 		}
 		
 		for (Supervisor supervisor : currentAssignment.getSupervisorList()) {
@@ -239,7 +245,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 				supervisor.setName(employee.getName());
 			}
 		}
-		
 		currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
 		
 		currentAssignment.setAuthor(getEmployeeFromUisLoginName());		
@@ -322,6 +327,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param validate
 	 * @param object
 	 */
+	@Deprecated
 	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
 		String text = object.toString();
         if (!NumberValidator.isValid(text)) {
@@ -375,6 +381,14 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		return currentAssignment;
 	}
 
+	public String getCurrentAssignmentDepartmentCode() {
+	  return employeeService.getDepartmentNameFromCode(currentAssignment.getDepartmentCode());  
+	}
+	
+	public String getCurrentAssignmentStudyProgramCode() {
+	  return employeeService.getStudyProgramNameFromCode(currentAssignment.getStudyProgramCode());
+	}
+	
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
 	}

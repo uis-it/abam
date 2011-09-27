@@ -29,7 +29,7 @@
 		<table>
 			<tr>
 				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-				<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentNumber}">
+				<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentCode}">
 					<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
 				</ice:selectOneMenu>
 				</td>
