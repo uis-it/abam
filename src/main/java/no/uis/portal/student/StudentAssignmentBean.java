@@ -52,10 +52,11 @@ public class StudentAssignmentBean implements DisposableBean {
 		setDisplayCustomAssignmentFailedError(false);
 		setCustomAssignmentStudentNumber("");
 		Assignment assignment = studentService.getCurrentStudent().getCustomAssignment();
-		Student student = studentService.getCurrentStudent(); 
-		student.setDepartmentName(studentService
-				.getDepartmentNameFromIndex(studentService
-						.findDepartmentOe2ForCurrentStudent()));
+		// TODO what is this?
+//		Student student = studentService.getCurrentStudent();
+//		student.setDepartmentName(studentService.
+//				.getDepartmentNameFromIndex(studentService
+//						.findDepartmentOe2ForCurrentStudent()));
 		if(assignment == null) {
 			assignment = new Assignment();
 			assignment.setFacultySupervisor(new Employee());
@@ -115,10 +116,11 @@ public class StudentAssignmentBean implements DisposableBean {
 		
 		log.setLevel(Level.DEBUG);
 		currentAssignment.setDepartmentCode(studentService.findDepartmentCodeForCurrentStudent());
-		currentAssignment.setDepartmentName(studentService
-				.getDepartmentNameFromIndex(studentService
-						.findDepartmentOe2ForCurrentStudent()));
-		currentAssignment.setStudyProgramName(studentService.getCurrentStudent().getStudyProgramName());
+		// TODO the department code should be enough, the name can be fetched when needed
+//		currentAssignment.setDepartmentName(studentService
+//				.getDepartmentNameFromIndex(studentService
+//						.findDepartmentOe2ForCurrentStudent()));
+		currentAssignment.setStudyProgramCode(studentService.getCurrentStudent().getStudyProgramName());
 		currentAssignment.setFileUploadErrorMessage("");
 		
 		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();

@@ -40,7 +40,7 @@ public class ThesisBean implements DisposableBean {
 	public void actionGetInformationForStudent(ActionEvent event) {
 		setRenderAcceptButtonFalse();
 		
-		studentService.updateCurrentStudentFromWebService();
+		//studentService.updateCurrentStudentFromWebService();
 		Student currentStudent = studentService.getCurrentStudent();
 		currentStudentsThesis = studentService.getCurrentStudent().getAssignedThesis();
 		
@@ -52,9 +52,11 @@ public class ThesisBean implements DisposableBean {
 			} else {
 				currentAssignment = currentStudentsThesis.getAssignedAssignment();
 			}
-			currentAssignment.setDepartmentName(
-					studentService.getDepartmentNameFromIndex(
-							studentService.findDepartmentOe2ForCurrentStudent()));
+			currentAssignment.setDepartmentCode(currentStudent.getDepartmentCode());
+			// TODO the name can be fetched when needed
+//			currentAssignment.setDepartmentName(
+//					studentService.getDepartmentNameFromIndex(
+//							studentService.findDepartmentOe2ForCurrentStudent()));
 			if (currentStudent.isAcceptedThesis()) {
 				readRules1 = true;
 				readRules2 = true;

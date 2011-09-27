@@ -1,20 +1,13 @@
-<f:view xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component" >
+	<ice:loadBundle basename="Language" var="msgs"/>
 	<ice:portlet>
 		<ice:form>
-			<ice:panelGrid columns="2" border="0" width="500">
-				<ice:panelGroup id="menu">
-				<table>
-					<tr><td><ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" /></td></tr>
-					<tr><td><ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}" /></td></tr>
-					<tr><td><ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionPrepareCreateCustomAssignment}" value="#{msgs.link_create_custom_assignment}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}"/></td></tr>
-					<tr><td><ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/></td></tr>
-					<tr><td><ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/></td></tr>
-				</table>
-				</ice:panelGroup>
+			<ice:panelGrid columns="1" border="0" width="500">
+					<ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" />
+					<ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}" />
+					<ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionPrepareCreateCustomAssignment}" value="#{msgs.link_create_custom_assignment}" rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis}"/>
+					<ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/>
+					<ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>

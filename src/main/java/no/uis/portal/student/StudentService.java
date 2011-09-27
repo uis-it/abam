@@ -14,7 +14,17 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.RenderRequest;
 
-import org.apache.log4j.Level;
+import no.uis.abam.dom.Application;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Department;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Thesis;
+import no.uis.abam.ws_abam.AbamWebService;
+import no.uis.service.model.BaseText;
+import no.uis.service.model.Organization;
+
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
@@ -28,10 +38,7 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-
-import no.uis.abam.dom.*;
-import no.uis.abam.ws_abam.AbamWebService;
-
+// TODO improve protection of resources in concurrent thread environment, it is a mess. 
 public class StudentService {
 
 	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
@@ -39,7 +46,7 @@ public class StudentService {
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 	
-	private Logger log = Logger.getLogger(StudentService.class);
+	private static Logger log = Logger.getLogger(StudentService.class);
 	
 	private TreeSet<Assignment> assignmentList; 
 	private Assignment selectedAssignment;
@@ -52,9 +59,9 @@ public class StudentService {
 	private ArrayList<Application> applicationsToRemove = new ArrayList<Application>();
 	private ArrayList<SelectItem> departmentSelectItemList = new ArrayList<SelectItem>();
 	private ArrayList<SelectItem> studyProgramSelectItemList = new ArrayList<SelectItem>();
-	private List<Department> departmentList;
+	private List<Organization> departmentList;
 	
-	private int selectedStudyProgramNumber;
+	private String selectedStudyProgramCode;
 	
 	private ThemeDisplay themeDisplay;
 	
@@ -79,7 +86,7 @@ public class StudentService {
 		}
 	}
 	
-	public void setCurrentStudentFromLoggedInUser(){
+	private Student getStudentFromLogin() {
 		String loginName = null;
 		try {			
 			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
@@ -90,18 +97,14 @@ public class StudentService {
 		if (loginName != null) {
 		  student = abamStudentClient.getStudentFromStudentNumber(loginName);
 		}
-		if(student == null) {
-			student = new Student();
-			student.setStudentNumber("");
-		}
-		setCurrentStudent(student);
+		return student;
 	}
 
 	public ThemeDisplay getThemeDisplay() {
 		return themeDisplay;
 	}
 	
-	public String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+	private static String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
 	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
 		String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
 	      columnName, user.getUserId(), (String)null);
@@ -116,9 +119,10 @@ public class StudentService {
 		getCurrentStudent().setCustomAssignment(assignment);
 	}
 	
-	public void setApplicationToStudent(Application application){
-		currentStudent.addApplication(application);
-		abamStudentClient.updateStudent(currentStudent);
+	public void setApplicationToStudent(Application application) {
+	  Student stud = getCurrentStudent();
+		stud.addApplication(application);
+		abamStudentClient.updateStudent(stud);
 	}
 	
 	public TreeSet<Assignment> getAssignmentList() {
@@ -164,37 +168,26 @@ public class StudentService {
 	}
 	
 	public void actionClearStudyProgramAndDepartmentNumber(ActionEvent event){
-		setSelectedStudyProgramNumber(0);
+		setSelectedStudyProgramCode(null);
 	}
 	
-	public void updateStudyProgramList(int index){
+	private void updateStudyProgramList(int index){
 		Set<Assignment> assignmentList = getAssignmentList();
+		Student stud = getCurrentStudent();
 		if (assignmentList != null) {
 			for (Assignment assignment : assignmentList) {
-				if (assignment.getDepartmentCode().equals(currentStudent.getDepartmentCode())) { 
+				if (assignment.getDepartmentCode().equals(stud.getDepartmentCode())) { 
 					if(currentStudentIsEligibleForAssignment(assignment)) {
 						assignment.setDisplayAssignment(true);
-						String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
-						assignment.setDepartmentName(depName);
+						//String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
+					} else {
+					  assignment.setDisplayAssignment(false);
 					}
-					else assignment.setDisplayAssignment(false);
-				} else assignment.setDisplayAssignment(false);
-			}
-		}
-	}
-	
-	private String getDepartmentNameFromCode(String code) {
-		String language = res.getString(LANGUAGE);
-		for (Department dep : departmentList) {
-			if (dep.getOeKode() != null && dep.getOeKode().equals(code)) {
-				if (language.equals(NORWEGIAN_LANGUAGE)) {
-					return dep.getOeNavn_Bokmaal();
 				} else {
-					return dep.getOeNavn_Engelsk();
+				  assignment.setDisplayAssignment(false);
 				}
 			}
 		}
-		return "";
 	}
 	
 	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
@@ -202,9 +195,10 @@ public class StudentService {
 	}
 	
 	public void actionSetDisplayAssignment(ValueChangeEvent event){
-		String selectedStudyProgram = (String) getStudyProgramName(Integer.parseInt(event.getNewValue().toString()));
+	  
+		selectedStudyProgramCode = event.getNewValue().toString();
+    String selectedStudyProgram = getStudyProgramNameFromCode(selectedStudyProgramCode);
 		assignmentList = getAssignmentList();
-		selectedStudyProgramNumber = Integer.parseInt(event.getNewValue().toString());
 		if (assignmentList != null) {
 			for (Assignment assignment : assignmentList) {
 				if (checkIfAssignmentShouldBeDisplayed(assignment,
@@ -218,44 +212,46 @@ public class StudentService {
 	}
 	
 	private boolean checkIfAssignmentShouldBeDisplayed(Assignment abIn, String selectedStudyProgram) {
-		return (selectedStudyProgram.equals("") && abIn.getDepartmentCode().equals(currentStudent.getDepartmentCode())) 
-		|| abIn.getStudyProgramName().equals(selectedStudyProgram);
+	  Student stud = getCurrentStudent();
+	  String assignStudProgName = getStudyProgramNameFromCode(abIn.getStudyProgramCode());
+	  
+  return (selectedStudyProgram.equals("") && abIn.getDepartmentCode().equals(stud.getDepartmentCode())) 
+  || assignStudProgName.equals(selectedStudyProgram);
+	  
 	}
 	
+	private String getStudyProgramNameFromCode(String progCode) {
+	  no.uis.service.model.StudyProgram prog = abamStudentClient.getStudyProgramFromCode(progCode);
+	  return getText(prog.getName());
+	}
 	
-	public void updateSelectedAssignmentInformation(Assignment selectedAssignment){
+  public void updateSelectedAssignmentInformation(Assignment selectedAssignment){
 		setSelectedAssignment(selectedAssignment);
 		//setStudyProgramListFromDepartmentNumber(selectedAssignment.getDepartmentNumber());
 		
-		setSelectedStudyProgramNumber(selectedAssignment.getStudyProgramNumber());
+		setSelectedStudyProgramCode(selectedAssignment.getStudyProgramCode());
 	}
 	
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
-		updateCurrentStudentFromWebService();
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());			
 		updateStudyProgramList(findDepartmentOe2ForCurrentStudent());		
 		getStudyProgramList();
 	}
 	
-	public int findDepartmentOe2ForCurrentStudent() {
-		String code = getCurrentStudent().getDepartmentCode();
-		List<Department> tempList = getDepartmentList();
-		for (Department department : tempList) {
-			if(department.getOeKode().equalsIgnoreCase(code)) 
-				return department.getOe2();
-		}
-		return 0;
+	private int findDepartmentOe2ForCurrentStudent() {
+	  throw new NotImplementedException(getClass());
+//		String code = getCurrentStudent().getDepartmentCode();
+//		List<Organization> tempList = getDepartmentList();
+//		for (Department department : tempList) {
+//			if(department.getOeKode().equalsIgnoreCase(code)) 
+//				return department.getOe2();
+//		}
+//		return 0;
 	}
 	
 	public String findDepartmentCodeForCurrentStudent() {
-		String code = getCurrentStudent().getDepartmentCode();
-		List<Department> tempList = getDepartmentList();
-		for (Department department : tempList) {
-			if(department.getOeKode().equalsIgnoreCase(code)) 
-				return department.getOeKode();
-		}
-		return "";
+		return getCurrentStudent().getDepartmentCode();
 	}
 	
 	public void actionSaveApplications(ActionEvent event) {
@@ -275,48 +271,68 @@ public class StudentService {
 		applicationsToRemove.clear();
 	}
 	
-	public List<Department> getDepartmentList() {
-		if(departmentList == null || departmentList.isEmpty()) {
-			departmentList = abamStudentClient.getDepartmentList();
-			for (int i = 0; i < departmentList.size(); i++) {
-				if(departmentList.get(i).getOeKode().equals(currentStudent.getDepartmentCode())) {
-					if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
-						departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Bokmaal()));
-					} else departmentSelectItemList.add(new SelectItem(i,departmentList.get(i).getOeNavn_Engelsk()));
-				}	
-			}
+	public synchronized List<Organization> getDepartmentList() {
+	  Student stud = getCurrentStudent();
+		if(departmentList == null && stud != null) {
+		  List<Organization> depts = abamStudentClient.getDepartmentList();
+		  int i = 0;
+			for (Organization dept : depts) {
+        if (dept.getPlaceRef().equals(stud.getDepartmentCode())) {
+          String name = getText(dept.getName());
+          departmentSelectItemList.add(new SelectItem(dept.getPlaceRef(),name));
+        }
+      }
+			departmentList = depts;
 		}
 		return departmentList;
 	}
 
-	public List<StudyProgram> getStudyProgramList() {
-		List<StudyProgram> studyProgramList = abamStudentClient.getStudyProgramListFromDepartmentIndex(findDepartmentOe2ForCurrentStudent());
+	// TODO move to common code
+  private String getText(List<BaseText> txtList) {
+    String lang = "en";
+    if (res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
+      lang = "nb";
+    }
+    return getText(txtList, lang);
+  }
+
+  // TODO move to common code
+	private String getText(List<BaseText> txtList, String lang) {
+	  for (BaseText txt : txtList) {
+      if (txt.getLang().equals(lang)) {
+        return txt.getValue();
+      }
+    }
+    return txtList.get(0).getValue();
+  }
+
+  private List<no.uis.service.model.StudyProgram> getStudyProgramList() {
+		List<no.uis.service.model.StudyProgram> studyProgramList = null; 
 		
+		Student stud = getCurrentStudent();
+		if (stud != null) {
+		  studyProgramList = abamStudentClient.getStudyProgramsFromDepartmentFSCode(stud.getDepartmentCode());
+		}
 		studyProgramSelectItemList.clear();
 		if (studyProgramList == null) {
 		  return Collections.emptyList();
 		}
-		int count = 0;
-		for (StudyProgram program : studyProgramList) {
-		  studyProgramSelectItemList.add(new SelectItem(count++,program.getName()));
+		for (no.uis.service.model.StudyProgram program : studyProgramList) {
+		  studyProgramSelectItemList.add(new SelectItem(program.getId(), getText(program.getName())));
     }
 		return studyProgramList;
 	}
 	
-	public String getStudyProgramName(int index) {
-		return abamStudentClient.getStudyProgramName(findDepartmentOe2ForCurrentStudent(),index);
+	private String getDepartmentNameFromIndex(int index) {
+	  throw new NotImplementedException(getClass());
+//	  List<Department> depts = getDepartmentList();
+//	  return depts.get(index).getName();
 	}
 	
-	public String getDepartmentNameFromIndex(int index) {
-		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
-			return departmentList.get(index).getOeNavn_Bokmaal();
-		}
-		return departmentList.get(index).getOeNavn_Engelsk();
-	}
-	
-	public String getDepartmentCodeFromIndex(int index) {		
-		return departmentList.get(index).getOeKode();
-
+	private String getDepartmentCodeFromIndex(int index) {		
+    throw new NotImplementedException(getClass());
+//    List<Department> depts = getDepartmentList();
+//		return depts.get(index).getOeKode();
 	}
 
 	
@@ -331,34 +347,32 @@ public class StudentService {
 //	}
 //	
 	
-	public int getSelectedStudyProgramNumber() {
-		return selectedStudyProgramNumber;
+	public String getSelectedStudyProgramCode() {
+		return selectedStudyProgramCode;
 	}
 
 	
-	public void setSelectedStudyProgramNumber(int selectedStudyProgramNumber) {
-		this.selectedStudyProgramNumber = selectedStudyProgramNumber;
+	public void setSelectedStudyProgramCode(String selectedStudyProgramCode) {
+		this.selectedStudyProgramCode = selectedStudyProgramCode;
 	}
 
-	public Student getCurrentStudent() {
+	public synchronized Student getCurrentStudent() {
 		if (currentStudent == null) {
-			setCurrentStudentFromLoggedInUser();
+			Student stud = getStudentFromLogin();
+			if (stud == null) {
+			  stud = new Student();
+			  stud.setName("");
+			}
+			currentStudent = stud;
 		}
 		return currentStudent;
 	}
 
-	public void setCurrentStudent(Student currentStudent) {
-		this.currentStudent = currentStudent;
-	}
-	
 	public void updateStudentInWebServiceFromCurrentStudent() {
-		abamStudentClient.updateStudent(currentStudent);
+	  Student stud = getCurrentStudent();
+		abamStudentClient.updateStudent(stud);
 	}
 	
-	public void updateCurrentStudentFromWebService() {
-		setCurrentStudentFromLoggedInUser();
-	}
-
 	public List<Application> getApplicationList() {
 		return abamStudentClient.getApplicationList();
 	}
@@ -435,8 +449,9 @@ public class StudentService {
 	}
 
 	public String getStudentInstitute() {
-	  if (this.currentStudent != null) {
-	    return this.currentStudent.getDepartmentName();
+	  Student stud = getCurrentStudent();
+	  if (stud != null) {
+	    return stud.getDepartmentName();
 	  }
 	  return "";
 	}

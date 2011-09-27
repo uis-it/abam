@@ -1,37 +1,33 @@
-
 <f:view xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />
+	<ice:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
 		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true">
-			<br />
-					
-			<table border="0">
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_department}" /></td>
-					<td><ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/></td>
+			<ice:panelGrid columns="2" border="0">
+					<ice:outputText value="#{msgs.lbl_department}" />
+					<ice:panelGroup>
+						<ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/>
+						<ice:message for="departmentInput" showSummary="true" showDetail="false"/>
+					</ice:panelGroup>
 
-					<td><ice:message for="departmentInput" showSummary="true"
-						showDetail="false"></ice:message></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_study_program}" /></td>
-					<td><ice:selectOneMenu id="studyProgramInput"
-						value="#{studentService.selectedStudyProgramNumber}"
-						valueChangeListener="#{studentService.actionSetDisplayAssignment}"
-						partialSubmit="true">
+					<ice:outputText value="#{msgs.lbl_study_program}" />
+					<ice:panelGroup>
+						<ice:selectOneMenu id="studyProgramInput"
+							value="#{studentService.selectedStudyProgramCode}"
+							valueChangeListener="#{studentService.actionSetDisplayAssignment}"
+							partialSubmit="true"
+						>
 							<f:selectItems id="studyProgramContent"
 								value="#{studentService.studyProgramSelectItemList}" />
-						</ice:selectOneMenu></td>
-					<td><ice:message for="studyProgramInput" showSummary="true"
-						showDetail="false"></ice:message></td>
-
-				</tr>
-			</table>
+						</ice:selectOneMenu>
+						<ice:message for="studyProgramInput" showSummary="true" showDetail="true"/>
+					</ice:panelGroup>
+				</ice:panelGrid>
 		</ice:form>
+		
 		<ice:form>
 			<ice:dataTable id="departmentTable" var="item"
 				value="#{studentService.assignmentList}"
