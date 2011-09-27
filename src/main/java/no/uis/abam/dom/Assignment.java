@@ -2,6 +2,7 @@ package no.uis.abam.dom;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Assignment implements Comparable<Assignment>{
@@ -11,8 +12,8 @@ public class Assignment implements Comparable<Assignment>{
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
 	private int id;
-	private int departmentNumber;
-	private int studyProgramNumber;
+	//private int departmentNumber;
+	//private int studyProgramNumber;
 
 	private boolean master;
 	private boolean bachelor;
@@ -21,11 +22,11 @@ public class Assignment implements Comparable<Assignment>{
 	
 	private String title;
 	private String description;
-	private String studyProgramName;
+	private String studyProgramCode;
 	private String departmentCode;
-	private String departmentName;
+	//private String departmentName;
 	private String type;
-	private String numberOfStudents;
+	private int numberOfStudents;
 	private String numberOfStudentsError;
 	private String fileUploadErrorMessage;
 	private String attachedFilePath;
@@ -33,8 +34,8 @@ public class Assignment implements Comparable<Assignment>{
 	private AbamPerson author;
 	private Employee facultySupervisor;
 
-	private GregorianCalendar addedDate;
-	private GregorianCalendar expireDate;
+	private Calendar addedDate;
+	private Calendar expireDate;
 
 	private ArrayList<Supervisor> supervisorList;
 	private ArrayList<String> attachedFileList;
@@ -80,20 +81,12 @@ public class Assignment implements Comparable<Assignment>{
 		this.id = id;
 	}
 
-	public int getDepartmentNumber() {
-		return departmentNumber;
+	public String getStudyProgramCode() {
+		return this.studyProgramCode;
 	}
 
-	public void setDepartmentNumber(int departmentNumber) {
-		this.departmentNumber = departmentNumber;
-	}
-
-	public int getStudyProgramNumber() {
-		return studyProgramNumber;
-	}
-
-	public void setStudyProgramNumber(int studyProgramNumber) {
-		this.studyProgramNumber = studyProgramNumber;
+	public void setStudyProgramCode(String studyProgramCode) {
+		this.studyProgramCode = studyProgramCode;
 	}
 
 	public boolean isMaster() {
@@ -121,7 +114,10 @@ public class Assignment implements Comparable<Assignment>{
 	}
 
 	public boolean isExpired() {
-		return expireDate.before(GregorianCalendar.getInstance());
+	  if (expireDate != null) {
+	    return expireDate.before(GregorianCalendar.getInstance());
+	  }
+	  return false;
 	}
 
 	public boolean isLoggedInUserIsAuthor() {
@@ -148,14 +144,6 @@ public class Assignment implements Comparable<Assignment>{
 		this.description = description;
 	}
 
-	public String getStudyProgramName() {
-		return studyProgramName;
-	}
-
-	public void setStudyProgramName(String studyProgramName) {
-		this.studyProgramName = studyProgramName;
-	}
-
 	public String getType() {
 		return type;
 	}
@@ -164,11 +152,11 @@ public class Assignment implements Comparable<Assignment>{
 		this.type = type;
 	}
 
-	public String getNumberOfStudents() {
+	public int getNumberOfStudents() {
 		return numberOfStudents;
 	}
 
-	public void setNumberOfStudents(String numberOfStudents) {
+	public void setNumberOfStudents(int numberOfStudents) {
 		this.numberOfStudents = numberOfStudents;
 	}
 
@@ -196,19 +184,19 @@ public class Assignment implements Comparable<Assignment>{
 		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
 
-	public GregorianCalendar getAddedDate() {
+	public Calendar getAddedDate() {
 		return addedDate;
 	}
 
-	public void setAddedDate(GregorianCalendar addedDate) {
+	public void setAddedDate(Calendar addedDate) {
 		this.addedDate = addedDate;
 	}
 
-	public GregorianCalendar getExpireDate() {
+	public Calendar getExpireDate() {
 		return expireDate;
 	}
 
-	public void setExpireDate(GregorianCalendar expireDate) {
+	public void setExpireDate(Calendar expireDate) {
 		this.expireDate = expireDate;
 	}
 
@@ -232,8 +220,11 @@ public class Assignment implements Comparable<Assignment>{
 		return simpleDateFormatter.format(getAddedDate().getTime());
 	}
 
-	public String getExpireDateAsString() {		
-		return simpleDateFormatter.format(getExpireDate().getTime());
+	public String getExpireDateAsString() {	
+	  if (expireDate != null) {
+	    return simpleDateFormatter.format(expireDate.getTime());
+	  }
+	  return "";
 	}
 
 	public String getDepartmentCode() {
@@ -242,14 +233,6 @@ public class Assignment implements Comparable<Assignment>{
 
 	public void setDepartmentCode(String departmentCode) {
 		this.departmentCode = departmentCode;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
 	}
 
 	public AbamPerson getAuthor() {

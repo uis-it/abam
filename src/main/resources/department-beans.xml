@@ -28,6 +28,7 @@
         <property name="generateDdl" value="true"/>
     </bean>
     
+    <!--
     <bean id="departmentEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="no.uis.abam.dom"/>
         <property name="dataSource">
@@ -55,6 +56,6 @@
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
     
     <bean id="departmentDAO" class="no.uis.abam.dao.DepartmentDAOImpl"/>
-    
+    -->
 </beans>
 

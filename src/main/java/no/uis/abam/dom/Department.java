@@ -16,25 +16,25 @@ public class Department {
 	private int oeSAPnr; 
 	
 	@Column(name = "oe1")
-	private short oe1; //Should be 8 because we only need TN-faculty for now.
+	private int oe1; //Should be 8 because we only need TN-faculty for now.
 	@Column(name = "oe2")
-	private short oe2;
+	private int oe2;
 	@Column(name = "oe3")
-	private short oe3;
+	private int oe3;
 	@Column(name = "oeInstKode")
-	private short oeInstKode;
+	private int oeInstKode;
 	@Column(name = "oeNivaa")
-	private short oeNivaa;
+	private int oeNivaa;
 	@Column(name = "oeInstKodeParent", columnDefinition="SMALLINT")
-	private short oeInstKodeParent;
+	private int oeInstKodeParent;
 	@Column(name = "oe1Parent")
-	private short oe1Parent;
+	private int oe1Parent;
 	@Column(name = "oe2Parent")
-	private short oe2Parent;
+	private int oe2Parent;
 	@Column(name = "oe3Parent")
-	private short oe3Parent;
+	private int oe3Parent;
 	@Column(name = "oeSortering")
-	private short oeSortering;
+	private int oeSortering;
 	
 	@Column(name = "oeNSD_kode")
 	private String oeNSD_kode;
@@ -76,83 +76,83 @@ public class Department {
 		this.oeSAPnr = oeSAPnr;
 	}
 
-	public short getOe1() {
+	public int getOe1() {
 		return oe1;
 	}
 
-	public void setOe1(short oe1) {
+	public void setOe1(int oe1) {
 		this.oe1 = oe1;
 	}
 
-	public short getOe2() {
+	public int getOe2() {
 		return oe2;
 	}
 
-	public void setOe2(short oe2) {
+	public void setOe2(int oe2) {
 		this.oe2 = oe2;
 	}
 
-	public short getOe3() {
+	public int getOe3() {
 		return oe3;
 	}
 
-	public void setOe3(short oe3) {
+	public void setOe3(int oe3) {
 		this.oe3 = oe3;
 	}
 
-	public short getOeInstKode() {
+	public int getOeInstKode() {
 		return oeInstKode;
 	}
 
-	public void setOeInstKode(short oeInstKode) {
+	public void setOeInstKode(int oeInstKode) {
 		this.oeInstKode = oeInstKode;
 	}
 
-	public short getOeNivaa() {
+	public int getOeNivaa() {
 		return oeNivaa;
 	}
 
-	public void setOeNivaa(short oeNivaa) {
+	public void setOeNivaa(int oeNivaa) {
 		this.oeNivaa = oeNivaa;
 	}
 
-	public short getOeInstKodeParent() {
+	public int getOeInstKodeParent() {
 		return oeInstKodeParent;
 	}
 
-	public void setOeInstKodeParent(short oeInstKodeParent) {
+	public void setOeInstKodeParent(int oeInstKodeParent) {
 		this.oeInstKodeParent = oeInstKodeParent;
 	}
 
-	public short getOe1Parent() {
+	public int getOe1Parent() {
 		return oe1Parent;
 	}
 
-	public void setOe1Parent(short oe1Parent) {
+	public void setOe1Parent(int oe1Parent) {
 		this.oe1Parent = oe1Parent;
 	}
 
-	public short getOe2Parent() {
+	public int getOe2Parent() {
 		return oe2Parent;
 	}
 
-	public void setOe2Parent(short oe2Parent) {
+	public void setOe2Parent(int oe2Parent) {
 		this.oe2Parent = oe2Parent;
 	}
 
-	public short getOe3Parent() {
+	public int getOe3Parent() {
 		return oe3Parent;
 	}
 
-	public void setOe3Parent(short oe3Parent) {
+	public void setOe3Parent(int oe3Parent) {
 		this.oe3Parent = oe3Parent;
 	}
 
-	public short getOeSortering() {
+	public int getOeSortering() {
 		return oeSortering;
 	}
 
-	public void setOeSortering(short oeSortering) {
+	public void setOeSortering(int oeSortering) {
 		this.oeSortering = oeSortering;
 	}
 
