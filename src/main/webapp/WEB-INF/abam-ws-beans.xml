@@ -32,12 +32,7 @@
 	  address="/AbamWebService" />
 	  
 	<bean id="abamWS" class="no.uis.abam.ws_abam.AbamWebServiceImpl">
-		<property name="departmentDao" ref="departmentDAO"/>
 		<property name="idmService" ref="idmWS"/>
-		<property name="employeeDao" ref="employeeDao"/>
 	</bean>
 
-	<bean id="employeeDao" class="no.uis.abam.dao.EmployeeDAOImpl">
-		<property name="idmService" ref="idmWS"/>
-	</bean>	
 </beans>

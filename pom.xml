@@ -27,6 +27,47 @@
   	<commons.logging.version>1.1.1</commons.logging.version>
   </properties>
   
+  <developers>
+    <developer>
+      <id></id>
+      <name>Bente Cecilie Andorsen</name>
+      <email></email>
+      <url></url>
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl></picUrl>
+      </properties>
+    </developer>
+    <developer>
+      <id></id>
+      <name>Stig Rune Malterud</name>
+      <email></email>
+      <url></url>
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl></picUrl>
+      </properties>
+    </developer>
+  </developers>
+
+	<scm>
+		<connection>scm:svn:https://abam.googlecode.com/svn/ws-abam/trunk</connection>
+		<developerConnection>scm:svn:https://abam.googlecode.com/svn/ws-abam/trunk</developerConnection>
+		<url>https://abam.googlecode.com/svn/ws-abam/trunk</url>
+	</scm>
+
   <dependencyManagement>
   	<dependencies>
   		<dependency>
@@ -141,4 +182,12 @@
     </pluginManagement>
   </build>
 
+	<distributionManagement>
+		<site>
+			<id>source01.uis.no</id>
+			<url>
+				dav:https://source01.uis.no/maven-site/${project.groupId}/${project.artifactId}/${project.version}
+			</url>
+		</site>
+	</distributionManagement>
 </project>

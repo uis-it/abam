@@ -40,30 +40,6 @@ public class TestWebservice {
   }
   
 	@Test
-	public void testDepartmentList() throws Exception {
-	  
-	  List<Department> departmentList = abamService.getDepartmentList();
-	  
-	  assertThat(departmentList, is(notNullValue(List.class)));
-	  
-	  assertThat(departmentList, hasItem(new BaseMatcher<Department>() {
-      @Override
-      public void describeTo(Description description) {
-        description.appendText(" has valid name ");
-      }
-      @Override
-      public boolean matches(Object item) {
-        
-        String name = ((Department)item).getOeKode();
-        if (name != null && name.equals(testData.getProperty("test.departmentlist.1"))) {
-          return true;
-        }
-        return false;
-      }
-	  }));
-	}
-	
-	@Test
 	public void testEmployee() throws Exception {
 	  String testUid = testData.getProperty("test.employee.1");
 	  Employee employee = abamService.getEmployeeFromUisLoginName(testUid);

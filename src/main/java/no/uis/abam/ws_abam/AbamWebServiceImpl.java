@@ -8,24 +8,18 @@ import java.util.TreeSet;
 
 import javax.jws.WebService;
 
-import no.uis.abam.dao.DepartmentDAO;
-import no.uis.abam.dao.EmployeeDAO;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Department;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
-import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
-import no.uis.abam.util.LevenshteinDistance;
 import no.uis.service.idm.ws.IdmWebService;
+import no.uis.service.model.AffiliationType;
 import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 import no.uis.service.model.Person;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.CannotCreateTransactionException;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
 public class AbamWebServiceImpl implements AbamWebService {
@@ -37,21 +31,20 @@ public class AbamWebServiceImpl implements AbamWebService {
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
 	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
-	private List<Department> departmentList;
-	private List<Employee> employeeList = new ArrayList<Employee>();
-	
-	private DepartmentDAO departmentDao;
-	private EmployeeDAO employeeDao;
+	private List<Organization> departmentList;
+	private String orgTreeRoot = "217_8_0_0"; // faculty TN 
  	
 	private IdmWebService idmService;
-	
+
 	public AbamWebServiceImpl(){
 	}
-	
+
+	@Override
 	public TreeSet<Assignment> getAllAssignments() {
 		return assignmentList;
 	}	
 	
+	@Override
 	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentCode) {
 		TreeSet<Assignment> assignmentsToReturn = new TreeSet<Assignment>();
 		for (Assignment assignment : assignmentList) {
@@ -62,96 +55,64 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return assignmentsToReturn;
 	}
 
+	@Override
 	public TreeSet<Assignment> getActiveAssignments() {
 		TreeSet<Assignment> activeAssignments = new TreeSet<Assignment>();
 		for (Assignment assignment : assignmentList) {
-			if(!assignment.isExpired()) activeAssignments.add(assignment);
+			if(!assignment.isExpired()) {
+			  activeAssignments.add(assignment);
+			}
 		}
 		return activeAssignments;
 	}
 	
+	@Override
 	public void saveAssignment(Assignment assignment){
 		assignmentList.remove(assignment);
 		assignmentList.add(assignment);
 	}
 	
+	@Override
 	public void removeAssignment(Assignment assignment) {
 		assignmentList.remove(assignment);		
 	}
 	
+	@Override
 	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
 		Student std = getStudentFromStudentNumber(studentNumber);
 		if (std != null) return std.getCustomAssignment();
 		return null;
 	}
 	
+	@Override
 	public Assignment getAssignmentFromId(int id) {
 		for (Assignment assignment : assignmentList) {
-			if(assignment.getId() == id){
+			if(assignment.getId() == id) {
 				return assignment;
 			}
 		}
 		return null;
 	}
 	
-	public List<Department> getDepartmentList() {
-		try {
-			if ((departmentList == null) || (departmentList.isEmpty())) {
-				departmentList = departmentDao.getDepartments();
-				supplyStudyPrograms(departmentList, idmService);
-				Department blankDepartment = new Department(0, "");
-				blankDepartment.setOeKode("");
-				departmentList.add(0, blankDepartment);
-			}
-		} catch (CannotCreateTransactionException e) {
-				
+	@Override
+	public List<Organization> getDepartmentList() {
+		if (departmentList == null) {
+		  Organization orgTree = idmService.getOrgTree(this.orgTreeRoot);
+		  List<Organization> children = orgTree.getChildren();
+		  List<Organization> depList = new ArrayList<Organization>(children.size()+1);
+		  depList.addAll(children);
+		  depList.add(new Organization());
+			departmentList = depList;
 		}
 		return departmentList;
 	}	
 		
-	private static void supplyStudyPrograms(List<Department> departments, IdmWebService idmService) {
-	  for (Department department : departments) {
-	    String departmentCode = getDepartmentFSCode(department);
-	    List<no.uis.service.model.StudyProgram> progs = idmService.getProgramsForOrganization(departmentCode);
-	    List<StudyProgram> abamProgs = new ArrayList<StudyProgram>(progs.size());
-	    int count = 0; 
-	    for (no.uis.service.model.StudyProgram prog : progs) {
-	      
-        abamProgs.add(new StudyProgram(count++, prog.getName().get(0).getValue()));
-      }
-      department.setStudyPrograms(abamProgs);
-    }
-  }
-
-	
-  private static String getDepartmentFSCode(Department department) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(department.getOeInstKode());
-    sb.append('_');
-    sb.append(department.getOe1());
-    sb.append('_');
-    sb.append(department.getOe2());
-    sb.append('_');
-    sb.append(department.getOe3());
-    return sb.toString();
-  }
-
-  public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex) {
-		return departmentList.get(departmentIndex).getStudyPrograms();
-	}
-
-	public String getStudyProgramName(int departmentIndex, int studyProgramIndex) {
-		return getStudyProgramListFromDepartmentIndex(departmentIndex).get(studyProgramIndex).getName();
-	}
-
-	public String getDepartmentName(int index) {
-		return  departmentList.get(index).getOeNavn_Engelsk();
-	}
-
+	@Override
 	public List<Application> getApplicationList() {
 		return applicationList;
 	}
 	
+  @Override
 	public List<Application> getMasterApplicationListFromDepartmentCode(String code) {
 		List<Application> masterApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
@@ -162,6 +123,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return masterApplicationList;
 	}
 
+  @Override
 	public List<Application> getBachelorApplicationListFromDepartmentCode(String code) {
 		List<Application> bachelorApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
@@ -173,6 +135,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 	
 	}
 	
+  @Override
 	public void saveApplication(Application application) {
 		Iterator<Application> iterator = applicationList.iterator();
 		while (iterator.hasNext()){	
@@ -187,6 +150,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		applicationList.add(application);
 	}
 	
+  @Override
 	public void removeApplication(Application application) {
 		for (Application app : applicationList) {
 			if (app.equals(application)) {
@@ -196,10 +160,12 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}	
 	}
 
+  @Override
 	public int getNextId() {
 		return assignmentList.size()+1;
 	}
 
+  @Override
 	public void addThesesFromList(List<Thesis> thesesToAdd) {		
 		for (Thesis thesis : thesesToAdd) {	
 			savedThesesList.add(thesis);			
@@ -239,6 +205,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 	}
 
+	@Override
 	public List<Thesis> getThesisList() {
 		List<Thesis> listToArchive = new ArrayList<Thesis>();
 		for (Thesis thesis : savedThesesList) {
@@ -258,6 +225,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 	}
 	
+	@Override
 	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
 		List<Thesis> listToReturn = new ArrayList<Thesis>();
 		List<Thesis> listToArchive = new ArrayList<Thesis>();
@@ -274,6 +242,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return listToReturn;
 	}
 
+	@Override
 	public void updateThesis(Thesis thesisToUpdate) {
 		for (Thesis thesis : savedThesesList) {
 			if(thesis.equals(thesisToUpdate)) {
@@ -302,6 +271,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 	}
 	
+	@Override
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
 		List<Thesis> listToReturn = new ArrayList<Thesis>();
 		for (Thesis thesis : archivedThesesList) {
@@ -312,6 +282,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return listToReturn;
 	}
 	
+	@Override
 	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName) {
 		List<Thesis> listToReturn = new ArrayList<Thesis>();
 		for (Thesis thesis : archivedThesesList) {
@@ -322,21 +293,32 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return listToReturn;
 	}
 	
+  @Override
 	public Employee getEmployeeFromUisLoginName(String loginName) {
-		
-	  return employeeDao.findEmployeeByEmployeeNumber(loginName);
+    Person person = idmService.getPersonByEmployeeNumber(loginName);
+    if (person != null) {
+      return convertPersonToEmployee(person);
+    }
+    return null;
 	}
 	
 	/*
 	 * TODO use employee number for employees and zero for external persons 
 	 */
-	public Employee getEmployeeFromFullName(String facultySupervisorName) {
+  @Override
+	public Employee getEmployeeFromFullName(String fullName) {
 
-	  Employee employee = employeeDao.findEmployeeByEmployeeFullName(facultySupervisorName);
-	  if (employee == null) {
-	    employee = new Employee();
-	    employee.setName("");
-	  }
+    try {
+      Person p = idmService.findPersonByFullName(fullName);
+      if (p != null) {
+        return convertPersonToEmployee(p);
+      }
+    } catch (Exception e) {
+      log.warn(fullName, e);
+    }
+    Employee employee = new Employee();
+    employee.setName("");
+
     return employee;
 	  //throw new NotImplementedException(getClass());
 	  /*
@@ -367,6 +349,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		*/
 	}
 	
+  @Override
 	public void updateApplications(
 			Application[] tempApplicationPriorityArray) {
 		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
@@ -376,6 +359,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 	}
 		
+  @Override
 	public Student getStudentFromStudentNumber(String studentNumber) {
 	  Person person = idmService.getPersonByStudentNumber(studentNumber);
 	  return getStudentFromPersonTypeObject(person);
@@ -412,8 +396,8 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 		Organization org = idmService.getOrganizationByDN(person.getPrimaryOrgUnit());
 		if (org != null) {
-		  student.setDepartmentCode(org.getAcronym());
-		  student.setDepartmentName(getDefaultText(org.getName()));
+		  student.setDepartmentCode(org.getPlaceRef());
+		  student.setDepartmentName(getText(org.getName(), null));
 		}
 		
 		student.setName(person.getFullName());
@@ -423,6 +407,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		return student;
 	}
 	
+  @Override
 	public void updateStudent(Student studentToUpdate) {
 		for (Student student : studentList) {
 			if (student.equals(studentToUpdate)) {
@@ -433,25 +418,59 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}
 	}
 		
-	public void setDepartmentDao(DepartmentDAO departmentDao) {
-		this.departmentDao = departmentDao;
-	}
-
-	public void setEmployeeDao(EmployeeDAO employeeDao) {
-    this.employeeDao = employeeDao;
-  }
-
   public void setIdmService(IdmWebService idmService) {
 	  this.idmService = idmService;
 	}
   
-  private String getDefaultText(List<BaseText> txtList) {
-    String lang = Locale.getDefault().getLanguage();
+  private String getText(List<BaseText> txtList, String lang) {
+    if (lang == null) {
+      lang = Locale.getDefault().getLanguage();
+    }
     for (BaseText txt : txtList) {
       if (txt.getLang().equals(lang)) {
         return txt.getValue();
       }
     }
     return txtList.get(0).getValue();
+  }
+  
+  private Employee convertPersonToEmployee(Person person) {
+    Employee employee = new Employee();
+    employee.setName(person.getFullName());
+    employee.setEmployeeId(person.getUserId());
+
+    List<Organization> gl = new ArrayList<Organization>();
+    List<String> orgUnits = person.getOrgUnits();
+    for (String orgUnit : orgUnits) {
+      Organization org = idmService.getOrganizationByDN(orgUnit);
+      gl.add(org);
+    }
+    // TODO either save the DN, the ID or the Organization object
+    employee.setGroupMembership(orgUnits);
+    return employee;
+  }
+
+  @Override
+  public List<no.uis.service.model.StudyProgram> getStudyProgramsFromDepartmentFSCode(String departmentCode) {
+    List<no.uis.service.model.StudyProgram> idmProgs = idmService.getProgramsForOrganization(departmentCode);
+    return idmProgs;
+  }
+
+  @Override
+  public no.uis.service.model.StudyProgram getStudyProgramFromCode(String programCode) {
+    return idmService.getStudyProgramByCode(programCode);
+  }
+
+  @Override
+  public List<AffiliationType> getAffiliation(String employeeId) {
+    Person person = idmService.getPersonByEmployeeNumber(employeeId);
+    return person.getAffiliations();
+  }
+
+  @Override
+  public Organization getEmployeeDeptarment(String employeeId) {
+    Person person = idmService.getPersonByEmployeeNumber(employeeId);
+    String orgDn = person.getPrimaryOrgUnit();
+    return idmService.getOrganizationByDN(orgDn);
   }
 }

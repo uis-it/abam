@@ -6,6 +6,8 @@ import java.util.TreeSet;
 import javax.jws.WebService;
 
 import no.uis.abam.dom.*;
+import no.uis.service.model.AffiliationType;
+import no.uis.service.model.Organization;
 
 @WebService
 public interface AbamWebService {
@@ -52,29 +54,7 @@ public interface AbamWebService {
 	/**
 	 * @return a List containing Department objects
 	 */
-	public List<Department> getDepartmentList();
-	
-	/**
-	 * @param departmentIndex to get study programs for
-	 * @return a List containing StudyProgram objects
-	 */
-	@Deprecated
-	public List<StudyProgram> getStudyProgramListFromDepartmentIndex(int departmentIndex);
-	
-	/**
-	 * @param departmentIndex to get study programs for
-	 * @param studyProgramIndex to get study program name for
-	 * @return String with name of given studyProgram in given Department.
-	 */
-  @Deprecated
-	public String getStudyProgramName(int departmentIndex, int studyProgramIndex);
-	
-	/**
-	 * @param index of department to get name from
-	 * @return name of department
-	 */
-  @Deprecated
-	public String getDepartmentName(int index); 
+	public List<Organization> getDepartmentList();
 	
 	/**
 	 * @return A List with all Application objects
@@ -170,5 +150,12 @@ public interface AbamWebService {
 	 * @param studentToUpdate - Student object with new information that needs to be saved in webservice
 	 */
 	public void updateStudent(Student studentToUpdate);
+
+  public List<no.uis.service.model.StudyProgram> getStudyProgramsFromDepartmentFSCode(String departmentCode);
 	
+  public no.uis.service.model.StudyProgram getStudyProgramFromCode(String programCode);
+
+  public List<AffiliationType> getAffiliation(String employeeId);
+
+  public Organization getEmployeeDeptarment(String employeeId);
 }
