@@ -49,7 +49,7 @@ public interface AbamWebService {
 	 * @param id to find Assignment by
 	 * @return Assignment with given id or null if not found
 	 */
-	public Assignment getAssignmentFromId(int id);
+	public Assignment getAssignmentFromId(long id);
 	
 	/**
 	 * @return a List containing Department objects
@@ -138,7 +138,7 @@ public interface AbamWebService {
 	 * @param tempApplicationPriorityArray a array of Applications to update
 	 */
 	public void updateApplications(
-			Application[] tempApplicationPriorityArray);
+			List<Application> tempApplicationPriorityArray);
 	
 	/**
 	 * @param studentNumber

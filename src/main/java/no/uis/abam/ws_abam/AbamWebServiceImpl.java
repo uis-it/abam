@@ -86,9 +86,9 @@ public class AbamWebServiceImpl implements AbamWebService {
 	}
 	
 	@Override
-	public Assignment getAssignmentFromId(int id) {
+	public Assignment getAssignmentFromId(long id) {
 		for (Assignment assignment : assignmentList) {
-			if(assignment.getId() == id) {
+			if(assignment.getOid() == id) {
 				return assignment;
 			}
 		}
@@ -190,7 +190,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 	}
 	
 	private void removeStudentsApplicationFromList(Student student) {
-		for (Application application : student.getApplicationPriorityArray()) {
+		for (Application application : student.getApplications()) {
 			if (application != null) {
 				removeApplication(application);
 			}
@@ -353,13 +353,10 @@ public class AbamWebServiceImpl implements AbamWebService {
 	}
 	
   @Override
-	public void updateApplications(
-			Application[] tempApplicationPriorityArray) {
-		for (int i = 0; i < tempApplicationPriorityArray.length; i++) {
-			if(tempApplicationPriorityArray[i].getAssignment() != null) {
-				saveApplication(tempApplicationPriorityArray[i]);
-			}
-		}
+	public void updateApplications(List<Application> applications) {
+    for (Application application : applications) {
+      saveApplication(application);
+    }
 	}
 		
   @Override
@@ -391,9 +388,9 @@ public class AbamWebServiceImpl implements AbamWebService {
     }
 		
 		if (foundMaster) {
-		  student.setBachelor(false);
+		  student.setType(AssignmentType.MASTER);
 		} else if (foundBachelor) {
-		  student.setBachelor(true);
+      student.setType(AssignmentType.BACHELOR);
 		} else {
 		  throw new java.lang.IllegalStateException("neither student nor master");
 		}
