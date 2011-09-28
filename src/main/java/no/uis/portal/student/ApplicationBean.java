@@ -4,11 +4,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
+import org.apache.myfaces.shared_impl.util.MessageUtils;
+
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
+import no.uis.abam.dom.Student;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.UIColumn;
@@ -16,6 +21,7 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class ApplicationBean implements DisposableBean {
 	
+  // TODO looks like this has to be refactored. What if the application runs longer than a year?
 	private static final Date APPLICATION_DEADLINE_MASTER = new GregorianCalendar(
 			GregorianCalendar.getInstance().get(Calendar.YEAR), Calendar.DECEMBER, 1).getTime();
 	private static final Date APPLICATION_DEADLINE_BACHELOR = new GregorianCalendar(
@@ -34,10 +40,11 @@ public class ApplicationBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionSetCustomAssignmentToApplication(ActionEvent event) {
-		Assignment selectedAssignment = studentService.getCurrentStudent().getCustomAssignment();
+		Student student = studentService.getCurrentStudent();
+    Assignment selectedAssignment = student.getCustomAssignment();
 		currentAssignment = selectedAssignment;
-		if(assignmentIsAppliedFor(selectedAssignment)){
-			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(selectedAssignment));
+		if(assignmentIsAppliedFor(student, selectedAssignment)){
+			setCurrentApplication(student.getApplicationFromAssignment(selectedAssignment));
 		} else {
 			createNewApplication(selectedAssignment);
 		}
@@ -63,8 +70,9 @@ public class ApplicationBean implements DisposableBean {
 			}
 		}
 		currentAssignment = studentService.getSelectedAssignment();
-		if(assignmentIsAppliedFor(currentAssignment)){
-			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(currentAssignment));
+		Student student = studentService.getCurrentStudent();
+		if(assignmentIsAppliedFor(student, currentAssignment)) {
+      setCurrentApplication(student.getApplicationFromAssignment(currentAssignment));
 		} else {
 			createNewApplication(currentAssignment);
 		}
@@ -80,9 +88,15 @@ public class ApplicationBean implements DisposableBean {
 		setCurrentApplication(newApplication);
 	}
 	
-	private boolean assignmentIsAppliedFor(Assignment selectedAssignment){
-		return studentService.getCurrentStudent().assignmentIsAlreadyAppliedFor(selectedAssignment);
+	private static boolean assignmentIsAppliedFor(Student student, Assignment assignment) {
+    for (Application appl : student.getApplications()) {
+      if (appl.getAssignment().equals(assignment)) {
+        return true;
+      }
+    }
+    return false;
 	}
+	
 	
 	/**
 	 * ActionListener that edits an Application
@@ -103,8 +117,9 @@ public class ApplicationBean implements DisposableBean {
 			}
 		}
 		currentAssignment = studentService.getSelectedAssignment();
-		if(assignmentIsAppliedFor(currentAssignment)){
-			setCurrentApplication(studentService.getCurrentStudent().getApplicationFromAssignment(currentAssignment));
+		Student student = studentService.getCurrentStudent();
+		if(assignmentIsAppliedFor(student, currentAssignment)){
+      setCurrentApplication(student.getApplicationFromAssignment(currentAssignment));
 		} else {
 			createNewApplication(currentAssignment);
 		}
@@ -146,10 +161,10 @@ public class ApplicationBean implements DisposableBean {
 	}
 	
 	public boolean isDeadlineForApplyingReached() {
-		if (studentService.getCurrentStudent().isBachelor()) {			
-			return APPLICATION_DEADLINE_BACHELOR.before(GregorianCalendar.getInstance().getTime());
+		if (studentService.getCurrentStudent().getType().equals(AssignmentType.BACHELOR)) {			
+			return APPLICATION_DEADLINE_BACHELOR.before(Calendar.getInstance().getTime());
 		} else {
-			return APPLICATION_DEADLINE_MASTER.before(GregorianCalendar.getInstance().getTime());
+			return APPLICATION_DEADLINE_MASTER.before(Calendar.getInstance().getTime());
 		}		
 	}
 		

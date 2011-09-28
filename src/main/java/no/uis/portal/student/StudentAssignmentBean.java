@@ -2,6 +2,7 @@ package no.uis.portal.student;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -13,6 +14,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
+import no.uis.abam.dom.Attachment;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
@@ -131,7 +133,7 @@ public class StudentAssignmentBean implements DisposableBean {
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
 		
-		AssignmentType assignmentType = AssignmentType.valueOf(studentService.getCurrentStudent().getType().toUpperCase());
+		AssignmentType assignmentType = studentService.getCurrentStudent().getType();
     currentAssignment.setType(assignmentType);
 		
 		currentAssignment.setFacultySupervisor(
@@ -145,14 +147,7 @@ public class StudentAssignmentBean implements DisposableBean {
 			}
 		}
 		
-		//Using negative studentNumber as id on custom assignment.
-		int stdNr = Integer.parseInt(studentService.getCurrentStudent().getStudentNumber());
-		currentAssignment.setId(-stdNr);		
-		
-		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
-		if (numberOfStudentsInput == null) {
-		  numberOfStudentsInput = "1";
-		}
+		currentAssignment.setCustom(true);
 	}
 	
 	
@@ -193,9 +188,7 @@ public class StudentAssignmentBean implements DisposableBean {
     FileInfo fileInfo = inputFile.getFileInfo();
     //file has been saved
     if (fileInfo.isSaved()) {
-      currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
-      currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
-      currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+      currentAssignment.getAttachments().add(new Attachment(fileInfo.getPhysicalPath()));
     } else if (fileInfo.isFailed()) {
       //upload failed, generate custom messages
       switch (fileInfo.getStatus()) {
@@ -220,10 +213,23 @@ public class StudentAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionRemoveAttachment(ActionEvent event){
-		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable) uic.getParent().getParent().getParent().getParent();
-	    currentAssignment.getAttachedFileList().remove(table.getRowData());		
+    Iterator<Attachment> iter = currentAssignment.getAttachments().iterator();
+    Object fileToRemove = getRowFromEvent(event);
+    while(iter.hasNext()) {
+      Attachment att = iter.next();
+      if (att.getFile().equals(fileToRemove)) {
+        iter.remove();
+        break;
+      }
+    }
 	}
+
+  private Object getRowFromEvent(ActionEvent event) {
+    UIComponent uic = event.getComponent();   
+    HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
+    return table.getRowData();
+  }
+  
 	
 	/**
 	 * Validator that checks that number of students is valid

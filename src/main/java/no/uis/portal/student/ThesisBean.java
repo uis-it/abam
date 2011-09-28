@@ -46,9 +46,8 @@ public class ThesisBean implements DisposableBean {
 		
 		
 		if (currentStudentsThesis != null) {
-			if (currentStudentsThesis.getAssignedAssignment().getId() == 0) {
-				currentAssignment = studentService.getCurrentStudent()
-						.getCustomAssignment();
+			if (currentStudentsThesis.getAssignedAssignment().isCustom()) {
+				currentAssignment = studentService.getCurrentStudent().getCustomAssignment();
 			} else {
 				currentAssignment = currentStudentsThesis.getAssignedAssignment();
 			}
