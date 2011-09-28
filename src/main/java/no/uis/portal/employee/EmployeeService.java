@@ -18,17 +18,14 @@ import javax.portlet.RenderRequest;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Department;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
-import no.uis.abam.dom.StudyProgram;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 import no.uis.service.model.AffiliationType;
 import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
@@ -41,6 +38,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
@@ -257,43 +255,6 @@ public class EmployeeService {
 		abamClient.updateThesis(thesisToUpdate);
 	}
 
-	/**
-	 * @param index of Department to get the name for
-	 * @return name of the Department
-	 */
-	private String getDepartmentNameFromIndex(int index) {
-	  throw new NotImplementedException(getClass());
-//		if(res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
-//			return departmentList.get(index).getOeNavn_Bokmaal();
-//		}
-//		return departmentList.get(index).getOeNavn_Engelsk();
-	}
-	
-	/**
-	 * @param index of Department to get the code for
-	 * @return code of the Department
-	 */
-	private String getDepartmentCodeFromIndex(int index) {		
-    throw new NotImplementedException(getClass());
-//		return departmentList.get(index).getOeKode();
-	}
-
-	
-	/**
-	 * @param index of Department to get
-	 * @return Department object, or null if not found
-	 */
-	private Department getDepartmentFromIndex(int index) {
-    throw new NotImplementedException(getClass());
-//		getDepartmentListFromWebService();
-//		for (Department department : departmentList) {
-//			if (departmentList.indexOf(department) == index) {
-//				return department;
-//			}
-//		}
-//		return null;
-	}
-
 	public Student getStudentFromStudentNumber(String studentNumber) {
 		return abamClient.getStudentFromStudentNumber(studentNumber);
 	}
@@ -373,10 +334,6 @@ public class EmployeeService {
 
 	public List<Thesis> getThesisList() {
 		return abamClient.getThesisList();
-	}
-
-	private List<Organization> getDepartmentList() {
-		return departmentList;
 	}
 
 	public Set<Assignment> getAssignmentSet() {
@@ -580,13 +537,12 @@ public class EmployeeService {
 		}
 	}		
 	
-	private String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
-		//workaround for Liferay bug LPS-2568, by James Falkner.
-		int excount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
-		List<ExpandoValue> vals = ExpandoValueLocalServiceUtil.getExpandoValues(0, excount-1);
-		Map <String, Serializable> attrs = user.getExpandoBridge().getAttributes();
-		String data = (String)attrs.get(columnName);
-		return data;
+	// TODO this is the same function as in StudentService, put common code in a library
+	private static String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
+    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage      
+    String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
+        columnName, user.getUserId(), (String)null);
+     return data;
 	}
 
 	public void setLoggedInEmployee(Employee loggedInEmployee) {

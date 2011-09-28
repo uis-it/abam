@@ -59,17 +59,17 @@
 					<td><ice:outputText value="#{msgs.lbl_type}" /></td>
 					<td><ice:selectOneRadio id="type" required="false"
 						styleClass="selectRadio"
-						value="#{assignmentBean.currentAssignment.bachelor}"
+						value="#{assignmentBean.currentAssignment.type}"
 						valueChangeListener="#{assignmentBean.actionChangeAssignmentTypeRadioListener}"
 						partialSubmit="true">
-						<f:selectItem itemValue="#{true}" itemLabel="Bachelor" />
-						<f:selectItem itemValue="#{false}" itemLabel="Master" />
+						<f:selectItem itemValue="BACHELOR" itemLabel="Bachelor" />
+						<f:selectItem itemValue="MASTER" itemLabel="Master" />
 					</ice:selectOneRadio></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_no_of_std}" /></td>
 					<td><ice:inputText id="numberOfStudents" required="true"
-						disabled="#{assignmentBean.currentAssignment.master}"
+						disabled="#{assignmentBean.currentAssignment.type == 'MASTER'}"
 						value="#{assignmentBean.currentAssignment.numberOfStudents}"/></td>
 					<td><ice:message for="numberOfStudents" showSummary="true"
 						showDetail="false"></ice:message></td>
@@ -155,7 +155,7 @@
 						value="#{msgs.btn_back}" id="BackButton" immediate="true" /></td>
 					<td><ice:commandButton type="submit"
 						action="assignmentAttachment" value="#{msgs.btn_next}"
-						immediate="false"
+						immediate="true"
 						actionListener="#{assignmentBean.actionUpdateCurrentAssignment}"
 						id="CreateButton" /></td>
 				</tr>

@@ -33,7 +33,7 @@
 							height="50"
 							/>
 					</td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.fileUploadErrorMessage}"/> </td>
+					<td><ice:messages/></td>
 				</tr>
 			</table>
 			<ice:dataTable 

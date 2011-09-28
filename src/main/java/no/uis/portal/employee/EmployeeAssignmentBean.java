@@ -1,23 +1,25 @@
 package no.uis.portal.employee;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import no.uis.abam.dom.*;
-import no.uis.abam.util.NumberValidator;
+import no.uis.abam.dom.ApplicationInformation;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Supervisor;
+import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisInformation;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.myfaces.shared_impl.util.MessageUtils;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
@@ -26,7 +28,6 @@ import com.icesoft.faces.context.DisposableBean;
 
 public class EmployeeAssignmentBean implements DisposableBean {
 		
-	private FacesContext context;
 	private EmployeeService employeeService;
 	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
 	
@@ -40,15 +41,13 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	
 	private boolean showExpired;
 	
-	private Locale locale;
+	//private Locale locale;
 
 	public EmployeeAssignmentBean(){
-		  
 	}
 	
 	public void setEmployeeService(EmployeeService employeeService) {
 		this.employeeService = employeeService;
-		context = FacesContext.getCurrentInstance();		
 	}
 	
 	/**
@@ -129,7 +128,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionSetSelectedAssignmentFromMyStudentTheses(ActionEvent event){
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
 		setCurrentThesis(selectedThesis.getThesis());
-		log.setLevel(Level.ERROR);
 		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
 		setCurrentAssignment(selectedAssignment);
 		employeeService.setSelectedStudyProgramListFromDepartmentCode(selectedAssignment.getDepartmentCode());
@@ -220,23 +218,26 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		//currentAssignment.setDepartmentCode(employeeService.getDepartmentCodeFromIndex(currentAssignment.getDepartmentNumber()));
 	  //employeeService.getStudyProgramNameFromCode(currentAssignment.getStudyProgramCode());
 		//currentAssignment.setStudyProgramName(employeeService.getSelectedStudyProgramNameFromIndex(currentAssignment.getStudyProgramCode()));
-		currentAssignment.setFileUploadErrorMessage("");
 		Calendar calendar = Calendar.getInstance();
 		currentAssignment.setAddedDate(calendar);
 		calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
-		currentAssignment.setType("Bachelor");
+		currentAssignment.setType(AssignmentType.BACHELOR);
 		
 		int numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
 		if (numberOfStudentsInput <= 0) {
 		  numberOfStudentsInput = 1;
 		}
-		if(!currentAssignment.isBachelor() && numberOfStudentsInput > 1) {
+		if(!currentAssignment.getType().equals(AssignmentType.BACHELOR) && numberOfStudentsInput > 1) {
 			currentAssignment.setNumberOfStudents(1);
-			currentAssignment.setType("Master");
-			// TODO use FacesMessage
-			currentAssignment.setNumberOfStudentsError("Maximum number of students on a master assignment is 1.");				
+			currentAssignment.setType(AssignmentType.MASTER);
+
+			// add an error message  to the context
+			FacesContext fc = FacesContext.getCurrentInstance();
+			UIComponent component = (UIComponent)event.getSource();
+			String forClientId = component.getClientId(fc);
+			MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "max_master_assignment", new Object[] {1}, forClientId);
 		}
 		
 		for (Supervisor supervisor : currentAssignment.getSupervisorList()) {
@@ -275,33 +276,29 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 */
 	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
-        FileInfo fileInfo = inputFile.getFileInfo();
+    FileInfo fileInfo = inputFile.getFileInfo();
 
-        //file has been saved
-        locale = context.getViewRoot().getLocale();
-        ResourceBundle res = ResourceBundle.getBundle("Language", locale);
-        
-        if (fileInfo.isSaved()) {
-        	currentAssignment.setFileUploadErrorMessage("");
-        	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
-        	currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
-        	currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
-        }
-        //upload failed, generate custom messages
-        if (fileInfo.isFailed()) {
-            if(fileInfo.getStatus() == FileInfo.INVALID){
-            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
-            }
-            if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_exceeded_size_limit").toString());            	
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
-            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_could_not_upload").toString());
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-            	currentAssignment.setFileUploadErrorMessage(res.getObject("msg_attachment_type_restrictions").toString());
-            }
-        }        
+    if (fileInfo.isSaved()) {
+    	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
+    	currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
+    	currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+    } else if (fileInfo.isFailed()) {
+      //upload failed, generate custom messages
+      switch (fileInfo.getStatus()) {
+        case FileInfo.INVALID:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+          break;
+        case FileInfo.SIZE_LIMIT_EXCEEDED:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_exceeded_size_limit", null);
+          break;
+        case FileInfo.INVALID_CONTENT_TYPE:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+          break;
+        case FileInfo.INVALID_NAME_PATTERN:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_attachment_type_restrictions", null);
+          break;
+      }
+    }        
 	}
 	
 	/**
@@ -309,32 +306,13 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionChangeAssignmentTypeRadioListener(ValueChangeEvent event){
-		if (event.getNewValue().equals(false)){
-			currentAssignment.setMaster(true);
-			currentAssignment.setBachelor(false);
-			currentAssignment.setType("Master");
+		String newValue = event.getNewValue().toString();
+		AssignmentType type = AssignmentType.valueOf(newValue);
+    if (type.equals(AssignmentType.MASTER)){
+			currentAssignment.setType(AssignmentType.MASTER);
 		} else {
-			currentAssignment.setMaster(false);
-			currentAssignment.setBachelor(true);
-			currentAssignment.setType("Bachelor");
-			currentAssignment.setNumberOfStudentsError("");
+			currentAssignment.setType(AssignmentType.BACHELOR);
 		}
-	}
-	
-	/**
-	 * Validator that checks that number of students is valid
-	 * @param facesContext
-	 * @param validate
-	 * @param object
-	 */
-	@Deprecated
-	public void validateNumberOfStudentsField(FacesContext facesContext, UIComponent validate, Object object) {				
-		String text = object.toString();
-        if (!NumberValidator.isValid(text)) {
-        	((UIInput)validate).setValid(false);
-        	FacesMessage msg = new FacesMessage(NumberValidator.getErrorMessage());
-        	context.addMessage(validate.getClientId(context), msg);
-        }
 	}
 	
 	/**

@@ -192,8 +192,7 @@ public class ThesisBean {
 		}
 	}
 	
-	private boolean loggedInUserIsSupervisor(
-			ArrayList<Supervisor> supervisorList) {
+	private boolean loggedInUserIsSupervisor(List<Supervisor> supervisorList) {
 		
 		Employee employee = employeeService.getEmployeeFromUisLoginName();
 		
