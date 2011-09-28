@@ -16,7 +16,7 @@ import javax.portlet.RenderRequest;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Department;
+import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
@@ -104,8 +104,9 @@ public class StudentService {
 		return themeDisplay;
 	}
 	
+	 // TODO this is the same function as in EmployeeService, put common code in a library
 	private static String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
-	    // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
+	  // we cannot use the user's expando bridge here because the permission checker is not initialized properly at this stage	    
 		String data = ExpandoValueLocalServiceUtil.getData(User.class.getName(), ExpandoTableConstants.DEFAULT_TABLE_NAME,
 	      columnName, user.getUserId(), (String)null);
 	   return data;
@@ -190,8 +191,9 @@ public class StudentService {
 		}
 	}
 	
-	private boolean currentStudentIsEligibleForAssignment(Assignment assignment){
-		return assignment.getType().equalsIgnoreCase(getCurrentStudent().getType());
+	private boolean currentStudentIsEligibleForAssignment(Assignment assignment) {
+	  AssignmentType studentType = AssignmentType.valueOf(getCurrentStudent().getType().toUpperCase());
+		return assignment.getType().equals(studentType);
 	}
 	
 	public void actionSetDisplayAssignment(ValueChangeEvent event){

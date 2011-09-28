@@ -12,6 +12,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
@@ -19,6 +20,7 @@ import no.uis.abam.util.NumberValidator;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.myfaces.shared_impl.util.MessageUtils;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
@@ -121,7 +123,6 @@ public class StudentAssignmentBean implements DisposableBean {
 //				.getDepartmentNameFromIndex(studentService
 //						.findDepartmentOe2ForCurrentStudent()));
 		currentAssignment.setStudyProgramCode(studentService.getCurrentStudent().getStudyProgramName());
-		currentAssignment.setFileUploadErrorMessage("");
 		
 		GregorianCalendar calendar = (GregorianCalendar) GregorianCalendar.getInstance();
 		currentAssignment.setAddedDate(calendar);
@@ -130,7 +131,8 @@ public class StudentAssignmentBean implements DisposableBean {
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
 		
-		currentAssignment.updateType(studentService.getCurrentStudent().getType());
+		AssignmentType assignmentType = AssignmentType.valueOf(studentService.getCurrentStudent().getType().toUpperCase());
+    currentAssignment.setType(assignmentType);
 		
 		currentAssignment.setFacultySupervisor(
 				studentService.getEmployeeFromFullName(
@@ -148,7 +150,9 @@ public class StudentAssignmentBean implements DisposableBean {
 		currentAssignment.setId(-stdNr);		
 		
 		String numberOfStudentsInput = (String)parameterMap.get(clientId+"numberOfStudents");
-		if (numberOfStudentsInput == null) numberOfStudentsInput = "1";
+		if (numberOfStudentsInput == null) {
+		  numberOfStudentsInput = "1";
+		}
 	}
 	
 	
@@ -181,33 +185,34 @@ public class StudentAssignmentBean implements DisposableBean {
 	
 	/**
 	 * ActionListener that handles file uploading
+	 * TODO same code as in EmployeeAssignmnetBean, put common code in library
 	 * @param event
 	 */
 	public void fileUploadListen(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
-        FileInfo fileInfo = inputFile.getFileInfo();
-        //file has been saved
-        if (fileInfo.isSaved()) {
-        	currentAssignment.setFileUploadErrorMessage("");
-        	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
-        	currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
-        	currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
-        }
-        //upload failed, generate custom messages
-        if (fileInfo.isFailed()) {
-            if(fileInfo.getStatus() == FileInfo.INVALID){
-            	currentAssignment.setFileUploadErrorMessage("The attachment could not be uploaded.");
-            }
-            if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentAssignment.setFileUploadErrorMessage("The attachment exceeded the size limit.");
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
-            	currentAssignment.setFileUploadErrorMessage("The attachment could not be uploaded.");
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-            	currentAssignment.setFileUploadErrorMessage("The attachment can only be a pdf, zip, gif, png, jpeg, jpg, doc or docx file.");
-            }
-        }
+    FileInfo fileInfo = inputFile.getFileInfo();
+    //file has been saved
+    if (fileInfo.isSaved()) {
+      currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
+      currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
+      currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+    } else if (fileInfo.isFailed()) {
+      //upload failed, generate custom messages
+      switch (fileInfo.getStatus()) {
+        case FileInfo.INVALID:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+          break;
+        case FileInfo.SIZE_LIMIT_EXCEEDED:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_exceeded_size_limit", null);
+          break;
+        case FileInfo.INVALID_CONTENT_TYPE:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+          break;
+        case FileInfo.INVALID_NAME_PATTERN:
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_attachment_type_restrictions", null);
+          break;
+      }
+    }        
 	}
 	
 	/**
