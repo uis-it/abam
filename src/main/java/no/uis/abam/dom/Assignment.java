@@ -6,13 +6,16 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class Assignment implements Comparable<Assignment> {
+import javax.persistence.Entity;
 
-	public final static int ACTIVE_MONTHS = 6;
+@Entity
+public class Assignment extends AbamType {
+
+  private static final long serialVersionUID = 1L;
+
+  public final static int ACTIVE_MONTHS = 6;
 
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
-
-	private int id;
 
 	private boolean displayAssignment = true;
 	private boolean loggedInUserIsAuthor;
@@ -23,41 +26,21 @@ public class Assignment implements Comparable<Assignment> {
 	private String departmentCode;
 	private AssignmentType type;
 	private int numberOfStudents;
-	private String numberOfStudentsError;
-	private String attachedFilePath;
 	
 	private AbamPerson author;
+	
 	private Employee facultySupervisor;
-
+	
 	private Calendar addedDate;
 	private Calendar expireDate;
 
-	private ArrayList<Supervisor> supervisorList;
-	private ArrayList<String> attachedFileList;
+	private List<Supervisor> supervisorList;
+	
+	private List<Attachment> attachments;
 
+  private boolean custom;
+	
 	public Assignment() {
-	}
-
-	public int compareTo(Assignment arg0) {
-		if (getId() > arg0.getId()) {
-		  return 1;
-		} else if (getId() < arg0.getId()) {
-		  return -1;
-		} else {
-		  return 0; 
-		}
-	}
-
-	public boolean equals (Assignment ab) {
-		return ab.getId() == this.getId();
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getStudyProgramCode() {
@@ -126,14 +109,6 @@ public class Assignment implements Comparable<Assignment> {
 		this.numberOfStudents = numberOfStudents;
 	}
 
-	public String getAttachedFilePath() {
-		return attachedFilePath;
-	}
-
-	public void setAttachedFilePath(String attachedFilePath) {
-		this.attachedFilePath = attachedFilePath;
-	}
-
 	public Calendar getAddedDate() {
 		return addedDate;
 	}
@@ -157,20 +132,17 @@ public class Assignment implements Comparable<Assignment> {
 		return supervisorList;
 	}
 
-	public void setSupervisorList(ArrayList<Supervisor> supervisorList) {
+	public void setSupervisorList(List<Supervisor> supervisorList) {
 		this.supervisorList = supervisorList;
 	}
 
-	public List<String> getAttachedFileList() {
-	  if (attachedFileList == null) {
-	    attachedFileList = new ArrayList<String>();
-	  }
-		return attachedFileList;
-	}
+	public List<Attachment> getAttachments() {
+    return attachments;
+  }
 
-	public void setAttachedFileList(ArrayList<String> attachedFileList) {
-		this.attachedFileList = attachedFileList;
-	}
+  public void setAttachments(List<Attachment> attachments) {
+    this.attachments = attachments;
+  }
 
 	public String getAddedDateAsString() {		
 		return simpleDateFormatter.format(getAddedDate().getTime());
@@ -207,4 +179,11 @@ public class Assignment implements Comparable<Assignment> {
 		this.facultySupervisor = facultySupervisor;
 	}
 
+  public void setCustom(boolean custom) {
+    this.custom = custom;
+  }
+
+  public boolean isCustom() {
+    return this.custom;
+  }
 }

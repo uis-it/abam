@@ -1,8 +1,13 @@
 package no.uis.abam.dom;
 
-public class ApplicationInformation {
+import javax.persistence.Entity;
+
+@Entity
+public class ApplicationInformation extends AbamType {
 	
-	private int priority;
+  private static final long serialVersionUID = 1L;
+
+  private int priority;
 	
 	private boolean selected;
 		

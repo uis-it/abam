@@ -2,9 +2,20 @@ package no.uis.abam.dom;
 
 import java.util.List;
 
-public class Employee extends AbamPerson{
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
+
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+public class Employee extends AbamPerson {
+
+  private static final long serialVersionUID = 1L;
 
 	private String employeeId;
+
+	@Transient
 	private List<String> groupMembership;
 	
 	public Employee() {

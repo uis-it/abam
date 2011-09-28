@@ -3,8 +3,14 @@ package no.uis.abam.dom;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Application {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+public class Application extends AbamType {
 	
+  private static final long serialVersionUID = 1L;
+
 	private int priority;
 	
 	private boolean assigned;
@@ -14,6 +20,7 @@ public class Application {
 	private String coStudentName2;
 	
 	private Assignment assignment;
+
 	private Calendar applicationDate;
 	
 	public Application() {}
@@ -22,7 +29,7 @@ public class Application {
 		return assignment;
 	}
 	
-	public int getPriority() {
+  public int getPriority() {
 		return priority;
 	}
 
@@ -70,13 +77,7 @@ public class Application {
 		return applicationDate;
 	}
 
-	public void setApplicationDate(GregorianCalendar applicationDate) {
+	public void setApplicationDate(Calendar applicationDate) {
 		this.applicationDate = applicationDate;
 	}
-	
-	public boolean equals(Application inApplication) {
-		return this.getApplicantStudentNumber().equals(inApplication.getApplicantStudentNumber()) 
-		&& this.getAssignment().equals(inApplication.getAssignment());
-	}
-	
 }

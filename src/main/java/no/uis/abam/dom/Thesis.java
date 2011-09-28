@@ -154,11 +154,6 @@ public class Thesis {
 		this.facultySupervisor = facultySupervisor;
 	}
 
-	public boolean equals(Thesis thesis) {
-		return this.getAssignedAssignment().getId() == thesis
-						.getAssignedAssignment().getId();
-	}
-
 	public Assignment getAssignedAssignment() {
 		return assignedAssignment;
 	}

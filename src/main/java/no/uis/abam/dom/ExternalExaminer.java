@@ -2,7 +2,9 @@ package no.uis.abam.dom;
 
 public class ExternalExaminer extends AbamPerson {
 	
-	private String title;
+  private static final long serialVersionUID = 1L;
+  
+  private String title;
 	private String streetAddress;
 	private String postalCodeAndPlace;
 	private String placeOfEmployment;

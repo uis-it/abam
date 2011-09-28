@@ -1,10 +1,18 @@
 package no.uis.abam.dom;
 
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
-public class AbamPerson {
+@MappedSuperclass
+public class AbamPerson extends AbamType {
 	
+  private static final long serialVersionUID = 1L;
+
+  @Transient
   private String name;
+  @Transient
 	private String email;
+  @Transient
 	private String phoneNumber;
 
 	public AbamPerson(String name) {
@@ -13,7 +21,15 @@ public class AbamPerson {
 	public AbamPerson() {
 	}
 	
-	public String getName() {
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public String getName() {
 	  return name;
 	}
 
@@ -28,5 +44,4 @@ public class AbamPerson {
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-
 }
