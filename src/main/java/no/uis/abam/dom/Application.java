@@ -1,5 +1,6 @@
 package no.uis.abam.dom;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class Application {
@@ -13,7 +14,7 @@ public class Application {
 	private String coStudentName2;
 	
 	private Assignment assignment;
-	private GregorianCalendar applicationDate;
+	private Calendar applicationDate;
 	
 	public Application() {}
 
@@ -65,7 +66,7 @@ public class Application {
 		this.assignment = assignment;
 	}
 	
-	public GregorianCalendar getApplicationDate() {
+	public Calendar getApplicationDate() {
 		return applicationDate;
 	}
 

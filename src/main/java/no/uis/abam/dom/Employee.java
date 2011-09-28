@@ -8,7 +8,6 @@ public class Employee extends AbamPerson{
 	private List<String> groupMembership;
 	
 	public Employee() {
-		
 	}
 
 	public String getEmployeeId() {

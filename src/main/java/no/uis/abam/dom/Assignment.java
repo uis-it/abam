@@ -4,19 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
-public class Assignment implements Comparable<Assignment>{
+public class Assignment implements Comparable<Assignment> {
 
 	public final static int ACTIVE_MONTHS = 6;
 
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
 	private int id;
-	//private int departmentNumber;
-	//private int studyProgramNumber;
 
-	private boolean master;
-	private boolean bachelor;
 	private boolean displayAssignment = true;
 	private boolean loggedInUserIsAuthor;
 	
@@ -24,11 +21,9 @@ public class Assignment implements Comparable<Assignment>{
 	private String description;
 	private String studyProgramCode;
 	private String departmentCode;
-	//private String departmentName;
-	private String type;
+	private AssignmentType type;
 	private int numberOfStudents;
 	private String numberOfStudentsError;
-	private String fileUploadErrorMessage;
 	private String attachedFilePath;
 	
 	private AbamPerson author;
@@ -41,32 +36,16 @@ public class Assignment implements Comparable<Assignment>{
 	private ArrayList<String> attachedFileList;
 
 	public Assignment() {
-		bachelor = true;
-		type = "Bachelor";
-
-		attachedFileList = new ArrayList<String>();
-		supervisorList = new ArrayList<Supervisor>();		
-		//supervisorList.add(new Supervisor());	
-		
-		//facultySupervisor = new Employee();
-	}
-
-	public void updateType(String type) {
-		setType(type);
-		if(type.equalsIgnoreCase("Bachelor")) {
-			setBachelor(true);
-			setMaster(false);
-		}
-		else {
-			setBachelor(false);
-			setMaster(true);
-		}
 	}
 
 	public int compareTo(Assignment arg0) {
-		if (getId() > arg0.getId()) return 1;
-		else if (getId() < arg0.getId()) return -1;
-		else return 0; 
+		if (getId() > arg0.getId()) {
+		  return 1;
+		} else if (getId() < arg0.getId()) {
+		  return -1;
+		} else {
+		  return 0; 
+		}
 	}
 
 	public boolean equals (Assignment ab) {
@@ -87,22 +66,6 @@ public class Assignment implements Comparable<Assignment>{
 
 	public void setStudyProgramCode(String studyProgramCode) {
 		this.studyProgramCode = studyProgramCode;
-	}
-
-	public boolean isMaster() {
-		return master;
-	}
-
-	public void setMaster(boolean master) {
-		this.master = master;
-	}
-
-	public boolean isBachelor() {
-		return bachelor;
-	}
-
-	public void setBachelor(boolean bachelor) {
-		this.bachelor = bachelor;
 	}
 
 	public boolean isDisplayAssignment() {
@@ -144,11 +107,14 @@ public class Assignment implements Comparable<Assignment>{
 		this.description = description;
 	}
 
-	public String getType() {
+	public AssignmentType getType() {
+	  if (type == null) {
+	    type = AssignmentType.BACHELOR;
+	  }
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(AssignmentType type) {
 		this.type = type;
 	}
 
@@ -160,28 +126,12 @@ public class Assignment implements Comparable<Assignment>{
 		this.numberOfStudents = numberOfStudents;
 	}
 
-	public String getNumberOfStudentsError() {
-		return numberOfStudentsError;
-	}
-
-	public void setNumberOfStudentsError(String numberOfStudentsError) {
-		this.numberOfStudentsError = numberOfStudentsError;
-	}
-
 	public String getAttachedFilePath() {
 		return attachedFilePath;
 	}
 
 	public void setAttachedFilePath(String attachedFilePath) {
 		this.attachedFilePath = attachedFilePath;
-	}
-
-	public String getFileUploadErrorMessage() {
-		return fileUploadErrorMessage;
-	}
-
-	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
-		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
 
 	public Calendar getAddedDate() {
@@ -200,7 +150,10 @@ public class Assignment implements Comparable<Assignment>{
 		this.expireDate = expireDate;
 	}
 
-	public ArrayList<Supervisor> getSupervisorList() {
+	public List<Supervisor> getSupervisorList() {
+	  if (supervisorList == null) {
+	    supervisorList = new ArrayList<Supervisor>();
+	  }
 		return supervisorList;
 	}
 
@@ -208,7 +161,10 @@ public class Assignment implements Comparable<Assignment>{
 		this.supervisorList = supervisorList;
 	}
 
-	public ArrayList<String> getAttachedFileList() {
+	public List<String> getAttachedFileList() {
+	  if (attachedFileList == null) {
+	    attachedFileList = new ArrayList<String>();
+	  }
 		return attachedFileList;
 	}
 
