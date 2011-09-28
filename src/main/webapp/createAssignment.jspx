@@ -10,13 +10,6 @@
 		<ice:form>
 			<table>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_id}" /></td>
-					<td><ice:inputText id="id" size="10" disabled="true"
-						required="true" value="#{assignmentBean.currentAssignment.id}"></ice:inputText></td>
-					<td><ice:message for="id" showSummary="true"
-						showDetail="false"></ice:message></td>
-				</tr>
-				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}" /></td>
 					<td><ice:inputText id="title" size="100" required="true"
 						value="#{assignmentBean.currentAssignment.title}"></ice:inputText></td>
@@ -68,7 +61,7 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_no_of_std}" /></td>
-					<td><ice:inputText id="numberOfStudents" required="true"
+					<td><ice:inputText id="numberOfStudents" required="true" immediate="true"
 						disabled="#{assignmentBean.currentAssignment.type == 'MASTER'}"
 						value="#{assignmentBean.currentAssignment.numberOfStudents}"/></td>
 					<td><ice:message for="numberOfStudents" showSummary="true"

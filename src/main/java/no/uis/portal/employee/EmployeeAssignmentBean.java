@@ -1,6 +1,7 @@
 package no.uis.portal.employee;
 
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -13,6 +14,7 @@ import javax.faces.event.ValueChangeEvent;
 import no.uis.abam.dom.ApplicationInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
+import no.uis.abam.dom.Attachment;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
@@ -76,7 +78,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionCreateNewAssignment(ActionEvent event) {	
 		employeeService.getDepartmentListFromWebService();
 		Assignment ass = new Assignment();
-		ass.setId(employeeService.getNextId());
 		ass.setFacultySupervisor(getEmployeeFromUisLoginName());
 		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());
 		ass.setStudyProgramCode(employeeService.getSelectedStudyProgramCode());
@@ -279,9 +280,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
     FileInfo fileInfo = inputFile.getFileInfo();
 
     if (fileInfo.isSaved()) {
-    	currentAssignment.getAttachedFileList().add(fileInfo.getFileName());
-    	currentAssignment.setAttachedFilePath(fileInfo.getPhysicalPath());
-    	currentAssignment.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+      currentAssignment.getAttachments().add(new Attachment(fileInfo.getPhysicalPath()));
     } else if (fileInfo.isFailed()) {
       //upload failed, generate custom messages
       switch (fileInfo.getStatus()) {
@@ -320,7 +319,15 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionRemoveAttachment(ActionEvent event){
-		currentAssignment.getAttachedFileList().remove(getRowFromEvent(event));		
+	  Iterator<Attachment> iter = currentAssignment.getAttachments().iterator();
+	  Object fileToRemove = getRowFromEvent(event);
+	  while(iter.hasNext()) {
+	    Attachment att = iter.next();
+	    if (att.getFile().equals(fileToRemove)) {
+	      iter.remove();
+	      break;
+	    }
+	  }
 	}
 
 	public boolean isBackToAssignAssignment() {

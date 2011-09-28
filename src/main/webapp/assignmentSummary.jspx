@@ -11,7 +11,7 @@
 			<table>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.id}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.oid}"/></td>
 					<td></td>
 				</tr>
 				<tr>

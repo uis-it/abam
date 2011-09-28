@@ -51,7 +51,7 @@
 		                </f:facet>
 						<ice:outputText 
 							id="itemId" 
-							value="#{item.id}" 
+							value="#{item.oid}" 
 							/>
 					</ice:column>
 					<ice:column>
