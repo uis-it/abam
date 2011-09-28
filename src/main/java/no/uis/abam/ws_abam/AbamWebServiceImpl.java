@@ -10,6 +10,7 @@ import javax.jws.WebService;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
@@ -116,7 +117,8 @@ public class AbamWebServiceImpl implements AbamWebService {
 	public List<Application> getMasterApplicationListFromDepartmentCode(String code) {
 		List<Application> masterApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
-			if(application.getAssignment().isMaster() && application.getAssignment().getDepartmentCode().equals(code)) {
+		  boolean isMaster = application.getAssignment().getType().equals(AssignmentType.MASTER);
+			if(isMaster && application.getAssignment().getDepartmentCode().equals(code)) {
 				masterApplicationList.add(application);
 			}
 		}
@@ -127,7 +129,8 @@ public class AbamWebServiceImpl implements AbamWebService {
 	public List<Application> getBachelorApplicationListFromDepartmentCode(String code) {
 		List<Application> bachelorApplicationList = new ArrayList<Application>();
 		for (Application application : applicationList) {
-			if(application.getAssignment().isBachelor() && application.getAssignment().getDepartmentCode().equals(code)) {
+		  boolean isBachelor = application.getAssignment().getType().equals(AssignmentType.BACHELOR); 
+			if(isBachelor && application.getAssignment().getDepartmentCode().equals(code)) {
 				bachelorApplicationList.add(application);
 			}
 		}
