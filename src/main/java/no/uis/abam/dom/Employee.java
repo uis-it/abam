@@ -7,7 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
-@Entity
+@Entity(name="Employee")
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Employee extends AbamPerson {
 

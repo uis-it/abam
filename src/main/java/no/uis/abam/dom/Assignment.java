@@ -7,6 +7,11 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public class Assignment extends AbamType {
@@ -27,18 +32,30 @@ public class Assignment extends AbamType {
 	private AssignmentType type;
 	private int numberOfStudents;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="AUTHOR_ID")
 	private AbamPerson author;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="FACULTYSUPERVISOR_ID")
 	private Employee facultySupervisor;
 	
 	private Calendar addedDate;
 	private Calendar expireDate;
 
+	@Transient
 	private List<Supervisor> supervisorList;
 	
+	@Transient
 	private List<Attachment> attachments;
 
   private boolean custom;
+
+  @Transient
+  private Object supervisorLock = new Object();
+
+  @Transient
+  private Object attachmentsLock = new Object();
 	
 	public Assignment() {
 	}
@@ -126,22 +143,33 @@ public class Assignment extends AbamType {
 	}
 
 	public List<Supervisor> getSupervisorList() {
-	  if (supervisorList == null) {
-	    supervisorList = new ArrayList<Supervisor>();
+	  synchronized (supervisorLock) {
+  	  if (supervisorList == null) {
+  	    supervisorList = new ArrayList<Supervisor>();
+  	  }
+  		return supervisorList;
 	  }
-		return supervisorList;
 	}
 
 	public void setSupervisorList(List<Supervisor> supervisorList) {
-		this.supervisorList = supervisorList;
+	  synchronized(supervisorLock) {
+	    this.supervisorList = supervisorList;
+	  }
 	}
 
 	public List<Attachment> getAttachments() {
-    return attachments;
+	  synchronized(attachmentsLock) {
+	    if (attachments == null) {
+	      attachments = new ArrayList<Attachment>();
+	    }
+	    return attachments;
+	  }
   }
 
   public void setAttachments(List<Attachment> attachments) {
-    this.attachments = attachments;
+    synchronized(attachmentsLock) {
+      this.attachments = attachments;
+    }
   }
 
 	public String getAddedDateAsString() {		

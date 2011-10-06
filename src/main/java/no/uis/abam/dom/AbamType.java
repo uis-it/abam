@@ -9,12 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbamType implements Serializable {
+public abstract class AbamType implements Serializable, Comparable<AbamType> {
 
   private static final long serialVersionUID = 1L;
   
   @Id
-  @Column(name = "OID_", scale = 0)
+  @Column(name = "OID_", scale = 0, nullable=false)
   @GeneratedValue(strategy = GenerationType.AUTO)
   protected Long oid;
 
@@ -39,6 +39,20 @@ public abstract class AbamType implements Serializable {
     }
     return false;
   }
-  
-  
+
+  @Override
+  public int compareTo(AbamType o) {
+    if (!getClass().equals(o.getClass())) {
+      throw new IllegalArgumentException();
+    }
+    Long thisOid = oid;
+    Long thatOid = o.getOid();
+    if (thisOid == null) {
+      thisOid = (long)this.hashCode();
+    }
+    if (thatOid == null) {
+      thatOid = (long)o.hashCode();
+    }
+    return thisOid.compareTo(thatOid);
+  }
 }

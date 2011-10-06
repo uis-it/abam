@@ -1,9 +1,13 @@
 package no.uis.abam.dom;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy=InheritanceType.JOINED)
 public class AbamPerson extends AbamType {
 	
   private static final long serialVersionUID = 1L;
