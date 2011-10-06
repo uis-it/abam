@@ -4,8 +4,10 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
+import java.util.Calendar;
 import java.util.Properties;
 
+import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 
@@ -46,5 +48,16 @@ public class TestWebservice {
 	  
 	  String deptName = testData.getProperty("test.student.2");
 	  assertThat(student.getDepartmentCode(), is(equalTo(deptName)));
+	}
+	
+	@Test
+	public void persistAssignment() throws Exception {
+	  Assignment assignment = new Assignment();
+	  assignment.setAddedDate(Calendar.getInstance());
+    String testUid = testData.getProperty("test.employee.1");
+    Employee employee = abamService.getEmployeeFromUisLoginName(testUid);
+	  assignment.setAuthor(employee);
+//	  assignment.
+	  abamService.saveAssignment(assignment);
 	}
 }

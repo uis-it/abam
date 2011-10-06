@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.TreeSet;
 
 import javax.jws.WebService;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -20,14 +22,15 @@ import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 import no.uis.service.model.Person;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
 public class AbamWebServiceImpl implements AbamWebService {
 
 	private Logger log = Logger.getLogger(AbamWebServiceImpl.class);
 	
-	private TreeSet<Assignment> assignmentList = new TreeSet<Assignment>();
 	private List<Application> applicationList = new ArrayList<Application>();
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
@@ -37,62 +40,66 @@ public class AbamWebServiceImpl implements AbamWebService {
  	
 	private IdmWebService idmService;
 
-	public AbamWebServiceImpl(){
+	private AbamDao dao;
+	
+	public AbamWebServiceImpl() {
+	}
+
+	public void setAbamDao(AbamDao dao) {
+	  this.dao = dao;
 	}
 
 	@Override
-	public TreeSet<Assignment> getAllAssignments() {
-		return assignmentList;
+	public List<Assignment> getAllAssignments() {
+	  return dao.getAllAssignments();
 	}	
 	
 	@Override
-	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentCode) {
-		TreeSet<Assignment> assignmentsToReturn = new TreeSet<Assignment>();
-		for (Assignment assignment : assignmentList) {
-			if(assignment.getDepartmentCode().equalsIgnoreCase(departmentCode)){
-				assignmentsToReturn.add(assignment);
-			}
-		}
-		return assignmentsToReturn;
+	public List<Assignment> getAssignmentsFromDepartmentCode(String departmentCode) {
+	  return dao.getAssignmentsFromDepartmentCode(departmentCode);
+//		TreeSet<Assignment> assignmentsToReturn = new TreeSet<Assignment>();
+//		for (Assignment assignment : assignmentList) {
+//			if(assignment.getDepartmentCode().equalsIgnoreCase(departmentCode)){
+//				assignmentsToReturn.add(assignment);
+//			}
+//		}
+//		return assignmentsToReturn;
 	}
 
 	@Override
-	public TreeSet<Assignment> getActiveAssignments() {
-		TreeSet<Assignment> activeAssignments = new TreeSet<Assignment>();
-		for (Assignment assignment : assignmentList) {
-			if(!assignment.isExpired()) {
-			  activeAssignments.add(assignment);
-			}
-		}
-		return activeAssignments;
+	public List<Assignment> getActiveAssignments() {
+	  return dao.getActiveAssignments();
+//		TreeSet<Assignment> activeAssignments = new TreeSet<Assignment>();
+//		for (Assignment assignment : assignmentList) {
+//			if(!assignment.isExpired()) {
+//			  activeAssignments.add(assignment);
+//			}
+//		}
+//		return activeAssignments;
 	}
 	
 	@Override
-	public void saveAssignment(Assignment assignment){
-		assignmentList.remove(assignment);
-		assignmentList.add(assignment);
+	public void saveAssignment(Assignment assignment) {
+	  dao.saveAssignment(assignment);
 	}
 	
 	@Override
 	public void removeAssignment(Assignment assignment) {
-		assignmentList.remove(assignment);		
+	  dao.removeAssignment(assignment);
 	}
 	
 	@Override
 	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
 		Student std = getStudentFromStudentNumber(studentNumber);
-		if (std != null) return std.getCustomAssignment();
+		if (std != null) {
+		  return std.getCustomAssignment();
+		}
 		return null;
 	}
 	
 	@Override
 	public Assignment getAssignmentFromId(long id) {
-		for (Assignment assignment : assignmentList) {
-			if(assignment.getOid() == id) {
-				return assignment;
-			}
-		}
-		return null;
+	  return dao.getAssignment(id);
 	}
 	
 	@Override
@@ -165,7 +172,8 @@ public class AbamWebServiceImpl implements AbamWebService {
 
   @Override
 	public int getNextId() {
-		return assignmentList.size()+1;
+    throw new NotImplementedException(getClass());
+//		return assignmentList.size()+1;
 	}
 
   @Override

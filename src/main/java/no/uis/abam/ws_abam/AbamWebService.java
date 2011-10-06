@@ -16,18 +16,18 @@ public interface AbamWebService {
 	/**
 	 * @return a TreeSet containing all Assignment objects
 	 */
-	public TreeSet<Assignment> getAllAssignments();
+	public List<Assignment> getAllAssignments();
 	
 	/**
 	 * @param departmentCode - Which Department to return Assignments from
 	 * @return a TreeSet containing all Assignment objects for the given Department
 	 */
-	public TreeSet<Assignment> getAssignmentsFromDepartmentCode(String departmentCode);
+	public List<Assignment> getAssignmentsFromDepartmentCode(String departmentCode);
 	
 	/**
 	 * @return a TreeSet containing all active Assignment objects
 	 */
-	public TreeSet<Assignment> getActiveAssignments();
+	public List<Assignment> getActiveAssignments();
 	
 	/**
 	 * @param assignment - Assignment that should be saved
