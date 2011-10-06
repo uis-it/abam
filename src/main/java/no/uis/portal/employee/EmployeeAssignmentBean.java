@@ -1,15 +1,24 @@
 package no.uis.portal.employee;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.NavigationHandler;
+import javax.faces.component.ActionSource;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
+import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import no.uis.abam.dom.ApplicationInformation;
 import no.uis.abam.dom.Assignment;
@@ -81,7 +90,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		ass.setFacultySupervisor(getEmployeeFromUisLoginName());
 		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());
 		ass.setStudyProgramCode(employeeService.getSelectedStudyProgramCode());
-
+		ass.setNumberOfStudents(1);
 		setCurrentAssignment(ass);
 	}
 	
@@ -207,6 +216,14 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		setBackToAssignAssignment(false);
 		setBackToMyStudentThesis(true);
 	}
+
+	public void valueChanged(ValueChangeEvent event) {
+	  UIInput source = (UIInput)event.getSource();
+	  Object newValue = event.getNewValue();
+	  
+	  ValueBinding valueBinding = source.getValueBinding("value");
+	  valueBinding.setValue(FacesContext.getCurrentInstance(), newValue);
+	}
 	
 	/**
 	 * ActionListener that sets all fields on currentAssignment
@@ -224,21 +241,22 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		calendar = Calendar.getInstance();
 		calendar.add(Calendar.MONTH, Assignment.ACTIVE_MONTHS);
 		currentAssignment.setExpireDate(calendar);
-		currentAssignment.setType(AssignmentType.BACHELOR);
+		//currentAssignment.setType(AssignmentType.BACHELOR);
+		FacesContext fc = FacesContext.getCurrentInstance();
+		String outcome = "assignmentAttachment";
 		
 		int numberOfStudentsInput = currentAssignment.getNumberOfStudents(); 
 		if (numberOfStudentsInput <= 0) {
 		  numberOfStudentsInput = 1;
 		}
-		if(!currentAssignment.getType().equals(AssignmentType.BACHELOR) && numberOfStudentsInput > 1) {
+		if(currentAssignment.getType().equals(AssignmentType.MASTER) && numberOfStudentsInput > 1) {
 			currentAssignment.setNumberOfStudents(1);
-			currentAssignment.setType(AssignmentType.MASTER);
 
 			// add an error message  to the context
-			FacesContext fc = FacesContext.getCurrentInstance();
 			UIComponent component = (UIComponent)event.getSource();
 			String forClientId = component.getClientId(fc);
 			MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "max_master_assignment", new Object[] {1}, forClientId);
+			outcome = "error";
 		}
 		
 		for (Supervisor supervisor : currentAssignment.getSupervisorList()) {
@@ -250,6 +268,18 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
 		
 		currentAssignment.setAuthor(getEmployeeFromUisLoginName());		
+		
+    ActionSource actionSource = (ActionSource)event.getComponent();
+    MethodBinding methodBinding = actionSource.getAction();
+
+    String fromAction = methodBinding != null ? methodBinding.getExpressionString() : "";
+    NavigationHandler navigationHandler = fc.getApplication().getNavigationHandler();
+    navigationHandler.handleNavigation(fc,
+                                       fromAction,
+                                       outcome);
+    //Render Response if needed
+    fc.renderResponse();
+		
 	}
 	
 	private Employee getEmployeeFromUisLoginName() {				 
@@ -330,6 +360,15 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	  }
 	}
 
+	public List<SelectItem> getAssignmentTypes() {
+	  AssignmentType[] values = AssignmentType.values();
+	  List<SelectItem> items = new ArrayList<SelectItem>(values.length);
+    for (AssignmentType type : values) {
+      items.add(new SelectItem(type, type.toString()));
+    }
+    return items;
+	}
+	
 	public boolean isBackToAssignAssignment() {
 		return backToAssignAssignment;
 	}

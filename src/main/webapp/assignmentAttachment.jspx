@@ -3,39 +3,28 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />	
 	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />	
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
 		<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="titleStyle"/><br/>			
 		<ice:form partialSubmit="true" >
-			<table>
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_id}"/></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.oid}"></ice:outputText></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.title}"></ice:outputText></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_desc}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.description}"></ice:outputText></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><ice:outputText value="#{msgs.lbl_attachment}"/> </td>
-					<td>
-						<ice:inputFile 
+			<ice:panelGrid columns="2">
+					<ice:outputText value="#{msgs.lbl_title}"/>
+					<ice:outputText value="#{assignmentBean.currentAssignment.title}"/>
+
+					<ice:outputText value="#{msgs.lbl_desc}"/>
+					<ice:outputText value="#{assignmentBean.currentAssignment.description}"/>
+
+					<ice:outputText value="#{msgs.lbl_attachment}"/>
+					<ice:inputFile 
 							fileNamePattern=".+\.pdf|.+\.zip|.+\.gif|.+\.jpeg|.+\.jpg|.+\.png|.+\.doc|.+\.docx" 
 							actionListener="#{assignmentBean.actionFileUpload}"
 							height="50"
-							/>
-					</td>
-					<td><ice:messages/></td>
-				</tr>
-			</table>
+					/>
+					
+					<f:verbatim> </f:verbatim>
+					<ice:messages/>
+			</ice:panelGrid>
 			<ice:dataTable 
 				var="attachment" 
 				styleClass="displayAttachmentStyle" 

@@ -65,7 +65,7 @@ public class EmployeeService {
 	
 	private HtmlSelectOneMenu studyProgramMenu;
 	
-	private Set<Assignment> assignmentSet;
+	private List<Assignment> assignmentSet;
 	private Set<Assignment> displayAssignmentSet;
 	
 	private FacesContext context;
@@ -336,15 +336,15 @@ public class EmployeeService {
 		return abamClient.getThesisList();
 	}
 
-	public Set<Assignment> getAssignmentSet() {
+	public List<Assignment> getAssignmentSet() {
 		return assignmentSet;
 	}
 
-	public void setAssignmentSet(Set<Assignment> assignmentSet) {
+	public void setAssignmentSet(List<Assignment> assignmentSet) {
 		this.assignmentSet = assignmentSet;
 	}
 
-	public Set<Assignment> getAllAssignmentsSet() {
+	public List<Assignment> getAllAssignmentsSet() {
 		assignmentSet = abamClient.getAllAssignments();
 		return assignmentSet;
 	}
@@ -361,7 +361,7 @@ public class EmployeeService {
 	/**
 	 * @return a Set containing all active Assignments
 	 */
-	public Set<Assignment> getActiveAssignmentsSet() {
+	public List<Assignment> getActiveAssignmentsSet() {
 		assignmentSet = abamClient.getActiveAssignments();
 		displayAssignmentSet = new TreeSet<Assignment>();
 		if(assignmentSet != null) {

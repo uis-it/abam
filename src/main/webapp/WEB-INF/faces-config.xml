@@ -11,11 +11,18 @@
 		</locale-config>
 		<message-bundle>Language</message-bundle>
 		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
-		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>		
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
 	</application>
+	
 	<factory>
 		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>
 	</factory>
+	
+	<converter>
+		<converter-for-class>no.uis.abam.dom.AssignmentType</converter-for-class>
+		<converter-class>no.uis.portal.employee.AssignmentTypeConverter</converter-class>
+	</converter>
+	
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>createAssignment</from-outcome>

@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 
-table, td{
+table, td {
 	/*border: 1px solid black;*/
 }
 
@@ -12,7 +12,7 @@ form{
 	margin-top: 10px;
 }
 
-.titleStyle{
+.title {
 	font-size: 18px;	
 }
 
@@ -43,4 +43,10 @@ form{
     border: 2px solid #d9d9d9;
     display: block;
     float:left;
+}
+
+.description {
+	width: 517px; 
+	height: 60px; 
+	padding: 2px;
 }
