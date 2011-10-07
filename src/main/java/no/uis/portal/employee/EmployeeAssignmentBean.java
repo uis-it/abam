@@ -20,14 +20,13 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import no.uis.abam.dom.ApplicationInformation;
+import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Attachment;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
-import no.uis.abam.dom.ThesisInformation;
 
 import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;

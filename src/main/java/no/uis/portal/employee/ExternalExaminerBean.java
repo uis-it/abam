@@ -7,6 +7,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.*;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;

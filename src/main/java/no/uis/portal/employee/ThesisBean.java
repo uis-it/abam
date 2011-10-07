@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 
+import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.*;
 
 public class ThesisBean {
