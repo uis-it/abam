@@ -5,9 +5,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import no.uis.abam.dom.AbamPerson;
 import no.uis.abam.dom.Assignment;
 
 import org.springframework.stereotype.Repository;
@@ -21,7 +23,7 @@ public class AbamDaoImpl implements AbamDao {
 
   private EntityManager em;
   
-  @PersistenceContext(name="abamEmf", unitName="AbamAssignment")
+  @PersistenceContext(unitName="no.uis.abam")
   public void setEntityManager(EntityManager em) {
     this.em = em;
   }
@@ -29,6 +31,7 @@ public class AbamDaoImpl implements AbamDao {
   @Override
   public void saveAssignment(Assignment assignment) {
     em.persist(assignment);
+    em.flush();
   }
 
   @Override
@@ -54,7 +57,7 @@ public class AbamDaoImpl implements AbamDao {
   @SuppressWarnings("unchecked")
   @Override
   public List<Assignment> getActiveAssignments() {
-    Query query = em.createQuery("FROM Assignment c WHERE c.expireDate < :now");
+    Query query = em.createQuery("FROM Assignment c WHERE c.expireDate > :now");
     Calendar now = Calendar.getInstance();
     query.setParameter("now", now);
     return query.getResultList();

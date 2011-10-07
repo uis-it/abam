@@ -5,9 +5,11 @@ import static org.junit.Assert.*;
 import static org.junit.matchers.JUnitMatchers.*;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 
@@ -25,12 +27,12 @@ public class TestWebservice {
     
     System.setProperty("catalina.base", "x:");
     ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/abam-ws/beans.xml");
-    abamService = ctx.getBean("abamService", AbamWebService.class);
+    abamService = ctx.getBean("abamWS", AbamWebService.class);
     
     testData = ctx.getBean("config-props", Properties.class);
   }
   
-	@Test
+//	@Test
 	public void testEmployee() throws Exception {
 	  String testUid = testData.getProperty("test.employee.1");
 	  Employee employee = abamService.getEmployeeFromUisLoginName(testUid);
@@ -39,7 +41,7 @@ public class TestWebservice {
     assertThat(employee.getGroupMembership(), hasItem(testOu));
 	}
 	
-	@Test
+//	@Test
 	public void testStudent() throws Exception {
 	  String studNo = testData.getProperty("test.student.1");
 	  Student student = abamService.getStudentFromStudentNumber(studNo);
@@ -57,7 +59,15 @@ public class TestWebservice {
     String testUid = testData.getProperty("test.employee.1");
     Employee employee = abamService.getEmployeeFromUisLoginName(testUid);
 	  assignment.setAuthor(employee);
-//	  assignment.
+	  assignment.setCustom(false);
+	  assignment.setTitle("Test");
+	  assignment.setDescription("Test description");
+	  assignment.setDepartmentCode("217_8_2_0");
+	  assignment.setStudyProgramCode("B-ELEKTRO");
+	  assignment.setType(AssignmentType.BACHELOR);
 	  abamService.saveAssignment(assignment);
+	  
+	  List<Assignment> allAssignments = abamService.getAllAssignments();
+	  assertThat(allAssignments, hasItem(notNullValue(Assignment.class)));
 	}
 }
