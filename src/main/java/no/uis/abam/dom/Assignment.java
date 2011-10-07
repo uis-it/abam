@@ -6,14 +6,23 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-@Entity
+@Entity(name="Assignment")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Assignment extends AbamType {
 
   private static final long serialVersionUID = 1L;
@@ -29,24 +38,28 @@ public class Assignment extends AbamType {
 	private String description;
 	private String studyProgramCode;
 	private String departmentCode;
+	
+	@Enumerated(EnumType.STRING)
 	private AssignmentType type;
+	
 	private int numberOfStudents;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="AUTHOR_ID")
 	private AbamPerson author;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FACULTYSUPERVISOR_ID")
 	private Employee facultySupervisor;
 	
 	private Calendar addedDate;
 	private Calendar expireDate;
 
-	@Transient
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="SUPERVISOR_ID")
 	private List<Supervisor> supervisorList;
 	
-	@Transient
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Attachment> attachments;
 
   private boolean custom;

@@ -1,12 +1,17 @@
 package no.uis.abam.dom;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Entity
+@Entity(name="Application")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Application extends AbamType {
 	
   private static final long serialVersionUID = 1L;
@@ -19,6 +24,8 @@ public class Application extends AbamType {
 	private String coStudentName1;
 	private String coStudentName2;
 	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="ASSIGNMENT_ID")
 	private Assignment assignment;
 
 	private Calendar applicationDate;

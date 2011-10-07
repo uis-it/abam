@@ -1,0 +1,14 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="no.uis.abam">
+        <class>no.uis.abam.dom.Assignment</class>
+        <class>no.uis.abam.dom.AbamPerson</class>
+        <class>no.uis.abam.dom.Application</class>
+        <class>no.uis.abam.dom.Attachment</class>
+        <class>no.uis.abam.dom.Employee</class>
+        <class>no.uis.abam.dom.ExternalExaminer</class>
+        <class>no.uis.abam.dom.Student</class>
+        <class>no.uis.abam.dom.Supervisor</class>
+        <class>no.uis.abam.dom.Thesis</class>
+        <class>no.uis.abam.dom.ThesisStatus</class>
+    </persistence-unit>
+</persistence> 

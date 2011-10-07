@@ -12,11 +12,8 @@ public class AbamPerson extends AbamType {
 	
   private static final long serialVersionUID = 1L;
 
-  @Transient
   private String name;
-  @Transient
 	private String email;
-  @Transient
 	private String phoneNumber;
 
 	public AbamPerson(String name) {

@@ -2,10 +2,12 @@ package no.uis.abam.dom;
 
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
+import javax.persistence.OneToMany;
 
 @Entity(name="Employee")
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -15,7 +17,7 @@ public class Employee extends AbamPerson {
 
 	private String employeeId;
 
-	@Transient
+	@ElementCollection(fetch=FetchType.LAZY)
 	private List<String> groupMembership;
 	
 	public Employee() {

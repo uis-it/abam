@@ -5,13 +5,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+@Entity(name="Student")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Student extends AbamPerson {
 
   private static final long serialVersionUID = 1L;
-//  private static final String MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED = 
-//		"You have applied for the maximum allowed assignments, remove at least one and try again";
-//	private static final String ASSIGNMENT_ALREADY_APPLIED_FOR = 
-//		"You have already applied for this assignment";
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
@@ -24,12 +33,19 @@ public class Student extends AbamPerson {
 	
 	private Date actualSubmissionOfTopic;
 	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="CUSTOMASSIGNMENT_ID")
 	private Assignment customAssignment;	
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="ASSIGNEDTHESIS_ID")
 	private Thesis assignedThesis; 
 	
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Application> applications;
-  private AssignmentType type;
+
+  @Enumerated(EnumType.STRING)
+	private AssignmentType type;
 	
 	public Student(){}
 
@@ -180,14 +196,5 @@ public class Student extends AbamPerson {
 
 	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
 		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
-	}
-	
-	@Override
-  public boolean equals(Object obj) {
-	  if (obj instanceof Student) {
-	    Student student = (Student)obj;
-	    return this.getStudentNumber().equals(student.getStudentNumber());
-	  }
-	  return false;
 	}
 }

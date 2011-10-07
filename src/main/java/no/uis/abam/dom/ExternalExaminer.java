@@ -1,5 +1,11 @@
 package no.uis.abam.dom;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+@Entity(name="ExternalExaminer")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class ExternalExaminer extends AbamPerson {
 	
   private static final long serialVersionUID = 1L;

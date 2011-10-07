@@ -7,15 +7,38 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class Thesis {
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
-	private Assignment assignedAssignment;
+@Entity(name="Thesis")
+@Inheritance(strategy=InheritanceType.JOINED)
+public class Thesis extends AbamType {
+
+  private static final long serialVersionUID = 1L;
+
+  @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+  @JoinColumn(name="ASSIGNMENT_ID")
+  private Assignment assignedAssignment;
 	
 	private boolean submitted;
 	private boolean editExternalExaminer = false;
-	
+
+	@Transient
+	@Deprecated
 	private String fileUploadErrorMessage;
+
+  @Transient
+  @Deprecated
 	private String attachedFilePath;
+  
 	private String studentNumber1;
 	private String studentNumber2;
 	private String studentNumber3;
@@ -25,12 +48,20 @@ public class Thesis {
 	private Date deadlineForSubmissionForEvalutation;	
 	private Date actualSubmissionForEvalutation;
 	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="FACULTYSUPERVISOR_ID")
 	private Employee facultySupervisor;
 	
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="EXTERNALEXAMINER_ID")
 	private ExternalExaminer externalExaminer;
 
-	private List<String> attachedFileList = new ArrayList<String>();
-	private List<ThesisStatus> statusList = new ArrayList<ThesisStatus>();
+	@Transient
+	@Deprecated
+	private List<String> attachedFileList;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<ThesisStatus> statusList;
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
@@ -39,9 +70,13 @@ public class Thesis {
 	}
 
 	public void addStudentNumber(String studentNumber) {
-		if (studentNumber1 == null || studentNumber1.isEmpty()) setStudentNumber1(studentNumber);
-		else if (studentNumber2 == null || studentNumber2.isEmpty()) setStudentNumber2(studentNumber);
-		else if (studentNumber3 == null || studentNumber3.isEmpty()) setStudentNumber3(studentNumber);
+		if (studentNumber1 == null || studentNumber1.isEmpty()) {
+		  setStudentNumber1(studentNumber);
+		} else if (studentNumber2 == null || studentNumber2.isEmpty()) {
+		  setStudentNumber2(studentNumber);
+		} else if (studentNumber3 == null || studentNumber3.isEmpty()) {
+		  setStudentNumber3(studentNumber);
+		}
 	}
 
 	public String getStudentNumber1() {
@@ -117,25 +152,28 @@ public class Thesis {
 		return simpleDateFormatter.format(actualSubmissionForEvalutation);
 	}
 	
+	@Deprecated
 	public String getFileUploadErrorMessage() {
 		return fileUploadErrorMessage;
 	}
 
+  @Deprecated
 	public void setFileUploadErrorMessage(String fileUploadErrorMessage) {
 		this.fileUploadErrorMessage = fileUploadErrorMessage;
 	}
 
+  @Deprecated
 	public String getAttachedFilePath() {
 		return attachedFilePath;
 	}
 
+  @Deprecated
 	public void setAttachedFilePath(String attachedFilePath) {
 		this.attachedFilePath = attachedFilePath;
 	}
 
-	public void setActualSubmissionForEvalutation(
-			Date actualSubmissionForEvalutation) {
-		this.actualSubmissionForEvalutation = actualSubmissionForEvalutation;
+	public void setActualSubmissionForEvalutation(Date date) {
+		this.actualSubmissionForEvalutation = date;
 	}
 	
 	public ExternalExaminer getExternalExaminer() {
@@ -162,15 +200,23 @@ public class Thesis {
 		this.assignedAssignment = assignedAssignment;
 	}
 
+  @Deprecated
 	public List<String> getAttachedFileList() {
+    if (attachedFileList == null) {
+      attachedFileList = new ArrayList<String>();
+    }
 		return attachedFileList;
 	}
 
+  @Deprecated
 	public void setAttachedFileList(List<String> attachedFileList) {
 		this.attachedFileList = attachedFileList;
 	}
 
-	public List<ThesisStatus> getStatusList() {		
+	public List<ThesisStatus> getStatusList() {
+	  if (statusList == null) {
+	    statusList = new ArrayList<ThesisStatus>();
+	  }
 		return statusList;
 	}
 
@@ -178,14 +224,17 @@ public class Thesis {
 		this.statusList = statusList;
 	}
 	
+	@Deprecated
 	public void addThesisStatus(ThesisStatus ts) {
-		statusList.add(ts);		
+		getStatusList().add(ts);		
 	}
 	
+	@Deprecated
 	public ThesisStatus getLastStatus() {
-		return statusList.get(statusList.size()-1);
+		return getStatusList().get(statusList.size()-1);
 	}
 
+	@Deprecated
 	public boolean isActive() {
 		Date inactiveDate = new Date(getDeadlineForSubmissionForEvalutation().getTime());
 		GregorianCalendar gc = (GregorianCalendar) GregorianCalendar.getInstance();

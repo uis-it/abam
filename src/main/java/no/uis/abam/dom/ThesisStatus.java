@@ -2,36 +2,38 @@ package no.uis.abam.dom;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
-public class ThesisStatus {
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-	public static final String ASSIGNED_TO_STUDENT = "Assigned to student(s)";
-	public static final String ACCEPTED = "Accepted";
-	public static final String PARTIALLY_ACCEPTED = "Partially accepted";
-	public static final String SUBMITTED = "Submitted";
+@Entity(name="ThesisStatus")
+@Inheritance(strategy=InheritanceType.JOINED)
+public class ThesisStatus extends AbamType {
+
+  private static final long serialVersionUID = 1L;
 	
-	private String status; 
+  @Enumerated(EnumType.STRING)
+	private ThesisStatusType status;
+  
 	private String responsible;
 	
-	private Date date;
+	private Calendar date;
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 	
 	public ThesisStatus() {
 	}
 	
-	public ThesisStatus(String status, String responsible) {
+	public ThesisStatus(ThesisStatusType status, String responsible) {
 		this.status = status;
 		this.responsible = responsible;
-		this.date = createDate();
+		this.date = Calendar.getInstance();
 	}
 	
-	private Date createDate() {
-		return Calendar.getInstance().getTime();
-	}
-
-	public String getStatus() {
+	public ThesisStatusType getStatus() {
 		return status;
 	}
 
@@ -39,15 +41,20 @@ public class ThesisStatus {
 		return responsible;
 	}
 
-	public Date getDate() {
+	public Calendar getDate() {
 		return date;
 	}
 	
+	/**
+	 * @deprecated move to commons.
+	 * @return
+	 */
+	@Deprecated
 	public String getDateAsString() {
 		return simpleDateFormatter.format(date);
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(ThesisStatusType status) {
 		this.status = status;
 	}
 
@@ -55,8 +62,7 @@ public class ThesisStatus {
 		this.responsible = responsible;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Calendar date) {
 		this.date = date;
 	}
-	
 }
