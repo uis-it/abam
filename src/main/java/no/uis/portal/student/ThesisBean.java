@@ -7,11 +7,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
-import no.uis.abam.dom.ThesisInformation;
 import no.uis.abam.dom.ThesisStatus;
+import no.uis.abam.dom.ThesisStatusType;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
@@ -93,7 +94,7 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public void actionSaveThesis(ActionEvent event) {
-		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.SUBMITTED,studentService.getCurrentStudent().getName()));
+		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.SUBMITTED,studentService.getCurrentStudent().getName()));
 		currentStudentsThesis.setSubmitted(true);
 		currentStudentsThesis.setActualSubmissionForEvalutation(Calendar.getInstance().getTime());
 		studentService.updateThesis(currentStudentsThesis);
@@ -117,9 +118,9 @@ public class ThesisBean implements DisposableBean {
 		studentService.getCurrentStudent().setAcceptedThesis(true);
 		studentService.updateStudentInWebServiceFromCurrentStudent();
 		if (allStudentsHaveAccepted()) {
-			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.ACCEPTED, studentService.getCurrentStudent().getName()));
+			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.ACCEPTED, studentService.getCurrentStudent().getName()));
 		} else {
-			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatus.PARTIALLY_ACCEPTED, studentService.getCurrentStudent().getName()));
+			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.PARTIALLY_ACCEPTED, studentService.getCurrentStudent().getName()));
 		}		
 		updateThesisForInvolvedStudents();
 		studentService.updateThesis(currentStudentsThesis);

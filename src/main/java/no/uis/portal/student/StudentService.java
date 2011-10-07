@@ -52,7 +52,7 @@ public class StudentService {
 	
 	private static Logger log = Logger.getLogger(StudentService.class);
 	
-	private TreeSet<Assignment> assignmentList; 
+	private List<Assignment> assignmentList; 
 	private Assignment selectedAssignment;
 	
 	private Student currentStudent;
@@ -145,7 +145,7 @@ public class StudentService {
     return true;
   }
   
-	public TreeSet<Assignment> getAssignmentList() {
+	public List<Assignment> getAssignmentList() {
 		if(assignmentList == null) 
 			assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());
 		return assignmentList;		
@@ -193,7 +193,7 @@ public class StudentService {
 	}
 	
 	private void updateStudyProgramList(int index){
-		Set<Assignment> assignmentList = getAssignmentList();
+		List<Assignment> assignmentList = getAssignmentList();
 		Student stud = getCurrentStudent();
 		if (assignmentList != null) {
 			for (Assignment assignment : assignmentList) {
