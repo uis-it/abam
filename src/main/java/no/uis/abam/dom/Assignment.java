@@ -31,7 +31,11 @@ public class Assignment extends AbamType {
 
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 
+	@Transient
 	private boolean displayAssignment = true;
+	
+	@Transient
+	@Deprecated
 	private boolean loggedInUserIsAuthor;
 	
 	private String title;
@@ -81,10 +85,12 @@ public class Assignment extends AbamType {
 		this.studyProgramCode = studyProgramCode;
 	}
 
+	@Deprecated
 	public boolean isDisplayAssignment() {
 		return displayAssignment;
 	}
 
+	@Deprecated
 	public void setDisplayAssignment(boolean displayAssignment) {
 		this.displayAssignment = displayAssignment;
 	}
@@ -96,10 +102,12 @@ public class Assignment extends AbamType {
 	  return false;
 	}
 
+	@Deprecated
 	public boolean isLoggedInUserIsAuthor() {
 		return loggedInUserIsAuthor;
 	}
 
+  @Deprecated
 	public void setLoggedInUserIsAuthor(boolean loggedInUserIsAuthor) {
 		this.loggedInUserIsAuthor = loggedInUserIsAuthor;
 	}

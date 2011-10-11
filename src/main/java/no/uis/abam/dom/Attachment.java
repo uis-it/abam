@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -36,6 +38,19 @@ public class Attachment extends AbamType {
   }
 
   public File getFile() {
+    if (file == null && data != null) {
+      File tmpFile;
+      FileOutputStream fos = null;
+      try {
+        tmpFile = File.createTempFile("abam", ".tmp");
+        fos = new FileOutputStream(tmpFile);
+        IOUtils.write(data, fos);
+        file = tmpFile;
+      } catch(IOException e) {
+      } finally {
+        IOUtils.closeQuietly(fos);
+      }
+    }
     return file;
   }
 
