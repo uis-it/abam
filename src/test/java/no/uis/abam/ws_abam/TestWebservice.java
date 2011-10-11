@@ -12,6 +12,7 @@ import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Supervisor;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,7 +53,7 @@ public class TestWebservice {
 	  assertThat(student.getDepartmentCode(), is(equalTo(deptName)));
 	}
 	
-	@Test
+	//@Test
 	public void persistAssignment() throws Exception {
 	  Assignment assignment = new Assignment();
 	  assignment.setAddedDate(Calendar.getInstance());
@@ -65,9 +66,23 @@ public class TestWebservice {
 	  assignment.setDepartmentCode("217_8_2_0");
 	  assignment.setStudyProgramCode("B-ELEKTRO");
 	  assignment.setType(AssignmentType.BACHELOR);
+	  Supervisor supervisor = new Supervisor();
+	  supervisor.setCompanyName("Testing");
+	  supervisor.setName("Test supervisor");
+	  supervisor.setExternal(true);
+	  supervisor.setEmail("test@test.de");
+    assignment.getSupervisorList().add(supervisor);
 	  abamService.saveAssignment(assignment);
 	  
 	  List<Assignment> allAssignments = abamService.getAllAssignments();
 	  assertThat(allAssignments, hasItem(notNullValue(Assignment.class)));
+	}
+	
+	@Test
+	public void getActiveAssignments() throws Exception {
+	  List<Assignment> assignments = abamService.getActiveAssignments();
+	  
+	  assertThat(assignments, is(notNullValue()));
+	  assertThat(assignments, hasItem(notNullValue(Assignment.class)));
 	}
 }

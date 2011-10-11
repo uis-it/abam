@@ -37,6 +37,7 @@
 		</bean>
 
 		<bean id="abamDao" class="no.uis.abam.ws_abam.AbamDaoImpl">
+			<property name="entityManagerFactory" ref="abamEmf"/>
 		</bean>
 		
 		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
@@ -59,7 +60,7 @@
 
 		<bean id="abamEmf"
 				class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-				<property name="persistenceUnitName" value="AbamAssignment" />
+				<property name="persistenceUnitName" value="no.uis.abam" />
 				<property name="dataSource">
 						<ref local="dataSource" />
 				</property>
