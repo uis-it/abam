@@ -10,28 +10,28 @@
 			<table>				
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.title}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.title}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_description}"/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.description}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.description}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.departmentName}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentDepartmentName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_study_program}"/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.studyProgramName}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentStudyProgram}"/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
-					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"></ice:outputText></td>
+					<td><ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/> </td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"></ice:outputText></td>
+					<td><ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"></ice:outputText></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
@@ -71,13 +71,13 @@
 		<ice:form partialSubmit="true">
 			<table>		
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_i_want_to_write_together}" rendered="#{!studentService.currentStudent.masterStudent}"/> </td>
-					<td><ice:inputText id="studentName1" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName1}"></ice:inputText></td>
+					<td><ice:outputText value="#{msgs.lbl_i_want_to_write_together}" rendered="#{studentService.currentStudent.type == BACHELOR}"/> </td>
+					<td><ice:inputText id="studentName1" rendered="#{studentService.currentStudent.type == BACHELOR}" value="#{applicationBean.currentApplication.coStudentName1}"></ice:inputText></td>
 					<td></td>
 				</tr>
 				<tr> 
 					<td></td>
-					<td><ice:inputText id="studentName2" rendered="#{!studentService.currentStudent.masterStudent}" value="#{applicationBean.currentApplication.coStudentName2}"></ice:inputText></td>
+					<td><ice:inputText id="studentName2" rendered="#{studentService.currentStudent.type == BACHELOR}" value="#{applicationBean.currentApplication.coStudentName2}"></ice:inputText></td>
 					<td></td>
 				</tr>
 			</table>

@@ -21,18 +21,18 @@
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.departmentName}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentDepartmentName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_study_program}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.studyProgramName}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentStudyProgramName}"/></td>
 					<td></td>
 				</tr>
 				<tr>
-					<td><ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.bachelor}"/> </td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.bachelor}"/></td>
-					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.bachelor}"/></td>
+					<td><ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/> </td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/></td>
+					<td><ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/></td>
 				</tr>
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_type}"/> </td>
@@ -79,13 +79,13 @@
 					<table>
 						<tr>
 							<ice:dataTable var="attachment"
-								value="#{assignmentBean.currentAssignment.attachedFileList }"
-								rendered="#{!empty assignmentBean.currentAssignment.attachedFileList}">
+								value="#{assignmentBean.currentAssignment.attachments}"
+								rendered="#{!empty assignmentBean.currentAssignment.attachments}">
 								<ice:column>
 									<f:facet name="header">
 										<ice:outputText value="#{msgs.lbl_attachments}" />
 									</f:facet>
-									<ice:outputText id="nameInput" value="#{attachment}" />
+									<ice:outputText id="nameInput" value="#{attachment.file.name}" />
 								</ice:column>
 							</ice:dataTable>
 						</tr>
@@ -95,8 +95,8 @@
 				<table>
 				<tr>
 					<td> <ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_back}" id="BackButton" immediate="true"/> </td>
-					<td> <ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" value="#{msgs.btn_apply_for_assignment}" rendered="#{!studentService.currentStudent.appliedForThreeAssignments and !applicationBean.deadlineForApplyingReached}" id="ApplyButton"/> </td>
-					<td><ice:outputText value="#{studentService.currentStudent.applicationsErrorMessage }" rendered="#{studentService.currentStudent.appliedForThreeAssignments}" />
+					<td> <ice:commandButton type="submit" action="applyForAssignment" actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" value="#{msgs.btn_apply_for_assignment}" rendered="#{!applicationBean.appliedForThreeAssignments and !applicationBean.deadlineForApplyingReached}" id="ApplyButton"/> </td>
+					<td><ice:outputText value="#{studentService.currentStudent.applicationsErrorMessage }" rendered="#{applicationBean.appliedForThreeAssignments}" />
 					</td>
 				</tr>
 			

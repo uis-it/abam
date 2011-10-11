@@ -79,15 +79,15 @@
 				</tr>
 				</table>
 			</ice:form>
-			<ice:form rendered="#{!empty thesisBean.currentAssignment.attachedFileList}">
+			<ice:form rendered="#{!empty thesisBean.currentAssignment.attachments}">
 				<table>
 					<tr>
-					<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachedFileList}">
+					<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachments}">
 						<ice:column>
 						<f:facet name="header">
 							<ice:outputText value="#{msgs.lbl_attachments}"/>
 						</f:facet>
-							<ice:outputText id="nameInput" value="#{attachment}"/>
+							<ice:outputText id="nameInput" value="#{attachment.file.name}"/>
 						</ice:column>
 					</ice:dataTable>
 					</tr>
@@ -122,15 +122,15 @@
 			</table>
 			</ice:form>			
 			
-			<ice:form rendered="#{!empty thesisBean.currentStudentsThesis.attachedFileList}">
+			<ice:form rendered="#{!empty thesisBean.currentStudentsThesis.attachments}">
 				<table>
 					<tr>
-						<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachedFileList}">
+						<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachments}">
 							<ice:column>
 							<f:facet name="header">
 								<ice:outputText value="#{msgs.lbl_submitted_attachments}"/>
 							</f:facet>
-								<ice:outputText id="nameInput" value="#{attachment}"/>
+								<ice:outputText id="nameInput" value="#{attachment.file.name}"/>
 							</ice:column>
 						</ice:dataTable>
 					</tr>

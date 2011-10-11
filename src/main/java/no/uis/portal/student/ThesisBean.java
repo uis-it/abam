@@ -180,29 +180,29 @@ public class ThesisBean implements DisposableBean {
 	
 	public void actionFileUpload(ActionEvent event){
 		InputFile inputFile =(InputFile) event.getSource();
-        FileInfo fileInfo = inputFile.getFileInfo();
-        //file has been saved
-        if (fileInfo.isSaved()) {
-        	currentStudentsThesis.setFileUploadErrorMessage("The size limit of an attachment is 40MB");
-        	currentStudentsThesis.getAttachedFileList().add(fileInfo.getFileName());
-        	currentStudentsThesis.setAttachedFilePath(fileInfo.getPhysicalPath());
-        	currentStudentsThesis.getAttachedFilePath().replace(fileInfo.getFileName(), "");
-        }
-        //upload failed, generate custom messages
-        if (fileInfo.isFailed()) {
-            if(fileInfo.getStatus() == FileInfo.INVALID){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
-            }
-            if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment exceeded the size limit of 40MB.");
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
-            }
-            if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
-            	currentStudentsThesis.setFileUploadErrorMessage("The attachment can only be a pdf, zip, doc or docx file.");
-            }
-        }
+    FileInfo fileInfo = inputFile.getFileInfo();
+    //file has been saved
+    if (fileInfo.isSaved()) {
+    	currentStudentsThesis.setFileUploadErrorMessage("The size limit of an attachment is 40MB");
+    	currentStudentsThesis.getAttachedFileList().add(fileInfo.getFileName());
+    	currentStudentsThesis.setAttachedFilePath(fileInfo.getPhysicalPath());
+    	currentStudentsThesis.getAttachedFilePath().replace(fileInfo.getFileName(), "");
+    }
+    //upload failed, generate custom messages
+    if (fileInfo.isFailed()) {
+      if(fileInfo.getStatus() == FileInfo.INVALID){
+      	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
+      }
+      if(fileInfo.getStatus() == FileInfo.SIZE_LIMIT_EXCEEDED){
+      	currentStudentsThesis.setFileUploadErrorMessage("The attachment exceeded the size limit of 40MB.");
+      }
+      if(fileInfo.getStatus() == FileInfo.INVALID_CONTENT_TYPE){
+      	currentStudentsThesis.setFileUploadErrorMessage("The attachment could not be uploaded.");
+      }
+      if(fileInfo.getStatus() == FileInfo.INVALID_NAME_PATTERN){
+      	currentStudentsThesis.setFileUploadErrorMessage("The attachment can only be a pdf, zip, doc or docx file.");
+      }
+    }
 	}
 	
 	public void actionRemoveAttachment(ActionEvent event){
@@ -228,6 +228,16 @@ public class ThesisBean implements DisposableBean {
 		return currentAssignment;
 	}
 
+	public String getCurrentDepartmentName() {
+	  // TODO show name instead
+	  return currentAssignment.getDepartmentCode();
+	}
+	
+	public String getCurrentStudyProgram() {
+    // TODO show name instead
+	  return currentAssignment.getStudyProgramCode();
+	}
+	
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
 	}

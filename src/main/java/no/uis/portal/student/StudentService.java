@@ -1,6 +1,7 @@
 package no.uis.portal.student;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.RenderRequest;
 
+import no.uis.abam.commons.BaseTextUtil;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
@@ -24,6 +26,7 @@ import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
+import no.uis.service.model.StudyProgram;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
@@ -37,13 +40,12 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-
-import edu.emory.mathcs.backport.java.util.Collections;
+import com.liferay.util.bridges.jsf.common.LanguageManagedBean;
 
 // TODO improve protection of resources in concurrent thread environment, it is a mess. 
 public class StudentService {
 
-  private static final Integer MAX_BACHELOR_APPLICATIONS = Integer.valueOf(3);
+  private static final int MAX_BACHELOR_APPLICATIONS = 3;
   
 	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
 	
@@ -71,13 +73,13 @@ public class StudentService {
 	
 	private FacesContext context;
 	private Locale locale;
-    private ResourceBundle res;
+  private ResourceBundle res;
 	
 	public StudentService() {
 		context  = FacesContext.getCurrentInstance();
 		locale = context.getViewRoot().getLocale();
 		res = ResourceBundle.getBundle("Language", locale);
-		initializeThemeDisplay();	
+		initializeThemeDisplay();
 	}
 
 	private void initializeThemeDisplay() {
@@ -134,7 +136,7 @@ public class StudentService {
 	
   private static boolean applicationIsLegitimate(Student student, Application application) {
     List<Application> applications = student.getApplications();
-    if (applications.size() >= MAX_BACHELOR_APPLICATIONS.intValue()) {
+    if (applications.size() >= MAX_BACHELOR_APPLICATIONS) {
       MessageUtils.addMessage(FacesMessage.SEVERITY_WARN, "maximum_applications_reached", new Object[] {MAX_BACHELOR_APPLICATIONS});
       return false;
     }
@@ -192,12 +194,12 @@ public class StudentService {
 		setSelectedStudyProgramCode(null);
 	}
 	
-	private void updateStudyProgramList(int index){
+	private void updateStudyProgramList(String departmentCode){
 		List<Assignment> assignmentList = getAssignmentList();
-		Student stud = getCurrentStudent();
+		//Student stud = getCurrentStudent();
 		if (assignmentList != null) {
 			for (Assignment assignment : assignmentList) {
-				if (assignment.getDepartmentCode().equals(stud.getDepartmentCode())) { 
+				if (assignment.getDepartmentCode().equals(departmentCode)) { 
 					if(currentStudentIsEligibleForAssignment(assignment)) {
 						assignment.setDisplayAssignment(true);
 						//String depName = getDepartmentNameFromCode(assignment.getDepartmentCode());
@@ -257,19 +259,8 @@ public class StudentService {
 	
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());			
-		updateStudyProgramList(findDepartmentOe2ForCurrentStudent());		
+		updateStudyProgramList(findDepartmentCodeForCurrentStudent());		
 		getStudyProgramList();
-	}
-	
-	private int findDepartmentOe2ForCurrentStudent() {
-	  throw new NotImplementedException(getClass());
-//		String code = getCurrentStudent().getDepartmentCode();
-//		List<Organization> tempList = getDepartmentList();
-//		for (Department department : tempList) {
-//			if(department.getOeKode().equalsIgnoreCase(code)) 
-//				return department.getOe2();
-//		}
-//		return 0;
 	}
 	
 	public String findDepartmentCodeForCurrentStudent() {
@@ -309,27 +300,19 @@ public class StudentService {
 		return departmentList;
 	}
 
-	// TODO move to common code
   private String getText(List<BaseText> txtList) {
+    // TODO should be determined by current language, not a property in the resource bundle
     String lang = "en";
     if (res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
       lang = "nb";
     }
-    return getText(txtList, lang);
+    
+    return BaseTextUtil.getText(txtList, lang);
   }
 
   // TODO move to common code
-	private String getText(List<BaseText> txtList, String lang) {
-	  for (BaseText txt : txtList) {
-      if (txt.getLang().equals(lang)) {
-        return txt.getValue();
-      }
-    }
-    return txtList.get(0).getValue();
-  }
-
-  private List<no.uis.service.model.StudyProgram> getStudyProgramList() {
-		List<no.uis.service.model.StudyProgram> studyProgramList = null; 
+  private List<StudyProgram> getStudyProgramList() {
+		List<StudyProgram> studyProgramList = null; 
 		
 		Student stud = getCurrentStudent();
 		if (stud != null) {
@@ -345,34 +328,13 @@ public class StudentService {
 		return studyProgramList;
 	}
 	
-	private String getDepartmentNameFromIndex(int index) {
-	  throw new NotImplementedException(getClass());
-//	  List<Department> depts = getDepartmentList();
-//	  return depts.get(index).getName();
-	}
-	
-	private String getDepartmentCodeFromIndex(int index) {		
-    throw new NotImplementedException(getClass());
-//    List<Department> depts = getDepartmentList();
-//		return depts.get(index).getOeKode();
-	}
-
-	
 	public void removeAssignment(Assignment assignment) {
 		abamStudentClient.removeAssignment(assignment);
 	}
 
-	
-//	public void setStudyProgramListFromDepartmentNumber(int departmentNumber) {
-//		setStudyProgramList(getAllStudyProgramsByDepartmentsList().
-//				get(departmentNumber));
-//	}
-//	
-	
 	public String getSelectedStudyProgramCode() {
 		return selectedStudyProgramCode;
 	}
-
 	
 	public void setSelectedStudyProgramCode(String selectedStudyProgramCode) {
 		this.selectedStudyProgramCode = selectedStudyProgramCode;
@@ -383,13 +345,19 @@ public class StudentService {
 			Student stud = getStudentFromLogin();
 			if (stud == null) {
 			  stud = new Student();
-			  stud.setName("");
+			  stud.setName("unknown student");
+			  stud.setType(AssignmentType.BACHELOR);
 			}
 			currentStudent = stud;
 		}
 		return currentStudent;
 	}
 
+  public String getCurrentDepartmentName() {
+      // TODO show name instead
+    return currentStudent.getDepartmentCode();
+  }
+  
 	public void updateStudentInWebServiceFromCurrentStudent() {
 	  Student stud = getCurrentStudent();
 		abamStudentClient.updateStudent(stud);
@@ -444,14 +412,6 @@ public class StudentService {
 //				}
 //			}
 //		}
-	}
-
-	@Deprecated
-	private int findApplicationIndex(Application application) {
-//		for (int index = 0; index < tempApplicationPriorityArray.length; index++) {
-//			if(tempApplicationPriorityArray[index] == application) return index;
-//		}
-		return -1;
 	}
 
 	public List<Application> getTempApplicationPriorityArray() {

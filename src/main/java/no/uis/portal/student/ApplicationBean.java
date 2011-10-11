@@ -160,6 +160,17 @@ public class ApplicationBean implements DisposableBean {
 		this.currentAssignment = currentAssignment;
 	}
 	
+  public String getCurrentDepartmentName() {
+    // TODO show name instead
+    return currentAssignment.getDepartmentCode();
+  }
+  
+  public String getCurrentStudyProgram() {
+    // TODO show name instead
+    return currentAssignment.getStudyProgramCode();
+  }
+  
+	
 	public boolean isDeadlineForApplyingReached() {
 		if (studentService.getCurrentStudent().getType().equals(AssignmentType.BACHELOR)) {			
 			return APPLICATION_DEADLINE_BACHELOR.before(Calendar.getInstance().getTime());
@@ -167,7 +178,10 @@ public class ApplicationBean implements DisposableBean {
 			return APPLICATION_DEADLINE_MASTER.before(Calendar.getInstance().getTime());
 		}		
 	}
-		
+
+	public boolean getAppliedForThreeAssignments() {
+	  return studentService.getCurrentStudent().getApplications().size() > 2;
+	}
 	public void dispose() throws Exception {
 	}
 

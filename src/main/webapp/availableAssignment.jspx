@@ -53,7 +53,7 @@
 						value="#{msgs.btn_apply_for_assignment}"
 						actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}"
 						action="applyForAssignment"
-						rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis and !studentService.currentStudent.appliedForThreeAssignments}" />
+						rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis and !applicationBean.appliedForThreeAssignments}" />
 				</ice:column>
 			</ice:dataTable>
 

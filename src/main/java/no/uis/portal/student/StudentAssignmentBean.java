@@ -254,6 +254,17 @@ public class StudentAssignmentBean implements DisposableBean {
 		this.currentAssignment = currentAssignment;
 	}
 
+  public String getCurrentDepartmentName() {
+      // TODO show name instead
+    return currentAssignment.getDepartmentCode();
+  }
+  
+  public String getCurrentStudyProgramName() {
+    // TODO show name instead
+    return currentAssignment.getStudyProgramCode();
+  }
+  
+
 	public StudentService getStudentService() {
 		return studentService;
 	}
