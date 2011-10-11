@@ -19,6 +19,7 @@
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <uis.model.version>2.0.0-SNAPSHOT</uis.model.version>
   </properties>
 
   <scm>
@@ -51,6 +52,11 @@
       <groupId>no.uis.abam</groupId>
       <artifactId>dom</artifactId>
       <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>no.uis.service.model</groupId>
+    	<artifactId>model-do</artifactId>
+    	<version>${uis.model.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
