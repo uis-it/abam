@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -26,7 +27,9 @@ import no.uis.service.model.AffiliationType;
 import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.myfaces.shared_impl.util.MessageUtils;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
@@ -111,13 +114,17 @@ public class EmployeeService {
 		setLoggedInEmployee(getEmployeeFromUisLoginName());
 		getDepartmentListFromWebService();
 
-    Organization org = abamClient.getEmployeeDeptarment(loggedInEmployee.getEmployeeId());
-    setSelectedDepartmentCode(org.getPlaceRef());
-    getStudyProgramListFromSelectedDepartment();
-    setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
-		
-    getActiveAssignmentsSet();
-		checkIfLoggedInUserIsAuthor();		
+		if (StringUtils.isBlank(loggedInEmployee.getEmployeeId())) {
+	     throw new IllegalArgumentException("employeeId");
+		} else  {
+      Organization org = abamClient.getEmployeeDeptarment(loggedInEmployee.getEmployeeId());
+      setSelectedDepartmentCode(org.getPlaceRef());
+      getStudyProgramListFromSelectedDepartment();
+      setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
+  		
+      getActiveAssignmentsSet();
+  		checkIfLoggedInUserIsAuthor();
+		}
 	}
 	
 	public void setSelectedStudyProgramCode(String selectedStudyProgramCode) {
