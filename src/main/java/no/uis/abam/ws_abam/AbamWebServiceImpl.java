@@ -1,14 +1,10 @@
 package no.uis.abam.ws_abam;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.TreeSet;
 
 import javax.jws.WebService;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
@@ -24,17 +20,18 @@ import no.uis.service.model.Person;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Transactional;
 
 @WebService(endpointInterface = "no.uis.abam.ws_abam.AbamWebService")
 public class AbamWebServiceImpl implements AbamWebService {
 
 	private Logger log = Logger.getLogger(AbamWebServiceImpl.class);
 	
-	private List<Application> applicationList = new ArrayList<Application>();
+//	private List<Application> applicationList = new ArrayList<Application>();
+
 	private List<Student> studentList = new ArrayList<Student>();
 	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
 	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
+	
 	private List<Organization> departmentList;
 	private String orgTreeRoot = "217_8_0_0"; // faculty TN 
  	
@@ -51,7 +48,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 
 	@Override
 	public List<Assignment> getAllAssignments() {
-	  return dao.getAllAssignments();
+	  return dao.getAssignments();
 	}	
 	
 	@Override
@@ -117,59 +114,63 @@ public class AbamWebServiceImpl implements AbamWebService {
 		
 	@Override
 	public List<Application> getApplicationList() {
-		return applicationList;
+		return dao.getApplications();
 	}
 	
   @Override
-	public List<Application> getMasterApplicationListFromDepartmentCode(String code) {
-		List<Application> masterApplicationList = new ArrayList<Application>();
-		for (Application application : applicationList) {
-		  boolean isMaster = application.getAssignment().getType().equals(AssignmentType.MASTER);
-			if(isMaster && application.getAssignment().getDepartmentCode().equals(code)) {
-				masterApplicationList.add(application);
-			}
-		}
-		return masterApplicationList;
+	public List<Application> getMasterApplicationListFromDepartmentCode(String departmentCode) {
+    return dao.getApplicationsByDepartmentCode(departmentCode, AssignmentType.MASTER);
+//		List<Application> masterApplicationList = new ArrayList<Application>();
+//		for (Application application : applicationList) {
+//		  boolean isMaster = application.getAssignment().getType().equals(AssignmentType.MASTER);
+//			if(isMaster && application.getAssignment().getDepartmentCode().equals(code)) {
+//				masterApplicationList.add(application);
+//			}
+//		}
+//		return masterApplicationList;
 	}
 
   @Override
-	public List<Application> getBachelorApplicationListFromDepartmentCode(String code) {
-		List<Application> bachelorApplicationList = new ArrayList<Application>();
-		for (Application application : applicationList) {
-		  boolean isBachelor = application.getAssignment().getType().equals(AssignmentType.BACHELOR); 
-			if(isBachelor && application.getAssignment().getDepartmentCode().equals(code)) {
-				bachelorApplicationList.add(application);
-			}
-		}
-		return bachelorApplicationList;
-	
+	public List<Application> getBachelorApplicationListFromDepartmentCode(String departmentCode) {
+    return dao.getApplicationsByDepartmentCode(departmentCode, AssignmentType.BACHELOR);
+//		List<Application> bachelorApplicationList = new ArrayList<Application>();
+//		for (Application application : applicationList) {
+//		  boolean isBachelor = application.getAssignment().getType().equals(AssignmentType.BACHELOR); 
+//			if(isBachelor && application.getAssignment().getDepartmentCode().equals(code)) {
+//				bachelorApplicationList.add(application);
+//			}
+//		}
+//		return bachelorApplicationList;
 	}
 	
   @Override
 	public void saveApplication(Application application) {
-		Iterator<Application> iterator = applicationList.iterator();
-		while (iterator.hasNext()){	
-			Application app = iterator.next();
-			if(app != null) {
-				if (app.equals(application)) {
-					applicationList.remove(app);
-					break;
-				}
-			}
-		}
-		applicationList.add(application);
+    dao.saveApplication(application);
+//		Iterator<Application> iterator = applicationList.iterator();
+//		while (iterator.hasNext()){	
+//			Application app = iterator.next();
+//			if(app != null) {
+//				if (app.equals(application)) {
+//					applicationList.remove(app);
+//					break;
+//				}
+//			}
+//		}
+//		applicationList.add(application);
 	}
 	
   @Override
 	public void removeApplication(Application application) {
-		for (Application app : applicationList) {
-			if (app.equals(application)) {
-				applicationList.remove(app);
-				return;
-			}
-		}	
+    dao.removeApplication(application);
+//		for (Application app : applicationList) {
+//			if (app.equals(application)) {
+//				applicationList.remove(app);
+//				return;
+//			}
+//		}	
 	}
 
+  @Deprecated
   @Override
 	public int getNextId() {
     throw new NotImplementedException(getClass());
@@ -205,15 +206,15 @@ public class AbamWebServiceImpl implements AbamWebService {
 		}			
 	}
 	
-	private void removeAssignmentFromApplicationList(
-			Assignment assignedAssignment) {
-		if(!applicationList.isEmpty()) {
-			for (Application application: applicationList) {
-				if(application.getAssignment().equals(assignedAssignment)) {
-					applicationList.remove(application);
-				}
-			}
-		}
+	private void removeAssignmentFromApplicationList(Assignment assignedAssignment) {
+	  throw new NotImplementedException(getClass());
+//		if(!applicationList.isEmpty()) {
+//			for (Application application: applicationList) {
+//				if(application.getAssignment().equals(assignedAssignment)) {
+//					applicationList.remove(application);
+//				}
+//			}
+//		}
 	}
 
 	@Override
