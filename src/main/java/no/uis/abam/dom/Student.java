@@ -49,68 +49,6 @@ public class Student extends AbamPerson {
 	
 	public Student(){}
 
-	private void addApplication(Application application) {
-		if (applicationIsLegitimate(application)) {	
-			placeApplicationInArray(application);
-		}
-	}
-	
-	private boolean applicationIsLegitimate(Application application) {
-		return !assignmentIsAlreadyAppliedFor(application.getAssignment()) && !isAppliedForThreeAssignments();
-	}
-	
-	private boolean assignmentIsAlreadyAppliedFor(Assignment assignment){
-		String assignmentTitle = assignment.getTitle();
-//		for(int index = 0; index < applicationPriorityArray.length; index++) {
-//			if(applicationPriorityArray[index] != null) {
-//				if(applicationPriorityArray[index].getAssignment().getTitle().equals(assignmentTitle)){
-//					//applicationsErrorMessage = ASSIGNMENT_ALREADY_APPLIED_FOR;
-//					return true;
-//				}
-//			}
-//		}
-		return false;
-	}
-	
-	private boolean isAppliedForThreeAssignments(){
-//		if ((applicationPriorityArray[0] != null) &&
-//				(applicationPriorityArray[1] != null) &&
-//				(applicationPriorityArray[2] != null)) {
-//			//applicationsErrorMessage = MAXIMUM_NUMBER_OF_ASSIGNMENTS_EXCEEDED;
-//			return true;
-//		} else {
-			return false;
-//		}
-	}
-	
-	private void placeApplicationInArray(Application application) {
-//		for (int i = 0; i < applicationPriorityArray.length; i++) {
-//			if (applicationPriorityArray[i] == null) {
-//				application.setPriority(i+1);
-//				applicationPriorityArray[i] = application;
-//				return;
-//			}
-//		}
-	}
-	
-	public boolean isHasAssignedThesis() {
-		return assignedThesis != null;
-	}
-	
-	/**
-	 * TODO move somewhere else
-	 */
-	@Deprecated
-	public Application getApplicationFromAssignment(Assignment selectedAssignment) {
-	  
-	  for (Application appl : getApplications()) {
-      if (appl.getAssignment().equals(selectedAssignment)) {
-        return appl;
-      }
-    }
-		return null;
-	}
-	
 	public String getStudentNumber() {
 		return studentNumber;
 	}
