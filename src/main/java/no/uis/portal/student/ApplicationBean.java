@@ -44,7 +44,7 @@ public class ApplicationBean implements DisposableBean {
     Assignment selectedAssignment = student.getCustomAssignment();
 		currentAssignment = selectedAssignment;
 		if(assignmentIsAppliedFor(student, selectedAssignment)){
-			setCurrentApplication(student.getApplicationFromAssignment(selectedAssignment));
+			setCurrentApplication(getApplicationFromAssignment(student, selectedAssignment));
 		} else {
 			createNewApplication(selectedAssignment);
 		}
@@ -72,7 +72,7 @@ public class ApplicationBean implements DisposableBean {
 		currentAssignment = studentService.getSelectedAssignment();
 		Student student = studentService.getCurrentStudent();
 		if(assignmentIsAppliedFor(student, currentAssignment)) {
-      setCurrentApplication(student.getApplicationFromAssignment(currentAssignment));
+      setCurrentApplication(getApplicationFromAssignment(student, currentAssignment));
 		} else {
 			createNewApplication(currentAssignment);
 		}
@@ -119,7 +119,7 @@ public class ApplicationBean implements DisposableBean {
 		currentAssignment = studentService.getSelectedAssignment();
 		Student student = studentService.getCurrentStudent();
 		if(assignmentIsAppliedFor(student, currentAssignment)){
-      setCurrentApplication(student.getApplicationFromAssignment(currentAssignment));
+      setCurrentApplication(getApplicationFromAssignment(student, currentAssignment));
 		} else {
 			createNewApplication(currentAssignment);
 		}
@@ -182,7 +182,17 @@ public class ApplicationBean implements DisposableBean {
 	public boolean getAppliedForThreeAssignments() {
 	  return studentService.getCurrentStudent().getApplications().size() > 2;
 	}
+	
+  private static Application getApplicationFromAssignment(Student student, Assignment selectedAssignment) {
+    
+    for (Application appl : student.getApplications()) {
+      if (appl.getAssignment().equals(selectedAssignment)) {
+        return appl;
+      }
+    }
+    return null;
+  }
+	
 	public void dispose() throws Exception {
 	}
-
 }

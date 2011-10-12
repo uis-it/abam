@@ -7,28 +7,26 @@
 		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true">
 			<ice:panelGrid columns="2" border="0">
-					<ice:outputText value="#{msgs.lbl_department}" />
-					<ice:panelGroup>
-						<ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/>
-						<ice:message for="departmentInput" showSummary="true" showDetail="false"/>
-					</ice:panelGroup>
+				<ice:outputText value="#{msgs.lbl_department}" />
+				<ice:panelGroup>
+					<ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/>
+					<ice:message for="departmentInput" showSummary="true" showDetail="false"/>
+				</ice:panelGroup>
 
-					<ice:outputText value="#{msgs.lbl_study_program}" />
-					<ice:panelGroup>
-						<ice:selectOneMenu id="studyProgramInput"
-							value="#{studentService.selectedStudyProgramCode}"
-							valueChangeListener="#{studentService.actionSetDisplayAssignment}"
-							partialSubmit="true"
-						>
-							<f:selectItems id="studyProgramContent"
-								value="#{studentService.studyProgramSelectItemList}" />
-						</ice:selectOneMenu>
-						<ice:message for="studyProgramInput" showSummary="true" showDetail="true"/>
-					</ice:panelGroup>
-				</ice:panelGrid>
-		</ice:form>
-		
-		<ice:form>
+				<ice:outputText value="#{msgs.lbl_study_program}" />
+				<ice:panelGroup>
+					<ice:selectOneMenu id="studyProgramInput"
+						value="#{studentService.selectedStudyProgramCode}"
+						valueChangeListener="#{studentService.actionSetDisplayAssignment}"
+						partialSubmit="true"
+					>
+						<f:selectItems id="studyProgramContent"
+							value="#{studentService.studyProgramSelectItemList}" />
+					</ice:selectOneMenu>
+					<ice:message for="studyProgramInput" showSummary="true" showDetail="true"/>
+				</ice:panelGroup>
+			</ice:panelGrid>
+				
 			<ice:dataTable id="departmentTable" var="item"
 				value="#{studentService.assignmentList}"
 				columnClasses="titleColumn, coStudentColumn"
@@ -53,7 +51,7 @@
 						value="#{msgs.btn_apply_for_assignment}"
 						actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}"
 						action="applyForAssignment"
-						rendered="#{!applicationBean.deadlineForApplyingReached and !studentService.currentStudent.hasAssignedThesis and !applicationBean.appliedForThreeAssignments}" />
+						rendered="#{!applicationBean.deadlineForApplyingReached and (empty studentService.currentStudent.assignedThesis) and !applicationBean.appliedForThreeAssignments}" />
 				</ice:column>
 			</ice:dataTable>
 
