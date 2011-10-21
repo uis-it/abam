@@ -4,8 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <bean id="abamStudentClient" class="no.uis.abam.ws_abam.AbamWebService" 
       factory-bean="clientFactory" factory-method="create"/>
@@ -15,4 +15,20 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd">
 	  <property name="address" value="http://localhost/AbamWebService/AbamWebService"/>
 	</bean>
 	  
+	<bean id="studentService" class="no.uis.portal.student.StudentService" scope="session">
+		<property name="abamStudentClient" ref="abamStudentClient"/>
+	</bean>
+	
+	<bean id="assignmentBean" class="no.uis.portal.student.StudentAssignmentBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
+	<bean id="applicationBean" class="no.uis.portal.student.ApplicationBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
+	<bean id="thesisBean" class="no.uis.portal.student.ThesisBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
 </beans>

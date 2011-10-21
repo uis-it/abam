@@ -7,6 +7,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import org.apache.commons.lang.StringUtils;
+
 import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Student;
@@ -19,7 +21,7 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 
-public class ThesisBean implements DisposableBean {
+public class ThesisBean {
 
 	private StudentService studentService;
 	
@@ -47,10 +49,10 @@ public class ThesisBean implements DisposableBean {
 		
 		
 		if (currentStudentsThesis != null) {
-			if (currentStudentsThesis.getAssignedAssignment().isCustom()) {
+			if (currentStudentsThesis.getAssignment().isCustom()) {
 				currentAssignment = studentService.getCurrentStudent().getCustomAssignment();
 			} else {
-				currentAssignment = currentStudentsThesis.getAssignedAssignment();
+				currentAssignment = currentStudentsThesis.getAssignment();
 			}
 			currentAssignment.setDepartmentCode(currentStudent.getDepartmentCode());
 			// TODO the name can be fetched when needed
@@ -94,9 +96,9 @@ public class ThesisBean implements DisposableBean {
 	}
 	
 	public void actionSaveThesis(ActionEvent event) {
-		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.SUBMITTED,studentService.getCurrentStudent().getName()));
+		currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.SUBMITTED, studentService.getCurrentStudent().getName()));
 		currentStudentsThesis.setSubmitted(true);
-		currentStudentsThesis.setActualSubmissionForEvalutation(Calendar.getInstance().getTime());
+		currentStudentsThesis.setSubmissionDate(Calendar.getInstance());
 		studentService.updateThesis(currentStudentsThesis);
 	}
 	
@@ -109,19 +111,24 @@ public class ThesisBean implements DisposableBean {
 		} else if (id.equals("readRules3")) {
 			readRules3 = (Boolean)event.getNewValue();
 		}
-		if(readRules1 && readRules2 && readRules3) renderAcceptButton = true;
-		else renderAcceptButton = false;
+		if(readRules1 && readRules2 && readRules3) {
+		  renderAcceptButton = true;
+		} else {
+		  renderAcceptButton = false;
+		}
 	}
 	
 	public void actionSetThesisIsAccepted(ActionEvent event) {
-		studentService.getCurrentStudent().setActualSubmissionOfTopic(GregorianCalendar.getInstance().getTime());
+		studentService.getCurrentStudent().setSubmissionDate(Calendar.getInstance());
 		studentService.getCurrentStudent().setAcceptedThesis(true);
 		studentService.updateStudentInWebServiceFromCurrentStudent();
+		ThesisStatusType statusType;
 		if (allStudentsHaveAccepted()) {
-			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.ACCEPTED, studentService.getCurrentStudent().getName()));
+			statusType = ThesisStatusType.ACCEPTED;
 		} else {
-			currentStudentsThesis.addThesisStatus(new ThesisStatus(ThesisStatusType.PARTIALLY_ACCEPTED, studentService.getCurrentStudent().getName()));
+		  statusType = ThesisStatusType.PARTIALLY_ACCEPTED;
 		}		
+		currentStudentsThesis.addThesisStatus(new ThesisStatus(statusType, studentService.getCurrentStudent().getName()));
 		updateThesisForInvolvedStudents();
 		studentService.updateThesis(currentStudentsThesis);
 		actionInitMyThesisPage(event);
@@ -150,9 +157,9 @@ public class ThesisBean implements DisposableBean {
 	private boolean allStudentsHaveAccepted() {
 		boolean allHaveAccepted = false;
 		
-		if(currentStudentsThesis.getStudentNumber2() == null || currentStudentsThesis.getStudentNumber2().isEmpty()) {
+		if(StringUtils.isBlank(currentStudentsThesis.getStudentNumber2())) {
 			allHaveAccepted = true;
-		} else if (currentStudentsThesis.getStudentNumber3() == null || currentStudentsThesis.getStudentNumber3().isEmpty()) {
+		} else if (StringUtils.isBlank(currentStudentsThesis.getStudentNumber3())) {
 			Student std1 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber1());
 			Student std2 = studentService.getStudentFromStudentNumber(currentStudentsThesis.getStudentNumber2());
 			if (std1.isAcceptedThesis() && std2.isAcceptedThesis()) {
@@ -249,8 +256,6 @@ public class ThesisBean implements DisposableBean {
 	public void setRenderAcceptButton(boolean enableAcceptButton) {
 		this.renderAcceptButton = enableAcceptButton;
 	}
-
-	
 	
 	public boolean isReadRules1() {
 		return readRules1;
@@ -303,18 +308,15 @@ public class ThesisBean implements DisposableBean {
 	
 	public boolean isDeadlineForSubmissionOfTopicReached() {
 		if(currentStudentsThesis != null) {
-			return currentStudentsThesis.getDeadlineForSubmissionOfTopic().before(GregorianCalendar.getInstance().getTime());
+			return currentStudentsThesis.getAcceptionDeadline().before(Calendar.getInstance());
 		}
 		return false;
 	}
 	
 	public boolean isDeadlineForSubmissionForEvalutationReached() {
 		if(currentStudentsThesis != null) {
-			return currentStudentsThesis.getDeadlineForSubmissionForEvalutation().before(GregorianCalendar.getInstance().getTime());
+			return currentStudentsThesis.getSubmissionDeadline().before(Calendar.getInstance());
 		}
 		return false;
 	}
-
-	public void dispose() throws Exception {}
-
 }

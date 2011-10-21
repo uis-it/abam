@@ -12,133 +12,135 @@
 					value="#{msgs.btn_back}" id="BackButton" />
 			</ice:panelGrid>
 			
-			<ice:panelGrid rendered="#{!thesisBean.renderNotAssigned}" columns="2">
-				<ice:outputText value="#{msgs.lbl_deadline_topic}" />
-				<ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionOfTopicAsString}" />
+			<ice:panelGroup rendered="#{!thesisBean.renderNotAssigned}">
+				<ice:panelGrid columns="2">
+					<ice:outputText value="#{msgs.lbl_deadline_topic}" />
+					<ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionOfTopicAsString}" />
+					
+					<ice:outputText value="#{msgs.lbl_you_accepted}" rendered="#{studentService.currentStudent.acceptedThesis}" /> 		
+				  <ice:outputText value="#{msgs.lbl_you_have_not_accepted_yet}" rendered="#{!studentService.currentStudent.acceptedThesis}" styleClass="warning"/>				
+					<ice:outputText value="#{studentService.currentStudent.actualSubmissionOfTopicAsString}" rendered="#{studentService.currentStudent.acceptedThesis}" />						
+				</ice:panelGrid>
+	
+				<ice:panelGrid columns="2">
+					<ice:outputText value="#{msgs.lbl_title}"/>
+					<ice:outputText value="#{thesisBean.currentAssignment.title}"/>
+	
+					<ice:outputText value="#{msgs.lbl_description}"/>
+					<ice:outputText value="#{thesisBean.currentAssignment.description}"/>
+	
+					<ice:outputText value="#{msgs.lbl_department}"/>
+					<ice:outputText value="#{thesisBean.currentDepartmentName}"/>
+	
+					<ice:outputText value="#{msgs.lbl_study_program}"/>
+					<ice:outputText value="#{thesisBean.currentStudyProgramName}"/>
+	
+					<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
+					<ice:outputText value="#{thesisBean.currentAssignment.facultySupervisor.name}"/>
+				</ice:panelGrid>
 				
-				<ice:outputText value="#{msgs.lbl_you_accepted}" rendered="#{studentService.currentStudent.acceptedThesis}" /> 		
-			  <ice:outputText value="#{msgs.lbl_you_have_not_accepted_yet}" rendered="#{!studentService.currentStudent.acceptedThesis}" styleClass="warning"/>				
-				<ice:outputText value="#{studentService.currentStudent.actualSubmissionOfTopicAsString}" rendered="#{studentService.currentStudent.acceptedThesis}" />						
-			</ice:panelGrid>
-
-			<ice:panelGrid rendered="#{!thesisBean.renderNotAssigned}" columns="2">
-				<ice:outputText value="#{msgs.lbl_title}"/>
-				<ice:outputText value="#{thesisBean.currentAssignment.title}"/>
-
-				<ice:outputText value="#{msgs.lbl_description}"/>
-				<ice:outputText value="#{thesisBean.currentAssignment.description}"/>
-
-				<ice:outputText value="#{msgs.lbl_department}"/>
-				<ice:outputText value="#{thesisBean.currentDepartmentName}"/>
-
-				<ice:outputText value="#{msgs.lbl_study_program}"/>
-				<ice:outputText value="#{thesisBean.currentStudyProgramName}"/>
-
-				<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
-				<ice:outputText value="#{thesisBean.currentAssignment.facultySupervisor.name}"/>
-			</ice:panelGrid>
-			
-			<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }" rendered="#{!thesisBean.renderNotAssigned}">
-				<f:facet name="header">
-					<ice:outputText value="#{msgs.lbl_supervisor}" />
-				</f:facet>
-				<ice:column>
+				<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }">
 					<f:facet name="header">
-						<ice:outputText id="name" value="#{msgs.lbl_name}"/>
+						<ice:outputText value="#{msgs.lbl_supervisor}" />
 					</f:facet>
-					<ice:outputText id="nameInput" value="#{supervisor.name}"/>
-				</ice:column>
-				<ice:column>
-					<f:facet name="header">
-						<ice:outputText id="Email" value="#{msgs.lbl_email}"/>
-					</f:facet>
-					<ice:outputText id="emailInput" value="#{supervisor.email}"/>
-				</ice:column>
-				<ice:column>
-					<f:facet name="header">
-						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}"/>
-					</f:facet>
-					<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}"/>
-				</ice:column>
-				<ice:column>
-					<f:facet name="header">
-							<ice:outputText id="company" value="#{msgs.lbl_company}"/>
-					</f:facet>
-					<ice:outputText id="companyInput" value="#{supervisor.companyName}"/>
-				</ice:column>
-			</ice:dataTable>
-				
-			<ice:panelGrid columns="1" rendered="#{!thesisBean.renderNotAssigned}">
-				<ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/>
-				
-				<ice:outputText value="#{thesisBean.currentThesisInformation.studentName}"/>
-				
-				<ice:outputText value="#{thesisBean.currentThesisInformation.coStudent1Name}"/>
-				
-				<ice:outputText value="#{thesisBean.currentThesisInformation.coStudent2Name}"/>
-
-				<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachments}">
 					<ice:column>
 						<f:facet name="header">
-							<ice:outputText value="#{msgs.lbl_attachments}" />
+							<ice:outputText id="name" value="#{msgs.lbl_name}"/>
 						</f:facet>
-						<ice:outputText id="nameInput" value="#{attachment.file.name}" />
+						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
+					</ice:column>
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText id="Email" value="#{msgs.lbl_email}"/>
+						</f:facet>
+						<ice:outputText id="emailInput" value="#{supervisor.email}"/>
+					</ice:column>
+					<ice:column>
+						<f:facet name="header">
+							<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}"/>
+						</f:facet>
+						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}"/>
+					</ice:column>
+					<ice:column>
+						<f:facet name="header">
+								<ice:outputText id="company" value="#{msgs.lbl_company}"/>
+						</f:facet>
+						<ice:outputText id="companyInput" value="#{supervisor.companyName}"/>
 					</ice:column>
 				</ice:dataTable>
-			</ice:panelGrid>
-
-			<ice:panelGrid columns="2">
-			
-				<f:verbatim></f:verbatim>
-				<ice:outputLink value="http://student.uis.no/studieinformasjon/tn/oppgaveskriving/" target="_blank">
-					<ice:outputText value="#{msgs.lbl_press_for_rules}"/>
-				</ice:outputLink>
 					
-				<ice:selectBooleanCheckbox id="readRules1" 
-					value="#{thesisBean.readRules1}"
-					valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
-					partialSubmit="true"
-					disabled="#{studentService.currentStudent.acceptedThesis}"
-				/>
-				<ice:outputText value="#{msgs.lbl_rule1}" />
+				<ice:panelGrid columns="1">
+					<ice:outputText value="#{msgs.lbl_students_assigned_thesis}"/>
+					
+					<ice:outputText value="#{thesisBean.currentThesisInformation.studentName}"/>
+					
+					<ice:outputText value="#{thesisBean.currentThesisInformation.coStudent1Name}"/>
+					
+					<ice:outputText value="#{thesisBean.currentThesisInformation.coStudent2Name}"/>
+	
+					<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachments}">
+						<ice:column>
+							<f:facet name="header">
+								<ice:outputText value="#{msgs.lbl_attachments}" />
+							</f:facet>
+							<ice:outputText id="nameInput" value="#{attachment.file.name}" />
+						</ice:column>
+					</ice:dataTable>
+				</ice:panelGrid>
+	
+				<ice:panelGrid columns="2">
 				
-				<ice:selectBooleanCheckbox id="readRules2"
-					value="#{thesisBean.readRules2}"
-					valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
-					partialSubmit="true"
-					disabled="#{studentService.currentStudent.acceptedThesis}"
-				/>
-				<ice:outputText value="#{msgs.lbl_rule2}"/>
-				
-				<ice:selectBooleanCheckbox
-					value="#{thesisBean.readRules3}" id="readRules3"
-					valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
-					partialSubmit="true"
-					disabled="#{studentService.currentStudent.acceptedThesis}"
-				/>
-				<ice:outputText value="#{msgs.lbl_rule3}" />
-				
-			</ice:panelGrid>
-
-			<ice:panelGrid rendered="#{!thesisBean.renderNotAssigned}" columns="4">
-				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/>
-				
-				<ice:outputText value="#{msgs.lbl_please_check_all}" 
-					rendered="#{!thesisBean.renderAcceptButton and !studentService.currentStudent.acceptedThesis and !thesisBean.deadlineForSubmissionOfTopicReached}"
-				/>
-
-				<ice:commandButton type="submit" action="myThesis"
-					value="#{msgs.btn_accept_thesis}" id="acceptThesis"
-					actionListener="#{thesisBean.actionSetThesisIsAccepted}"
-					rendered="#{thesisBean.renderAcceptButton}"
-					disabled="#{thesisBean.deadlineForSubmissionOfTopicReached}" 
-				/>
-				
-				<ice:outputText value="#{msgs.lbl_deadline_for_accepting_reached}"
-					rendered="#{thesisBean.deadlineForSubmissionOfTopicReached}"
-					styleClass="warning"
-				/>
-			</ice:panelGrid>
+					<f:verbatim></f:verbatim>
+					<ice:outputLink value="http://student.uis.no/studieinformasjon/tn/oppgaveskriving/" target="_blank">
+						<ice:outputText value="#{msgs.lbl_press_for_rules}"/>
+					</ice:outputLink>
+						
+					<ice:selectBooleanCheckbox id="readRules1" 
+						value="#{thesisBean.readRules1}"
+						valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
+						partialSubmit="true"
+						disabled="#{studentService.currentStudent.acceptedThesis}"
+					/>
+					<ice:outputText value="#{msgs.lbl_rule1}" />
+					
+					<ice:selectBooleanCheckbox id="readRules2"
+						value="#{thesisBean.readRules2}"
+						valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
+						partialSubmit="true"
+						disabled="#{studentService.currentStudent.acceptedThesis}"
+					/>
+					<ice:outputText value="#{msgs.lbl_rule2}"/>
+					
+					<ice:selectBooleanCheckbox
+						value="#{thesisBean.readRules3}" id="readRules3"
+						valueChangeListener="#{thesisBean.actionCheckBoxChanges}"
+						partialSubmit="true"
+						disabled="#{studentService.currentStudent.acceptedThesis}"
+					/>
+					<ice:outputText value="#{msgs.lbl_rule3}" />
+					
+				</ice:panelGrid>
+	
+				<ice:panelGrid columns="4">
+					<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}"/>
+					
+					<ice:outputText value="#{msgs.lbl_please_check_all}" 
+						rendered="#{!thesisBean.renderAcceptButton and !studentService.currentStudent.acceptedThesis and !thesisBean.deadlineForSubmissionOfTopicReached}"
+					/>
+	
+					<ice:commandButton type="submit" action="myThesis"
+						value="#{msgs.btn_accept_thesis}"
+						actionListener="#{thesisBean.actionSetThesisIsAccepted}"
+						rendered="#{thesisBean.renderAcceptButton}"
+						disabled="#{thesisBean.deadlineForSubmissionOfTopicReached}" 
+					/>
+					
+					<ice:outputText value="#{msgs.lbl_deadline_for_accepting_reached}"
+						rendered="#{thesisBean.deadlineForSubmissionOfTopicReached}"
+						styleClass="warning"
+					/>
+				</ice:panelGrid>
+			</ice:panelGroup>
 		</ice:form>
 	</ice:portlet>
 </f:view>

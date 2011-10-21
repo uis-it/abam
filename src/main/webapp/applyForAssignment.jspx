@@ -77,9 +77,9 @@
 			</ice:panelGrid>
 
 			<ice:panelGrid columns="3">
-				<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" id="BackButton" immediate="true"/>
-				<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}" id="SaveButton"/>
-				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true"/>
+				<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" immediate="true"/>
+				<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}"/>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" immediate="true"/>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>

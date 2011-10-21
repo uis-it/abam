@@ -19,22 +19,19 @@ import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.ext.UIColumn;
 import com.icesoft.faces.context.DisposableBean;
 
-public class ApplicationBean implements DisposableBean {
+public class ApplicationBean {
 	
-  // TODO looks like this has to be refactored. What if the application runs longer than a year?
-	private static final Date APPLICATION_DEADLINE_MASTER = new GregorianCalendar(
-			GregorianCalendar.getInstance().get(Calendar.YEAR), Calendar.DECEMBER, 1).getTime();
-	private static final Date APPLICATION_DEADLINE_BACHELOR = new GregorianCalendar(
-			GregorianCalendar.getInstance().get(Calendar.YEAR), Calendar.NOVEMBER, 15).getTime();
-	
+	private Calendar deadlineMaster = initDeadline(Calendar.DECEMBER, 1);
+	private Calendar deadlineBachelor = initDeadline(Calendar.NOVEMBER, 15);
+
 	private StudentService studentService;
 	
 	private Application currentApplication;
 	private Assignment currentAssignment;
 	
+	
 	public ApplicationBean() {}
-	
-	
+		
 	/**
 	 * ActionListener that sets custom Assignment to existing or new Application
 	 * @param event
@@ -133,7 +130,6 @@ public class ApplicationBean implements DisposableBean {
 	 */
 	public void actionSaveApplication(ActionEvent event) {
 		studentService.setApplicationToStudent(currentApplication);
-		studentService.saveApplication(currentApplication);
 	}
 	
 	public StudentService getStudentService() {
@@ -172,11 +168,17 @@ public class ApplicationBean implements DisposableBean {
   
 	
 	public boolean isDeadlineForApplyingReached() {
-		if (studentService.getCurrentStudent().getType().equals(AssignmentType.BACHELOR)) {			
-			return APPLICATION_DEADLINE_BACHELOR.before(Calendar.getInstance().getTime());
-		} else {
-			return APPLICATION_DEADLINE_MASTER.before(Calendar.getInstance().getTime());
-		}		
+	  Calendar now = Calendar.getInstance();
+	  Calendar deadline = null;
+	  switch(studentService.getCurrentStudent().getType()) {
+	    case BACHELOR:
+	      deadline = deadlineBachelor;
+	      break;
+	    case MASTER:
+	      deadline = deadlineMaster;
+	      break;
+	  }
+	  return now.after(deadline);
 	}
 
 	public boolean getAppliedForThreeAssignments() {
@@ -192,7 +194,11 @@ public class ApplicationBean implements DisposableBean {
     }
     return null;
   }
-	
-	public void dispose() throws Exception {
-	}
+
+  private Calendar initDeadline(int month, int day) {
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
+    cal.set(year, month, day, 23, 59, 59);
+    return cal;
+  }
 }

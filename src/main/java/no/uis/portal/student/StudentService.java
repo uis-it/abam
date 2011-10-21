@@ -1,12 +1,9 @@
 package no.uis.portal.student;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -14,7 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import javax.portlet.RenderRequest;
 
 import no.uis.abam.commons.BaseTextUtil;
 import no.uis.abam.dom.Application;
@@ -24,33 +20,30 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
-import no.uis.service.model.BaseText;
+import no.uis.portal.util.LiferayUtil;
 import no.uis.service.model.Organization;
 import no.uis.service.model.StudyProgram;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-import com.liferay.util.bridges.jsf.common.LanguageManagedBean;
 
 // TODO improve protection of resources in concurrent thread environment, it is a mess. 
-public class StudentService {
+public class StudentService implements InitializingBean {
+
+  private static final UnknownStudent UNKNOWN_STUDENT = new UnknownStudent();
 
   private static final int MAX_BACHELOR_APPLICATIONS = 3;
   
 	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
-	
-	private static final String LANGUAGE = "language";
-	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 	
 	private static Logger log = Logger.getLogger(StudentService.class);
 	
@@ -71,28 +64,16 @@ public class StudentService {
 	
 	private ThemeDisplay themeDisplay;
 	
-	private FacesContext context;
-	private Locale locale;
-  private ResourceBundle res;
-	
-	public StudentService() {
-		context  = FacesContext.getCurrentInstance();
-		locale = context.getViewRoot().getLocale();
-		res = ResourceBundle.getBundle("Language", locale);
-		initializeThemeDisplay();
+  public StudentService() {
 	}
 
-	private void initializeThemeDisplay() {
-		if (themeDisplay == null) {			
-			RenderRequest renderRequest = (RenderRequest) (context
-					.getExternalContext().getRequest());
-			themeDisplay = (ThemeDisplay) renderRequest
-			.getAttribute(WebKeys.THEME_DISPLAY);
+	@Override
+  public void afterPropertiesSet() throws Exception {
+    FacesContext context  = FacesContext.getCurrentInstance();
+    themeDisplay = LiferayUtil.getThemeDisplay(context);
+  }
 
-		}
-	}
-	
-	private Student getStudentFromLogin() {
+  private Student getStudentFromLogin() {
 		String loginName = null;
 		try {			
 			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
@@ -118,10 +99,6 @@ public class StudentService {
 	   return data;
 	}
 	
-	public int getNextId(){
-		return abamStudentClient.getNextId();
-	}
-	
 	public void saveAssignment(Assignment assignment) {
 		getCurrentStudent().setCustomAssignment(assignment);
 	}
@@ -130,8 +107,9 @@ public class StudentService {
 	  Student stud = getCurrentStudent();
 	  if (applicationIsLegitimate(stud, application)) {
 	    stud.getApplications().add(application);
+	    stud = abamStudentClient.updateStudent(stud);
+	    setCurrentStudent(stud);
 	  }
-		abamStudentClient.updateStudent(stud);
 	}
 	
   private static boolean applicationIsLegitimate(Student student, Application application) {
@@ -140,6 +118,7 @@ public class StudentService {
       MessageUtils.addMessage(FacesMessage.SEVERITY_WARN, "maximum_applications_reached", new Object[] {MAX_BACHELOR_APPLICATIONS});
       return false;
     }
+    // TODO This doesn't work. since the oids don't necessary match
     if (applications.contains(application)) {
       MessageUtils.addMessage(FacesMessage.SEVERITY_WARN, "applications_already_applied_for", null);
       return false;
@@ -152,13 +131,11 @@ public class StudentService {
 			assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());
 		return assignmentList;		
 	}
-
 	
 	public Assignment getSelectedAssignment() {
 		return selectedAssignment;
 	}
 
-	
 	public void setSelectedAssignment(Assignment selectedAssignment) {
 		this.selectedAssignment = selectedAssignment;
 	}
@@ -246,7 +223,8 @@ public class StudentService {
 	
 	private String getStudyProgramNameFromCode(String progCode) {
 	  no.uis.service.model.StudyProgram prog = abamStudentClient.getStudyProgramFromCode(progCode);
-	  return getText(prog.getName());
+	  
+	  return BaseTextUtil.getText(prog.getName(), getThemeDisplay().getLocale().getLanguage());
 	}
 	
   public void updateSelectedAssignmentInformation(Assignment selectedAssignment){
@@ -260,7 +238,7 @@ public class StudentService {
 	public void actionPrepareAvailableAssignments(ActionEvent event) {		
 		assignmentList = abamStudentClient.getAssignmentsFromDepartmentCode(getCurrentStudent().getDepartmentCode());			
 		updateStudyProgramList(findDepartmentCodeForCurrentStudent());		
-		getStudyProgramList();
+		//getStudyProgramList();
 	}
 	
 	public String findDepartmentCodeForCurrentStudent() {
@@ -288,10 +266,10 @@ public class StudentService {
 	  Student stud = getCurrentStudent();
 		if(departmentList == null && stud != null) {
 		  List<Organization> depts = abamStudentClient.getDepartmentList();
-		  int i = 0;
+		  String lang = getThemeDisplay().getLocale().getLanguage();
 			for (Organization dept : depts) {
         if (dept.getPlaceRef().equals(stud.getDepartmentCode())) {
-          String name = getText(dept.getName());
+          String name = BaseTextUtil.getText(dept.getName(), lang);
           departmentSelectItemList.add(new SelectItem(dept.getPlaceRef(),name));
         }
       }
@@ -300,35 +278,7 @@ public class StudentService {
 		return departmentList;
 	}
 
-  private String getText(List<BaseText> txtList) {
-    // TODO should be determined by current language, not a property in the resource bundle
-    String lang = "en";
-    if (res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
-      lang = "nb";
-    }
-    
-    return BaseTextUtil.getText(txtList, lang);
-  }
-
-  // TODO move to common code
-  private List<StudyProgram> getStudyProgramList() {
-		List<StudyProgram> studyProgramList = null; 
-		
-		Student stud = getCurrentStudent();
-		if (stud != null) {
-		  studyProgramList = abamStudentClient.getStudyProgramsFromDepartmentFSCode(stud.getDepartmentCode());
-		}
-		studyProgramSelectItemList.clear();
-		if (studyProgramList == null) {
-		  return Collections.emptyList();
-		}
-		for (no.uis.service.model.StudyProgram program : studyProgramList) {
-		  studyProgramSelectItemList.add(new SelectItem(program.getId(), getText(program.getName())));
-    }
-		return studyProgramList;
-	}
-	
-	public void removeAssignment(Assignment assignment) {
+  public void removeAssignment(Assignment assignment) {
 		abamStudentClient.removeAssignment(assignment);
 	}
 
@@ -344,18 +294,20 @@ public class StudentService {
 		if (currentStudent == null) {
 			Student stud = getStudentFromLogin();
 			if (stud == null) {
-			  stud = new Student();
-			  stud.setName("unknown student");
-			  stud.setType(AssignmentType.BACHELOR);
+			  stud = UNKNOWN_STUDENT;
 			}
 			currentStudent = stud;
 		}
 		return currentStudent;
 	}
 
+	private synchronized void setCurrentStudent(Student stud) {
+	  currentStudent = stud;
+	}
+	
   public String getCurrentDepartmentName() {
       // TODO show name instead
-    return currentStudent.getDepartmentCode();
+    return getCurrentStudent().getDepartmentCode();
   }
   
 	public void updateStudentInWebServiceFromCurrentStudent() {
@@ -365,10 +317,6 @@ public class StudentService {
 	
 	public List<Application> getApplicationList() {
 		return abamStudentClient.getApplicationList();
-	}
-
-	public void saveApplication(Application application) {
-		abamStudentClient.saveApplication(application);
 	}
 
 	public void setAbamStudentClient(AbamWebService abamStudentClient) {
@@ -439,13 +387,22 @@ public class StudentService {
 		this.departmentSelectItemList = departmentSelectItemList;
 	}
 
-	public List<SelectItem> getStudyProgramSelectItemList() {
+	// TODO only refresh on change of department code
+	public synchronized List<SelectItem> getStudyProgramSelectItemList() {
+    List<StudyProgram> studyProgramList = null; 
+    
+    Student stud = getCurrentStudent();
+    if (stud != null) {
+      studyProgramList = abamStudentClient.getStudyProgramsFromDepartmentFSCode(stud.getDepartmentCode());
+    }
+    studyProgramSelectItemList.clear();
+    if (studyProgramList != null) {
+      String lang = getThemeDisplay().getLocale().getLanguage();
+      for (no.uis.service.model.StudyProgram program : studyProgramList) {
+        studyProgramSelectItemList.add(new SelectItem(program.getId(), BaseTextUtil.getText(program.getName(), lang)));
+      }
+    }
 		return studyProgramSelectItemList;
-	}
-
-	public void setStudyProgramSelectItemList(
-			List<SelectItem> studyProgramSelectItemList) {
-		this.studyProgramSelectItemList = studyProgramSelectItemList;
 	}
 
 	public Employee getEmployeeFromFullName(String name) {
@@ -462,13 +419,174 @@ public class StudentService {
 	}
 	
 	public void updateStudent(Student std) {
-		abamStudentClient.updateStudent(std);
+	  if (!UNKNOWN_STUDENT.equals(std)) {
+	    setCurrentStudent(abamStudentClient.updateStudent(std));
+	  }
 	}
 	
 	public Assignment getCustomAssignmentFromStudentNumber(String studentNumber) {
 		return abamStudentClient.getCustomAssignmentFromStudentNumber(studentNumber);
 	}
 	
+  private final static class UnknownStudent extends Student {
+    private static final Long LONG_ZERO = Long.valueOf(0);
+
+    private static final long serialVersionUID = 1L;
+
+    private static final String EMPTY_STRING = "";
+    public UnknownStudent() {
+    }
+    
+    @Override
+    public String getName() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getEmail() {
+      return EMPTY_STRING;
+    }
+
+
+    @Override
+    public String getPhoneNumber() {
+      return EMPTY_STRING;
+    }
+
+
+    @Override
+    public Long getOid() {
+      return LONG_ZERO;
+    }
+
+
+    @Override
+    public List<Application> getApplications() {
+      return Collections.emptyList();
+    }
+
+    @Override
+    public String getStudentNumber() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getDepartmentCode() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getDepartmentName() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getStudyProgramName() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public synchronized String getStudyProgramCode() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public Assignment getCustomAssignment() {
+      return null;
+    }
+
+    @Override
+    public AssignmentType getType() {
+      return AssignmentType.BACHELOR;
+    }
+
+    @Override
+    public Thesis getAssignedThesis() {
+      return null;
+    }
+
+    @Override
+    public boolean isAcceptedThesis() {
+      return false;
+    }
+
+    @Override
+    public Calendar getSubmissionDate() {
+      return null;
+    }
+
+    @Override
+    public void setStudentNumber(String studentNumber) {
+    }
+
+    @Override
+    public void setDepartmentCode(String departmentCode) {
+    }
+
+    @Override
+    public void setDepartmentName(String departmentName) {
+    }
+
+    @Override
+    public void setStudyProgramName(String studyProgramName) {
+    }
+
+    @Override
+    public synchronized void setStudyProgramCode(String studyProgramCode) {
+    }
+
+    @Override
+    public void setCustomAssignment(Assignment customAssignment) {
+    }
+
+    @Override
+    public void setApplications(List<Application> applications) {
+    }
+
+    @Override
+    public void setType(AssignmentType type) {
+    }
+
+    @Override
+    public void setAssignedThesis(Thesis assignedThesis) {
+    }
+
+    @Override
+    public void setAcceptedThesis(boolean acceptedThesis) {
+    }
+
+    @Override
+    public void setSubmissionDate(Calendar submissionDate) {
+    }
+
+    @Override
+    public void setEmail(String email) {
+    }
+
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+    }
+
+    @Override
+    public void setName(String name) {
+    }
+
+    @Override
+    public void setOid(Long oid) {
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
+      }
+      if (this == obj) {
+        return true;
+      }
+      
+      return false;
+    }
+  }
 }
 
 

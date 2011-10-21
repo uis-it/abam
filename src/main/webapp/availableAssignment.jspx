@@ -1,8 +1,8 @@
 <f:view xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<ice:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
+		<ice:loadBundle basename="Language" var="msgs" />
 		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
 		<ice:form partialSubmit="true">
