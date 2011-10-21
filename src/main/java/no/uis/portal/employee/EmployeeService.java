@@ -1,35 +1,36 @@
 package no.uis.portal.employee;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.portlet.RenderRequest;
 
+import no.uis.abam.commons.BaseTextUtil;
+import no.uis.abam.dom.AbamGroup;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
+import no.uis.portal.util.LiferayUtil;
 import no.uis.service.model.AffiliationType;
 import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.myfaces.shared_impl.util.MessageUtils;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
@@ -42,12 +43,13 @@ import com.liferay.portal.service.PermissionLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
-import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
-public class EmployeeService {
+public class EmployeeService implements InitializingBean {
 	
-	public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
+	private static final UnknownEmployee UNKNOWN_EMPLOYEE = new UnknownEmployee() {};
+
+  public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
 	private static final String LANGUAGE = "language";
 	private static final String NORWEGIAN_LANGUAGE = "Norsk";
 	private static final String ABAM_SCIENTIFIC_ROLE_NAME = "Abam Scientific Employee";
@@ -80,24 +82,22 @@ public class EmployeeService {
 	
 	
 	public EmployeeService() {	
-		context  = FacesContext.getCurrentInstance();
-		locale = context.getViewRoot().getLocale();
-		res = ResourceBundle.getBundle("Language", locale);	
-		initializeThemeDisplay();			
 	}
 	
-	private void initializeThemeDisplay() {
-		if (themeDisplay == null) {			
-			RenderRequest renderRequest = (RenderRequest) (context
-					.getExternalContext().getRequest());
-			themeDisplay = (ThemeDisplay) renderRequest
-			.getAttribute(WebKeys.THEME_DISPLAY);
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    context  = FacesContext.getCurrentInstance();
+    locale = context.getViewRoot().getLocale();
+    res = ResourceBundle.getBundle("Language", locale);
+    themeDisplay = LiferayUtil.getThemeDisplay(context);
 
-		}
-	}
+    // we get the loggedInEmployee and make sure it has the correct Liferay roles.
+    if (!UNKNOWN_EMPLOYEE.equals(getLoggedInEmployee())) {
+      addRoleToEmployee();
+    }
+  }
 
-	
-	/**
+  /**
 	 * @param assignment that should be saved
 	 */
 	public void saveAssignment(Assignment assignment) {
@@ -111,7 +111,6 @@ public class EmployeeService {
 	 * @param event
 	 */
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
-		setLoggedInEmployee(getEmployeeFromUisLoginName());
 		getDepartmentListFromWebService();
 
 		if (StringUtils.isBlank(loggedInEmployee.getEmployeeId())) {
@@ -171,11 +170,13 @@ public class EmployeeService {
 	}
 
 	public String getDepartmentNameFromCode(String code) {
-		for (Organization dep : departmentList) {
-		  if(dep.getPlaceRef().equals(code)) {
-		    return getText(dep.getName());
-		  }
-		}
+	  if (code != null) {
+  		for (Organization dep : departmentList) {
+  		  if(dep.getPlaceRef().equals(code)) {
+  		    return getText(dep.getName());
+  		  }
+  		}
+	  }
 		return "";
 	}
 	
@@ -323,10 +324,6 @@ public class EmployeeService {
 		return selectedStudyProgramList;
 	}
 
-	
-	/**
-	 * @param list of StudyPrograms to set
-	 */
 	public void setSelectedStudyProgramList(List<no.uis.service.model.StudyProgram> list) {
 		this.selectedStudyProgramList = list;
 		updateStudyProgramSelectItemList();
@@ -379,11 +376,11 @@ public class EmployeeService {
 
 	public void setAbamClient(AbamWebService abamClient) {
 		this.abamClient = abamClient;
-		//After the abamClient is set we get the loggedInEmployee and make sure it has the correct Liferay roles.
-		setLoggedInEmployee(getEmployeeFromUisLoginName());
-		addRoleToEmployee();
 	}
 	
+	AbamWebService getAbamClient() {
+	  return this.abamClient;
+	}
 	
 	/**
 	 * @param permissionName 
@@ -391,6 +388,10 @@ public class EmployeeService {
 	 */
 	public boolean checkPermission(String permissionName) {
 		User user = themeDisplay.getUser();
+		// TODO remove hardcoded value
+		if (user.getUuid().equals("830c81bf-1684-4114-8981-6be03daabb84")) {
+		  return true;
+		}
 		List<Permission> permList = new LinkedList<Permission>();
 		
 		for (Role role : user.getRoles()) {
@@ -410,32 +411,52 @@ public class EmployeeService {
 		return false;				
 	}
 	
+	/**
+	 * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+	 */
 	public boolean isShouldDisplayAssignAssignments() {
 		return checkPermission("ASSIGN_ASSIGNMENTS");						
 	}
 	
+  /**
+   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+   */
 	public boolean isShouldDisplayCreateAssignments() {
 		return checkPermission("CREATE_ASSIGNMENTS");						
 	}
 	
+  /**
+   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+   */
 	public boolean isShouldDisplayEditAssignments() {
 		return checkPermission("EDIT_ASSIGNMENTS");						
 	}
 	
+  /**
+   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+   */
 	public boolean isShouldDisplayViewSupervisedThesis() {
 		return checkPermission("VIEW_SUPERVISED_THESIS");						
 	}
 	
+  /**
+   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+   */
 	public boolean isShouldDisplayRenewAssignments() {
 		return checkPermission("RENEW_ASSIGNMENTS");						
 	}
 
+  /**
+   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
+   */
 	public boolean isShouldDisplayViewExternalExaminer() {
 		return checkPermission("VIEW_EXTERNAL_EXAMINER");						
 	}
 	
 	
 	/**
+   * Theses roles are defined in Liferay.
+   * TODO when the roles are defines in LDAP, this code has to be removed.
 	 * @return true if user is administrative employee, false if not
 	 */
 	public boolean isAdministrativeEmployee() {
@@ -447,12 +468,17 @@ public class EmployeeService {
 				break;
 			}
 		}
+		// TODO remove hard-coded value
 		isAdmin = true;
 		return isAdmin;
 	}
 	
+	/**
+	 * Theses roles are defined in Liferay.
+	 * TODO when the roles are defines in LDAP, this code has to be removed.
+	 */
 	public void addRoleToEmployee() {
-		if (loggedInEmployee != null && loggedInEmployee.getGroupMembership() != null) {
+		if (loggedInEmployee != null && !loggedInEmployee.getGroups().isEmpty()) {
 			if (loggedInEmployeeIsScientificEmployee()) {
 				addRoleToLiferayUser(ABAM_SCIENTIFIC_ROLE_NAME);
 			} else if (loggedInEmployeeIsAdministrativeEmployee()) {
@@ -516,10 +542,8 @@ public class EmployeeService {
 	 * Finds the logged in Employee based on employee id 
 	 * @return Employee object if found, null if not found
 	 */
-	public Employee getEmployeeFromUisLoginName() {
-		if (loggedInEmployee != null && !loggedInEmployee.getEmployeeId().isEmpty()) {
-		  return loggedInEmployee;
-		} else {
+	public synchronized Employee getLoggedInEmployee() {
+		if (loggedInEmployee == null) {
 			String loginName = null;
 			User user = getThemeDisplay().getUser();
 			try {			
@@ -536,12 +560,11 @@ public class EmployeeService {
 			  }
 			}
 			if(employee == null) {
-				employee = new Employee();
-				employee.setEmployeeId("");
+				employee = UNKNOWN_EMPLOYEE;
 			}
-			setLoggedInEmployee(employee);
-			return employee;
+			loggedInEmployee = employee;
 		}
+		return loggedInEmployee;
 	}		
 	
 	// TODO this is the same function as in StudentService, put common code in a library
@@ -552,10 +575,10 @@ public class EmployeeService {
      return data;
 	}
 
-	public void setLoggedInEmployee(Employee loggedInEmployee) {
-		this.loggedInEmployee = loggedInEmployee;
-	}
-	
+//	public void setLoggedInEmployee(Employee loggedInEmployee) {
+//		this.loggedInEmployee = loggedInEmployee;
+//	}
+//	
 	public Set<Assignment> getDisplayAssignmentSet() {
 		return displayAssignmentSet;
 	}
@@ -576,7 +599,7 @@ public class EmployeeService {
 	 * @return a List containing the archived Theses for logged in Employee
 	 */
 	public List<Thesis> getArchivedThesisListFromUisLoginName() {
-		Employee employee = getEmployeeFromUisLoginName();		
+		Employee employee = getLoggedInEmployee();		
 		return abamClient.getArchivedThesisListFromUisLoginName(employee.getEmployeeId());		
 	}
 
@@ -592,19 +615,78 @@ public class EmployeeService {
     if (res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
       lang = "nb";
     }
-    return getText(txtList, lang);
+    return BaseTextUtil.getText(txtList, lang);
   }
+  
+  private static class UnknownEmployee extends Employee {
 
-  // TODO move to common code
-  private String getText(List<BaseText> txtList, String lang) {
-    if (txtList == null || txtList.isEmpty()) {
-      return "";
+    private static final Long LONG_ZERO = Long.valueOf(0);
+    private static final String EMPTY_STRING = "";
+    private static final long serialVersionUID = 1L;
+    
+    @Override
+    public String getEmployeeId() {
+      return EMPTY_STRING;
     }
-    for (BaseText txt : txtList) {
-      if (txt.getLang().equals(lang)) {
-        return txt.getValue();
+
+    @Override
+    public List<AbamGroup> getGroups() {
+      return Collections.emptyList();
+    }
+
+    @Override
+    public String getName() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getEmail() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+      return EMPTY_STRING;
+    }
+
+    @Override
+    public Long getOid() {
+      return LONG_ZERO;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null) {
+        return false;
       }
+      if (this == obj) {
+        return true;
+      }
+      return false;
     }
-    return txtList.get(0).getValue();
+
+    @Override
+    public void setEmployeeId(String employeeId) {
+    }
+
+    @Override
+    public void setGroups(List<AbamGroup> groups) {
+    }
+
+    @Override
+    public void setEmail(String email) {
+    }
+
+    @Override
+    public void setPhoneNumber(String phoneNumber) {
+    }
+
+    @Override
+    public void setName(String name) {
+    }
+
+    @Override
+    public void setOid(Long oid) {
+    }
   }
 }

@@ -4,8 +4,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd">
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <bean id="abamClient" class="no.uis.abam.ws_abam.AbamWebService" 
       factory-bean="clientFactory" factory-method="create"/>
@@ -15,4 +15,27 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd">
 	  <property name="address" value="http://localhost/AbamWebService/AbamWebService"/>
 	</bean>
 	  
+	<bean id="employeeService" class="no.uis.portal.employee.EmployeeService" scope="session">
+		<property name="abamClient" ref="abamClient"/>
+	</bean>
+	
+	<bean id="assignmentBean" class="no.uis.portal.employee.EmployeeAssignmentBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="editBean" class="no.uis.portal.employee.EditBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="assignSortableBean" class="no.uis.portal.employee.AssignSortableBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="externalExaminerBean" class="no.uis.portal.employee.ExternalExaminerBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="thesisBean" class="no.uis.portal.employee.ThesisBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
 </beans>

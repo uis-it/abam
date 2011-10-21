@@ -4,10 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
@@ -116,8 +120,9 @@ public class AssignSortableBean implements DisposableBean{
 				} else return 0;
 			}
 		};
-		if(getApplicationInformationAsArray() != null) {
-			Arrays.sort(getApplicationInformationAsArray(), comparator);
+		Object[] aiArray = getApplicationInformationAsArray();
+    if(aiArray != null) {
+			Arrays.sort(aiArray, comparator);
 		}
 	}
 
@@ -224,10 +229,15 @@ public class AssignSortableBean implements DisposableBean{
 	}
 	
 	private int convertSelectedPriority(String priority) {
-		if (priority.equals("one")) return 1;
-		else if(priority.equals("two")) return 2;
-		else if(priority.equals("three")) return 3;
-		else return 0;
+		if (priority.equals("one")) {
+		  return 1;
+		} else if(priority.equals("two")) {
+		  return 2;
+		} else if(priority.equals("three")) {
+		  return 3;
+		} else {
+		  return 0;
+		}
 	}
 	
 	
@@ -241,7 +251,9 @@ public class AssignSortableBean implements DisposableBean{
 		if (applicationInformationArray != null) {
 			for (int i = 0; i < applicationInformationArray.length; i++) {
 				ApplicationInformation ai = applicationInformationArray[i];
-				if(ai.isSelected()) selectedApplicationInformationList.add(ai);
+				if(ai.isSelected()) {
+				  selectedApplicationInformationList.add(ai);
+				}
 			}
 		}
 	}
@@ -253,34 +265,35 @@ public class AssignSortableBean implements DisposableBean{
 	 * @param event
 	 */
 	public void actionSaveAssignedApplications(ActionEvent event) {
-		List<Thesis> thesesToSave = new ArrayList<Thesis>();
+	  Map<String, Thesis> thesisSave = new HashMap<String, Thesis>();
 		for (ApplicationInformation appInfo : selectedApplicationInformationList) {
-			boolean alreadyExists = false;
-			for (Thesis thesis : thesesToSave) {
-				if (thesis.getAssignedAssignment().getTitle().equalsIgnoreCase(appInfo.getAssignmentTitle())) {
-					thesis.addStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
-					alreadyExists = true;		
-				}
-			}
-			if (!alreadyExists) {
-				thesesToSave
-					.add(getThesisWithFieldsSetFromApplicationInformation(appInfo));
+			Thesis thesis = thesisSave.get(appInfo.getAssignmentTitle());
+			if (thesis == null) {
+			  thesisSave.put(appInfo.getAssignmentTitle(), getThesisWithFieldsSetFromApplicationInformation(appInfo));
+			} else {
+			  thesis.addStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
 			}
 		}
-		employeeService.addThesesFromList(thesesToSave);
+		List<Thesis> thesisList = new ArrayList<Thesis>(thesisSave.values().size());
+		thesisList.addAll(thesisSave.values());
+		employeeService.addThesesFromList(thesisList);
 	}
 
-	private Thesis getThesisWithFieldsSetFromApplicationInformation(
-			ApplicationInformation appInfo) {
-		Thesis thesis = new Thesis();
+	private Thesis getThesisWithFieldsSetFromApplicationInformation(ApplicationInformation appInfo) {
 
-		thesis.setAssignedAssignment(appInfo.getApplication().getAssignment());
-		thesis.setDeadlineForSubmissionOfTopic(getFromDate());
-		thesis.setDeadlineForSubmissionForEvalutation(getToDate());
-		thesis.addStudentNumber(appInfo.getApplication()
-				.getApplicantStudentNumber());
+	  
+	  Thesis thesis = new Thesis();
+
+		thesis.setAssignment(appInfo.getApplication().getAssignment());
+		Calendar from = Calendar.getInstance();
+		Calendar to = (Calendar)from.clone();
+		from.setTime(fromDate);
+		to.setTime(toDate);
+		thesis.setAcceptionDeadline(from);
+		thesis.setSubmissionDeadline(to);
+		thesis.addStudentNumber(appInfo.getApplication().getApplicantStudentNumber());
 		thesis.setFacultySupervisor(employeeService.getEmployeeFromName(appInfo.getFacultySupervisor()));
-		thesis.addThesisStatus(new ThesisStatus(ThesisStatusType.ASSIGNED_TO_STUDENT, employeeService.getEmployeeFromUisLoginName().getName()));
+		thesis.getStatusList().add(new ThesisStatus(ThesisStatusType.ASSIGNED_TO_STUDENT, employeeService.getLoggedInEmployee().getName()));
 		return thesis;
 	}
 	

@@ -16,23 +16,21 @@
         <webClassPathEntry>/abam-employee/target/test-classes</webClassPathEntry>
         <webClassPathEntry>/abam-ws/target/classes</webClassPathEntry>
         <webClassPathEntry>/abam-ws/target/test-classes</webClassPathEntry>
-        <webClassPathEntry>/model-do/target/classes</webClassPathEntry>
-        <webClassPathEntry>/model-util/target/classes</webClassPathEntry>
-        <webClassPathEntry>/model-util/target/test-classes</webClassPathEntry>
-        <webClassPathEntry>/model-xsd/target/classes</webClassPathEntry>
-        <webClassPathEntry>/ws-idm/target/classes</webClassPathEntry>
-        <webClassPathEntry>/ws-idm/target/test-classes</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/ant/ant/1.5/ant-1.5.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/antlr/antlr/2.7.7/antlr-2.7.7.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/aopalliance/aopalliance/1.0/aopalliance-1.0.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/asm/asm/3.3.1/asm-3.3.1.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/asm/asm/3.3/asm-3.3.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/backport-util-concurrent/backport-util-concurrent/2.2/backport-util-concurrent-2.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/cglib/cglib-nodep/2.2/cglib-nodep-2.2.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/cglib/cglib/2.2/cglib-2.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/com/liferay/util-bridges/5.2.3/util-bridges-5.2.3.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/com/oracle/ojdbc14_g/10.2.0.4.0/ojdbc14_g-10.2.0.4.0.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/com/sun/jdmk/jmxtools/1.2.1/jmxtools-1.2.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/com/sun/jmx/jmxri/1.2.1/jmxri-1.2.1.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/com/sun/xml/bind/jaxb-impl/2.2.4/jaxb-impl-2.2.4.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/com/sun/xml/bind/jaxb-impl/2.2.1/jaxb-impl-2.2.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/com/sun/xml/fastinfoset/FastInfoset/1.2.2/FastInfoset-1.2.2.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/commons-attributes/commons-attributes-api/2.2/commons-attributes-api-2.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/commons-collections/commons-collections/3.2/commons-collections-3.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar</webClassPathEntry>
@@ -45,6 +43,7 @@
         <webClassPathEntry>E:/data/mvnrepo/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/hsqldb/hsqldb/1.8.0.1/hsqldb-1.8.0.1.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/javassist/javassist/3.12.0.GA/javassist-3.12.0.GA.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/javax/activation/activation/1.1/activation-1.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/javax/jms/jms/1.1/jms-1.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/javax/mail/mail/1.4/mail-1.4.jar</webClassPathEntry>
@@ -54,9 +53,14 @@
         <webClassPathEntry>E:/data/mvnrepo/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/junit/junit/4.8.2/junit-4.8.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/log4j/log4j/1.2.15/log4j-1.2.15.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/logkit/logkit/1.0.1/logkit-1.0.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/mysql/mysql-connector-java/5.1.12/mysql-connector-java-5.1.12.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/net/sourceforge/jtds/jtds/1.2.4/jtds-1.2.4.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/no/uis/portal/portlet/portlet-util/2.0.10/portlet-util-2.0.10.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-do/2.0.0-SNAPSHOT/model-do-2.0.0-SNAPSHOT.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-util/2.0.0-SNAPSHOT/model-util-2.0.0-SNAPSHOT.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-xsd/2.0.0-SNAPSHOT/model-xsd-2.0.0-SNAPSHOT.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/ws/idm/1.0.0-SNAPSHOT/idm-1.0.0-SNAPSHOT-lib.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/commons/ssl/not-yet-commons-ssl/0.3.9/not-yet-commons-ssl-0.3.9.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/cxf/cxf-api/2.3.6/cxf-api-2.3.6.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/cxf/cxf-common-schemas/2.3.6/cxf-common-schemas-2.3.6.jar</webClassPathEntry>
@@ -85,6 +89,10 @@
         <webClassPathEntry>E:/data/mvnrepo/org/codehaus/woodstox/stax2-api/3.1.1/stax2-api-3.1.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/codehaus/woodstox/woodstox-core-asl/4.1.1/woodstox-core-asl-4.1.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/easymock/easymock/3.0/easymock-3.0.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/org/hibernate/hibernate-core/3.6.7.Final/hibernate-core-3.6.7.Final.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/org/hibernate/hibernate-entitymanager/3.6.7.Final/hibernate-entitymanager-3.6.7.Final.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/icefaces/icefaces-comps/1.8.2/icefaces-comps-1.8.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/icefaces/icefaces/1.8.2/icefaces-1.8.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/jvnet/hyperjaxb3/hyperjaxb3-ejb-runtime/0.5.6/hyperjaxb3-ejb-runtime-0.5.6.jar</webClassPathEntry>
@@ -104,6 +112,7 @@
         <webClassPathEntry>E:/data/mvnrepo/org/springframework/spring-tx/3.0.6.RELEASE/spring-tx-3.0.6.RELEASE.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/springframework/spring-web/3.0.6.RELEASE/spring-web-3.0.6.RELEASE.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/postgresql/postgresql/8.4-701.jdbc4/postgresql-8.4-701.jdbc4.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/qdox/qdox/1.5/qdox-1.5.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/wsdl4j/wsdl4j/1.6.2/wsdl4j-1.6.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/xml-resolver/xml-resolver/1.2/xml-resolver-1.2.jar</webClassPathEntry>
     </webClassPathEntries>

@@ -2,6 +2,7 @@ package no.uis.portal.employee;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -142,7 +143,10 @@ public class ThesisBean {
 	 */
 	public void actionSaveDeadlineDate(ActionEvent event) {
 		Thesis updateThesis = selectedThesisInformation.getThesis();
-		updateThesis.setDeadlineForSubmissionForEvalutation(getDeadlineDate());
+		Date dd = getDeadlineDate();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(dd);
+    updateThesis.setSubmissionDeadline(cal);
 		employeeService.updateThesis(updateThesis);
 		actionPrepareAllStudentTheses(event);
 	}
@@ -172,14 +176,14 @@ public class ThesisBean {
 	private void createThesisInformationFromThesis(boolean isAdministrative) {
 		log.setLevel(Level.DEBUG);
 		thesisInformationList = new ArrayList<ThesisInformation>();
-		Employee employee = employeeService.getEmployeeFromUisLoginName();
+		Employee employee = employeeService.getLoggedInEmployee();
 		if (!thesisList.isEmpty()) {
 			for (Thesis thesis : thesisList) {
 				if(isAdministrative || thesis.getFacultySupervisor().getName().equals(employee.getName())
-						|| loggedInUserIsSupervisor(thesis.getAssignedAssignment().getSupervisorList()) ) {
+						|| loggedInUserIsSupervisor(thesis.getAssignment().getSupervisorList()) ) {
 					ThesisInformation ti = new ThesisInformation();
 					
-					ti.setAssignmentTitle(thesis.getAssignedAssignment().getTitle());
+					ti.setAssignmentTitle(thesis.getAssignment().getTitle());
 					if (thesis.getStudentNumber2() != null)
 						ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
 					if (thesis.getStudentNumber3() != null)
@@ -195,7 +199,7 @@ public class ThesisBean {
 	
 	private boolean loggedInUserIsSupervisor(List<Supervisor> supervisorList) {
 		
-		Employee employee = employeeService.getEmployeeFromUisLoginName();
+		Employee employee = employeeService.getLoggedInEmployee();
 		
 		for (Supervisor supervisor : supervisorList) {
 			if(!supervisor.isExternal() && supervisor.getName().equalsIgnoreCase(employee.getName())) {

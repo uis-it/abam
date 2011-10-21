@@ -86,7 +86,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionCreateNewAssignment(ActionEvent event) {	
 		employeeService.getDepartmentListFromWebService();
 		Assignment ass = new Assignment();
-		ass.setFacultySupervisor(getEmployeeFromUisLoginName());
+		ass.setFacultySupervisor(employeeService.getLoggedInEmployee());
 		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());
 		ass.setStudyProgramCode(employeeService.getSelectedStudyProgramCode());
 		ass.setNumberOfStudents(1);
@@ -137,7 +137,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	public void actionSetSelectedAssignmentFromMyStudentTheses(ActionEvent event){
 		ThesisInformation selectedThesis = (ThesisInformation) getRowFromEvent(event);
 		setCurrentThesis(selectedThesis.getThesis());
-		Assignment selectedAssignment = selectedThesis.getThesis().getAssignedAssignment();
+		Assignment selectedAssignment = selectedThesis.getThesis().getAssignment();
 		setCurrentAssignment(selectedAssignment);
 		employeeService.setSelectedStudyProgramListFromDepartmentCode(selectedAssignment.getDepartmentCode());
 		
@@ -266,7 +266,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		}
 		currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
 		
-		currentAssignment.setAuthor(getEmployeeFromUisLoginName());		
+		currentAssignment.setAuthor(employeeService.getLoggedInEmployee());		
 		
     ActionSource actionSource = (ActionSource)event.getComponent();
     MethodBinding methodBinding = actionSource.getAction();
@@ -279,11 +279,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
     //Render Response if needed
     fc.renderResponse();
 		
-	}
-	
-	private Employee getEmployeeFromUisLoginName() {				 
-		return employeeService.getEmployeeFromUisLoginName();
-
 	}
 	
 	/**

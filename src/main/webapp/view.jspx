@@ -2,69 +2,57 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
-	<f:loadBundle basename="Language" var="msgs" />
 	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />
 		<ice:form>
-			<ice:panelGrid columns="2" border="0" width="500">
-				<ice:panelGroup id="menu">
-				<table>
-					<tr><td>
-						<ice:commandLink 
-							id="createAssignment"
-							action="createAssignment" 
-							actionListener="#{assignmentBean.actionCreateNewAssignment}" 
-							value="#{msgs.link_create_assignment}"
-							rendered="#{employeeService.shouldDisplayCreateAssignments}"
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="displayAssignments" 
-							actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
-							value="#{msgs.link_view_assignment}" 
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="assignSetDates" 
-							actionListener="#{assignSortableBean.actionPrepareSetDates}" 
-							value="#{msgs.link_assign_assignment}" 
-							rendered="#{employeeService.shouldDisplayAssignAssignments}"
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="myStudentTheses" 
-							actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
-							value="#{msgs.link_my_std_assignments}"
-							rendered="#{employeeService.shouldDisplayViewSupervisedThesis}"
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="myStudentTheses" 
-							actionListener="#{thesisBean.actionPrepareAllStudentTheses}"
-							value="#{msgs.link_all_std_assignments}"							
-							rendered="#{employeeService.administrativeEmployee}"													
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="addExternalExaminer" 
-							actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" 
-							value="#{msgs.link_add_ext_examiner}"
-							rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
-							/>
-					</td></tr>
-					<tr><td>
-						<ice:commandLink 
-							action="searchArchive" 
-							value="#{msgs.link_archive}"
-							actionListener="#{thesisBean.actionPrepareArchive}"
-							/>
-					</td></tr>
-				</table>
-				</ice:panelGroup>
+			<ice:panelGrid columns="1" border="0">
+				<ice:commandLink 
+					id="createAssignment"
+					action="createAssignment" 
+					actionListener="#{assignmentBean.actionCreateNewAssignment}" 
+					value="#{msgs.link_create_assignment}"
+					rendered="#{employeeService.shouldDisplayCreateAssignments}"
+				/>
+					
+				<ice:commandLink 
+					action="displayAssignments" 
+					actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
+					value="#{msgs.link_view_assignment}" 
+				/>
+
+				<ice:commandLink 
+					action="assignSetDates" 
+					actionListener="#{assignSortableBean.actionPrepareSetDates}" 
+					value="#{msgs.link_assign_assignment}" 
+					rendered="#{employeeService.shouldDisplayAssignAssignments}"
+				/>
+				
+				<ice:commandLink 
+					action="myStudentTheses" 
+					actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
+					value="#{msgs.link_my_std_assignments}"
+					rendered="#{employeeService.shouldDisplayViewSupervisedThesis}"
+				/>
+				
+				<ice:commandLink 
+					action="myStudentTheses" 
+					actionListener="#{thesisBean.actionPrepareAllStudentTheses}"
+					value="#{msgs.link_all_std_assignments}"							
+					rendered="#{employeeService.administrativeEmployee}"													
+				/>
+
+				<ice:commandLink 
+					action="addExternalExaminer" 
+					actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" 
+					value="#{msgs.link_add_ext_examiner}"
+					rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
+				/>
+				
+				<ice:commandLink 
+					action="searchArchive" 
+					value="#{msgs.link_archive}"
+					actionListener="#{thesisBean.actionPrepareArchive}"
+				/>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>
