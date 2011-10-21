@@ -2,6 +2,7 @@ package no.uis.abam.dom;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,10 +29,11 @@ public class Student extends AbamPerson {
 	private String departmentCode;
 	private String departmentName;
 	private String studyProgramName;
+	private String studyProgramCode;
 	
 	private boolean acceptedThesis;
-	
-	private Date actualSubmissionOfTopic;
+
+	private Calendar submissionDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="CUSTOMASSIGNMENT_ID")
@@ -41,7 +43,7 @@ public class Student extends AbamPerson {
 	@JoinColumn(name="ASSIGNEDTHESIS_ID")
 	private Thesis assignedThesis; 
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Application> applications;
 
   @Enumerated(EnumType.STRING)
@@ -80,8 +82,16 @@ public class Student extends AbamPerson {
 	public void setStudyProgramName(String studyProgramName) {
 		this.studyProgramName = studyProgramName;
 	}
-	
-	public Assignment getCustomAssignment() {
+
+	public synchronized String getStudyProgramCode() {
+    return studyProgramCode;
+  }
+
+  public synchronized void setStudyProgramCode(String studyProgramCode) {
+    this.studyProgramCode = studyProgramCode;
+  }
+
+  public Assignment getCustomAssignment() {
 		return customAssignment;
 	}
 
@@ -124,15 +134,16 @@ public class Student extends AbamPerson {
 		this.acceptedThesis = acceptedThesis;
 	}
 
-	public Date getActualSubmissionOfTopic() {
-		return actualSubmissionOfTopic;
+	public Calendar getSubmissionDate() {
+		return submissionDate;
 	}
 	
+	@Deprecated
 	public String getActualSubmissionOfTopicAsString() {
-		return simpleDateFormatter.format(actualSubmissionOfTopic);
+		return simpleDateFormatter.format(submissionDate.getTime());
 	}
 
-	public void setActualSubmissionOfTopic(Date actualSubmissionOfTopic) {
-		this.actualSubmissionOfTopic = actualSubmissionOfTopic;
+	public void setSubmissionDate(Calendar submissionDate) {
+		this.submissionDate = submissionDate;
 	}
 }

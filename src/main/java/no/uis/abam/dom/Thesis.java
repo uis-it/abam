@@ -3,8 +3,6 @@ package no.uis.abam.dom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,10 +24,13 @@ public class Thesis extends AbamType {
 
   @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
   @JoinColumn(name="ASSIGNMENT_ID")
-  private Assignment assignedAssignment;
+  private Assignment assignment;
 	
 	private boolean submitted;
 	private boolean editExternalExaminer = false;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	private List<Attachment> attachments;
 
 	@Transient
 	@Deprecated
@@ -43,10 +44,16 @@ public class Thesis extends AbamType {
 	private String studentNumber2;
 	private String studentNumber3;
 	
+	/**
+	 * Deadline for accepting the thesis.
+	 * The thesis must be accepted by the student after it is assigned by the supervisor.
+	 * Accepting a thesis is like signing a contract.  
+	 */
+	private Calendar acceptionDeadline;
+
+	private Calendar subissionDeadline;
 	
-	private Date deadlineForSubmissionOfTopic;
-	private Date deadlineForSubmissionForEvalutation;	
-	private Date actualSubmissionForEvalutation;
+	private Calendar submissionDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="FACULTYSUPERVISOR_ID")
@@ -63,6 +70,7 @@ public class Thesis extends AbamType {
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<ThesisStatus> statusList;
 	
+	@Deprecated
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	public Thesis() {
@@ -103,7 +111,22 @@ public class Thesis extends AbamType {
 		this.studentNumber3 = studentNumber3;
 	}
 
-	public boolean isSubmitted() {
+	public List<Attachment> getAttachments() {
+	  synchronized(this) {
+  	  if (attachments == null) {
+  	    attachments = new ArrayList<Attachment>();
+  	  }
+      return attachments;
+	  }
+  }
+
+  public void setAttachments(List<Attachment> attachments) {
+    synchronized(this) {
+      this.attachments = attachments;
+    }
+  }
+
+  public boolean isSubmitted() {
 		return submitted;
 	}
 
@@ -119,37 +142,39 @@ public class Thesis extends AbamType {
 		this.submitted = submitted;
 	}
 
-	public Date getDeadlineForSubmissionOfTopic() {
-		return deadlineForSubmissionOfTopic;
+	public Calendar getAcceptionDeadline() {
+		return acceptionDeadline;
 	}
 	
+	@Deprecated
 	public String getDeadlineForSubmissionOfTopicAsString() {
-		return simpleDateFormatter.format(deadlineForSubmissionOfTopic);
+		return simpleDateFormatter.format(acceptionDeadline);
 	}
 	
-	public void setDeadlineForSubmissionOfTopic(Date deadlineForSubmissionOfTopic) {
-		this.deadlineForSubmissionOfTopic = deadlineForSubmissionOfTopic;
+	public void setAcceptionDeadline(Calendar acceptionDeadline) {
+		this.acceptionDeadline = acceptionDeadline;
 	}
 
-	public Date getDeadlineForSubmissionForEvalutation() {
-		return deadlineForSubmissionForEvalutation;
+	public Calendar getSubmissionDeadline() {
+		return subissionDeadline;
 	}
 	
+	@Deprecated
 	public String getDeadlineForSubmissionForEvalutationAsString() {
-		return simpleDateFormatter.format(deadlineForSubmissionForEvalutation);
+		return simpleDateFormatter.format(subissionDeadline);
 	}
 
-	public void setDeadlineForSubmissionForEvalutation(
-			Date deadlineForSubmissionForEvalutation) {
-		this.deadlineForSubmissionForEvalutation = deadlineForSubmissionForEvalutation;
+	public void setSubmissionDeadline(Calendar deadlineForSubmissionForEvalutation) {
+		this.subissionDeadline = deadlineForSubmissionForEvalutation;
 	}
 
-	public Date getActualSubmissionForEvalutation() {
-		return actualSubmissionForEvalutation;
+	public Calendar getSubmissionDate() {
+		return submissionDate;
 	}
 
+	@Deprecated
 	public String getActualSubmissionForEvalutationAsString() {
-		return simpleDateFormatter.format(actualSubmissionForEvalutation);
+		return simpleDateFormatter.format(submissionDate);
 	}
 	
 	@Deprecated
@@ -172,8 +197,8 @@ public class Thesis extends AbamType {
 		this.attachedFilePath = attachedFilePath;
 	}
 
-	public void setActualSubmissionForEvalutation(Date date) {
-		this.actualSubmissionForEvalutation = date;
+	public void setSubmissionDate(Calendar date) {
+		this.submissionDate = date;
 	}
 	
 	public ExternalExaminer getExternalExaminer() {
@@ -192,12 +217,12 @@ public class Thesis extends AbamType {
 		this.facultySupervisor = facultySupervisor;
 	}
 
-	public Assignment getAssignedAssignment() {
-		return assignedAssignment;
+	public Assignment getAssignment() {
+		return assignment;
 	}
 
-	public void setAssignedAssignment(Assignment assignedAssignment) {
-		this.assignedAssignment = assignedAssignment;
+	public void setAssignment(Assignment assignedAssignment) {
+		this.assignment = assignedAssignment;
 	}
 
   @Deprecated
@@ -236,11 +261,9 @@ public class Thesis extends AbamType {
 
 	@Deprecated
 	public boolean isActive() {
-		Date inactiveDate = new Date(getDeadlineForSubmissionForEvalutation().getTime());
-		GregorianCalendar gc = (GregorianCalendar) GregorianCalendar.getInstance();
-		gc.setTime(inactiveDate);
-		gc.add(Calendar.MONTH, 4);
-		inactiveDate = gc.getTime();
-		return inactiveDate.after(GregorianCalendar.getInstance().getTime());
+		Calendar in4Months = Calendar.getInstance();
+		in4Months.add(Calendar.MONTH, 4);
+		
+		return subissionDeadline.before(in4Months);
 	}
 }

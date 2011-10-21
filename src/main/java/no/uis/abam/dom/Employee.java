@@ -1,12 +1,15 @@
 package no.uis.abam.dom;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity(name="Employee")
@@ -17,8 +20,8 @@ public class Employee extends AbamPerson {
 
 	private String employeeId;
 
-	@ElementCollection(fetch=FetchType.LAZY)
-	private List<String> groupMembership;
+	@ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	private List<AbamGroup> groups;
 	
 	public Employee() {
 	}
@@ -31,16 +34,14 @@ public class Employee extends AbamPerson {
 		this.employeeId = employeeId;
 	}
 
-	public boolean equals(Employee employee) {
-		return this.getEmployeeId().equals(employee.getEmployeeId());
-	}
+  public List<AbamGroup> getGroups() {
+    if (groups == null) {
+      groups = new ArrayList<AbamGroup>();
+    }
+    return groups;
+  }
 
-	public List<String> getGroupMembership() {
-		return groupMembership;
-	}
-
-	public void setGroupMembership(List<String> groupMembership) {
-		this.groupMembership = groupMembership;
-	}
-	
+  public void setGroups(List<AbamGroup> groups) {
+    this.groups = groups;
+  }
 }
