@@ -38,8 +38,6 @@ public class TestWebservice {
 	  String testUid = testData.getProperty("test.employee.1");
 	  Employee employee = abamService.getEmployeeFromUisLoginName(testUid);
 	  assertThat(employee, is(notNullValue()));
-	  String testOu = testData.getProperty("test.employee.2");
-    assertThat(employee.getGroupMembership(), hasItem(testOu));
 	}
 	
 //	@Test

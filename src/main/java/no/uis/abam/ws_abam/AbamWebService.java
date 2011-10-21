@@ -148,8 +148,9 @@ public interface AbamWebService {
 	
 	/**
 	 * @param studentToUpdate - Student object with new information that needs to be saved in webservice
+	 * @return 
 	 */
-	public void updateStudent(Student studentToUpdate);
+	public Student updateStudent(Student studentToUpdate);
 
   public List<no.uis.service.model.StudyProgram> getStudyProgramsFromDepartmentFSCode(String departmentCode);
 	

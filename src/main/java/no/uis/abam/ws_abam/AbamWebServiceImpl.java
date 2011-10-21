@@ -1,11 +1,13 @@
 package no.uis.abam.ws_abam;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import javax.jws.WebService;
 
+import no.uis.abam.dom.AbamGroup;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
@@ -15,8 +17,13 @@ import no.uis.abam.dom.Thesis;
 import no.uis.service.idm.ws.IdmWebService;
 import no.uis.service.model.AffiliationType;
 import no.uis.service.model.BaseText;
+import no.uis.service.model.Contact;
+import no.uis.service.model.Email;
 import no.uis.service.model.Organization;
 import no.uis.service.model.Person;
+import no.uis.service.model.PhoneNumber;
+import no.uis.service.model.TypeOfEmail;
+import no.uis.service.model.TypeOfPhoneNumber;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
@@ -29,8 +36,8 @@ public class AbamWebServiceImpl implements AbamWebService {
 //	private List<Application> applicationList = new ArrayList<Application>();
 
 	private List<Student> studentList = new ArrayList<Student>();
-	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
-	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
+//	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
+//	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
 	
 	private List<Organization> departmentList;
 	private String orgTreeRoot = "217_8_0_0"; // faculty TN 
@@ -133,41 +140,16 @@ public class AbamWebServiceImpl implements AbamWebService {
   @Override
 	public List<Application> getBachelorApplicationListFromDepartmentCode(String departmentCode) {
     return dao.getApplicationsByDepartmentCode(departmentCode, AssignmentType.BACHELOR);
-//		List<Application> bachelorApplicationList = new ArrayList<Application>();
-//		for (Application application : applicationList) {
-//		  boolean isBachelor = application.getAssignment().getType().equals(AssignmentType.BACHELOR); 
-//			if(isBachelor && application.getAssignment().getDepartmentCode().equals(code)) {
-//				bachelorApplicationList.add(application);
-//			}
-//		}
-//		return bachelorApplicationList;
 	}
 	
   @Override
 	public void saveApplication(Application application) {
     dao.saveApplication(application);
-//		Iterator<Application> iterator = applicationList.iterator();
-//		while (iterator.hasNext()){	
-//			Application app = iterator.next();
-//			if(app != null) {
-//				if (app.equals(application)) {
-//					applicationList.remove(app);
-//					break;
-//				}
-//			}
-//		}
-//		applicationList.add(application);
 	}
 	
   @Override
 	public void removeApplication(Application application) {
     dao.removeApplication(application);
-//		for (Application app : applicationList) {
-//			if (app.equals(application)) {
-//				applicationList.remove(app);
-//				return;
-//			}
-//		}	
 	}
 
   @Deprecated
@@ -179,91 +161,57 @@ public class AbamWebServiceImpl implements AbamWebService {
 
   @Override
 	public void addThesesFromList(List<Thesis> thesesToAdd) {		
-		for (Thesis thesis : thesesToAdd) {	
-			savedThesesList.add(thesis);			
+		for (Thesis thesis : thesesToAdd) {
+		  thesis = dao.saveThesis(thesis);
+		  
 			Student student = getStudentFromStudentNumber(thesis.getStudentNumber1());
-			student.setAssignedThesis(thesis);			
-			removeStudentsApplicationFromList(student);
+			student.setAssignedThesis(thesis);
+
+			student.getApplications().clear();
+			student = dao.saveStudent(student);
+			
+			removeStudentsApplication(student);
+			
 			if (thesis.getStudentNumber2() != null && !thesis.getStudentNumber2().isEmpty()) {
 				student = getStudentFromStudentNumber(thesis.getStudentNumber2());
 				student.setAssignedThesis(thesis);			
-				removeStudentsApplicationFromList(student);
+				removeStudentsApplication(student);
 			}
+			
 			if (thesis.getStudentNumber3() != null && !thesis.getStudentNumber3().isEmpty()) {
 				student = getStudentFromStudentNumber(thesis.getStudentNumber3());
 				student.setAssignedThesis(thesis);			
-				removeStudentsApplicationFromList(student);
+				removeStudentsApplication(student);
 			}
-			removeAssignmentFromApplicationList(thesis.getAssignedAssignment());			
 		}
 	}
 	
-	private void removeStudentsApplicationFromList(Student student) {
+	private void removeStudentsApplication(Student student) {
 		for (Application application : student.getApplications()) {
-			if (application != null) {
-				removeApplication(application);
-			}
+			removeApplication(application);
 		}			
+		student.getApplications().clear();
+		dao.saveStudent(student);
 	}
 	
-	private void removeAssignmentFromApplicationList(Assignment assignedAssignment) {
-	  throw new NotImplementedException(getClass());
-//		if(!applicationList.isEmpty()) {
-//			for (Application application: applicationList) {
-//				if(application.getAssignment().equals(assignedAssignment)) {
-//					applicationList.remove(application);
-//				}
-//			}
-//		}
-	}
-
 	@Override
 	public List<Thesis> getThesisList() {
-		List<Thesis> listToArchive = new ArrayList<Thesis>();
-		for (Thesis thesis : savedThesesList) {
-			if(!thesis.isActive()) {
-				listToArchive.add(thesis);
-			}
-		}
-		if (!listToArchive.isEmpty()) archiveTheses(listToArchive);
-		return savedThesesList;
-	}
-	
-	private void archiveTheses(List<Thesis> thesesList) {
-		for (Thesis thesis : thesesList) {
-			if(archivedThesesList.add(thesis)) {
-				savedThesesList.remove(thesis);
-			}
-		}
+	  Calendar cal = Calendar.getInstance();
+	  cal.add(Calendar.MONTH, 4);
+	  return dao.getThesisesBeforeEvaluationDeadline(cal, null);
 	}
 	
 	@Override
 	public List<Thesis> getThesisListFromDepartmentCode(String depCode) {
-		List<Thesis> listToReturn = new ArrayList<Thesis>();
-		List<Thesis> listToArchive = new ArrayList<Thesis>();
-		for (Thesis thesis : savedThesesList) {
-			if(!thesis.isActive()) {
-				listToArchive.add(thesis);
-			} else if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
-				listToReturn.add(thesis);
-			}
-		}
-		if (!listToArchive.isEmpty()) {
-		  archiveTheses(listToArchive);
-		}
-		return listToReturn;
+    Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.MONTH, 4);
+    return dao.getThesisesBeforeEvaluationDeadline(cal, depCode);
 	}
 
 	@Override
 	public void updateThesis(Thesis thesisToUpdate) {
-		for (Thesis thesis : savedThesesList) {
-			if(thesis.equals(thesisToUpdate)) {
-				savedThesesList.remove(thesis);
-				savedThesesList.add(thesisToUpdate);
-				updateThesisForInvolvedStudents(thesisToUpdate);
-				return;
-			}
-		}
+	  dao.saveThesis(thesisToUpdate);
+		updateThesisForInvolvedStudents(thesisToUpdate);
 	}
 	
 	private void updateThesisForInvolvedStudents(Thesis thesisToUpdate) {
@@ -285,24 +233,16 @@ public class AbamWebServiceImpl implements AbamWebService {
 	
 	@Override
 	public List<Thesis> getArchivedThesisListFromDepartmentCode(String depCode) {
-		List<Thesis> listToReturn = new ArrayList<Thesis>();
-		for (Thesis thesis : archivedThesesList) {
-			if(thesis.getAssignedAssignment().getDepartmentCode().equalsIgnoreCase(depCode)) {
-				listToReturn.add(thesis);
-			}
-		}
-		return listToReturn;
+	  Calendar now = Calendar.getInstance();
+	  now.set(Calendar.MONTH, 4);
+	  return dao.getThesisesAfterEvaluationDeadline(now, depCode, null);
 	}
 	
 	@Override
-	public List<Thesis> getArchivedThesisListFromUisLoginName(String uisLoginName) {
-		List<Thesis> listToReturn = new ArrayList<Thesis>();
-		for (Thesis thesis : archivedThesesList) {
-			if(thesis.getFacultySupervisor().getEmployeeId().equals(uisLoginName)) {
-				listToReturn.add(thesis);
-			}
-		}
-		return listToReturn;
+	public List<Thesis> getArchivedThesisListFromUisLoginName(String employeeId) {
+    Calendar now = Calendar.getInstance();
+    now.set(Calendar.MONTH, 4);
+    return dao.getThesisesAfterEvaluationDeadline(now, null, employeeId);
 	}
 	
   @Override
@@ -370,28 +310,50 @@ public class AbamWebServiceImpl implements AbamWebService {
 		
   @Override
 	public Student getStudentFromStudentNumber(String studentNumber) {
-	  Person person = idmService.getPersonByStudentNumber(studentNumber);
-	  return getStudentFromPersonTypeObject(person);
+    Student student = null;
+    try {
+      Person person = idmService.getPersonByStudentNumber(studentNumber);
+      student = getStudentFromPersonTypeObject(person);
+      dao.loadEntity(student);
+    } catch(Exception ex) {
+      log.info(studentNumber, ex);
+    }
+	  return student;
 	}
 	
 	private Student getStudentFromPersonTypeObject(Person person) {
-		Student student = new Student();
+		String email = null;
+		if (!person.getAffiliations().contains(AffiliationType.STUDENT)) {
+		  return null;
+		}
+		for(Contact contact: person.getContact()) {
+		  if (contact instanceof Email) {
+		    Email mail = (Email)contact;
+		    if (mail.getTypeOfEmail().equals(TypeOfEmail.INTERNAL)) {
+		      email = mail.getEmailAddress();
+		      break;
+		    } else if (email == null) {
+		      email = mail.getEmailAddress();
+		    }
+		  }
+		}
+    Student student = dao.findOrCreateStudent(person.getUserId(), person.getFullName(), email);
 		
 		// TODO the logic behind this is not quite good
 		List<no.uis.service.model.StudyProgram> programs = idmService.getProgramsForStudent(person.getUserId());
 		boolean foundMaster = false;
 		boolean foundBachelor = false;
-		String programName = null;
+		String programCode = null;
 		for (no.uis.service.model.StudyProgram prog : programs) {
       String progId = prog.getId();
       if (progId.startsWith("M-")) {
         foundMaster = true;
-        programName = progId;
+        programCode = progId;
         break;
       } 
       if (progId.startsWith("B-")) {
         foundBachelor = true;
-        programName = progId;
+        programCode = progId;
         break;
       }
     }
@@ -409,28 +371,29 @@ public class AbamWebServiceImpl implements AbamWebService {
 		  student.setDepartmentName(getText(org.getName(), null));
 		}
 		
-		student.setName(person.getFullName());
-		student.setStudentNumber(person.getUserId());
-		student.setStudyProgramName(programName);
-		
+		student.setStudyProgramName(programCode);
+		student.setStudyProgramCode(programCode);
+		student = dao.saveStudent(student);
 		return student;
 	}
 	
   @Override
-	public void updateStudent(Student studentToUpdate) {
-		for (Student student : studentList) {
-			if (student.equals(studentToUpdate)) {
-				studentList.remove(student);
-				studentList.add(studentToUpdate);
-				return;
-			}
-		}
+	public Student updateStudent(Student studentToUpdate) {
+    return dao.saveStudent(studentToUpdate);
+//		for (Student student : studentList) {
+//			if (student.equals(studentToUpdate)) {
+//				studentList.remove(student);
+//				studentList.add(studentToUpdate);
+//				return;
+//			}
+//		}
 	}
 		
   public void setIdmService(IdmWebService idmService) {
 	  this.idmService = idmService;
 	}
   
+  // TODO use abam-commons BaseTextUtil (cirular dependency)
   private String getText(List<BaseText> txtList, String lang) {
     if (lang == null) {
       lang = Locale.getDefault().getLanguage();
@@ -444,19 +407,40 @@ public class AbamWebServiceImpl implements AbamWebService {
   }
   
   private Employee convertPersonToEmployee(Person person) {
-    Employee employee = new Employee();
-    employee.setName(person.getFullName());
-    employee.setEmployeeId(person.getUserId());
+    
+    String email = null;
+    String phone = null;
+    for (Contact contact : person.getContact()) {
+      if (contact instanceof Email) {
+        Email mail = (Email)contact;
+        TypeOfEmail mailType = mail.getTypeOfEmail();
+        if (mailType.equals(TypeOfEmail.INTERNAL) || mailType.equals(TypeOfEmail.WORK)) {
+          email = mail.getEmailAddress();
+        }
+      } else if(contact instanceof PhoneNumber) {
+        PhoneNumber phoneNumber = (PhoneNumber)contact;
+        TypeOfPhoneNumber phoneType = phoneNumber.getTypeOfPhoneNumber();
+        if (phoneType.equals(TypeOfPhoneNumber.OFFICE)) {
+          phone = phoneNumber.getPhoneNumber();
+        }
+      }
+      if (email != null && phone != null) {
+        break;
+      }
+    }
+    Employee employee = dao.findOrCreateEmployee(person.getUserId(), person.getFullName(), email, phone);
 
-    List<Organization> gl = new ArrayList<Organization>();
     List<String> orgUnits = person.getOrgUnits();
     for (String orgUnit : orgUnits) {
       Organization org = idmService.getOrganizationByDN(orgUnit);
-      gl.add(org);
+      
+      employee.getGroups().add(findGroup(org));
     }
-    // TODO either save the DN, the ID or the Organization object
-    employee.setGroupMembership(orgUnits);
     return employee;
+  }
+
+  private AbamGroup findGroup(Organization org) {
+    return dao.findOrCreateGroup(org.getPlaceRef());
   }
 
   @Override

@@ -56,11 +56,9 @@ public class LazyLoadConversion extends ComplexConversion {
         return jli.getImplementation().getClass();
       }
     }
-    if (pvObject instanceof Assignment) {
-      return Assignment.class;
-    }
-    if (pvObject instanceof Employee) {
-      return Employee.class;
+    Package targetPackage = pvObject.getClass().getPackage();
+    if (targetPackage != null && targetPackage.getName().equals("no.uis.abam.dom")) {
+      return pvObject.getClass();
     }
     return null;
   }
