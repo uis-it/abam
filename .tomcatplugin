@@ -16,10 +16,16 @@
         <webClassPathEntry>/abam-employee/target/test-classes</webClassPathEntry>
         <webClassPathEntry>/abam-ws/target/classes</webClassPathEntry>
         <webClassPathEntry>/abam-ws/target/test-classes</webClassPathEntry>
+        <webClassPathEntry>/model-do/target/classes</webClassPathEntry>
+        <webClassPathEntry>/model-util/target/classes</webClassPathEntry>
+        <webClassPathEntry>/model-xsd/target/classes</webClassPathEntry>
+        <webClassPathEntry>/sojo/target/classes</webClassPathEntry>
+        <webClassPathEntry>/ws-idm/target/classes</webClassPathEntry>
+        <webClassPathEntry>/ws-idm/target/test-classes</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/ant/ant/1.5/ant-1.5.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/antlr/antlr/2.7.7/antlr-2.7.7.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/aopalliance/aopalliance/1.0/aopalliance-1.0.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/asm/asm/3.3/asm-3.3.jar</webClassPathEntry>
+        <webClassPathEntry>E:/data/mvnrepo/asm/asm/3.3.1/asm-3.3.1.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/backport-util-concurrent/backport-util-concurrent/2.2/backport-util-concurrent-2.2.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/cglib/cglib-nodep/2.2/cglib-nodep-2.2.jar</webClassPathEntry>
@@ -57,10 +63,6 @@
         <webClassPathEntry>E:/data/mvnrepo/mysql/mysql-connector-java/5.1.12/mysql-connector-java-5.1.12.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/net/sourceforge/jtds/jtds/1.2.4/jtds-1.2.4.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/no/uis/portal/portlet/portlet-util/2.0.10/portlet-util-2.0.10.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-do/2.0.0-SNAPSHOT/model-do-2.0.0-SNAPSHOT.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-util/2.0.0-SNAPSHOT/model-util-2.0.0-SNAPSHOT.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/model/model-xsd/2.0.0-SNAPSHOT/model-xsd-2.0.0-SNAPSHOT.jar</webClassPathEntry>
-        <webClassPathEntry>E:/data/mvnrepo/no/uis/service/ws/idm/1.0.0-SNAPSHOT/idm-1.0.0-SNAPSHOT-lib.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/commons/ssl/not-yet-commons-ssl/0.3.9/not-yet-commons-ssl-0.3.9.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/cxf/cxf-api/2.3.6/cxf-api-2.3.6.jar</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/org/apache/cxf/cxf-common-schemas/2.3.6/cxf-common-schemas-2.3.6.jar</webClassPathEntry>
