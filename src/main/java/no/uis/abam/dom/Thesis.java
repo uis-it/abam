@@ -51,7 +51,7 @@ public class Thesis extends AbamType {
 	 */
 	private Calendar acceptionDeadline;
 
-	private Calendar subissionDeadline;
+	private Calendar submissionDeadline;
 	
 	private Calendar submissionDate;
 	
@@ -148,7 +148,7 @@ public class Thesis extends AbamType {
 	
 	@Deprecated
 	public String getDeadlineForSubmissionOfTopicAsString() {
-		return simpleDateFormatter.format(acceptionDeadline);
+		return simpleDateFormatter.format(acceptionDeadline.getTime());
 	}
 	
 	public void setAcceptionDeadline(Calendar acceptionDeadline) {
@@ -156,16 +156,16 @@ public class Thesis extends AbamType {
 	}
 
 	public Calendar getSubmissionDeadline() {
-		return subissionDeadline;
+		return submissionDeadline;
 	}
 	
 	@Deprecated
 	public String getDeadlineForSubmissionForEvalutationAsString() {
-		return simpleDateFormatter.format(subissionDeadline);
+		return simpleDateFormatter.format(submissionDeadline.getTime());
 	}
 
 	public void setSubmissionDeadline(Calendar deadlineForSubmissionForEvalutation) {
-		this.subissionDeadline = deadlineForSubmissionForEvalutation;
+		this.submissionDeadline = deadlineForSubmissionForEvalutation;
 	}
 
 	public Calendar getSubmissionDate() {
@@ -174,7 +174,7 @@ public class Thesis extends AbamType {
 
 	@Deprecated
 	public String getActualSubmissionForEvalutationAsString() {
-		return simpleDateFormatter.format(submissionDate);
+		return simpleDateFormatter.format(submissionDate.getTime());
 	}
 	
 	@Deprecated
@@ -264,6 +264,6 @@ public class Thesis extends AbamType {
 		Calendar in4Months = Calendar.getInstance();
 		in4Months.add(Calendar.MONTH, 4);
 		
-		return subissionDeadline.before(in4Months);
+		return submissionDeadline.before(in4Months);
 	}
 }

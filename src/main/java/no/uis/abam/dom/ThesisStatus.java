@@ -51,7 +51,7 @@ public class ThesisStatus extends AbamType {
 	 */
 	@Deprecated
 	public String getDateAsString() {
-		return simpleDateFormatter.format(date);
+		return simpleDateFormatter.format(date.getTime());
 	}
 
 	public void setStatus(ThesisStatusType status) {

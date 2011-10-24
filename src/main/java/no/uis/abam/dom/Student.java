@@ -27,8 +27,13 @@ public class Student extends AbamPerson {
 	
 	private String studentNumber;
 	private String departmentCode;
+	
+	@Deprecated
 	private String departmentName;
+	
+	@Deprecated
 	private String studyProgramName;
+	
 	private String studyProgramCode;
 	
 	private boolean acceptedThesis;
@@ -67,18 +72,22 @@ public class Student extends AbamPerson {
 		this.departmentCode = departmentCode;
 	}
 
+	@Deprecated
 	public String getDepartmentName() {
 		return departmentName;
 	}
 
+  @Deprecated
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
 
+  @Deprecated
 	public String getStudyProgramName() {
 		return studyProgramName;
 	}
 
+  @Deprecated
 	public void setStudyProgramName(String studyProgramName) {
 		this.studyProgramName = studyProgramName;
 	}
