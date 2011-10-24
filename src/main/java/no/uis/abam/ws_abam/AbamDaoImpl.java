@@ -1,20 +1,18 @@
 package no.uis.abam.ws_abam;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import net.sf.sojo.common.ObjectUtil;
 import net.sf.sojo.core.Converter;
 import net.sf.sojo.core.conversion.Iterateable2IterateableConversion;
 import no.uis.abam.dom.AbamGroup;
 import no.uis.abam.dom.AbamPerson;
+import no.uis.abam.dom.AbamType;
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
@@ -39,11 +37,16 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
 
   private static Logger log = Logger.getLogger(AbamDaoImpl.class);
   
-  @Override
-  public void saveAssignment(Assignment assignment) {
-    JpaTemplate jpa = getJpaTemplate();
+  private ObjectFinder<AbamPerson> personFinder;
+  private ObjectFinder<Supervisor> supervisorFinder;
+  
+  public AbamDaoImpl() {
     
-    ObjectFinder<AbamPerson> personFinder = new ObjectFinder<AbamPerson>(getJpaTemplate()) {
+    createObjectFinders();
+  }
+
+  private void createObjectFinders() {
+    personFinder = new ObjectFinder<AbamPerson>(getJpaTemplate()) {
       
       @Override
       protected AbamPerson findObject(AbamPerson source) {
@@ -56,7 +59,7 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
       }
     };
 
-    ObjectFinder<Supervisor> supervisorFinder = new ObjectFinder<Supervisor>(getJpaTemplate()) {
+    supervisorFinder = new ObjectFinder<Supervisor>(getJpaTemplate()) {
       @Override
       protected Supervisor findObject(Supervisor source) {
         JpaTemplate jpa = getJpaTemplate();
@@ -73,6 +76,11 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
         }
       }
     };
+  }
+  
+  @Override
+  public void saveAssignment(Assignment assignment) {
+    JpaTemplate jpa = getJpaTemplate();
     
     // author
     AbamPerson author = assignment.getAuthor();
@@ -92,13 +100,8 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
       svIter.remove();
     }
     assignment.getSupervisorList().addAll(svAdded);
-
     
     assignment = jpa.merge(assignment);
-    
-    jpa.persist(assignment);
-    
-    jpa.flush();
   }
 
   @SuppressWarnings("unchecked")
@@ -187,7 +190,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
       application.setApplicationDate(Calendar.getInstance());
     }
     application = jpa.merge(application);
-    jpa.persist(application);
     return application;
   }
 
@@ -197,8 +199,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     application = jpa.merge(application);
     jpa.remove(application);
   }
-  
-  
 
   @Override
   public Thesis saveThesis(Thesis thesis) {
@@ -226,13 +226,11 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     } else {
       throw new NotImplementedException("In class " + getClass().getName() + ": there should only be one thesis per Assignment");
     }
-    jpa.persist(thesis);
     jpa.flush();
     return thesis;
   }
 
   private void copyThesis(Thesis pThesis, Thesis thesis) {
-    JpaTemplate jpa = getJpaTemplate();
     
     try {
       thesis.setOid(pThesis.getOid());
@@ -256,8 +254,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     applications = mergeApplications(applications);
     student.setApplications(applications);
     student = jpa.merge(student);
-    jpa.persist(student);
-    jpa.flush();
     loadEntity(student);
     return student;
   }
@@ -313,7 +309,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     if (gl.isEmpty()) {
       AbamGroup g1 = new AbamGroup(placeRef);
       g = jpa.merge(g1);
-      jpa.persist(g);
     } else {
       g = gl.get(0);
     }
@@ -335,7 +330,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     }
     employee.setEmail(email);
     employee.setPhoneNumber(phone);
-    jpa.persist(employee);
     return employee;
   }
   
@@ -358,7 +352,6 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     student.setName(name);
     student.setStudentNumber(studentNumber);
     student.setEmail(email);
-    jpa.persist(student);
     return student;
   }
 
@@ -372,5 +365,30 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     } catch(Exception e) {
       log.error("entity " + entity, e);
     }
+  }
+
+  private abstract static class ObjectFinder<T extends AbamType> {
+    private final JpaTemplate jpa;
+
+    public ObjectFinder(JpaTemplate jpa) {
+      this.jpa = jpa;
+    }
+    
+    public T findOrCreate(T sourceObject) {
+      T targetObject = null;
+      if (sourceObject.getOid() == null) {
+        // not previously persisted
+      
+        targetObject = findObject(sourceObject);
+        if (targetObject == null) {
+          targetObject = jpa.merge(sourceObject);
+        } 
+      } else {
+        targetObject = jpa.merge(sourceObject);
+      }
+      return targetObject;
+    }
+    
+    protected abstract T findObject(T source);
   }
 }
