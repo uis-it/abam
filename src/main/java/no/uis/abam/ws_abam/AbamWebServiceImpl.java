@@ -3,7 +3,6 @@ package no.uis.abam.ws_abam;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.jws.WebService;
 
@@ -16,7 +15,6 @@ import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.service.idm.ws.IdmWebService;
 import no.uis.service.model.AffiliationType;
-import no.uis.service.model.BaseText;
 import no.uis.service.model.Contact;
 import no.uis.service.model.Email;
 import no.uis.service.model.Organization;
@@ -32,12 +30,6 @@ import org.apache.log4j.Logger;
 public class AbamWebServiceImpl implements AbamWebService {
 
 	private Logger log = Logger.getLogger(AbamWebServiceImpl.class);
-	
-//	private List<Application> applicationList = new ArrayList<Application>();
-
-	private List<Student> studentList = new ArrayList<Student>();
-//	private List<Thesis> savedThesesList = new ArrayList<Thesis>();
-//	private List<Thesis> archivedThesesList = new ArrayList<Thesis>();
 	
 	private List<Organization> departmentList;
 	private String orgTreeRoot = "217_8_0_0"; // faculty TN 
@@ -314,7 +306,6 @@ public class AbamWebServiceImpl implements AbamWebService {
     try {
       Person person = idmService.getPersonByStudentNumber(studentNumber);
       student = getStudentFromPersonTypeObject(person);
-      dao.loadEntity(student);
     } catch(Exception ex) {
       log.info(studentNumber, ex);
     }
@@ -337,6 +328,7 @@ public class AbamWebServiceImpl implements AbamWebService {
 		    }
 		  }
 		}
+
     Student student = dao.findOrCreateStudent(person.getUserId(), person.getFullName(), email);
 		
 		// TODO the logic behind this is not quite good
@@ -363,12 +355,12 @@ public class AbamWebServiceImpl implements AbamWebService {
 		} else if (foundBachelor) {
       student.setType(AssignmentType.BACHELOR);
 		} else {
-		  throw new java.lang.IllegalStateException("neither student nor master");
+		  throw new java.lang.IllegalStateException("neither bachelor nor master student");
 		}
 		Organization org = idmService.getOrganizationByDN(person.getPrimaryOrgUnit());
 		if (org != null) {
 		  student.setDepartmentCode(org.getPlaceRef());
-		  student.setDepartmentName(getText(org.getName(), null));
+		  student.setDepartmentName(org.getPlaceRef());
 		}
 		
 		student.setStudyProgramName(programCode);
@@ -392,19 +384,6 @@ public class AbamWebServiceImpl implements AbamWebService {
   public void setIdmService(IdmWebService idmService) {
 	  this.idmService = idmService;
 	}
-  
-  // TODO use abam-commons BaseTextUtil (cirular dependency)
-  private String getText(List<BaseText> txtList, String lang) {
-    if (lang == null) {
-      lang = Locale.getDefault().getLanguage();
-    }
-    for (BaseText txt : txtList) {
-      if (txt.getLang().equals(lang)) {
-        return txt.getValue();
-      }
-    }
-    return txtList.get(0).getValue();
-  }
   
   private Employee convertPersonToEmployee(Person person) {
     

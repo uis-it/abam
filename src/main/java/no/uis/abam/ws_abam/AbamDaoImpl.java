@@ -204,7 +204,7 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   public Thesis saveThesis(Thesis thesis) {
     JpaTemplate jpa = getJpaTemplate();
     
-    Thesis pThesis = null;
+    //Thesis pThesis = null;
     
     // refetch assignment to prevent exception
     Assignment assignment = jpa.find(Assignment.class, thesis.getAssignment().getOid());
@@ -215,25 +215,24 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     thesis.setFacultySupervisor(supervisor);
 
     @SuppressWarnings("unchecked")
-    List<Thesis> pThesises = jpa.find("select t from Thesis t, Assignment a where t.assignedAssignment.oid = ?", thesis.getAssignment().getOid());
+    List<Thesis> pThesises = jpa.find("select t from Thesis t, Assignment a where t.assignment.oid = ?", thesis.getAssignment().getOid());
     
-    if (pThesises.isEmpty()) {
-      pThesis = jpa.merge(thesis);
-    } else if (pThesises.size() == 1) {
-      pThesis = pThesises.get(0);
-      // copy values from thesis to pThesis
-      copyThesis(pThesis, thesis);
-    } else {
+    if (pThesises.size() == 1) {
+      Thesis pThesis = pThesises.get(0);
+      thesis.setOid(pThesis.getOid());
+      //copyThesis(pThesis, thesis);
+    } else if (!pThesises.isEmpty()){
       throw new NotImplementedException("In class " + getClass().getName() + ": there should only be one thesis per Assignment");
     }
-    jpa.flush();
-    return thesis;
+    thesis = jpa.merge(thesis);
+    return loadEntity(thesis);
   }
 
   private void copyThesis(Thesis pThesis, Thesis thesis) {
     
     try {
       thesis.setOid(pThesis.getOid());
+      
       BeanUtils.copyProperties(pThesis, thesis);
     } catch(Exception e) {
       log.error("copying Thesis", e);
@@ -271,23 +270,29 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
 
   @SuppressWarnings("unchecked")
   private List<Thesis> getThesisesWithEvaluationDeadline(String operator, Calendar cal, String departmentCode, String employeeId) {
-    StringBuilder sb = new StringBuilder("SELECT t FROM Thesis t, AbamGroup g WHERE t.evaluationDeadline ");
-    sb.append(operator);
-    sb.append(" :deadline");
+    StringBuilder sbFrom = new StringBuilder("SELECT t FROM Thesis t ");
+    StringBuilder sbWhere = new StringBuilder("WHERE t.submissionDeadline ");
+    
+    sbWhere.append(operator);
+    sbWhere.append(" :deadline");
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("deadline", cal);
     
     if (departmentCode != null) {
-      sb.append(" AND g.name = :departmentCode and g member of t.facultySupervisor.groups");
+      sbWhere.append(" AND g.name = :departmentCode and g member of t.facultySupervisor.groups");
+      sbFrom.append(", AbamGroup g ");
       params.put("departmentCode", departmentCode);
     }
     
     if (employeeId != null) {
-      sb.append(" AND t.facultySupervisor.employeeId = :employeeId");
+      sbWhere.append(" AND t.facultySupervisor.employeeId = :employeeId");
       params.put("employeeId", employeeId);
     }
     
-    return getJpaTemplate().findByNamedParams(sb.toString(), params);
+    sbFrom.append(sbWhere.toString());
+    List<Thesis> list = getJpaTemplate().findByNamedParams(sbFrom.toString(), params);
+    loadEntity(list);
+    return list;
   }
 
   @Override
@@ -355,16 +360,16 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
     return student;
   }
 
-  @Override
-  public void loadEntity(Object entity) {
-    try {
+  @SuppressWarnings("unchecked")
+  private <T> T loadEntity(T entity) {
+//    try {
       Converter converter = new Converter();
       converter.addConversion(new LazyLoadConversion());
       converter.addConversion(new Iterateable2IterateableConversion());
-      converter.convert(entity);
-    } catch(Exception e) {
-      log.error("entity " + entity, e);
-    }
+      return (T)converter.convert(entity);
+//    } catch(Exception e) {
+//      log.error("entity " + entity, e);
+//    }
   }
 
   private abstract static class ObjectFinder<T extends AbamType> {

@@ -15,6 +15,7 @@
         <webClassPathEntry>/abam-ws/target/test-classes</webClassPathEntry>
         <webClassPathEntry>/model-do/target/classes</webClassPathEntry>
         <webClassPathEntry>/model-util/target/classes</webClassPathEntry>
+        <webClassPathEntry>/model-xsd/target/classes</webClassPathEntry>
         <webClassPathEntry>/sojo/target/classes</webClassPathEntry>
         <webClassPathEntry>/ws-idm/target/classes</webClassPathEntry>
         <webClassPathEntry>E:/data/mvnrepo/ant/ant/1.5/ant-1.5.jar</webClassPathEntry>

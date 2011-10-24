@@ -46,6 +46,4 @@ public interface AbamDao {
   Employee findOrCreateEmployee(String userId, String fullName, String email, String phone);
 
   Student findOrCreateStudent(String userId, String firstName, String email);
-
-  void loadEntity(Object entity);
 }
