@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.ActionSource;
@@ -400,11 +401,13 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	}
 
 	public String getCurrentAssignmentDepartmentCode() {
-	  return employeeService.getDepartmentNameFromCode(currentAssignment.getDepartmentCode());  
+	  String code = currentAssignment.getDepartmentCode();
+    return employeeService.getDepartmentNameFromCode(code);  
 	}
 	
 	public String getCurrentAssignmentStudyProgramCode() {
-	  return employeeService.getStudyProgramNameFromCode(currentAssignment.getStudyProgramCode());
+	  String code = currentAssignment.getStudyProgramCode();
+    return employeeService.getStudyProgramNameFromCode(code);
 	}
 	
 	public void setCurrentAssignment(Assignment currentAssignment) {

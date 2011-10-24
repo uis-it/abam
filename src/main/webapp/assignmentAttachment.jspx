@@ -6,7 +6,7 @@
 	<ice:portlet>
 		<f:loadBundle basename="Language" var="msgs" />	
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
-		<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="titleStyle"/><br/>			
+		<ice:outputText value="#{msgs.lbl_assignment_upload_attachment}" styleClass="title"/><br/>			
 		<ice:form partialSubmit="true" >
 			<ice:panelGrid columns="2">
 					<ice:outputText value="#{msgs.lbl_title}"/>
