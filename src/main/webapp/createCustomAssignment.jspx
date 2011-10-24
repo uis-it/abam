@@ -125,7 +125,7 @@
 					</table>
 				</ice:column>													
 			</ice:dataTable>
-			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="#{msgs.btn_add_row}" immediate="true"/>			
+			<ice:commandButton id="addNewSupervisor" actionListener="#{assignmentBean.actionAddSupervisor}" value="#{msgs.btn_add_supervisor}" immediate="true"/>			
 			<table style="margin-top: 10px;">
 				<tr>
 					<td><ice:outputText value="#{msgs.lbl_attachment}: " style="font-weight: bold;"/> </td>
