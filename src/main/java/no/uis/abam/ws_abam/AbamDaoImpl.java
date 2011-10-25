@@ -41,9 +41,14 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   private ObjectFinder<Supervisor> supervisorFinder;
   
   public AbamDaoImpl() {
-    
+  }
+ 
+  @Override
+  protected void initDao() throws Exception {
+    super.initDao();
     createObjectFinders();
   }
+
 
   private void createObjectFinders() {
     personFinder = new ObjectFinder<AbamPerson>(getJpaTemplate()) {
