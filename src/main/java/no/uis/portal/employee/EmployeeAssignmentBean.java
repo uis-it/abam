@@ -1,7 +1,14 @@
 package no.uis.portal.employee;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +36,7 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
 
@@ -36,6 +44,7 @@ import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
+import com.icesoft.faces.context.Resource;
 
 public class EmployeeAssignmentBean implements DisposableBean {
 		
@@ -51,6 +60,8 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	private boolean backToMyStudentThesis;
 	
 	private boolean showExpired;
+  private boolean autoUpload = true;
+  private int uploadProgress;
 	
 	//private Locale locale;
 
@@ -295,6 +306,22 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		employeeService.setDisplayAssignments();
 	}
 	
+	public boolean isAutoUpload() {
+	  return this.autoUpload;
+	}
+	
+	public void setAutoUpload(boolean autoUpload) {
+	  this.autoUpload = autoUpload;
+	}
+	
+	public void fileUploadProgress(EventObject event) {
+	  InputFile inputFile = (InputFile)event.getSource();
+	  uploadProgress = inputFile.getFileInfo().getPercent();
+	}
+	
+	public int getUploadProgress() {
+	  return this.uploadProgress;
+	}
 	
 	/**
 	 * ActionListener that handles file uploading
@@ -304,26 +331,40 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		InputFile inputFile =(InputFile) event.getSource();
     FileInfo fileInfo = inputFile.getFileInfo();
 
-    if (fileInfo.isSaved()) {
-      currentAssignment.getAttachments().add(new Attachment(fileInfo.getPhysicalPath()));
-    } else if (fileInfo.isFailed()) {
-      //upload failed, generate custom messages
-      switch (fileInfo.getStatus()) {
-        case FileInfo.INVALID:
-          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
-          break;
-        case FileInfo.SIZE_LIMIT_EXCEEDED:
-          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_exceeded_size_limit", null);
-          break;
-        case FileInfo.INVALID_CONTENT_TYPE:
-          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
-          break;
-        case FileInfo.INVALID_NAME_PATTERN:
-          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_attachment_type_restrictions", null);
-          break;
-      }
+    switch(fileInfo.getStatus()) {
+      case FileInfo.SAVED:
+        try {
+          addAttachment(fileInfo);
+        } catch(Exception e) {
+          MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", new Object[] {e.getLocalizedMessage()});
+        }
+        break;
+      case FileInfo.INVALID:
+        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+        break;
+      case FileInfo.SIZE_LIMIT_EXCEEDED:
+        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_exceeded_size_limit", null);
+        break;
+      case FileInfo.INVALID_CONTENT_TYPE:
+        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", null);
+        break;
+      case FileInfo.INVALID_NAME_PATTERN:
+        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_attachment_type_restrictions", null);
+        break;
     }        
 	}
+
+  private void addAttachment(FileInfo fileInfo) throws IOException, FileNotFoundException {
+    Attachment attachment = new Attachment();
+    attachment.setContentType(fileInfo.getContentType());
+    attachment.setFileName(fileInfo.getFileName());
+    ByteArrayOutputStream bout = new ByteArrayOutputStream();
+    IOUtils.copyLarge(new FileInputStream(fileInfo.getFile()), bout);
+    attachment.setData(bout.toByteArray());
+    synchronized(currentAssignment) {
+      currentAssignment.getAttachments().add(attachment);
+    }
+  }
 	
 	/**
 	 * ValueChangeListener to set assignment type
@@ -343,18 +384,31 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * ActionListener that removes an uploaded attachment
 	 * @param event
 	 */
-	public void actionRemoveAttachment(ActionEvent event){
-	  Iterator<Attachment> iter = currentAssignment.getAttachments().iterator();
-	  Object fileToRemove = getRowFromEvent(event);
-	  while(iter.hasNext()) {
-	    Attachment att = iter.next();
-	    if (att.getFile().equals(fileToRemove)) {
-	      iter.remove();
-	      break;
-	    }
+	public void actionRemoveAttachment(ActionEvent event) {
+	  FacesContext fc = FacesContext.getCurrentInstance();
+	  String fileToRemove = (String)fc.getExternalContext().getRequestParameterMap().get("fileName");
+	  synchronized (currentAssignment) {
+  	  Iterator<Attachment> iter = currentAssignment.getAttachments().iterator();
+  	  while(iter.hasNext()) {
+  	    Attachment att = iter.next();
+  	    if (att.getFileName().equals(fileToRemove)) {
+  	      iter.remove();
+  	      break;
+  	    }
+  	  }
 	  }
 	}
 
+	public List<Resource> getCurrentAttachmentResources() {
+	  List<Attachment> attachments = currentAssignment.getAttachments();
+	  List<Resource> resources = new ArrayList<Resource>(attachments.size());
+	  for (Attachment attachment : attachments) {
+      Resource res = new AttachmentResource(attachment.getData(), attachment.getFileName(), attachment.getContentType());
+      resources.add(res);
+    }
+	  return resources;
+	}
+	
 	public List<SelectItem> getAssignmentTypes() {
 	  AssignmentType[] values = AssignmentType.values();
 	  List<SelectItem> items = new ArrayList<SelectItem>(values.length);
