@@ -155,13 +155,18 @@
 		</dependency>
 		<dependency>
 		 	<groupId>org.apache.commons.ssl</groupId>
-  			<artifactId>not-yet-commons-ssl</artifactId>
-  			<version>0.3.9</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>log4j</groupId>
-  			<artifactId>log4j</artifactId>
-  		</dependency>
+  		<artifactId>not-yet-commons-ssl</artifactId>
+  		<version>0.3.9</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>commons-io</groupId>
+  		<artifactId>commons-io</artifactId>
+  		<version>2.0.1</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>log4j</groupId>
+  		<artifactId>log4j</artifactId>
+  	</dependency>
 	</dependencies>
 
 	<dependencyManagement>

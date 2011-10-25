@@ -1,5 +1,9 @@
 package no.uis.portal.student;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -20,6 +24,7 @@ import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.util.NumberValidator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
@@ -188,7 +193,17 @@ public class StudentAssignmentBean implements DisposableBean {
     FileInfo fileInfo = inputFile.getFileInfo();
     //file has been saved
     if (fileInfo.isSaved()) {
-      currentAssignment.getAttachments().add(new Attachment(fileInfo.getPhysicalPath()));
+      try {
+        Attachment attachment = new Attachment();
+        attachment.setContentType(fileInfo.getContentType());
+        attachment.setFileName(fileInfo.getFileName());
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        IOUtils.copyLarge(new FileInputStream(fileInfo.getFile()), bout);
+        attachment.setData(bout.toByteArray());
+        currentAssignment.getAttachments().add(attachment);
+      } catch(Exception e) {
+        MessageUtils.addMessage(FacesMessage.SEVERITY_ERROR, "msg_could_not_upload", new Object[] {e.getLocalizedMessage()});
+      }
     } else if (fileInfo.isFailed()) {
       //upload failed, generate custom messages
       switch (fileInfo.getStatus()) {
@@ -217,7 +232,7 @@ public class StudentAssignmentBean implements DisposableBean {
     Object fileToRemove = getRowFromEvent(event);
     while(iter.hasNext()) {
       Attachment att = iter.next();
-      if (att.getFile().equals(fileToRemove)) {
+      if (att.getFileName().equals(fileToRemove)) {
         iter.remove();
         break;
       }
