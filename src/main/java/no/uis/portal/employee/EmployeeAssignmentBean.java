@@ -28,6 +28,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import no.uis.abam.commons.AttachmentResource;
 import no.uis.abam.commons.ThesisInformation;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;

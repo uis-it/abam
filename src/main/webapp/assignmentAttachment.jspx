@@ -30,7 +30,7 @@
 							<ice:selectBooleanCheckbox partialSubmit="true" value="#{assignmentBean.autoUpload}"/>
 						</ice:panelGrid>
 						
-						<ice:outputProgress value="#{assignmentBean.uploadProgress}"></ice:outputProgress>
+						<ice:outputProgress value="#{assignmentBean.uploadProgress}"/>
 					</ice:panelGrid>
 					
 					<f:verbatim> </f:verbatim>
