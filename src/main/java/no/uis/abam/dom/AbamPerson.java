@@ -3,8 +3,6 @@ package no.uis.abam.dom;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
