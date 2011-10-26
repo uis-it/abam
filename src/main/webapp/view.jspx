@@ -1,8 +1,12 @@
 <f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:portlet="http://java.sun.com/portlet"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:liferay-theme="http://liferay.com/tld/theme"
+	xmlns:liferay-security="http://liferay.com/tld/security"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
+		<liferay-theme:defineObjects/>
 		<f:loadBundle basename="Language" var="msgs" />
 		<ice:form>
 			<ice:panelGrid columns="1" border="0">
@@ -11,7 +15,7 @@
 					action="createAssignment" 
 					actionListener="#{assignmentBean.actionCreateNewAssignment}" 
 					value="#{msgs.link_create_assignment}"
-					rendered="#{employeeService.shouldDisplayCreateAssignments}"
+					rendered="#{employeeService.permissions.CREATE_ASSIGNMENTS}"
 				/>
 					
 				<ice:commandLink 
@@ -24,28 +28,28 @@
 					action="assignSetDates" 
 					actionListener="#{assignSortableBean.actionPrepareSetDates}" 
 					value="#{msgs.link_assign_assignment}" 
-					rendered="#{employeeService.shouldDisplayAssignAssignments}"
+					rendered="#{employeeService.permissions.ASSIGN_ASSIGNMENTS}"
 				/>
 				
 				<ice:commandLink 
 					action="myStudentTheses" 
 					actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
 					value="#{msgs.link_my_std_assignments}"
-					rendered="#{employeeService.shouldDisplayViewSupervisedThesis}"
+					rendered="#{employeeService.permissions.VIEW_SUPERVISED_THESIS}"
 				/>
 				
 				<ice:commandLink 
 					action="myStudentTheses" 
 					actionListener="#{thesisBean.actionPrepareAllStudentTheses}"
-					value="#{msgs.link_all_std_assignments}"							
-					rendered="#{employeeService.administrativeEmployee}"													
+					value="#{msgs.link_all_std_assignments}"
+					renderedOnUserRole="Abam Administrative Employee"													
 				/>
 
 				<ice:commandLink 
 					action="addExternalExaminer" 
 					actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" 
 					value="#{msgs.link_add_ext_examiner}"
-					rendered="#{employeeService.shouldDisplayViewExternalExaminer}"
+					rendered="#{employeeService.permissions.VIEW_EXTERNAL_EXAMINER}"
 				/>
 				
 				<ice:commandLink 

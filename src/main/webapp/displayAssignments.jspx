@@ -111,7 +111,7 @@
 							value="#{msgs.btn_edit}" 
 							actionListener="#{assignmentBean.actionSetSelectedAssignment}" 
 							action="createAssignment" 
-							rendered="#{item.loggedInUserIsAuthor or employeeService.shouldDisplayEditAssignments}"
+							rendered="#{item.loggedInUserIsAuthor or employeeService.permissions.EDIT_ASSIGNMENTS}"
 							/>					
 					</ice:column>	
 					<ice:column>
@@ -124,7 +124,7 @@
 							id="remove" 
 							value="#{msgs.btn_remove}" 
 							actionListener="#{assignmentBean.actionRemoveAssignment}" 
-							rendered="#{item.loggedInUserIsAuthor or employeeService.shouldDisplayEditAssignments}"
+							rendered="#{item.loggedInUserIsAuthor or employeeService.permissions.EDIT_ASSIGNMENTS}"
 							/>
 					</ice:column>					
 					

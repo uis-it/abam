@@ -2,10 +2,9 @@ package no.uis.portal.employee;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -13,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-import javax.portlet.RenderRequest;
 
 import no.uis.abam.commons.BaseTextUtil;
 import no.uis.abam.dom.AbamGroup;
@@ -24,8 +22,6 @@ import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.ws_abam.AbamWebService;
 import no.uis.portal.util.LiferayUtil;
-import no.uis.service.model.AffiliationType;
-import no.uis.service.model.BaseText;
 import no.uis.service.model.Organization;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,26 +31,19 @@ import org.springframework.beans.factory.InitializingBean;
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
 import com.liferay.portal.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Permission;
 import com.liferay.portal.model.Role;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.PermissionLocalServiceUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 public class EmployeeService implements InitializingBean {
 	
-	private static final UnknownEmployee UNKNOWN_EMPLOYEE = new UnknownEmployee() {};
+	private static final UnknownEmployee UNKNOWN_EMPLOYEE = new UnknownEmployee();
 
   public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
-	private static final String LANGUAGE = "language";
-	private static final String NORWEGIAN_LANGUAGE = "Norsk";
-	private static final String ABAM_SCIENTIFIC_ROLE_NAME = "Abam Scientific Employee";
-	private static final String ABAM_ADMINISTRATIVE_ROLE_NAME = "Abam Administrative Employee";
-
 	private Logger log = Logger.getLogger(EmployeeService.class);
 	
 	private String selectedDepartmentCode;
@@ -73,28 +62,20 @@ public class EmployeeService implements InitializingBean {
 	private List<Assignment> assignmentSet;
 	private Set<Assignment> displayAssignmentSet;
 	
-	private FacesContext context;
-	private Locale locale;
-	private ResourceBundle res;
-	
 	private Employee loggedInEmployee;
 	private ThemeDisplay themeDisplay;
-	
+
+  private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
+
+  private Map<String, Boolean> userRoles = new HashMap<String, Boolean>();
 	
 	public EmployeeService() {	
 	}
 	
   @Override
   public void afterPropertiesSet() throws Exception {
-    context  = FacesContext.getCurrentInstance();
-    locale = context.getViewRoot().getLocale();
-    res = ResourceBundle.getBundle("Language", locale);
-    themeDisplay = LiferayUtil.getThemeDisplay(context);
-
-    // we get the loggedInEmployee and make sure it has the correct Liferay roles.
-    if (!UNKNOWN_EMPLOYEE.equals(getLoggedInEmployee())) {
-      addRoleToEmployee();
-    }
+    themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
+    initRolesAndPermissions();
   }
 
   /**
@@ -173,7 +154,7 @@ public class EmployeeService implements InitializingBean {
 	  if (code != null) {
   		for (Organization dep : departmentList) {
   		  if(dep.getPlaceRef().equals(code)) {
-  		    return getText(dep.getName());
+  		    return BaseTextUtil.getText(dep.getName(), themeDisplay.getLocale().getLanguage());
   		  }
   		}
 	  }
@@ -240,8 +221,7 @@ public class EmployeeService implements InitializingBean {
 
 	public String getStudyProgramNameFromCode(String programCode) {
     no.uis.service.model.StudyProgram studProg = abamClient.getStudyProgramFromCode(programCode);
-    String progName = getText(studProg.getName());
-	  return progName;
+    return BaseTextUtil.getText(studProg.getName(), themeDisplay.getLocale().getLanguage());
 	}
 	
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn, String selectedStudyProgram) {
@@ -301,7 +281,7 @@ public class EmployeeService implements InitializingBean {
       if (placeRef == null || placeRef.length() == 0) {
         item = new SelectItem("", "");
       } else {
-        item = new SelectItem(placeRef, getText(dep.getName()));
+        item = new SelectItem(placeRef, BaseTextUtil.getText(dep.getName(), themeDisplay.getLocale().getLanguage()));
       }
       departmentSelectItemList.add(item);
     }
@@ -332,7 +312,7 @@ public class EmployeeService implements InitializingBean {
 	private void updateStudyProgramSelectItemList() {
 		studyProgramSelectItemList.clear();
 		for (no.uis.service.model.StudyProgram prog : selectedStudyProgramList) {
-		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), getText(prog.getName())));
+		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), BaseTextUtil.getText(prog.getName(), themeDisplay.getLocale().getLanguage())));
     }
 	}
 
@@ -382,140 +362,30 @@ public class EmployeeService implements InitializingBean {
 	  return this.abamClient;
 	}
 	
-	/**
-	 * @param permissionName 
-	 * @return true if user has permission, false if not
-	 */
-	public boolean checkPermission(String permissionName) {
-		User user = themeDisplay.getUser();
-		// TODO remove hardcoded value
-		if (user.getUuid().equals("830c81bf-1684-4114-8981-6be03daabb84")) {
-		  return true;
-		}
-		List<Permission> permList = new LinkedList<Permission>();
-		
-		for (Role role : user.getRoles()) {
-			try {
-				permList.addAll(PermissionLocalServiceUtil.getRolePermissions(role.getRoleId()));
-			} catch (SystemException e) {				
-				log.debug(e.getStackTrace());
-			}			
-		}
+	private void initRolesAndPermissions() {
+    User user = themeDisplay.getUser();
 
-		for (Permission permission : permList) {
-			if (permission.getActionId().equals(permissionName)) {
-				return true;
-			}			
-		}
-		
-		return false;				
-	}
-	
-	/**
-	 * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-	 */
-	public boolean isShouldDisplayAssignAssignments() {
-		return checkPermission("ASSIGN_ASSIGNMENTS");						
-	}
-	
-  /**
-   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-   */
-	public boolean isShouldDisplayCreateAssignments() {
-		return checkPermission("CREATE_ASSIGNMENTS");						
-	}
-	
-  /**
-   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-   */
-	public boolean isShouldDisplayEditAssignments() {
-		return checkPermission("EDIT_ASSIGNMENTS");						
-	}
-	
-  /**
-   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-   */
-	public boolean isShouldDisplayViewSupervisedThesis() {
-		return checkPermission("VIEW_SUPERVISED_THESIS");						
-	}
-	
-  /**
-   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-   */
-	public boolean isShouldDisplayRenewAssignments() {
-		return checkPermission("RENEW_ASSIGNMENTS");						
-	}
-
-  /**
-   * the permission name is defined in classpath:(resource-actions/employee_permissions.properties
-   */
-	public boolean isShouldDisplayViewExternalExaminer() {
-		return checkPermission("VIEW_EXTERNAL_EXAMINER");						
-	}
-	
-	
-	/**
-   * Theses roles are defined in Liferay.
-   * TODO when the roles are defines in LDAP, this code has to be removed.
-	 * @return true if user is administrative employee, false if not
-	 */
-	public boolean isAdministrativeEmployee() {
-		User user = themeDisplay.getUser();
-		boolean isAdmin=false;
-		for (Role role : user.getRoles()) {			
-			if(role.getName().equalsIgnoreCase(ABAM_ADMINISTRATIVE_ROLE_NAME)) {
-			  isAdmin = true;
-				break;
-			}
-		}
-		// TODO remove hard-coded value
-		isAdmin = true;
-		return isAdmin;
-	}
-	
-	/**
-	 * Theses roles are defined in Liferay.
-	 * TODO when the roles are defines in LDAP, this code has to be removed.
-	 */
-	public void addRoleToEmployee() {
-		if (loggedInEmployee != null && !loggedInEmployee.getGroups().isEmpty()) {
-			if (loggedInEmployeeIsScientificEmployee()) {
-				addRoleToLiferayUser(ABAM_SCIENTIFIC_ROLE_NAME);
-			} else if (loggedInEmployeeIsAdministrativeEmployee()) {
-				addRoleToLiferayUser(ABAM_ADMINISTRATIVE_ROLE_NAME);
-			}
-		}
-	}
-
-	private void addRoleToLiferayUser(String roleName) {
-		long companyId = themeDisplay.getCompanyId();
-		try {
-
-			List<Role> roleList = RoleLocalServiceUtil.getRoles(companyId);
-			for (Role role : roleList) {
-				if (role.getName().equals(roleName)) {
-					long[] roleId = {role.getRoleId()};							
-					RoleLocalServiceUtil.addUserRoles(themeDisplay.getUserId(), roleId); 
-				}
-			}
-		} catch (SystemException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private boolean loggedInEmployeeIsAdministrativeEmployee() {
-	  List<AffiliationType> affiliations = abamClient.getAffiliation(loggedInEmployee.getEmployeeId());
-	  return affiliations.contains(AffiliationType.EMPLOYEE) && !affiliations.contains(AffiliationType.FACULTY); 
-	}
-
-	private boolean loggedInEmployeeIsScientificEmployee() {
-    List<AffiliationType> affiliations = abamClient.getAffiliation(loggedInEmployee.getEmployeeId());
-    if (affiliations != null) {
-      return affiliations.contains(AffiliationType.FACULTY);
+    for (Role role : user.getRoles()) {
+      userRoles.put(role.getName(), Boolean.TRUE);
+      try {
+        List<Permission> perms = PermissionLocalServiceUtil.getRolePermissions(role.getRoleId());
+        for (Permission permission : perms) {
+          permissions.put(permission.getActionId(), Boolean.TRUE);
+        }
+      } catch (SystemException e) {       
+        log.debug("initialize permissions", e);
+      }     
     }
-    return false;
 	}
-
+	
+	public Map<String, Boolean> getRoles() {
+	  return this.userRoles;
+	}
+	
+	public Map<String, Boolean> getPermissions() {
+	  return this.permissions;
+	}
+	
 	public List<SelectItem> getDepartmentSelectItemList() {
 		return departmentSelectItemList;
 	}
@@ -575,10 +445,6 @@ public class EmployeeService implements InitializingBean {
      return data;
 	}
 
-//	public void setLoggedInEmployee(Employee loggedInEmployee) {
-//		this.loggedInEmployee = loggedInEmployee;
-//	}
-//	
 	public Set<Assignment> getDisplayAssignmentSet() {
 		return displayAssignmentSet;
 	}
@@ -607,15 +473,6 @@ public class EmployeeService implements InitializingBean {
     List<no.uis.service.model.StudyProgram> progs = abamClient.getStudyProgramsFromDepartmentFSCode(departmentCode);
     this.selectedStudyProgramList = progs;
     updateStudyProgramSelectItemList();
-  }
-  
-  // TODO move to common code
-  private String getText(List<BaseText> txtList) {
-    String lang = "en";
-    if (res.getString(LANGUAGE).equals(NORWEGIAN_LANGUAGE)) {
-      lang = "nb";
-    }
-    return BaseTextUtil.getText(txtList, lang);
   }
   
   private static class UnknownEmployee extends Employee {
