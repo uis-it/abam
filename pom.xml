@@ -64,6 +64,11 @@
       <version>4.8.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>org.icefaces</groupId>
+        <artifactId>icefaces</artifactId>
+        <version>1.8.2</version>
+    </dependency>
   </dependencies>
   
   <distributionManagement>
