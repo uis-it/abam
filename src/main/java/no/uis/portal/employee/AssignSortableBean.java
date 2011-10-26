@@ -225,7 +225,6 @@ public class AssignSortableBean implements DisposableBean{
 	 * @param event
 	 */
 	public void actionPrepareSetDates(ActionEvent event) {
-		employeeService.getDepartmentListFromWebService();
 	}
 	
 	private int convertSelectedPriority(String priority) {

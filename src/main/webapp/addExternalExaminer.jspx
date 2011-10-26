@@ -47,9 +47,9 @@
 			<ice:dataTable
 				id="ThesisTable" 
 				columnClasses="assignColumn, titleColumn, studentColumn, coStudentColumn, coStudentColumn, titleColumn"
-	      rowClasses="oddRow, evenRow"
-	      headerClass="headerStyle"
-	      styleClass="tableStyle"
+	      		rowClasses="oddRow, evenRow"
+	      		headerClass="headerStyle"
+	      		styleClass="tableStyle"
 				var="item" 
 				value="#{externalExaminerBean.thesisInformationList}"
 			>

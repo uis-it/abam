@@ -96,7 +96,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionCreateNewAssignment(ActionEvent event) {	
-		employeeService.getDepartmentListFromWebService();
 		Assignment ass = new Assignment();
 		ass.setFacultySupervisor(employeeService.getLoggedInEmployee());
 		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());

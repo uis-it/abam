@@ -25,7 +25,7 @@ public class ThesisBean {
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private List<Thesis> thesisList;
-	private List<ThesisInformation> thesisInformationList = new ArrayList<ThesisInformation>();
+	private List<ThesisInformation> thesisInformationList;
 	private List<ThesisStatus> thesisStatusList; 
 	
 	private ThesisInformation selectedThesisInformation;
@@ -38,7 +38,6 @@ public class ThesisBean {
 	private EmployeeService employeeService;
 	
 	public ThesisBean() {
-		
 	}
 	
 	/**
@@ -46,13 +45,8 @@ public class ThesisBean {
 	 * @param event
 	 */
 	public void actionPrepareAllStudentTheses(ActionEvent event) {
-		employeeService.getDepartmentListFromWebService();
-		thesisList = new ArrayList<Thesis>();		
 		List<Thesis> tempList = employeeService.getThesisList();
-		if (tempList != null && !tempList.isEmpty()) {
-			thesisList.addAll(tempList);
-		}
-		createThesisInformationFromThesis(true);
+		updateThesisList(tempList, true);
 	}	
 	
 	/**
@@ -61,12 +55,7 @@ public class ThesisBean {
 	 */
 	public void actionDisplayDepartmentTheses(ValueChangeEvent event) {
 		String deptCode = event.getNewValue().toString();
-    thesisList = employeeService.getThesisListFromDepartmentCode(deptCode);
-		if(thesisList != null) {
-		  createThesisInformationFromThesis(true);
-		} else {
-		  thesisInformationList.clear();
-		}
+    updateThesisList(employeeService.getThesisListFromDepartmentCode(deptCode), true);
 	}
 
 	/**
@@ -75,12 +64,7 @@ public class ThesisBean {
 	 */
 	public void actionDisplayDepartmentThesesArchive(ValueChangeEvent event) {
 		String deptCode = event.getNewValue().toString();
-    thesisList = employeeService.getArchivedThesisListFromDepartmentCode(deptCode);
-		if(thesisList != null) {
-		  createThesisInformationFromThesis(true);
-		} else {
-		  thesisInformationList.clear();
-		}
+    updateThesisList(employeeService.getArchivedThesisListFromDepartmentCode(deptCode), true);
 	}
 	
 	/**
@@ -88,12 +72,7 @@ public class ThesisBean {
 	 * @param event
 	 */
 	public void actionPrepareMyStudentTheses(ActionEvent event) {
-		thesisList = new ArrayList<Thesis>();		
-		List<Thesis> tempList = employeeService.getThesisList();
-		if (tempList != null && !tempList.isEmpty()) {
-			thesisList.addAll(tempList);
-		}
-		createThesisInformationFromThesis(false);
+		updateThesisList(employeeService.getThesisList(), false);
 	}
 	
 	/**
@@ -110,9 +89,14 @@ public class ThesisBean {
 	 * @param event
 	 */
 	public void actionPrepareArchive(ActionEvent event) {
-		employeeService.getDepartmentListFromWebService();
-		if (thesisList != null) thesisList.clear();
-		if (thesisInformationList != null) thesisInformationList.clear();
+	  updateThesisList(null, true);
+	}
+
+	private void updateThesisList(List<Thesis> list, boolean isAdministrative) {
+	  synchronized(this) {
+	    setThesisList(list);
+	    this.thesisInformationList = createThesisInformationFromThesis(isAdministrative);
+	  }
 	}
 	
 	private Object getRowFromEvent(ActionEvent event) {
@@ -173,28 +157,30 @@ public class ThesisBean {
 		createThesisInformationFromThesis(false);
 	}
 
-	private void createThesisInformationFromThesis(boolean isAdministrative) {
-		log.setLevel(Level.DEBUG);
-		thesisInformationList = new ArrayList<ThesisInformation>();
+	private List<ThesisInformation> createThesisInformationFromThesis(boolean isAdministrative) {
 		Employee employee = employeeService.getLoggedInEmployee();
-		if (!thesisList.isEmpty()) {
-			for (Thesis thesis : thesisList) {
-				if(isAdministrative || thesis.getFacultySupervisor().getName().equals(employee.getName())
-						|| loggedInUserIsSupervisor(thesis.getAssignment().getSupervisorList()) ) {
-					ThesisInformation ti = new ThesisInformation();
-					
-					ti.setAssignmentTitle(thesis.getAssignment().getTitle());
-					if (thesis.getStudentNumber2() != null)
-						ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
-					if (thesis.getStudentNumber3() != null)
-						ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
-					ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
-					ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
-					ti.setThesis(thesis);
-					thesisInformationList.add(ti);
+
+		List<Thesis> tl = getThesisList(); 
+		List<ThesisInformation> tiList = new ArrayList<ThesisInformation>(tl.size());
+		for (Thesis thesis : thesisList) {
+			if(isAdministrative || thesis.getFacultySupervisor().getName().equals(employee.getName())
+					|| loggedInUserIsSupervisor(thesis.getAssignment().getSupervisorList()) ) {
+				ThesisInformation ti = new ThesisInformation();
+				
+				ti.setAssignmentTitle(thesis.getAssignment().getTitle());
+				if (thesis.getStudentNumber2() != null) {
+					ti.setCoStudent1Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber2()).getName());
 				}
-			}		
+				if (thesis.getStudentNumber3() != null) {
+					ti.setCoStudent2Name(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber3()).getName());
+				}
+				ti.setEvaluationSubmissionDeadlineAsString(thesis.getDeadlineForSubmissionForEvalutationAsString());
+				ti.setStudentName(employeeService.getStudentFromStudentNumber(thesis.getStudentNumber1()).getName());
+				ti.setThesis(thesis);
+				tiList.add(ti);
+			}
 		}
+		return tiList;
 	}
 	
 	private boolean loggedInUserIsSupervisor(List<Supervisor> supervisorList) {
@@ -210,20 +196,24 @@ public class ThesisBean {
 	}
 
 	public List<Thesis> getThesisList() {
-		return thesisList;
+	  synchronized(this) {
+	    if (thesisList == null) {
+	      thesisList = new ArrayList<Thesis>();
+	    }
+	    return thesisList;
+	  }
 	}
 
 	public void setThesisList(List<Thesis> thesisList) {
-		this.thesisList = thesisList;
+	  synchronized(this) {
+	    this.thesisList = thesisList;
+	  }
 	}
 
 	public List<ThesisInformation> getThesisInformationList() {
-		return thesisInformationList;
-	}
-
-	public void setThesisInformationList(
-			List<ThesisInformation> thesisInformationList) {
-		this.thesisInformationList = thesisInformationList;
+	  synchronized(this) {
+	    return thesisInformationList;
+	  }
 	}
 
 	public void setEmployeeService(EmployeeService employeeService) {

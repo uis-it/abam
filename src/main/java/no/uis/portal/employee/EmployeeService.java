@@ -75,25 +75,21 @@ public class EmployeeService implements InitializingBean {
   @Override
   public void afterPropertiesSet() throws Exception {
     themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
+    loggedInEmployee = initLoggedInEmployee(themeDisplay);
     initRolesAndPermissions();
+    initDepartmentListFromWebService();
   }
 
-  /**
-	 * @param assignment that should be saved
-	 */
 	public void saveAssignment(Assignment assignment) {
 		abamClient.saveAssignment(assignment);
 	}
 
-	
 	/**
 	 * ActionListener that prepares displayAssignments.jspx
 	 * 
 	 * @param event
 	 */
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
-		getDepartmentListFromWebService();
-
 		if (StringUtils.isBlank(loggedInEmployee.getEmployeeId())) {
 	     throw new IllegalArgumentException("employeeId");
 		} else  {
@@ -272,7 +268,7 @@ public class EmployeeService implements InitializingBean {
 	/**
 	 * Gets the Departments from the webservice, and sets the name based on selected language 
 	 */
-	public void getDepartmentListFromWebService() {
+	private void initDepartmentListFromWebService() {
 	  List<Organization> deps = abamClient.getDepartmentList();
 		departmentSelectItemList.clear();
 		for (Organization dep : deps) {
@@ -413,29 +409,30 @@ public class EmployeeService implements InitializingBean {
 	 * @return Employee object if found, null if not found
 	 */
 	public synchronized Employee getLoggedInEmployee() {
-		if (loggedInEmployee == null) {
-			String loginName = null;
-			User user = getThemeDisplay().getUser();
-			try {			
-        loginName = getUserCustomAttribute(user, COLUMN_UIS_LOGIN_NAME);
-			} catch (Exception e) {
-			  log.warn(user.getFullName(), e);
-			}
-			Employee employee = null;
-			if (loginName != null) {
-			  try {
-			    employee = abamClient.getEmployeeFromUisLoginName(loginName);
-			  } catch(Exception e) {
-			    log.warn(loginName, e);
-			  }
-			}
-			if(employee == null) {
-				employee = UNKNOWN_EMPLOYEE;
-			}
-			loggedInEmployee = employee;
-		}
 		return loggedInEmployee;
-	}		
+	}
+
+  private Employee initLoggedInEmployee(ThemeDisplay td) {
+		String loginName = null;
+		User user = td.getUser();
+		try {			
+      loginName = getUserCustomAttribute(user, COLUMN_UIS_LOGIN_NAME);
+		} catch (Exception e) {
+		  log.warn(user.getFullName(), e);
+		}
+		Employee employee = null;
+		if (loginName != null) {
+		  try {
+		    employee = abamClient.getEmployeeFromUisLoginName(loginName);
+		  } catch(Exception e) {
+		    log.warn(loginName, e);
+		  }
+		}
+		if(employee == null) {
+			employee = UNKNOWN_EMPLOYEE;
+		}
+		return employee;
+  }		
 	
 	// TODO this is the same function as in StudentService, put common code in a library
 	private static String getUserCustomAttribute(User user, String columnName) throws PortalException, SystemException {
