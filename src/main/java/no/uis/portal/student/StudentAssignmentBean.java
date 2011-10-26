@@ -4,9 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
@@ -16,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
+import no.uis.abam.commons.AttachmentResource;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Attachment;
@@ -33,6 +36,7 @@ import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
+import com.icesoft.faces.context.Resource;
 
 public class StudentAssignmentBean implements DisposableBean {
 
@@ -109,7 +113,7 @@ public class StudentAssignmentBean implements DisposableBean {
 	 */	
 	public void actionRemoveSupervisor(ActionEvent event) {
 		UIComponent uic = event.getComponent();
-		HtmlDataTable table = (HtmlDataTable) uic.getParent().getParent().getParent().getParent().getParent();
+		HtmlDataTable table = (HtmlDataTable) uic.getParent().getParent();
 		currentAssignment.getSupervisorList().remove(table.getRowData());		
 	}
 	
@@ -229,10 +233,10 @@ public class StudentAssignmentBean implements DisposableBean {
 	 */
 	public void actionRemoveAttachment(ActionEvent event){
     Iterator<Attachment> iter = currentAssignment.getAttachments().iterator();
-    Object fileToRemove = getRowFromEvent(event);
+    AttachmentResource res = (AttachmentResource)getRowFromEvent(event);
     while(iter.hasNext()) {
       Attachment att = iter.next();
-      if (att.getFileName().equals(fileToRemove)) {
+      if (att.getFileName().equals(res.getFileName())) {
         iter.remove();
         break;
       }
@@ -265,6 +269,16 @@ public class StudentAssignmentBean implements DisposableBean {
 		return currentAssignment;
 	}
 
+	public List<Resource> getCurrentAttachmentResources() {
+    List<Attachment> attachments = currentAssignment.getAttachments();
+    List<Resource> resources = new ArrayList<Resource>(attachments.size());
+    for (Attachment attachment : attachments) {
+      Resource res = new AttachmentResource(attachment.getData(), attachment.getFileName(), attachment.getContentType());
+      resources.add(res);
+    }
+    return resources;
+	}
+	
 	public void setCurrentAssignment(Assignment currentAssignment) {
 		this.currentAssignment = currentAssignment;
 	}

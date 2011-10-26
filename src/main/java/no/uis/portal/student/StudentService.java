@@ -58,11 +58,12 @@ public class StudentService implements InitializingBean {
 	private List<Application> applicationsToRemove = new ArrayList<Application>();
 	private List<SelectItem> departmentSelectItemList = new ArrayList<SelectItem>();
 	private List<SelectItem> studyProgramSelectItemList = new ArrayList<SelectItem>();
-	private List<Organization> departmentList;
 	
 	private String selectedStudyProgramCode;
 	
 	private ThemeDisplay themeDisplay;
+
+  private String studentDepartmentName;
 	
   public StudentService() {
 	}
@@ -71,6 +72,12 @@ public class StudentService implements InitializingBean {
   public void afterPropertiesSet() throws Exception {
     FacesContext context  = FacesContext.getCurrentInstance();
     themeDisplay = LiferayUtil.getThemeDisplay(context);
+    Student stud = getStudentFromLogin();
+    if (stud == null) {
+      stud = UNKNOWN_STUDENT;
+    }
+    currentStudent = stud;
+    this.studentDepartmentName = initDepartmentName();
   }
 
   private Student getStudentFromLogin() {
@@ -262,20 +269,20 @@ public class StudentService implements InitializingBean {
 		applicationsToRemove.clear();
 	}
 	
-	public synchronized List<Organization> getDepartmentList() {
+	private String initDepartmentName() {
+	  
 	  Student stud = getCurrentStudent();
-		if(departmentList == null && stud != null) {
-		  List<Organization> depts = abamStudentClient.getDepartmentList();
-		  String lang = getThemeDisplay().getLocale().getLanguage();
-			for (Organization dept : depts) {
-        if (dept.getPlaceRef().equals(stud.getDepartmentCode())) {
-          String name = BaseTextUtil.getText(dept.getName(), lang);
-          departmentSelectItemList.add(new SelectItem(dept.getPlaceRef(),name));
-        }
+	  String deptCode = stud.getDepartmentCode();
+	  
+    List<Organization> depts = abamStudentClient.getDepartmentList();
+	  String lang = getThemeDisplay().getLocale().getLanguage();
+		for (Organization dept : depts) {
+      if (dept.getPlaceRef().equals(deptCode)) {
+        String name = BaseTextUtil.getText(dept.getName(), lang);
+        return name;
       }
-			departmentList = depts;
-		}
-		return departmentList;
+    }
+		return deptCode;
 	}
 
   public void removeAssignment(Assignment assignment) {
@@ -291,13 +298,6 @@ public class StudentService implements InitializingBean {
 	}
 
 	public synchronized Student getCurrentStudent() {
-		if (currentStudent == null) {
-			Student stud = getStudentFromLogin();
-			if (stud == null) {
-			  stud = UNKNOWN_STUDENT;
-			}
-			currentStudent = stud;
-		}
 		return currentStudent;
 	}
 
@@ -306,8 +306,12 @@ public class StudentService implements InitializingBean {
 	}
 	
   public String getCurrentDepartmentName() {
-      // TODO show name instead
-    return getCurrentStudent().getDepartmentCode();
+    return studentDepartmentName;
+  }
+  
+  public String getCurrentStudyProgramName() {
+    String code = getCurrentStudent().getStudyProgramCode();
+    return this.getStudyProgramNameFromCode(code);
   }
   
 	public void updateStudentInWebServiceFromCurrentStudent() {
@@ -374,12 +378,9 @@ public class StudentService implements InitializingBean {
 		return departmentSelectItemList;
 	}
 
+	@Deprecated
 	public String getStudentInstitute() {
-	  Student stud = getCurrentStudent();
-	  if (stud != null) {
-	    return stud.getDepartmentName();
-	  }
-	  return "";
+	  return this.getCurrentDepartmentName();
 	}
 	
 	public void setDepartmentSelectItemList(
