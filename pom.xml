@@ -26,6 +26,8 @@
         <slf4j.version>1.5.10</slf4j.version>
         <commons.logging.version>1.1.1</commons.logging.version>
         <hibernate.version>3.6.7.Final</hibernate.version>
+        <antlr.version>2.7.7</antlr.version>
+        <asm.version>3.3</asm.version>
     </properties>
 
     <developers>
@@ -142,6 +144,16 @@
                 <artifactId>jaxb-impl</artifactId>
                 <version>${jaxb.impl.version}</version>
             </dependency>
+            <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>${antlr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -205,11 +217,12 @@
         <dependency>
             <groupId>net.sf.sojo</groupId>
             <artifactId>sojo</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>ws-abam</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
