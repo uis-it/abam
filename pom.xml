@@ -20,6 +20,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <uis.model.version>2.0.0-SNAPSHOT</uis.model.version>
+    <commons.logging.version>1.1.1</commons.logging.version>
+    <commons.beanutils.version>1.8.2</commons.beanutils.version>
   </properties>
 
   <scm>
@@ -47,6 +49,26 @@
     </developer>
   </developers>
   
+  <dependencyManagement>
+    <dependencies>
+        <dependency>
+        	<groupId>no.uis.service.model</groupId>
+        	<artifactId>model-do</artifactId>
+        	<version>${uis.model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons.logging.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons.beanutils.version}</version>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <dependencies>
     <dependency>
       <groupId>no.uis.abam</groupId>
@@ -56,7 +78,6 @@
     <dependency>
     	<groupId>no.uis.service.model</groupId>
     	<artifactId>model-do</artifactId>
-    	<version>${uis.model.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
