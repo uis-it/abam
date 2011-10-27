@@ -69,14 +69,14 @@
 							validator="#{assignmentBean.validateNumberOfStudentsField}"
 							/>
 						<ice:message for="numberOfStudents" showSummary="true" showDetail="false"/>
-					</ice:panelGrid>
+					</ice:panelGroup>
 					
 					<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
 					<ice:panelGroup>
 						<ice:inputText id="facultySupervisor" size="100" required="true" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/>
 						<ice:message for="facultySupervisor" showSummary="true" showDetail="false"/>
 					</ice:panelGroup>		
-				</ice:panelGrid>			
+				</ice:panelGrid>
 				<ice:dataTable 
 					var="supervisor" 
 					value="#{assignmentBean.currentAssignment.supervisorList}"
