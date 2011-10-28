@@ -12,7 +12,7 @@
     
 	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
 	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
-	  <property name="address" value="http://localhost/AbamWebService/AbamWebService"/>
+ 	  <property name="address" value="http://wsapps-stage01.uis.no/ws-abam/AbamWebService"/>
 	</bean>
 	  
 	<bean id="studentService" class="no.uis.portal.student.StudentService" scope="session">

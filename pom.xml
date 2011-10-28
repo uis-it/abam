@@ -132,19 +132,19 @@
 		</dependency-->
 		<dependency>
 			<groupId>no.uis.abam</groupId>
-			<artifactId>dom</artifactId>
+			<artifactId>abam-dom</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-  	<dependency>
+  	    <dependency>
 			<groupId>no.uis.abam</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>abam-commons</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>no.uis.abam</groupId>
-			<artifactId>ws-abam</artifactId>
+			<artifactId>abam-ws</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-            <type>war</type>
+            <classifier>jar</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.icefaces</groupId>
@@ -187,7 +187,7 @@
 	</dependencyManagement>
 	
 	<build>
-		<finalName>student</finalName>
+		<finalName>abam-student</finalName>
 		<pluginManagement>
 			<plugins>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
