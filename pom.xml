@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>no.uis.abam</groupId>
-  <artifactId>commons</artifactId>
+  <artifactId>abam-commons</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -100,6 +100,4 @@
       </url>
     </site>
   </distributionManagement>
-  
-  
 </project>
