@@ -134,6 +134,7 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   public List<Assignment> getAssignments() {
     
     List<Assignment> assignments = getJpaTemplate().find("FROM Assignment");
+    loadEntity(assignments);
     return assignments;
   }
 
