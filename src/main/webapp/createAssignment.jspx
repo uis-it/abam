@@ -60,7 +60,7 @@
 					
 					<ice:outputText value="#{msgs.lbl_faculty_supervisor}" />
 					<ice:panelGroup>
-						<ice:inputText id="facultySupervisor" size="100"
+						<ice:inputText id="facultySupervisor" size="100" partialSubmit="true"
 							required="true" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/>
 						<ice:message for="facultySupervisor"/>
 					</ice:panelGroup>
