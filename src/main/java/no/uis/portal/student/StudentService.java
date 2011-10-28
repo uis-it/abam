@@ -273,6 +273,9 @@ public class StudentService implements InitializingBean {
 	  
 	  Student stud = getCurrentStudent();
 	  String deptCode = stud.getDepartmentCode();
+	  if (stud instanceof UnknownStudent) {
+	    return deptCode;
+	  }
 	  
     List<Organization> depts = abamStudentClient.getDepartmentList();
 	  String lang = getThemeDisplay().getLocale().getLanguage();
