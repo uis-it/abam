@@ -218,6 +218,12 @@
             <groupId>net.sf.sojo</groupId>
             <artifactId>sojo</artifactId>
             <version>1.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-attributes</groupId>
+                    <artifactId>commons-attributes-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
