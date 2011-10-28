@@ -2,11 +2,8 @@
 	xmlns:portlet="http://java.sun.com/portlet"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:liferay-theme="http://liferay.com/tld/theme"
-	xmlns:liferay-security="http://liferay.com/tld/security"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
-		<liferay-theme:defineObjects/>
 		<f:loadBundle basename="Language" var="msgs" />
 		<ice:form>
 			<ice:panelGrid columns="1" border="0">

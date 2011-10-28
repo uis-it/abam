@@ -1,11 +1,8 @@
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:liferay-security="http://liferay.com/tld/security"
-	xmlns:liferay-theme="http://liferay.com/tld/theme"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
-		<liferay-theme:defineObjects/>
 		<f:loadBundle basename="Language" var="msgs" />
 		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>		
 		<ice:outputText value="#{msgs.lbl_search_archive}" styleClass="titleStyle"/>
