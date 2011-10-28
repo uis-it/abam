@@ -9,5 +9,7 @@
 			<action-key>RENEW_ASSIGNMENTS</action-key>				
 			<action-key>VIEW_EXTERNAL_EXAMINER</action-key>	
 		</supports>
+		<community-defaults>
+		</community-defaults>
 	</portlet-resource>
 </resource-action-mapping>

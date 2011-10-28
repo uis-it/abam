@@ -78,6 +78,11 @@
         <spring.version>3.0.6.RELEASE</spring.version>
         <commons.lang.version>2.2</commons.lang.version>
         <commons.collections.version>3.2</commons.collections.version>
+        <antlr.version>2.7.7</antlr.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <asm.version>3.3</asm.version>
+        <jaxb.impl.version>2.2.4</jaxb.impl.version>
+        <jaxb.api.version>2.2.3</jaxb.api.version>
     </properties>
 
     <dependencies>
@@ -132,19 +137,19 @@
         </dependency>
         <dependency>
             <groupId>no.uis.abam</groupId>
-            <artifactId>dom</artifactId>
+            <artifactId>abam-dom</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>no.uis.abam</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>abam-commons</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>no.uis.abam</groupId>
-            <artifactId>ws-abam</artifactId>
+            <artifactId>abam-ws</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-            <type>war</type>
+            <classifier>jar</classifier>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
@@ -171,6 +176,16 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>antlr</groupId>
+                <artifactId>antlr</artifactId>
+                <version>${antlr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
                 <version>${spring.version}</version>
@@ -185,11 +200,31 @@
                 <artifactId>commons-collections</artifactId>
                 <version>${commons.collections.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb.impl.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <finalName>employee</finalName>
+        <finalName>abam-employee</finalName>
         <pluginManagement>
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse 
