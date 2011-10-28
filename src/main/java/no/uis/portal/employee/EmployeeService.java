@@ -41,7 +41,18 @@ import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 public class EmployeeService implements InitializingBean {
 	
-	private static final UnknownEmployee UNKNOWN_EMPLOYEE = new UnknownEmployee();
+	public static class BooleanHashMap extends HashMap<String, Boolean> {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public Boolean get(Object key) {
+      Boolean result = super.get(key);
+      return result == null ? Boolean.FALSE : result;
+    }
+  }
+
+  private static final UnknownEmployee UNKNOWN_EMPLOYEE = new UnknownEmployee();
 
   public static final String COLUMN_UIS_LOGIN_NAME = "UiS-login-name";
 	private Logger log = Logger.getLogger(EmployeeService.class);
@@ -65,9 +76,9 @@ public class EmployeeService implements InitializingBean {
 	private Employee loggedInEmployee;
 	private ThemeDisplay themeDisplay;
 
-  private Map<String, Boolean> permissions = new HashMap<String, Boolean>();
+  private Map<String, Boolean> permissions = new BooleanHashMap();
 
-  private Map<String, Boolean> userRoles = new HashMap<String, Boolean>();
+  private Map<String, Boolean> userRoles = new BooleanHashMap();
 	
 	public EmployeeService() {	
 	}
@@ -369,7 +380,7 @@ public class EmployeeService implements InitializingBean {
           permissions.put(permission.getActionId(), Boolean.TRUE);
         }
       } catch (SystemException e) {       
-        log.debug("initialize permissions", e);
+        log.warn("initialize permissions", e);
       }     
     }
 	}
