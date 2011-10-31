@@ -124,6 +124,9 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   @Override
   public void removeAssignment(Assignment assignment) {
     JpaTemplate jpa = getJpaTemplate();
+    assignment.setAuthor(null);
+    assignment.setFacultySupervisor(null);
+    assignment.setSupervisorList(null);
     assignment = jpa.merge(assignment);
     jpa.remove(assignment);
     jpa.flush();
