@@ -8,7 +8,7 @@
 	<description>ABAM Services</description>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/abam-ws-beans.xml</param-value>
+		<param-value>WEB-INF/abam-ws-beans.xml,WEB-INF/idm-ws-beans.xml</param-value>
 	</context-param>
 
 	<listener>

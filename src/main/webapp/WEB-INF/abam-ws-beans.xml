@@ -30,7 +30,6 @@
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
-    <import resource="classpath:idm-ws/beans.xml"/>
 
     <jaxws:endpoint id="abamWebService" implementor="#abamWS"
         address="/AbamWebService"/>
