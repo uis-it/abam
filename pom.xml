@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>no.uis.portal.portlet</groupId>
 		<artifactId>parent-pom</artifactId>
-		<version>3.0.4</version>
+		<version>3.0.7</version>
 	</parent>
 
   <developers>
