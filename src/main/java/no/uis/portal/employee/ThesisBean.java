@@ -10,18 +10,16 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import no.uis.abam.commons.ThesisInformation;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Supervisor;
+import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisStatus;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 
-import no.uis.abam.commons.ThesisInformation;
-import no.uis.abam.dom.*;
-
 public class ThesisBean {
 
-	private Logger log = Logger.getLogger(ThesisBean.class);
-	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy");
 	
 	private List<Thesis> thesisList;

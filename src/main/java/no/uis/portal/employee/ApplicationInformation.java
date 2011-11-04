@@ -1,6 +1,5 @@
 package no.uis.portal.employee;
 
-import no.uis.abam.dom.AbamType;
 import no.uis.abam.dom.Application;
 
 

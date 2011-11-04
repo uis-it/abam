@@ -4,17 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.component.ActionSource;
@@ -24,7 +19,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.PhaseId;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -38,7 +32,6 @@ import no.uis.abam.dom.Supervisor;
 import no.uis.abam.dom.Thesis;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
@@ -50,8 +43,6 @@ import com.icesoft.faces.context.Resource;
 public class EmployeeAssignmentBean implements DisposableBean {
 		
 	private EmployeeService employeeService;
-	private Logger log = Logger.getLogger(EmployeeAssignmentBean.class);
-	
 	private Assignment currentAssignment;
 	private Thesis currentThesis;
 	
@@ -64,8 +55,6 @@ public class EmployeeAssignmentBean implements DisposableBean {
   private boolean autoUpload = true;
   private int uploadProgress;
 	
-	//private Locale locale;
-
 	public EmployeeAssignmentBean(){
 	}
 	

@@ -15,9 +15,13 @@ import java.util.Map;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import com.icesoft.faces.context.DisposableBean;
+import no.uis.abam.dom.Application;
+import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Thesis;
+import no.uis.abam.dom.ThesisStatus;
+import no.uis.abam.dom.ThesisStatusType;
 
-import no.uis.abam.dom.*;
+import com.icesoft.faces.context.DisposableBean;
 
 /**
  * @author Stig Rune Malterud
@@ -79,8 +83,9 @@ public class AssignSortableBean implements DisposableBean{
 		setToDate(TO_DATE_BACHELOR_DEFAULT);
 	}
 
+	// TODO
 	private void sort() {
-		Comparator comparator = new Comparator(){
+		Comparator<Object> comparator = new Comparator<Object>(){
 			public int compare(Object obj1, Object obj2) {
 				ApplicationInformation app1 = (ApplicationInformation)obj1;
 				ApplicationInformation app2 = (ApplicationInformation)obj2;
