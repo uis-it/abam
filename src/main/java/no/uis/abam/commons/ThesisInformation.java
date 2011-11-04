@@ -1,10 +1,5 @@
 package no.uis.abam.commons;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
-import no.uis.abam.dom.AbamType;
 import no.uis.abam.dom.Thesis;
 
 public class ThesisInformation {
