@@ -28,6 +28,7 @@
         <hibernate.version>3.6.7.Final</hibernate.version>
         <antlr.version>2.7.7</antlr.version>
         <asm.version>3.3</asm.version>
+        <sojo.version>1.0.2</sojo.version>
     </properties>
 
     <developers>
@@ -170,7 +171,7 @@
         </dependency>
         <dependency>
             <groupId>no.uis.abam</groupId>
-            <artifactId>dom</artifactId>
+            <artifactId>abam-dom</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -183,7 +184,7 @@
             <groupId>no.uis.service.ws</groupId>
             <artifactId>idm</artifactId>
             <version>${ws.idm.version}</version>
-            <classifier>lib</classifier>
+            <classifier>jar</classifier>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -217,7 +218,7 @@
         <dependency>
             <groupId>net.sf.sojo</groupId>
             <artifactId>sojo</artifactId>
-            <version>1.0.1</version>
+            <version>${sojo.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-attributes</groupId>

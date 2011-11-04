@@ -27,7 +27,7 @@ public class TestWebservice {
   public static void initSpring() {
     
     System.setProperty("catalina.base", "x:");
-    ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:/abam-ws/beans.xml");
+    ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("/abam-ws/beans.xml");
     abamService = ctx.getBean("abamWS", AbamWebService.class);
     
     testData = ctx.getBean("config-props", Properties.class);

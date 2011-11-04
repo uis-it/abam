@@ -2,6 +2,7 @@ package no.uis.abam.ws_abam;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,6 +11,8 @@ import java.util.Map;
 
 import net.sf.sojo.core.Converter;
 import net.sf.sojo.core.conversion.Iterateable2IterateableConversion;
+import net.sf.sojo.core.conversion.Simple2SimpleConversion;
+import net.sf.sojo.core.reflect.ReflectionHelper;
 import no.uis.abam.dom.AbamGroup;
 import no.uis.abam.dom.AbamPerson;
 import no.uis.abam.dom.AbamType;
@@ -39,6 +42,8 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   
   private ObjectFinder<AbamPerson> personFinder;
   private ObjectFinder<Supervisor> supervisorFinder;
+
+  private Converter converter;
   
   public AbamDaoImpl() {
   }
@@ -372,13 +377,23 @@ public class AbamDaoImpl extends JpaDaoSupport implements AbamDao {
   @SuppressWarnings("unchecked")
   private <T> T loadEntity(T entity) {
 //    try {
-      Converter converter = new Converter();
-      converter.addConversion(new LazyLoadConversion());
-      converter.addConversion(new Iterateable2IterateableConversion());
-      return (T)converter.convert(entity);
+      Converter conv = getConverter();
+      return (T)conv.convert(entity);
 //    } catch(Exception e) {
 //      log.error("entity " + entity, e);
 //    }
+  }
+
+  private synchronized Converter getConverter() {
+    if (this.converter == null) {
+      Converter conv = new Converter();
+      conv.addConversion(new ByteArrayConversion());
+      conv.addConversion(new Simple2SimpleConversion(GregorianCalendar.class));
+      conv.addConversion(new LazyLoadConversion());
+      conv.addConversion(new Iterateable2IterateableConversion());
+      this.converter = conv;
+    }
+    return this.converter;
   }
 
   private abstract static class ObjectFinder<T extends AbamType> {
