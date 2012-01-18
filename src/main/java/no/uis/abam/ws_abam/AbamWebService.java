@@ -87,6 +87,7 @@ public interface AbamWebService {
 	/**
 	 * @return next available id, assignmentList size plus one
 	 */
+	@Deprecated
 	public int getNextId();
 	
 	/**
