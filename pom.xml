@@ -14,7 +14,7 @@
     </parent>
 
     <properties>
-        <ws.idm.version>1.0.0-SNAPSHOT</ws.idm.version>
+        <ws.idm.version>1.0.1</ws.idm.version>
         <spring.version>3.0.6.RELEASE</spring.version>
         <beanutils.version>1.8.0</beanutils.version>
         <cxf.version>2.3.6</cxf.version>
@@ -184,7 +184,7 @@
             <groupId>no.uis.service.ws</groupId>
             <artifactId>idm</artifactId>
             <version>${ws.idm.version}</version>
-            <classifier>jar</classifier>
+            <classifier>lib</classifier>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
