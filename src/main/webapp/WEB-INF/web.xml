@@ -5,10 +5,10 @@
 
 <web-app>
 	<display-name>ABAM Services</display-name>
-	<description>ABAM Services</description>
+	<description>ABAM Services ${project.version}</description>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/abam-ws-beans.xml,WEB-INF/idm-ws-beans.xml</param-value>
+		<param-value>WEB-INF/config-eans.xml,WEB-INF/abam-ws-beans.xml,WEB-INF/idm-ws-beans.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -30,4 +30,37 @@
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/secure/*</url-pattern>
+	</servlet-mapping>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Abam Secure WebServices</web-resource-name>
+			<url-pattern>/secure/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>CN=FullServerAdmin_Utvikling,OU=AdminGroups,OU=Administration,DC=uis,DC=no</role-name>
+			<role-name>CN=WebApps_Query,OU=AdminGroups,OU=Administration,DC=uis,DC=no</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<description>protect with SSL</description>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Abam Secure WebServices</realm-name>
+	</login-config>
+	
+	<security-role>
+	    <role-name>CN=FullServerAdmin_Utvikling,OU=AdminGroups,OU=Administration,DC=uis,DC=no</role-name>
+	</security-role>
+	
+	<security-role>
+		<role-name>CN=WebApps_Query,OU=AdminGroups,OU=Administration,DC=uis,DC=no</role-name>	
+	</security-role>
 </web-app>

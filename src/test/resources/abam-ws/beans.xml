@@ -1,89 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
-		xmlns:tx="http://www.springframework.org/schema/tx"
-		xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-		<bean id="config-props"
-				class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-				<property name="ignoreResourceNotFound" value="true" />
-				<property name="locations">
-						<list>
-								<value>file:${user.home}/ws-abam.properties</value>
-						</list>
-				</property>
-		</bean>
+	<bean id="config-props"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>file:${user.home}/ws-abam.properties</value>
+			</list>
+		</property>
+	</bean>
 
-		<bean
-				class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-				<property name="properties" ref="config-props" />
-		</bean>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="config-props" />
+	</bean>
 
-		<import resource="classpath:META-INF/cxf/cxf.xml" />
-		<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-		<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-		<jaxws:endpoint id="abamWebService" implementor="#abamWS"
-				address="/AbamWebService" />
+	<jaxws:endpoint id="abamWebService" implementor="#abamWS"
+		address="/AbamWebService" />
 
-		<bean id="abamWS" class="no.uis.abam.ws_abam.AbamWebServiceImpl">
-				<property name="idmService" ref="idmWS" />
-				<property name="abamDao" ref="abamDao" />
-		</bean>
+	<bean id="abamWS" class="no.uis.abam.ws_abam.AbamWebServiceImpl">
+		<property name="idmService" ref="idmWS" />
+		<property name="abamDao" ref="abamDao" />
+	</bean>
 
-		<bean id="abamDao" class="no.uis.abam.ws_abam.AbamDaoImpl">
-			<property name="entityManagerFactory" ref="abamEmf"/>
-		</bean>
-		
-		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-				destroy-method="close">
-				<property name="driverClassName" value="${database.driver.class.name}" />
-				<property name="url" value="${database.url}" />
-				<property name="username" value="${database.username}" />
-				<property name="password" value="${database.password}" />
-				<property name="validationQuery" value="${database.validation.query}" />
-				<!--property name="validationQueryTimeout" value="10" / -->
-		</bean>
+	<bean id="abamDao" class="no.uis.abam.ws_abam.AbamDaoImpl">
+		<property name="entityManagerFactory" ref="abamEmf" />
+	</bean>
 
-		<bean id="jpaAdapter"
-				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="database" value="${database.type}" />
-				<property name="databasePlatform" value="${hibernate.dialect}" />
-				<property name="showSql" value="${hibernate.show.sql}" />
-				<property name="generateDdl" value="true" />
-		</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${database.driver.class.name}" />
+		<property name="url" value="${database.url}" />
+		<property name="username" value="${database.username}" />
+		<property name="password" value="${database.password}" />
+		<property name="validationQuery" value="${database.validation.query}" />
+		<!--property name="validationQueryTimeout" value="10" / -->
+	</bean>
 
-		<bean id="abamEmf"
-				class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-				<property name="persistenceUnitName" value="no.uis.abam" />
-				<property name="dataSource">
-						<ref local="dataSource" />
-				</property>
-				<property name="jpaVendorAdapter">
-						<ref local="jpaAdapter" />
-				</property>
-				<property name="jpaProperties">
-						<props>
-								<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-								<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-								<prop key="hibernate.connection.characterEncoding">UTF8</prop>
-						</props>
-				</property>
-		</bean>
+	<bean id="jpaAdapter"
+		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="database" value="${database.type}" />
+		<property name="databasePlatform" value="${hibernate.dialect}" />
+		<property name="showSql" value="${hibernate.show.sql}" />
+		<property name="generateDdl" value="true" />
+	</bean>
+
+	<bean id="abamEmf"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="no.uis.abam" />
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="jpaVendorAdapter">
+			<ref local="jpaAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.connection.characterEncoding">UTF8</prop>
+			</props>
+		</property>
+	</bean>
 
 
-		<tx:annotation-driven transaction-manager="personTransactionManager" />
-		<bean id="personTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-				<property name="entityManagerFactory">
-						<ref local="abamEmf" />
-				</property>
-		</bean>
-		<bean
-				class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-		<bean
-				class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<tx:annotation-driven transaction-manager="personTransactionManager" />
+	<bean id="personTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory">
+			<ref local="abamEmf" />
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<bean
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
+	<bean id="idmWS" class="no.uis.abam.ws_abam.test.IdmWsFactory">
+	</bean>
 </beans>

@@ -226,6 +226,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+        	<groupId>org.apache.derby</groupId>
+        	<artifactId>derby</artifactId>
+        	<version>10.8.2.2</version>
+        	<scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -263,6 +269,27 @@
                     </descriptors>
                 </configuration>
             </plugin>
+			<plugin>
+			  <artifactId>maven-war-plugin</artifactId>
+			  <executions>
+			    <execution>
+			      <id>default-war</id>
+			      <phase>package</phase>
+			      <goals>
+			        <goal>war</goal>
+			      </goals>
+					<configuration>
+						<webResources>
+							<resource>
+								<directory>src/main/webapp</directory>
+								<filtering>true</filtering>
+							</resource>
+						</webResources>
+					</configuration>
+			    </execution>
+			  </executions>
+			</plugin>
+            
         </plugins>
     </build>
 
