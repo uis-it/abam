@@ -3,11 +3,14 @@ package no.uis.abam.dom;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity(name="ThesisStatus")
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -20,6 +23,8 @@ public class ThesisStatus extends AbamType {
   
 	private String responsible;
 	
+	@Basic
+	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar date;
 	
 	private static SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");

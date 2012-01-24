@@ -18,7 +18,7 @@ public class AbamGroup extends AbamType {
    this.name = groupName; 
   }
   
-  @Column(name="_NAME")
+  @Column(name="NAME_")
   private String name;
 
   public String getName() {

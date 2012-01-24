@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity(name="Thesis")
@@ -49,10 +52,16 @@ public class Thesis extends AbamType {
 	 * The thesis must be accepted by the student after it is assigned by the supervisor.
 	 * Accepting a thesis is like signing a contract.  
 	 */
+	@Basic
+	@Temporal(TemporalType.DATE)
 	private Calendar acceptionDeadline;
 
+  @Basic
+  @Temporal(TemporalType.DATE)
 	private Calendar submissionDeadline;
-	
+
+  @Basic
+  @Temporal(TemporalType.DATE)
 	private Calendar submissionDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)

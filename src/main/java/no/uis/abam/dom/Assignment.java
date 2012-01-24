@@ -6,7 +6,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity(name="Assignment")
@@ -54,7 +58,12 @@ public class Assignment extends AbamType {
 	@JoinColumn(name="FACULTYSUPERVISOR_ID")
 	private Employee facultySupervisor;
 	
+	@Basic
+	@Temporal(TemporalType.DATE)
 	private Calendar addedDate;
+	
+  @Basic
+  @Temporal(TemporalType.DATE)
 	private Calendar expireDate;
 
 	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
