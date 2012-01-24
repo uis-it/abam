@@ -23,6 +23,7 @@
     <commons.logging.version>1.1.1</commons.logging.version>
     <commons.beanutils.version>1.8.2</commons.beanutils.version>
     <icefaces.version>1.8.2</icefaces.version>
+    <liferay.version>5.2.3</liferay.version>
   </properties>
 
   <scm>
@@ -90,6 +91,11 @@
     	<groupId>org.icefaces</groupId>
     	<artifactId>icefaces</artifactId>
     	<version>${icefaces.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.liferay</groupId>
+    	<artifactId>portal-kernel</artifactId>
+    	<version>${liferay.version}</version>
     </dependency>
   </dependencies>
   
