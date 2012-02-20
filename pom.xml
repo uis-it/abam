@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>no.uis.abam</groupId>
   <artifactId>abam-commons</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>abam-commons</name>
@@ -27,17 +26,17 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</connection>
-    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</developerConnection>
-    <url>https://abam.googlecode.com/svn/abam_commons/trunk</url>
+    <connection>scm:svn:https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</connection>
+    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</developerConnection>
+    <url>https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</url>
   </scm>
   
   <developers>
     <developer>
-      <id></id>
+      <id />
       <name>Martin Goldhahn</name>
-      <email></email>
-      <url></url>
+      <email />
+      <url />
       <organization>Universitetet i Stavanger</organization>
       <organizationUrl>http://www.uis.no</organizationUrl>
       <roles>
@@ -46,7 +45,7 @@
       </roles>
       <timezone>+1</timezone>
       <properties>
-        <picUrl></picUrl>
+        <picUrl />
       </properties>
     </developer>
   </developers>
