@@ -3,7 +3,7 @@
 
   <groupId>no.uis.abam</groupId>
   <artifactId>abam-commons</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>abam-commons</name>
@@ -26,9 +26,9 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</connection>
-    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</developerConnection>
-    <url>https://abam.googlecode.com/svn/abam_commons/tags/abam-commons-1.0.0</url>
+    <connection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</connection>
+    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</developerConnection>
+    <url>https://abam.googlecode.com/svn/abam_commons/trunk</url>
   </scm>
   
   <developers>
