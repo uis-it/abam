@@ -8,10 +8,10 @@
 
 	<bean id="config-props"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreResourceNotFound" value="false" />
 		<property name="locations">
 			<list>
-				<value>file:${user.home}/ws-abam.properties</value>
+				<value>${catalina.home}/conf/ws-abam.properties</value>
 			</list>
 		</property>
 	</bean>

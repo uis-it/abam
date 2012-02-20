@@ -8,7 +8,7 @@
 	<description>ABAM Services ${project.version}</description>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/config-eans.xml,WEB-INF/abam-ws-beans.xml,WEB-INF/idm-ws-beans.xml</param-value>
+		<param-value>WEB-INF/config-beans.xml,WEB-INF/abam-ws-beans.xml,WEB-INF/idm-ws-beans.xml</param-value>
 	</context-param>
 
 	<listener>
@@ -23,6 +23,10 @@
 		<servlet-class>
 			org.apache.cxf.transport.servlet.CXFServlet
 		</servlet-class>
+        <init-param>
+        	<param-name>static-resources-list</param-name>
+        	<param-value>/(\w)+.txt</param-value>
+        </init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
