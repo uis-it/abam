@@ -9,10 +9,18 @@
 
     <bean id="abamStudentClient" class="no.uis.abam.ws_abam.AbamWebService" 
       factory-bean="clientFactory" factory-method="create"/>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<bean class="no.uis.abam.commons.LiferayProperties" factory-method="getProperties"/>
+		</property>
+	</bean>    
     
 	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
 	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
- 	  <property name="address" value="http://wsapps-stage01.uis.no/ws-abam/AbamWebService"/>
+ 	  <property name="address" value="${no.uis.portal.abam.ws.address}"/>
+ 	  <property name="username" value="${no.uis.portal.abam.ws.username}"/>
+ 	  <property name="password" value="${no.uis.portal.abam.ws.password}"/>
 	</bean>
 	  
 	<bean id="studentService" class="no.uis.portal.student.StudentService" scope="session">
