@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    	<property name="properties" value="config-props"/>
+    	<property name="properties" ref="config-props"/>
     </bean>
 
     <import resource="classpath:META-INF/cxf/cxf.xml"/>

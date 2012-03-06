@@ -11,7 +11,7 @@
 		<property name="ignoreResourceNotFound" value="false" />
 		<property name="locations">
 			<list>
-				<value>${catalina.home}/conf/ws-abam.properties</value>
+				<value>file:${catalina.home}/conf/ws-abam.properties</value>
 			</list>
 		</property>
 	</bean>
