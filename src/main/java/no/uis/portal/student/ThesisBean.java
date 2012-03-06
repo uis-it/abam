@@ -2,7 +2,6 @@ package no.uis.portal.student;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.faces.component.UIComponent;
@@ -10,6 +9,11 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.lang.StringUtils;
+
+import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.icesoft.faces.component.inputfile.FileInfo;
+import com.icesoft.faces.component.inputfile.InputFile;
+import com.icesoft.faces.context.Resource;
 
 import no.uis.abam.commons.AttachmentResource;
 import no.uis.abam.commons.ThesisInformation;
@@ -19,12 +23,6 @@ import no.uis.abam.dom.Student;
 import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisStatus;
 import no.uis.abam.dom.ThesisStatusType;
-
-import com.icesoft.faces.component.ext.HtmlDataTable;
-import com.icesoft.faces.component.inputfile.FileInfo;
-import com.icesoft.faces.component.inputfile.InputFile;
-import com.icesoft.faces.context.DisposableBean;
-import com.icesoft.faces.context.Resource;
 
 public class ThesisBean {
 

@@ -2,8 +2,6 @@ package no.uis.portal.student;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -18,15 +16,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import no.uis.abam.commons.AttachmentResource;
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.AssignmentType;
-import no.uis.abam.dom.Attachment;
-import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.Student;
-import no.uis.abam.dom.Supervisor;
-import no.uis.abam.util.NumberValidator;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -37,6 +26,14 @@ import com.icesoft.faces.component.inputfile.FileInfo;
 import com.icesoft.faces.component.inputfile.InputFile;
 import com.icesoft.faces.context.DisposableBean;
 import com.icesoft.faces.context.Resource;
+
+import no.uis.abam.commons.AttachmentResource;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.AssignmentType;
+import no.uis.abam.dom.Attachment;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Supervisor;
+import no.uis.abam.util.NumberValidator;
 
 public class StudentAssignmentBean implements DisposableBean {
 
@@ -124,8 +121,6 @@ public class StudentAssignmentBean implements DisposableBean {
 	public void actionUpdateCurrentAssignment(ActionEvent event) {
 		String clientId = event.getComponent().getClientId(context);
 		clientId = clientId.replaceAll("CreateButton", "");
-		
-		Map<?,?> parameterMap = context.getExternalContext().getRequestParameterMap();
 		
 		log.setLevel(Level.DEBUG);
 		currentAssignment.setDepartmentCode(studentService.findDepartmentCodeForCurrentStudent());

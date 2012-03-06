@@ -1,23 +1,16 @@
 package no.uis.portal.student;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
-import org.apache.myfaces.shared_impl.util.MessageUtils;
+import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.icesoft.faces.component.ext.UIColumn;
 
 import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.AssignmentType;
 import no.uis.abam.dom.Student;
-
-import com.icesoft.faces.component.ext.HtmlDataTable;
-import com.icesoft.faces.component.ext.UIColumn;
-import com.icesoft.faces.context.DisposableBean;
 
 public class ApplicationBean {
 	
