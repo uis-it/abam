@@ -1,8 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>employee</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<packaging>war</packaging>
 
@@ -18,10 +17,10 @@
 
 	<developers>
 		<developer>
-			<id></id>
+			<id />
 			<name>Bente Cecilie Andorsen</name>
-			<email></email>
-			<url></url>
+			<email />
+			<url />
 			<organization>Universitetet i Stavanger</organization>
 			<organizationUrl>http://www.uis.no</organizationUrl>
 			<roles>
@@ -30,14 +29,14 @@
 			</roles>
 			<timezone>+1</timezone>
 			<properties>
-				<picUrl></picUrl>
+				<picUrl />
 			</properties>
 		</developer>
 		<developer>
-			<id></id>
+			<id />
 			<name>Stig Rune Malterud</name>
-			<email></email>
-			<url></url>
+			<email />
+			<url />
 			<organization>Universitetet i Stavanger</organization>
 			<organizationUrl>http://www.uis.no</organizationUrl>
 			<roles>
@@ -46,14 +45,14 @@
 			</roles>
 			<timezone>+1</timezone>
 			<properties>
-				<picUrl></picUrl>
+				<picUrl />
 			</properties>
 		</developer>
 		<developer>
-			<id></id>
+			<id />
 			<name>Martin Goldhahn</name>
-			<email></email>
-			<url></url>
+			<email />
+			<url />
 			<organization>Universitetet i Stavanger</organization>
 			<organizationUrl>http://www.uis.no</organizationUrl>
 			<roles>
@@ -62,15 +61,15 @@
 			</roles>
 			<timezone>+1</timezone>
 			<properties>
-				<picUrl></picUrl>
+				<picUrl />
 			</properties>
 		</developer>
 	</developers>
 
 	<scm>
-		<connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</connection>
-		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</developerConnection>
-		<url>https://abam.googlecode.com/svn/abam_employee/trunk</url>
+		<connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.0</connection>
+		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.0</developerConnection>
+		<url>https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.0</url>
 	</scm>
 
 	<properties>
