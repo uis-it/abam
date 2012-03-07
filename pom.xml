@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>employee</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 
 	<packaging>war</packaging>
 
@@ -67,9 +67,9 @@
 	</developers>
 
 	<scm>
-		<connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</connection>
-		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</developerConnection>
-		<url>https://abam.googlecode.com/svn/abam_employee/trunk</url>
+		<connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.1</connection>
+		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.1</developerConnection>
+		<url>https://abam.googlecode.com/svn/abam_employee/tags/employee-1.0.1</url>
 	</scm>
 
 	<properties>
