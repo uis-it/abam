@@ -13,20 +13,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import no.uis.abam.commons.BaseTextUtil;
-import no.uis.abam.dom.AbamGroup;
-import no.uis.abam.dom.Application;
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Employee;
-import no.uis.abam.dom.Student;
-import no.uis.abam.dom.Thesis;
-import no.uis.abam.ws_abam.AbamWebService;
-import no.uis.portal.util.LiferayUtil;
-import no.uis.service.model.Organization;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.InitializingBean;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
@@ -39,7 +27,18 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
-public class EmployeeService implements InitializingBean {
+import no.uis.abam.commons.BaseTextUtil;
+import no.uis.abam.dom.AbamGroup;
+import no.uis.abam.dom.Application;
+import no.uis.abam.dom.Assignment;
+import no.uis.abam.dom.Employee;
+import no.uis.abam.dom.Student;
+import no.uis.abam.dom.Thesis;
+import no.uis.abam.ws_abam.AbamWebService;
+import no.uis.portal.util.LiferayUtil;
+import no.uis.service.model.Organization;
+
+public class EmployeeService {
 	
 	public static class BooleanHashMap extends HashMap<String, Boolean> {
 
@@ -73,8 +72,8 @@ public class EmployeeService implements InitializingBean {
 	private List<Assignment> assignmentSet;
 	private Set<Assignment> displayAssignmentSet;
 	
-	private Employee loggedInEmployee;
-	private ThemeDisplay themeDisplay;
+	private Employee _loggedInEmployee;
+	private ThemeDisplay _themeDisplay;
 
   private Map<String, Boolean> permissions = new BooleanHashMap();
 
@@ -83,14 +82,6 @@ public class EmployeeService implements InitializingBean {
 	public EmployeeService() {	
 	}
 	
-  @Override
-  public void afterPropertiesSet() throws Exception {
-    themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
-    loggedInEmployee = initLoggedInEmployee(themeDisplay);
-    initRolesAndPermissions();
-    initDepartmentListFromWebService();
-  }
-
 	public void saveAssignment(Assignment assignment) {
 		abamClient.saveAssignment(assignment);
 	}
@@ -101,10 +92,10 @@ public class EmployeeService implements InitializingBean {
 	 * @param event
 	 */
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
-		if (StringUtils.isBlank(loggedInEmployee.getEmployeeId())) {
+		if (StringUtils.isBlank(getLoggedInEmployee().getEmployeeId())) {
 	     throw new IllegalArgumentException("employeeId");
 		} else  {
-      Organization org = abamClient.getEmployeeDeptarment(loggedInEmployee.getEmployeeId());
+      Organization org = abamClient.getEmployeeDeptarment(getLoggedInEmployee().getEmployeeId());
       setSelectedDepartmentCode(org.getPlaceRef());
       getStudyProgramListFromSelectedDepartment();
       setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
@@ -125,7 +116,7 @@ public class EmployeeService implements InitializingBean {
   private void checkIfLoggedInUserIsAuthor() {
 		if(assignmentSet != null) {
 			for (Assignment assignment : assignmentSet) {
-				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
+				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(getLoggedInEmployee().getName())) {
 					assignment.setLoggedInUserIsAuthor(true);
 				} else {
 					assignment.setLoggedInUserIsAuthor(false);
@@ -161,7 +152,7 @@ public class EmployeeService implements InitializingBean {
 	  if (code != null) {
   		for (Organization dep : departmentList) {
   		  if(dep.getPlaceRef().equals(code)) {
-  		    return BaseTextUtil.getText(dep.getName(), themeDisplay.getLocale().getLanguage());
+  		    return BaseTextUtil.getText(dep.getName(), getThemeDisplay().getLocale().getLanguage());
   		  }
   		}
 	  }
@@ -228,7 +219,7 @@ public class EmployeeService implements InitializingBean {
 
 	public String getStudyProgramNameFromCode(String programCode) {
     no.uis.service.model.StudyProgram studProg = abamClient.getStudyProgramFromCode(programCode);
-    return BaseTextUtil.getText(studProg.getName(), themeDisplay.getLocale().getLanguage());
+    return BaseTextUtil.getText(studProg.getName(), getThemeDisplay().getLocale().getLanguage());
 	}
 	
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn, String selectedStudyProgram) {
@@ -279,7 +270,7 @@ public class EmployeeService implements InitializingBean {
 	/**
 	 * Gets the Departments from the webservice, and sets the name based on selected language 
 	 */
-	private void initDepartmentListFromWebService() {
+	private void initDepartmentListFromWebService(String lang) {
 	  List<Organization> deps = abamClient.getDepartmentList();
 		departmentSelectItemList.clear();
 		for (Organization dep : deps) {
@@ -288,7 +279,7 @@ public class EmployeeService implements InitializingBean {
       if (placeRef == null || placeRef.length() == 0) {
         item = new SelectItem("", "");
       } else {
-        item = new SelectItem(placeRef, BaseTextUtil.getText(dep.getName(), themeDisplay.getLocale().getLanguage()));
+        item = new SelectItem(placeRef, BaseTextUtil.getText(dep.getName(), lang));
       }
       departmentSelectItemList.add(item);
     }
@@ -319,7 +310,7 @@ public class EmployeeService implements InitializingBean {
 	private void updateStudyProgramSelectItemList() {
 		studyProgramSelectItemList.clear();
 		for (no.uis.service.model.StudyProgram prog : selectedStudyProgramList) {
-		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), BaseTextUtil.getText(prog.getName(), themeDisplay.getLocale().getLanguage())));
+		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), BaseTextUtil.getText(prog.getName(), getThemeDisplay().getLocale().getLanguage())));
     }
 	}
 
@@ -369,8 +360,7 @@ public class EmployeeService implements InitializingBean {
 	  return this.abamClient;
 	}
 	
-	private void initRolesAndPermissions() {
-    User user = themeDisplay.getUser();
+	private void initRolesAndPermissions(User user) {
 
     for (Role role : user.getRoles()) {
       userRoles.put(role.getName(), Boolean.TRUE);
@@ -412,15 +402,32 @@ public class EmployeeService implements InitializingBean {
 	}
 
 	public ThemeDisplay getThemeDisplay() {
-		return themeDisplay;
+	  if (_themeDisplay == null) {
+	    synchronized(this) {
+	      if (_themeDisplay == null) {
+	        _themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
+	        initRolesAndPermissions(_themeDisplay.getUser());
+	        initDepartmentListFromWebService(_themeDisplay.getLocale().getLanguage());
+
+	      }
+	    }
+	  }
+		return _themeDisplay;
 	}
 	
 	/**
 	 * Finds the logged in Employee based on employee id 
-	 * @return Employee object if found, null if not found
+	 * @return Employee object if found, UNKNOWN_EMPLOYEE if not found
 	 */
-	public synchronized Employee getLoggedInEmployee() {
-		return loggedInEmployee;
+	public Employee getLoggedInEmployee() {
+	  if (_loggedInEmployee == null) {
+	    synchronized(this) {
+	      if (_loggedInEmployee == null) {
+	        _loggedInEmployee = initLoggedInEmployee(getThemeDisplay());
+	      }
+	    }
+	  }
+		return _loggedInEmployee;
 	}
 
   private Employee initLoggedInEmployee(ThemeDisplay td) {
@@ -439,10 +446,8 @@ public class EmployeeService implements InitializingBean {
 		    log.warn(loginName, e);
 		  }
 		}
-		if(employee == null) {
-			employee = UNKNOWN_EMPLOYEE;
-		}
-		return employee;
+
+		return (employee == null ? UNKNOWN_EMPLOYEE : employee);
   }		
 	
 	// TODO this is the same function as in StudentService, put common code in a library
