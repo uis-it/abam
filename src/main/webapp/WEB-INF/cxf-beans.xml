@@ -23,7 +23,7 @@
  	  <property name="password" value="${no.uis.portal.abam.ws.password}"/>
 	</bean>
 	  
-	<bean id="employeeService" class="no.uis.portal.employee.EmployeeService" scope="singleton">
+	<bean id="employeeService" class="no.uis.portal.employee.EmployeeService" scope="session">
 		<property name="abamClient" ref="abamClient"/>
 	</bean>
 	

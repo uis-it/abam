@@ -15,6 +15,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.icesoft.faces.component.ext.HtmlSelectOneMenu;
 import com.liferay.portal.PortalException;
@@ -38,7 +39,7 @@ import no.uis.abam.ws_abam.AbamWebService;
 import no.uis.portal.util.LiferayUtil;
 import no.uis.service.model.Organization;
 
-public class EmployeeService {
+public class EmployeeService implements InitializingBean {
 	
 	public static class BooleanHashMap extends HashMap<String, Boolean> {
 
@@ -72,8 +73,8 @@ public class EmployeeService {
 	private List<Assignment> assignmentSet;
 	private Set<Assignment> displayAssignmentSet;
 	
-	private Employee _loggedInEmployee;
-	private ThemeDisplay _themeDisplay;
+	private Employee loggedInEmployee;
+	private ThemeDisplay themeDisplay;
 
   private Map<String, Boolean> permissions = new BooleanHashMap();
 
@@ -82,6 +83,14 @@ public class EmployeeService {
 	public EmployeeService() {	
 	}
 	
+  @Override
+  public void afterPropertiesSet() throws Exception {
+    themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
+    loggedInEmployee = initLoggedInEmployee(themeDisplay);
+    initRolesAndPermissions(themeDisplay.getUser());
+    initDepartmentListFromWebService(themeDisplay.getLocale().getDisplayLanguage());
+  }
+
 	public void saveAssignment(Assignment assignment) {
 		abamClient.saveAssignment(assignment);
 	}
@@ -92,10 +101,10 @@ public class EmployeeService {
 	 * @param event
 	 */
 	public void actionPrepareDisplayAssignments(ActionEvent event) {		
-		if (StringUtils.isBlank(getLoggedInEmployee().getEmployeeId())) {
+		if (StringUtils.isBlank(loggedInEmployee.getEmployeeId())) {
 	     throw new IllegalArgumentException("employeeId");
 		} else  {
-      Organization org = abamClient.getEmployeeDeptarment(getLoggedInEmployee().getEmployeeId());
+      Organization org = abamClient.getEmployeeDeptarment(loggedInEmployee.getEmployeeId());
       setSelectedDepartmentCode(org.getPlaceRef());
       getStudyProgramListFromSelectedDepartment();
       setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
@@ -116,7 +125,7 @@ public class EmployeeService {
   private void checkIfLoggedInUserIsAuthor() {
 		if(assignmentSet != null) {
 			for (Assignment assignment : assignmentSet) {
-				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(getLoggedInEmployee().getName())) {
+				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
 					assignment.setLoggedInUserIsAuthor(true);
 				} else {
 					assignment.setLoggedInUserIsAuthor(false);
@@ -152,7 +161,7 @@ public class EmployeeService {
 	  if (code != null) {
   		for (Organization dep : departmentList) {
   		  if(dep.getPlaceRef().equals(code)) {
-  		    return BaseTextUtil.getText(dep.getName(), getThemeDisplay().getLocale().getLanguage());
+  		    return BaseTextUtil.getText(dep.getName(), themeDisplay.getLocale().getLanguage());
   		  }
   		}
 	  }
@@ -219,7 +228,7 @@ public class EmployeeService {
 
 	public String getStudyProgramNameFromCode(String programCode) {
     no.uis.service.model.StudyProgram studProg = abamClient.getStudyProgramFromCode(programCode);
-    return BaseTextUtil.getText(studProg.getName(), getThemeDisplay().getLocale().getLanguage());
+    return BaseTextUtil.getText(studProg.getName(), themeDisplay.getLocale().getLanguage());
 	}
 	
 	private boolean assignmentShouldBeDisplayed(Assignment assignmentIn, String selectedStudyProgram) {
@@ -310,7 +319,7 @@ public class EmployeeService {
 	private void updateStudyProgramSelectItemList() {
 		studyProgramSelectItemList.clear();
 		for (no.uis.service.model.StudyProgram prog : selectedStudyProgramList) {
-		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), BaseTextUtil.getText(prog.getName(), getThemeDisplay().getLocale().getLanguage())));
+		  studyProgramSelectItemList.add(new SelectItem(prog.getId(), BaseTextUtil.getText(prog.getName(), themeDisplay.getLocale().getLanguage())));
     }
 	}
 
@@ -402,17 +411,7 @@ public class EmployeeService {
 	}
 
 	public ThemeDisplay getThemeDisplay() {
-	  if (_themeDisplay == null) {
-	    synchronized(this) {
-	      if (_themeDisplay == null) {
-	        _themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
-	        initRolesAndPermissions(_themeDisplay.getUser());
-	        initDepartmentListFromWebService(_themeDisplay.getLocale().getLanguage());
-
-	      }
-	    }
-	  }
-		return _themeDisplay;
+		return themeDisplay;
 	}
 	
 	/**
@@ -420,14 +419,7 @@ public class EmployeeService {
 	 * @return Employee object if found, UNKNOWN_EMPLOYEE if not found
 	 */
 	public Employee getLoggedInEmployee() {
-	  if (_loggedInEmployee == null) {
-	    synchronized(this) {
-	      if (_loggedInEmployee == null) {
-	        _loggedInEmployee = initLoggedInEmployee(getThemeDisplay());
-	      }
-	    }
-	  }
-		return _loggedInEmployee;
+		return loggedInEmployee;
 	}
 
   private Employee initLoggedInEmployee(ThemeDisplay td) {
