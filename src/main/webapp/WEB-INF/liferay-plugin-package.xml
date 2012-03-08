@@ -3,7 +3,7 @@
 
 <plugin-package>
 	<name>Abam Student Portlet</name>
-	<module-id>no.uis.portal.portlet/abam_student/${project.version}/war</module-id>
+	<module-id>${project.groupId}/${project.artifactId}/${project.version}/war</module-id>
 	<types>
 		<type>portlet</type>
 	</types>
