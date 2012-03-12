@@ -4,24 +4,21 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer;
 
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import javassist.util.proxy.ProxyObject;
+
+import org.hibernate.proxy.pojo.javassist.JavassistLazyInitializer;
+
 import net.sf.sojo.core.ComplexConversion;
 import net.sf.sojo.core.IConverter;
 import net.sf.sojo.core.IConverterExtension;
 import net.sf.sojo.core.NonCriticalExceptionHandler;
-import net.sf.sojo.core.conversion.ComplexBean2MapConversion;
 import net.sf.sojo.core.reflect.Property;
 import net.sf.sojo.core.reflect.ReflectionHelper;
 import net.sf.sojo.core.reflect.ReflectionPropertyHelper;
 import net.sf.sojo.util.Util;
-import no.uis.abam.dom.Assignment;
-import no.uis.abam.dom.Employee;
 
 /**
  * This class allows SOJO to convert and load lazy loaded Collections.
@@ -34,13 +31,12 @@ public class LazyLoadConversion extends ComplexConversion {
   public LazyLoadConversion() {
   }
   
-  @SuppressWarnings("rawtypes")
   @Override
-  public Object convert(Object pvObject, Class pvToType, IConverterExtension pvConverterExtension) {
+  public Object convert(Object pvObject, Class<?> pvToType, IConverterExtension pvConverterExtension) {
     Class<?> propClass = findTargetClass(pvObject);
-    Map lvGetterMap = ReflectionPropertyHelper.getAllGetterProperties(propClass, null);
-    Object target = ReflectionHelper.createNewIteratableInstance(propClass, lvGetterMap.size()); 
-    Iterator it = lvGetterMap.entrySet().iterator();
+    Map<?,?> lvGetterMap = ReflectionPropertyHelper.getAllGetterProperties(propClass, null);
+    Object target = ReflectionHelper.createNewIterableInstance(propClass, lvGetterMap.size()); 
+    Iterator<?> it = lvGetterMap.entrySet().iterator();
     return super.iterate(pvObject, target, it, pvConverterExtension);
   }
 
@@ -66,7 +62,7 @@ public class LazyLoadConversion extends ComplexConversion {
   @Override
   protected Object[] doTransformIteratorObject2KeyValuePair(Object pvIteratorObject) {
     @SuppressWarnings("unchecked")
-    Map.Entry<String, Method> entry = (Entry<String, Method>)pvIteratorObject;
+    Map.Entry<String, Method> entry = (Map.Entry<String, Method>)pvIteratorObject;
     return new Object[] {entry.getKey(), entry.getValue()};
   }
 
@@ -105,7 +101,7 @@ public class LazyLoadConversion extends ComplexConversion {
       return;
     }
     @SuppressWarnings("unchecked")
-    Map<String, Method> setterMap = ReflectionPropertyHelper.getAllSetterProperties(pvNewTargetObject.getClass(), null);
+    Map<?, ? extends AccessibleObject> setterMap = (Map<?, ? extends AccessibleObject>)ReflectionPropertyHelper.getAllSetterProperties(pvNewTargetObject.getClass(), null);
     AccessibleObject lvAccessibleObject = null;
     try {
       lvAccessibleObject = setterMap.get(pvKey);
@@ -126,9 +122,8 @@ public class LazyLoadConversion extends ComplexConversion {
     return false;
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
-  public boolean isAssignableTo(Class pvToType) {
+  public boolean isAssignableTo(Class<?> pvToType) {
     return false;
   }
 }

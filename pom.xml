@@ -27,7 +27,7 @@
         <hibernate.version>3.6.7.Final</hibernate.version>
         <antlr.version>2.7.7</antlr.version>
         <asm.version>3.3</asm.version>
-        <sojo.version>1.0.2</sojo.version>
+        <sojo.version>1.0.4-SNAPSHOT</sojo.version>
     </properties>
 
     <developers>
