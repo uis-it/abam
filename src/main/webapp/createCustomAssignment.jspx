@@ -37,7 +37,7 @@
 					</f:facet>
 				</ice:panelGrid>
 
-				<ice:panelGrid columns="2" rendered="#{!applicationBean.renderGetCustomAssignment}">
+				<ice:panelGrid columns="2" rendered="#{!assignmentBean.renderGetCustomAssignment}">
 					<ice:outputText value="#{msgs.lbl_title}"/>
 					<ice:panelGroup>
 						<ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"/>
