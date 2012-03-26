@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.uis.abam</groupId>
     <artifactId>abam-ws</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
     <packaging>war</packaging>
     <name>Abam Web Service</name>
 
@@ -82,9 +82,9 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:https://abam.googlecode.com/svn/ws-abam/trunk</connection>
-        <developerConnection>scm:svn:https://abam.googlecode.com/svn/ws-abam/trunk</developerConnection>
-        <url>https://abam.googlecode.com/svn/ws-abam/trunk</url>
+        <connection>scm:svn:https://abam.googlecode.com/svn/ws-abam/tags/abam-ws-1.0.2</connection>
+        <developerConnection>scm:svn:https://abam.googlecode.com/svn/ws-abam/tags/abam-ws-1.0.2</developerConnection>
+        <url>https://abam.googlecode.com/svn/ws-abam/tags/abam-ws-1.0.2</url>
     </scm>
 
     <dependencyManagement>
