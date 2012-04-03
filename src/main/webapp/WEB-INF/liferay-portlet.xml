@@ -6,7 +6,7 @@
 		<portlet-name>employee</portlet-name>		
 		<instanceable>false</instanceable>
 		<render-weight>1</render-weight>
-		<ajaxable>false</ajaxable>
+		<ajaxable>true</ajaxable>
 		<add-default-resource>true</add-default-resource>	
 	</portlet>
 	<role-mapper>
