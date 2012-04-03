@@ -2,12 +2,12 @@ package no.uis.portal.student;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -35,9 +35,11 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.util.NumberValidator;
 
-public class StudentAssignmentBean implements DisposableBean {
+public class StudentAssignmentBean implements DisposableBean, Serializable {
 
-	private FacesContext context;
+	private static final long serialVersionUID = 1L;
+	
+  private FacesContext context;
 	private StudentService studentService;
 	
 	private Logger log = Logger.getLogger(StudentAssignmentBean.class); 

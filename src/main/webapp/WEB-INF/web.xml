@@ -1,9 +1,60 @@
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-	version="2.4">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd"
+	version="2.5">
 
 	<display-name>student</display-name>
 	
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.jspx</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<!-- ICEfaces does not support client state saving so saving method must be server side. -->
+		<param-value>server</param-value>
+	</context-param>
+  
+	<!-- http://res.icesoft.org/docs/v1_8_2/htmlguide/devguide/appendixB.html -->
+	<context-param>
+		<param-name>com.icesoft.faces.compressResources</param-name>
+		<param-value>true</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
+		<param-value>true</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>com.icesoft.faces.delegateNonIface</param-name>
+		<param-value>true</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>com.icesoft.faces.portlet.hiddenAttributes</param-name>
+		<param-value>COMPANY_ID LAYOUT RENDER_PORTLET THEME_DISPLAY</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
+		<param-value>true</param-value>
+	</context-param>
+  
+	<context-param>
+		<param-name>com.icesoft.faces.uploadDirectory</param-name>
+		<param-value>${catalina.home}/upload</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.icesoft.faces.uploadDirectoryAbsolute</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
+		<param-value>41943040</param-value>
+	</context-param>
+	
+  
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>WEB-INF/cxf-beans.xml</param-value>
@@ -14,49 +65,6 @@
 		</listener-class>
 	</listener>
 	
-	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.jspx</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-
-		<!--
-			ICEfaces does not support client state saving so saving method must
-			be server side.
-		-->
-
-		<param-value>server</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.compressResources</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.concurrentDOMViews</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.delegateNonIface</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.hiddenPortletAttributes</param-name>
-		<param-value>COMPANY_ID LAYOUT RENDER_PORTLET THEME_DISPLAY</param-value>
-	</context-param>
-	<context-param>
-		<!-- this is the default value -->
-		<param-name>com.icesoft.faces.synchronousUpdate</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadDirectory</param-name>
-		<param-value>${catalina.home}/upload</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadDirectoryAbsolute</param-name>
-		<param-value>true</param-value>
-	</context-param>
 	<context-param>
 		<param-name>com.icesoft.faces.heartbeatInterval</param-name>
 		<param-value>50000</param-value>
@@ -69,14 +77,9 @@
 		<param-name>com.icesoft.faces.heartbeatTimeout</param-name>
 		<param-value>30000</param-value>
 	</context-param>
-	<context-param>
-		<param-name>com.icesoft.faces.uploadMaxFileSize</param-name>
-		<param-value>41943040</param-value>
-	</context-param>
-	
 	<filter>
 		<filter-name>Touch Session</filter-name>
-		<filter-class>com.icesoft.faces.webapp.http.servlet.TouchSessionFilter</filter-class>
+		<filter-class>no.uis.com.icesoft.faces.webapp.http.servlet.TouchSessionFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>Touch Session</filter-name>
@@ -89,14 +92,12 @@
 	</servlet>
 	<servlet>
 		<servlet-name>File Upload Servlet</servlet-name>
-		<servlet-class>
-			com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
+		<servlet-class>com.icesoft.faces.component.inputfile.FileUploadServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>Persistent Faces Servlet</servlet-name>
-		<servlet-class>
-			com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
+		<servlet-class>com.icesoft.faces.webapp.xmlhttp.PersistentFacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>

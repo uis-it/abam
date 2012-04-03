@@ -1,9 +1,8 @@
 <f:view 
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
-		<f:loadBundle basename="Language" var="msgs" />	
+		<ice:loadBundle basename="Language" var="msgs" />	
 		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
 		<ice:outputText value="#{msgs.lbl_create_custom_assignment}" styleClass="title"/>
 		<ice:form>
@@ -21,8 +20,8 @@
 					layout="pageDirection"
 					partialSubmit="true"
 				>
-					<f:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
-					<f:selectItem itemValue="#{true}" itemLabel="#{msgs.lbl_get_assignment_from_studentnumber}" />
+					<ice:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
+					<ice:selectItem itemValue="#{true}" itemLabel="#{msgs.lbl_get_assignment_from_studentnumber}" />
 				</ice:selectOneRadio>
 				
 				<ice:panelGrid columns="3" rendered="#{assignmentBean.renderGetCustomAssignment}">
@@ -31,7 +30,6 @@
 					<ice:commandButton type="submit" value="#{msgs.btn_get_assignment}" 
 						actionListener="#{assignmentBean.actionGetCustomAssignmentFromStudentNumber}" immediate="true" id="getButton"
 					/>
-					
 					<f:facet name="footer">
 						<ice:message for="studentNumber"/>
 					</f:facet>

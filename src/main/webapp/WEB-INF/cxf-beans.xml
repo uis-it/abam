@@ -20,15 +20,9 @@
 
 	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
 	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
- 	  <property name="address">
- 	  	<util:property-path path="config.properties[no.uis.portal.abam.ws.address]"/>
- 	  </property>
- 	  <property name="username">
- 	  	<util:property-path path="config.properties[no.uis.portal.abam.ws.username]"/>
- 	  </property>
- 	  <property name="password">
- 	  	<util:property-path path="config.properties[no.uis.portal.abam.ws.password]"/>
- 	  </property>
+ 	  <property name="address" value="#{config.properties['no.uis.portal.abam.ws.address']}"/>
+ 	  <property name="username" value="#{config.properties['no.uis.portal.abam.ws.username']}"/>
+ 	  <property name="password" value="#{config.properties['no.uis.portal.abam.ws.password']}"/>
 	</bean>
 	  
 	<bean id="studentService" class="no.uis.portal.student.StudentService" scope="session">

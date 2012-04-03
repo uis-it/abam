@@ -1,5 +1,6 @@
 package no.uis.portal.student;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.faces.component.UIComponent;
@@ -12,9 +13,11 @@ import no.uis.abam.dom.Application;
 import no.uis.abam.dom.Assignment;
 import no.uis.abam.dom.Student;
 
-public class ApplicationBean {
+public class ApplicationBean implements Serializable {
 	
-	private Calendar deadlineMaster = initDeadline(Calendar.DECEMBER, 1);
+	private static final long serialVersionUID = 1L;
+	
+  private Calendar deadlineMaster = initDeadline(Calendar.DECEMBER, 1);
 	private Calendar deadlineBachelor = initDeadline(Calendar.NOVEMBER, 15);
 
 	private StudentService studentService;

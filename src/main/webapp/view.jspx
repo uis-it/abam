@@ -1,7 +1,8 @@
-<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component" >
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
 		<ice:loadBundle basename="Language" var="msgs"/>
 		<ice:form>
+		  <ice:outputConnectionStatus disconnectedLabel="Disconnected" activeLabel="Active" cautionLabel="Caution" showPopupOnDisconnect="false"/>
 			<ice:panelGrid columns="1" border="0" width="500" rendered="#{!empty studentService.currentStudent.studentNumber}">
 					<ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" />
 					<ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" rendered="#{!applicationBean.deadlineForApplyingReached}" />

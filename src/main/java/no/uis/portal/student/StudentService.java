@@ -1,5 +1,6 @@
 package no.uis.portal.student;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,6 +12,17 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+
+import org.apache.log4j.Logger;
+import org.apache.myfaces.shared_impl.util.MessageUtils;
+
+import com.icesoft.faces.component.ext.HtmlDataTable;
+import com.liferay.portal.PortalException;
+import com.liferay.portal.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoTableConstants;
+import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 
 import no.uis.abam.commons.BaseTextUtil;
 import no.uis.abam.dom.Application;
@@ -24,20 +36,10 @@ import no.uis.portal.util.LiferayUtil;
 import no.uis.service.model.Organization;
 import no.uis.service.model.StudyProgram;
 
-import org.apache.log4j.Logger;
-import org.apache.myfaces.shared_impl.util.MessageUtils;
-import org.springframework.beans.factory.InitializingBean;
-
-import com.icesoft.faces.component.ext.HtmlDataTable;
-import com.liferay.portal.PortalException;
-import com.liferay.portal.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.expando.model.ExpandoTableConstants;
-import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
-
 // TODO improve protection of resources in concurrent thread environment, it is a mess. 
-public class StudentService implements InitializingBean {
+public class StudentService implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private static final UnknownStudent UNKNOWN_STUDENT = new UnknownStudent();
 
@@ -68,22 +70,10 @@ public class StudentService implements InitializingBean {
   public StudentService() {
 	}
 
-	@Override
-  public void afterPropertiesSet() throws Exception {
-    FacesContext context  = FacesContext.getCurrentInstance();
-    themeDisplay = LiferayUtil.getThemeDisplay(context);
-    Student stud = getStudentFromLogin();
-    if (stud == null) {
-      stud = UNKNOWN_STUDENT;
-    }
-    currentStudent = stud;
-    this.studentDepartmentName = initDepartmentName();
-  }
-
-  private Student getStudentFromLogin() {
+  private Student getStudentFromLogin(ThemeDisplay tdisp) {
 		String loginName = null;
 		try {			
-			loginName = getUserCustomAttribute(getThemeDisplay().getUser(), COLUMN_UIS_LOGIN_NAME);
+			loginName = getUserCustomAttribute(tdisp.getUser(), COLUMN_UIS_LOGIN_NAME);
 		} catch (Exception e) {
 		  log.warn(loginName, e);
 		}
@@ -94,7 +84,10 @@ public class StudentService implements InitializingBean {
 		return student;
 	}
 
-	public ThemeDisplay getThemeDisplay() {
+	public synchronized ThemeDisplay getThemeDisplay() {
+	  if (themeDisplay == null) {
+	    themeDisplay = LiferayUtil.getThemeDisplay(FacesContext.getCurrentInstance());
+	  }
 		return themeDisplay;
 	}
 	
@@ -269,16 +262,15 @@ public class StudentService implements InitializingBean {
 		applicationsToRemove.clear();
 	}
 	
-	private String initDepartmentName() {
+	private String initDepartmentName(ThemeDisplay td, Student stud) {
 	  
-	  Student stud = getCurrentStudent();
 	  String deptCode = stud.getDepartmentCode();
 	  if (stud instanceof UnknownStudent) {
 	    return deptCode;
 	  }
 	  
     List<Organization> depts = abamStudentClient.getDepartmentList();
-	  String lang = getThemeDisplay().getLocale().getLanguage();
+	  String lang = td.getLocale().getLanguage();
 		for (Organization dept : depts) {
       if (dept.getPlaceRef().equals(deptCode)) {
         String name = BaseTextUtil.getText(dept.getName(), lang);
@@ -301,14 +293,27 @@ public class StudentService implements InitializingBean {
 	}
 
 	public synchronized Student getCurrentStudent() {
+	  if (currentStudent == null) {
+      ThemeDisplay td = getThemeDisplay();
+      if (td != null) {
+        Student stud = getStudentFromLogin(td);
+        if (stud == null) {
+          return UNKNOWN_STUDENT;
+        }
+        currentStudent = stud;
+      }
+	  }
 		return currentStudent;
 	}
 
 	private synchronized void setCurrentStudent(Student stud) {
-	  currentStudent = stud;
+	  this.currentStudent = stud;
 	}
 	
-  public String getCurrentDepartmentName() {
+  public synchronized String getCurrentDepartmentName() {
+    if (studentDepartmentName == null) {
+      this.studentDepartmentName = initDepartmentName(getThemeDisplay(), getCurrentStudent());
+    }
     return studentDepartmentName;
   }
   
