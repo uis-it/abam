@@ -2,7 +2,6 @@ package no.uis.portal.student;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -35,10 +34,8 @@ import no.uis.abam.dom.Employee;
 import no.uis.abam.dom.Supervisor;
 import no.uis.abam.util.NumberValidator;
 
-public class StudentAssignmentBean implements DisposableBean, Serializable {
+public class StudentAssignmentBean implements DisposableBean {
 
-	private static final long serialVersionUID = 1L;
-	
   private FacesContext context;
 	private StudentService studentService;
 	

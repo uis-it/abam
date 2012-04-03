@@ -1,6 +1,5 @@
 package no.uis.portal.student;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -25,9 +24,7 @@ import no.uis.abam.dom.Thesis;
 import no.uis.abam.dom.ThesisStatus;
 import no.uis.abam.dom.ThesisStatusType;
 
-public class ThesisBean implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class ThesisBean {
 
   private StudentService studentService;
 	

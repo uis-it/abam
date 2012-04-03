@@ -1,6 +1,5 @@
 package no.uis.portal.student;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -15,6 +14,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.apache.myfaces.shared_impl.util.MessageUtils;
+import org.springframework.beans.factory.InitializingBean;
 
 import com.icesoft.faces.component.ext.HtmlDataTable;
 import com.liferay.portal.PortalException;
@@ -37,9 +37,7 @@ import no.uis.service.model.Organization;
 import no.uis.service.model.StudyProgram;
 
 // TODO improve protection of resources in concurrent thread environment, it is a mess. 
-public class StudentService implements Serializable {
-
-  private static final long serialVersionUID = 1L;
+public class StudentService implements InitializingBean {
 
   private static final UnknownStudent UNKNOWN_STUDENT = new UnknownStudent();
 
@@ -70,6 +68,10 @@ public class StudentService implements Serializable {
   public StudentService() {
 	}
 
+  @Override
+  public void afterPropertiesSet() throws Exception {
+  }
+  
   private Student getStudentFromLogin(ThemeDisplay tdisp) {
 		String loginName = null;
 		try {			
@@ -596,6 +598,7 @@ public class StudentService implements Serializable {
       return false;
     }
   }
+
 }
 
 
