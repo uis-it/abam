@@ -20,7 +20,7 @@
 	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
  	  <property name="address" value="#{config.properties['no.uis.portal.abam.ws.address']}"/>
  	  <property name="username" value="#{config.properties['no.uis.portal.abam.ws.username']}"/>
- 	  <property name="password" value="#config.properties{'no.uis.portal.abam.ws.password']}"/>
+ 	  <property name="password" value="#{config.properties['no.uis.portal.abam.ws.password']}"/>
 	</bean>
 	  
 	<bean id="employeeService" class="no.uis.portal.employee.EmployeeService" scope="session">
