@@ -1,7 +1,6 @@
 <f:view xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:portlet="http://java.sun.com/portlet"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 	<ice:portlet>
 		<f:loadBundle basename="Language" var="msgs" />
