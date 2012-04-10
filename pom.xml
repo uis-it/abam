@@ -71,13 +71,13 @@
   </scm>
 
   <properties>
-    <icefaces.version>1.8.2-uis</icefaces.version>
+    <icefaces.version>1.8.2</icefaces.version>
     <spring.version>3.0.6.RELEASE</spring.version>
     <antlr.version>2.7.7</antlr.version>
     <commons.collections.version>3.2.1</commons.collections.version>
     <commons.lang.version>2.4</commons.lang.version>
     <asm.version>3.3</asm.version>
-    <slf4j.version>1.5.11</slf4j.version>
+    <slf4j.version>1.6.1</slf4j.version>
     <jaxb.impl.version>2.2.4</jaxb.impl.version>
     <jaxb.api.version>2.2.4</jaxb.api.version>
   </properties>
@@ -146,21 +146,6 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
-    <dependency>
-      <groupId>backport-util-concurrent</groupId>
-      <artifactId>backport-util-concurrent</artifactId>
-      <version>2.2</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-fileupload</groupId>
-      <artifactId>commons-fileupload</artifactId>
-      <version>1.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
 
   <dependencyManagement>
@@ -199,6 +184,11 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>

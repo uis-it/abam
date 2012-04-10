@@ -9,7 +9,6 @@
     <extraInfo></extraInfo>
     <webPath>/abam-student</webPath>
     <webClassPathEntries>
-        <webClassPathEntry>/abam-commons/target/classes</webClassPathEntry>
         <webClassPathEntry>/abam-student/target/classes</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/antlr/antlr/2.7.7/antlr-2.7.7.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/aopalliance/aopalliance/1.0/aopalliance-1.0.jar</webClassPathEntry>
@@ -17,9 +16,8 @@
         <webClassPathEntry>D:/mvnrepo/backport-util-concurrent/backport-util-concurrent/2.2/backport-util-concurrent-2.2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/cglib/cglib/2.2/cglib-2.2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/com/liferay/util-bridges/5.2.3/util-bridges-5.2.3.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/com/sun/jdmk/jmxtools/1.2.1/jmxtools-1.2.1.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/com/sun/jmx/jmxri/1.2.1/jmxri-1.2.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/com/sun/xml/bind/jaxb-impl/2.2.4/jaxb-impl-2.2.4.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/com/sun/xml/fastinfoset/FastInfoset/1.2.2/FastInfoset-1.2.2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-dbcp/commons-dbcp/1.4/commons-dbcp-1.4.jar</webClassPathEntry>
@@ -28,12 +26,12 @@
         <webClassPathEntry>D:/mvnrepo/commons-fileupload/commons-fileupload/1.2.1/commons-fileupload-1.2.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-io/commons-io/2.0.1/commons-io-2.0.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-lang/commons-lang/2.4/commons-lang-2.4.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/commons-pool/commons-pool/1.5.4/commons-pool-1.5.4.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/javassist/javassist/3.12.0.GA/javassist-3.12.0.GA.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/javax/activation/activation/1.1/activation-1.1.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/javax/jms/jms/1.1/jms-1.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/javax/mail/mail/1.4/mail-1.4.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/javax/servlet/jstl/1.1.2/jstl-1.1.2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/javax/transaction/jta/1.1/jta-1.1.jar</webClassPathEntry>
@@ -41,6 +39,7 @@
         <webClassPathEntry>D:/mvnrepo/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/log4j/log4j/1.2.15/log4j-1.2.15.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/net/sf/sojo/sojo/1.0.5/sojo-1.0.5.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/no/uis/abam/abam-commons/1.0.1/abam-commons-1.0.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/no/uis/abam/abam-dom/1.0.0/abam-dom-1.0.0.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/no/uis/abam/abam-ws/1.0.2/abam-ws-1.0.2-jar.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/no/uis/portal/portlet/portlet-util/2.0.10/portlet-util-2.0.10.jar</webClassPathEntry>
@@ -79,11 +78,12 @@
         <webClassPathEntry>D:/mvnrepo/org/hibernate/hibernate-core/3.6.7.Final/hibernate-core-3.6.7.Final.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/hibernate/hibernate-entitymanager/3.6.7.Final/hibernate-entitymanager-3.6.7.Final.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/org/icefaces/icefaces-comps/1.8.2-uis/icefaces-comps-1.8.2-uis.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/org/icefaces/icefaces/1.8.2-uis/icefaces-1.8.2-uis.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/org/icefaces/icefaces-comps/1.8.2/icefaces-comps-1.8.2.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/org/icefaces/icefaces/1.8.2/icefaces-1.8.2.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/jvnet/hyperjaxb3/hyperjaxb3-ejb-runtime/0.5.6/hyperjaxb3-ejb-runtime-0.5.6.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/jvnet/jaxb2_commons/jaxb2-basics-runtime/0.6.2/jaxb2-basics-runtime-0.6.2.jar</webClassPathEntry>
-        <webClassPathEntry>D:/mvnrepo/org/slf4j/slf4j-log4j12/1.5.10/slf4j-log4j12-1.5.10.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar</webClassPathEntry>
+        <webClassPathEntry>D:/mvnrepo/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/springframework/ldap/spring-ldap/1.3.1.RELEASE/spring-ldap-1.3.1.RELEASE-all.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/springframework/spring-aop/3.0.6.RELEASE/spring-aop-3.0.6.RELEASE.jar</webClassPathEntry>
         <webClassPathEntry>D:/mvnrepo/org/springframework/spring-asm/3.0.6.RELEASE/spring-asm-3.0.6.RELEASE.jar</webClassPathEntry>
