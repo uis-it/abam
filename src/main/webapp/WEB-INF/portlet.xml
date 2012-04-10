@@ -29,7 +29,7 @@
 		</supports>
 
 		<supported-locale>en_GB</supported-locale>
-    <supported-locale>no_NO</supported-locale>
+    <supported-locale>nb_NO</supported-locale>
 		<resource-bundle>Language</resource-bundle>
 
 		<portlet-info>

@@ -107,7 +107,9 @@ public class EmployeeService implements InitializingBean {
       Organization org = abamClient.getEmployeeDeptarment(loggedInEmployee.getEmployeeId());
       setSelectedDepartmentCode(org.getPlaceRef());
       getStudyProgramListFromSelectedDepartment();
-      setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
+      if (!selectedStudyProgramList.isEmpty()) {
+        setSelectedStudyProgramCode(this.selectedStudyProgramList.get(0).getId());
+      }
   		
       getActiveAssignmentsSet();
   		checkIfLoggedInUserIsAuthor();

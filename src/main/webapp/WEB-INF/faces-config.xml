@@ -5,9 +5,9 @@
 
 	<application>
 		<locale-config>
-			<default-locale>no_NO</default-locale>
+			<default-locale>nb_NO</default-locale>
 			<supported-locale>en_GB</supported-locale>
-			<supported-locale>no_NO</supported-locale>
+			<supported-locale>nb_NO</supported-locale>
 		</locale-config>
 		<message-bundle>Language</message-bundle>
 		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
