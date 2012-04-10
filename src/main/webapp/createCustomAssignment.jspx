@@ -14,16 +14,16 @@
 				<ice:selectOneRadio 
 					id="type" 
 					required="true" 
-					styleClass="selectRadio" 
+					styleClass="selectRadio"
 					value="#{assignmentBean.renderGetCustomAssignment}" 			 
 					valueChangeListener="#{assignmentBean.actionCustomAssignmentRadioListener}" 
 					layout="pageDirection"
 					partialSubmit="true"
 				>
-					<ice:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
-					<ice:selectItem itemValue="#{true}" itemLabel="#{msgs.lbl_get_assignment_from_studentnumber}" />
+					<f:selectItem itemValue="#{false}" itemLabel="#{msgs.lbl_create_custom_assignment}" />
+					<f:selectItem itemValue="#{true}" itemLabel="#{msgs.lbl_get_assignment_from_studentnumber}" />
 				</ice:selectOneRadio>
-				
+
 				<ice:panelGrid columns="3" rendered="#{assignmentBean.renderGetCustomAssignment}">
 					<ice:outputText value="#{msgs.lbl_student_number}" />
 					<ice:inputText id="studentNumber" size="10" value="#{assignmentBean.customAssignmentStudentNumber}" partialSubmit="true"/>
@@ -86,31 +86,31 @@
 					</f:facet>
 					<ice:column>
 						<ice:panelGrid columns="2">
-							<ice:outputText value="#{msgs.lbl_name}:"/>
+							<ice:outputText value="#{msgs.lbl_name}"/>
 							<ice:inputText value="#{supervisor.name}" required="true" partialSubmit="true"/>
 						</ice:panelGrid>
 					</ice:column>
 					<ice:column>
 						<ice:panelGrid columns="2">
-							<ice:outputText value="#{msgs.lbl_external}:"/>
+							<ice:outputText value="#{msgs.lbl_external}"/>
 							<ice:selectBooleanCheckbox value="#{supervisor.external}" partialSubmit="true"/>
 						</ice:panelGrid>
 					</ice:column>
 					<ice:column>
 						<ice:panelGrid columns="2" rendered="#{supervisor.external}">
-							<ice:outputText value="#{msgs.lbl_email}:"/>
+							<ice:outputText value="#{msgs.lbl_email}"/>
 							<ice:inputText value="#{supervisor.email}" rendered="#{supervisor.external}" partialSubmit="true"/>
 						</ice:panelGrid>
 					</ice:column>
 					<ice:column>
 						<ice:panelGrid columns="2" rendered="#{supervisor.external}">
-							<ice:outputText value="#{msgs.lbl_phone_number}:"/>
+							<ice:outputText value="#{msgs.lbl_phone_number}"/>
 							<ice:inputText value="#{supervisor.phoneNumber}" rendered="#{supervisor.external}"  partialSubmit="true"/>
 						</ice:panelGrid>
 					</ice:column>
 					<ice:column>
 						<ice:panelGrid columns="2" rendered="#{supervisor.external}">
-							<ice:outputText value="#{msgs.lbl_company}:"/>
+							<ice:outputText value="#{msgs.lbl_company}"/>
 							<ice:inputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external}" partialSubmit="true"/>
 						</ice:panelGrid>
 					</ice:column>
@@ -132,7 +132,7 @@
 						actionListener="#{assignmentBean.fileUploadListen}"
 					/>
 					
-					<ice:messages/>
+					<ice:messages showDetail="true"/>
 				</ice:panelGrid>		
 				<ice:dataTable var="attachment" value="#{assignmentBean.currentAttachmentResources}" rendered="#{!empty assignmentBean.currentAssignment.attachments}">
 					<f:facet name="header">
@@ -152,12 +152,12 @@
 					</ice:column>
 				</ice:dataTable>
 		</ice:panelGroup>
-				<ice:panelGrid columns="2">
-					<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" immediate="true"/>
-					<ice:commandButton type="submit" action="assignmentSummary"
-						rendered="#{!applicationBean.deadlineForApplyingReached}"
-						actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="#{msgs.btn_next}"/>
-				</ice:panelGrid>
-			</ice:form>
+		<ice:panelGrid columns="2">
+			<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" immediate="true"/>
+			<ice:commandButton type="submit" action="assignmentSummary"
+				rendered="#{!applicationBean.deadlineForApplyingReached}"
+				actionListener="#{assignmentBean.actionUpdateCurrentAssignment}" value="#{msgs.btn_next}"/>
+			</ice:panelGrid>
+		</ice:form>
 	</ice:portlet>
 </f:view>

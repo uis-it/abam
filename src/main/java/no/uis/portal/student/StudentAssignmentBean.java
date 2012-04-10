@@ -178,7 +178,7 @@ public class StudentAssignmentBean implements DisposableBean {
 	 * @param event
 	 */
 	public void actionCustomAssignmentRadioListener(ValueChangeEvent event) {
-		setRenderGetCustomAssignment((Boolean) event.getNewValue());
+		setRenderGetCustomAssignment(event.getNewValue() == null ? false : ((Boolean)event.getNewValue()).booleanValue());
 	}
 	
 	/**
