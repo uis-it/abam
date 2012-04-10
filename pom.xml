@@ -5,7 +5,7 @@
   <name>Abam Student Portlet</name>
   <description>Portlet for bachelor and master thesis.</description>
   <inceptionYear>2011</inceptionYear>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.7</version>
 
   <parent>
     <groupId>no.uis.portal.portlet</groupId>
@@ -65,9 +65,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:https://abam.googlecode.com/svn/abam_student/trunk</connection>
-    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_student/trunk</developerConnection>
-    <url>https://abam.googlecode.com/svn/abam_student/trunk</url>
+    <connection>scm:svn:https://abam.googlecode.com/svn/abam_student/tags/abam-student-1.0.7</connection>
+    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_student/tags/abam-student-1.0.7</developerConnection>
+    <url>https://abam.googlecode.com/svn/abam_student/tags/abam-student-1.0.7</url>
   </scm>
 
   <properties>
