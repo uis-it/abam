@@ -181,6 +181,9 @@ public class EmployeeService implements InitializingBean {
 
 	private void getStudyProgramListFromSelectedDepartment() {
 	  List<no.uis.service.model.StudyProgram> progs = abamClient.getStudyProgramsFromDepartmentFSCode(this.selectedDepartmentCode);
+	  if (progs == null) {
+	    progs = Collections.emptyList();
+	  }
 		selectedStudyProgramList = progs;
 		studyProgramSelectItemList.clear();
 		updateStudyProgramSelectItemList();
