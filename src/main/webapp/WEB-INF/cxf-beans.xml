@@ -5,18 +5,18 @@
 	xmlns:jaxws="http://cxf.apache.org/jaxws"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd" default-lazy-init="true">
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<!--
 		We don't use the property placeholder configurer, because this is initialized not lazily and we get problems
 		if the portal-impl is initialized after this webapp.
 	-->
-	<bean id="config" class="no.uis.abam.commons.LiferayProperties"/>
+	<bean id="config" class="no.uis.abam.commons.LiferayProperties" lazy-init="true"/>
     
     <bean id="abamClient" class="no.uis.abam.ws_abam.AbamWebService" 
-      factory-bean="clientFactory" factory-method="create"/>
+      factory-bean="clientFactory" factory-method="create" lazy-init="true"/>
     
-	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean" lazy-init="true">
 	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
  	  <property name="address" value="#{config.properties['no.uis.portal.abam.ws.address']}"/>
  	  <property name="username" value="#{config.properties['no.uis.portal.abam.ws.username']}"/>
