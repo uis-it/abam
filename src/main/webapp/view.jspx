@@ -6,7 +6,7 @@
 	<ice:portlet>
 		<f:loadBundle basename="Language" var="msgs" />
 		<ice:form>
-			<ice:panelGrid columns="1" border="0">
+			<ice:panelGrid columns="1" border="0" rendered="#{! empty employeeService.loggedInEmployee.employeeId}">
 				<ice:commandLink 
 					id="createAssignment"
 					action="createAssignment" 
@@ -18,7 +18,7 @@
 				<ice:commandLink 
 					action="displayAssignments" 
 					actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
-					value="#{msgs.link_view_assignment}" 
+					value="#{msgs.link_view_assignment}"
 				/>
 
 				<ice:commandLink 
@@ -54,6 +54,9 @@
 					value="#{msgs.link_archive}"
 					actionListener="#{thesisBean.actionPrepareArchive}"
 				/>
+			</ice:panelGrid>
+			<ice:panelGrid rendered="#{empty employeeService.loggedInEmployee.employeeId}">
+			   <ice:outputText value="#{msgs.not_an_employee}"/>
 			</ice:panelGrid>
 		</ice:form>
 	</ice:portlet>

@@ -21,7 +21,7 @@
 				</ice:selectOneMenu>
 			</ice:panelGrid>
 		
-			<ice:outputText value="#{msgs.lbl_my_std_assignment}" rendered="#{!employeeService.userRoles['Abam Administrative Employee']}" styleClass="titleStyle"/>			
+			<ice:outputText value="#{msgs.lbl_my_std_assignment}" rendered="#{!employeeService.roles['Abam Administrative Employee']}" styleClass="titleStyle"/>			
 		
 			<ice:selectOneRadio
 				id="type" 
@@ -30,7 +30,7 @@
 				value="#{thesisBean.displayActiveThesis}" 			 
 				valueChangeListener="#{thesisBean.actionDisplayActiveRadioListener}" 
 				partialSubmit="true"
-				rendered="#{!employeeService.userRoles['Abam Administrative Employee']}"
+				rendered="#{!employeeService.roles['Abam Administrative Employee']}"
 			>
 				<f:selectItem itemValue="#{true}" itemLabel="#{msgs.link_my_std_assignments}" />
 				<f:selectItem itemValue="#{false}" itemLabel="#{msgs.link_archive}" />
