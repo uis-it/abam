@@ -127,7 +127,8 @@ public class EmployeeService implements InitializingBean {
   private void checkIfLoggedInUserIsAuthor() {
 		if(assignmentSet != null) {
 			for (Assignment assignment : assignmentSet) {
-				if (assignment.getAuthor().getName() !=  null && assignment.getAuthor().getName().equals(loggedInEmployee.getName())) {
+			  String authorName = assignment.getAuthor() == null ? "" : (assignment.getAuthor().getName() == null ? "" : assignment.getAuthor().getName());
+				if (authorName.equals(loggedInEmployee.getName())) {
 					assignment.setLoggedInUserIsAuthor(true);
 				} else {
 					assignment.setLoggedInUserIsAuthor(false);
