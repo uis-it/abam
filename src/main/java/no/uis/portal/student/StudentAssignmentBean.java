@@ -242,7 +242,6 @@ public class StudentAssignmentBean implements DisposableBean {
     HtmlDataTable table = (HtmlDataTable)uic.getParent().getParent();
     return table.getRowData();
   }
-  
 	
 	/**
 	 * Validator that checks that number of students is valid
@@ -286,7 +285,6 @@ public class StudentAssignmentBean implements DisposableBean {
     // TODO show name instead
     return currentAssignment.getStudyProgramCode();
   }
-  
 
 	public StudentService getStudentService() {
 		return studentService;
@@ -333,5 +331,4 @@ public class StudentAssignmentBean implements DisposableBean {
 
 	public void dispose() throws Exception {
 	}
-
 }
