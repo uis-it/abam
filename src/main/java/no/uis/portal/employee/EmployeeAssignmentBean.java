@@ -91,6 +91,7 @@ public class EmployeeAssignmentBean implements DisposableBean {
 		ass.setDepartmentCode(employeeService.getSelectedDepartmentCode());
 		ass.setStudyProgramCode(employeeService.getSelectedStudyProgramCode());
 		ass.setNumberOfStudents(1);
+		ass.setAuthor(employeeService.getLoggedInEmployee());
 		setCurrentAssignment(ass);
 	}
 	
