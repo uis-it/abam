@@ -67,9 +67,9 @@
   </developers>
 
   <scm>
-    <connection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</connection>
-    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_employee/trunk</developerConnection>
-    <url>https://abam.googlecode.com/svn/abam_employee/trunk</url>
+    <connection>scm:git:git@forge.uis.no:abam/abam-employee.git</connection>
+    <developerConnection>scm:git:git@forge.uis.no:abam/abam-employee.git</developerConnection>
+    <url>scm:git:git@forge.uis.no:abam/abam-employee.git</url>
   </scm>
 
   <properties>
