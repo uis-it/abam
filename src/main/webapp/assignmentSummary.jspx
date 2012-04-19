@@ -101,7 +101,7 @@
 					<ice:commandButton type="submit" action="myStudentTheses" value="#{msgs.btn_back}" id="BackButtonStudentTheses" immediate="true" rendered="#{assignmentBean.backToMyStudentThesis}"/>
 				</ice:panelGroup>						
 				
-				<ice:commandButton type="submit" action="assignmentSavedConfirmation" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
+				<ice:commandButton type="submit" action="assignmentSavedConfirmation" immediate="true" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 				
 				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
 			</ice:panelGrid>

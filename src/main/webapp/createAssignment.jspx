@@ -12,15 +12,15 @@
 					<ice:outputText value="#{msgs.lbl_title}" />
 					<ice:panelGroup>
 						<ice:inputText id="title" size="100" required="true" value="#{assignmentBean.currentAssignment.title}"
-							valueChangeListener="#{assignmentBean.valueChanged}" immediate="true"/>
+							valueChangeListener="#{assignmentBean.valueChanged}" immediate="true" partialSubmit="true"/>
 						<ice:message for="title"/>
 					</ice:panelGroup>
 					
 					<ice:outputText value="#{msgs.lbl_desc}" />
 					<ice:panelGroup>
-						<ice:inputTextarea id="description" cols="96" rows="6" styleClass="description" 
+						<ice:inputTextarea id="description" cols="96" rows="6" styleClass="description"
 							required="true" value="#{assignmentBean.currentAssignment.description}"
-							valueChangeListener="#{assignmentBean.valueChanged}" immediate="true"/>
+							valueChangeListener="#{assignmentBean.valueChanged}" immediate="true" partialSubmit="true"/>
 						<ice:message for="description"/>
 					</ice:panelGroup>
 					
@@ -51,7 +51,7 @@
 				
 					<ice:outputText value="#{msgs.lbl_no_of_std}" />
 					<ice:panelGroup>
-						<ice:inputText id="numberOfStudents" required="true" immediate="true"
+						<ice:inputText id="numberOfStudents" required="true" immediate="true" partialSubmit="true"
 							disabled="#{assignmentBean.currentAssignment.type == 'MASTER'}"
 							valueChangeListener="#{assignmentBean.valueChanged}"
 							value="#{assignmentBean.currentAssignment.numberOfStudents}"/>
@@ -60,7 +60,7 @@
 					
 					<ice:outputText value="#{msgs.lbl_faculty_supervisor}" />
 					<ice:panelGroup>
-						<ice:inputText id="facultySupervisor" size="100" partialSubmit="true"
+						<ice:inputText id="facultySupervisor" size="100" partialSubmit="true" immediate="true"
 							required="true" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/>
 						<ice:message for="facultySupervisor"/>
 					</ice:panelGroup>
@@ -133,7 +133,7 @@
 				<f:facet name="footer">
 					<ice:commandButton id="addNewSupervisor"
 							actionListener="#{assignmentBean.actionAddSupervisor}"
-							value="#{msgs.btn_add_supervisor}" immediate="true" />
+							value="#{msgs.btn_add_supervisor}" immediate="true" partialSubmit="true"/>
 				</f:facet>
 			</ice:dataTable>
 			

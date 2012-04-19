@@ -266,7 +266,9 @@ public class EmployeeAssignmentBean implements DisposableBean {
 				supervisor.setName(employee.getName());
 			}
 		}
-		currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
+		
+		// TODO validation of faculty supervisor
+		//currentAssignment.setFacultySupervisor(employeeService.getEmployeeFromName(currentAssignment.getFacultySupervisor().getName()));
 		
 		currentAssignment.setAuthor(employeeService.getLoggedInEmployee());		
 		
