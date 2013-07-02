@@ -9,7 +9,7 @@
   <inceptionYear>2010</inceptionYear>
 
   <name>abam-parent</name>
-  <url>http://maven.apache.org</url>
+  <url>http://github.com/uis-it/abam</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,6 +19,7 @@
     <module>abam_commons</module>
     <module>abam_dom</module>
     <module>abam_employee</module>
-    <module>
+    <module>abam_student</module>
+    <module>abam_ws</module>
   </modules>
 </project>
