@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+  <bean id="config" class="no.uis.abam.commons.LiferayProperties" lazy-init="true"/>
+  
+  <bean id="abamStudentClient" class="no.uis.abam.ws_abam.AbamWebService" 
+      factory-bean="clientFactory" factory-method="create" lazy-init="true"/>
+
+	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean" lazy-init="true">
+	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
+ 	  <property name="address" value="#{config.properties['no.uis.portal.abam.ws.address']}"/>
+ 	  <property name="username" value="#{config.properties['no.uis.portal.abam.ws.username']}"/>
+ 	  <property name="password" value="#{config.properties['no.uis.portal.abam.ws.password']}"/>
+	</bean>
+	  
+	<bean id="studentService" class="no.uis.portal.student.StudentService" scope="session">
+		<property name="abamStudentClient" ref="abamStudentClient"/>
+	</bean>
+	
+	<bean id="assignmentBean" class="no.uis.portal.student.StudentAssignmentBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
+	<bean id="applicationBean" class="no.uis.portal.student.ApplicationBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
+	<bean id="thesisBean" class="no.uis.portal.student.ThesisBean" scope="session">
+		<property name="studentService" ref="studentService"/>
+	</bean>
+	
+</beans>

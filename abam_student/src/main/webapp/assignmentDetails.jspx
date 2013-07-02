@@ -1,0 +1,110 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<ice:loadBundle basename="Language" var="msgs" />	
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_assignment_details}" styleClass="titleStyle"/><br/>
+		<ice:form>
+			<ice:panelGrid columns="3">
+				<ice:outputText value="#{msgs.lbl_title}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.title}"/>
+				<f:verbatim></f:verbatim>
+				
+				<ice:outputText value="#{msgs.lbl_description}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.description}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_department}"/>
+				<ice:outputText value="#{assignmentBean.currentDepartmentName}"/>
+				<f:verbatim></f:verbatim>
+					
+				<ice:outputText value="#{msgs.lbl_study_program}"/>
+				<ice:outputText value="#{assignmentBean.currentStudyProgramName}"/>
+				<f:verbatim></f:verbatim>
+				
+				<ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				
+				<ice:outputText value="#{msgs.lbl_type}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.type}"/>
+				<f:verbatim></f:verbatim>
+				
+				<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/>
+				<f:verbatim></f:verbatim>
+			</ice:panelGrid>
+
+			<ice:dataTable var="supervisor" 
+				value="#{assignmentBean.currentAssignment.supervisorList}"
+				rendered="#{!empty assignmentBean.currentAssignment.supervisorList}"
+			>
+				<f:facet name="header">
+					<ice:outputText value="#{msgs.lbl_supervisor}"/>
+				</f:facet>
+				<ice:column>
+					<ice:outputText id="nameInput" value="#{supervisor.name}" title="#{msgs.lbl_name}"/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="emailInput" value="#{supervisor.email}"
+						rendered="#{supervisor.external and (!empty supervisor.email)}"
+						title="#{msgs.lbl_email}"
+					/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="phoneNumberInput"
+						value="#{supervisor.phoneNumber}"
+						rendered="#{supervisor.external and !empty supervisor.phoneNumber}" 
+						title="#{msgs.lbl_phone_number}"
+					/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="companyInput"
+						value="#{supervisor.companyName}"
+						rendered="#{supervisor.external and !empty supervisor.companyName}"
+						title="#{msgs.lbl_company}" 
+					/>
+				</ice:column>
+			</ice:dataTable>
+				
+			<ice:dataTable var="attachment"
+					value="#{assignmentBean.currentAttachmentResources}"
+					rendered="#{!empty assignmentBean.currentAssignment.attachments}"
+			>
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_attachments}" />
+					</f:facet>
+					<ice:outputResource 
+						attachment="true" 
+						fileName="#{attachment.fileName}" 
+						type="link" 
+						mimeType="#{attachment.contentType}"
+						resource="#{attachment}" 
+					/>
+				</ice:column>
+			</ice:dataTable>
+				
+			<ice:messages/>
+			
+			<ice:panelGrid columns="2" styleClass="buttonPanel">
+				<ice:commandButton type="submit" 
+					action="availableAssignment" 
+					value="#{msgs.btn_back}" 
+					id="BackButton" 
+					immediate="true"
+				/>
+				<ice:commandButton type="submit" 
+					action="applyForAssignment" 
+					actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}" 
+					value="#{msgs.btn_apply_for_assignment}" 
+					rendered="#{!applicationBean.appliedForThreeAssignments and !applicationBean.deadlineForApplyingReached}" 
+					id="ApplyButton"
+				/>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

@@ -1,0 +1,150 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_my_thesis}" styleClass="titleStyle"/><br/>
+		<ice:form rendered="#{!thesisBean.renderMyThesis}">
+			<table>
+				<tr>
+				<td><ice:outputText value="#{msgs.lbl_not_accepted_thesis_yet}"/></td>
+				<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form partialSubmit="true" rendered="#{thesisBean.renderMyThesis or thesisBean.currentStudentsThesis.accepted}">
+			<table>
+				<tr>
+					<td> <ice:outputText value="#{msgs.lbl_deadline_evalutation}"/></td>
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.deadlineForSubmissionForEvalutationAsString}"/> </td>
+				</tr>
+				<tr>
+					<td> 
+						<ice:outputText value="#{msgs.lbl_you_submitted_your_thesis}" rendered="#{thesisBean.currentStudentsThesis.submitted}"/>
+						<ice:outputText value="#{msgs.lbl_you_have_not_submitted_yet}" rendered="#{!thesisBean.currentStudentsThesis.submitted}" style="color: red;"/>
+					</td>
+					<td> <ice:outputText value="#{thesisBean.currentStudentsThesis.actualSubmissionForEvalutationAsString}" rendered="#{thesisBean.currentStudentsThesis.submitted}"/> </td>
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form rendered="#{thesisBean.renderMyThesis}">
+			<table>					
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_title}"/></td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.title}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_description}"/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.description}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.departmentName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.studyProgramName}"/></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_faculty_supervisor}"/> </td>
+					<td><ice:outputText value="#{thesisBean.currentAssignment.facultySupervisor.name}"/></td>
+					<td></td>
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form rendered="#{thesisBean.renderMyThesis}">
+			<table>
+				<tr>
+					<ice:dataTable var="supervisor" value="#{thesisBean.currentAssignment.supervisorList }">
+					<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_supervisor}"/>
+					</f:facet>
+						<ice:outputText id="name" value="#{msgs.lbl_name}" style="font-weight: bold;" />
+						<ice:outputText id="nameInput" value="#{supervisor.name}"/>
+						<ice:outputText id="Email" value="#{msgs.lbl_email}" rendered="#{supervisor.external and !empty supervisor.email}" style="font-weight: bold;" />
+						<ice:outputText id="emailInput" value="#{supervisor.email}" rendered="#{supervisor.external and !empty supervisor.email}"/>
+						<ice:outputText id="phoneNumber" value="#{msgs.lbl_phone_number}" rendered="#{supervisor.external and !empty supervisor.phoneNumber}" style="font-weight: bold;" />
+						<ice:outputText id="phoneNumberInput" value="#{supervisor.phoneNumber}" rendered="#{supervisor.external and !empty supervisor.phoneNumber}"/>
+						<ice:outputText id="company" value="#{msgs.lbl_company}" rendered="#{supervisor.external and !empty supervisor.companyName}" style="font-weight: bold;" />
+						<ice:outputText id="companyInput" value="#{supervisor.companyName}" rendered="#{supervisor.external and !empty supervisor.companyName}"/>
+					</ice:column>
+				</ice:dataTable>
+				</tr>
+				</table>
+			</ice:form>
+			<ice:form rendered="#{!empty thesisBean.currentAssignment.attachments}">
+				<table>
+					<tr>
+					<ice:dataTable var="attachment" value="#{thesisBean.currentAssignment.attachments}">
+						<ice:column>
+						<f:facet name="header">
+							<ice:outputText value="#{msgs.lbl_attachments}"/>
+						</f:facet>
+							<ice:outputText id="nameInput" value="#{attachment.file.name}"/>
+						</ice:column>
+					</ice:dataTable>
+					</tr>
+				</table>
+			</ice:form>
+			
+			<ice:form rendered="#{thesisBean.renderMyThesis or thesisBean.currentStudentsThesis.accepted}">
+				<table>
+				<tr>
+					<td>						
+						<ice:outputText value="#{msgs.lbl_students_assigned_thesis}" style="font-weight: bold;"/> 						
+					</td>
+						
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.currentThesisInformation.studentName}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.currentThesisInformation.coStudent1Name}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{thesisBean.currentThesisInformation.coStudent2Name}"/></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+			</ice:form>			
+			
+			<ice:form rendered="#{!empty thesisBean.currentStudentsThesis.attachments}">
+				<table>
+					<tr>
+						<ice:dataTable var="attachment" value="#{thesisBean.currentStudentsThesis.attachments}">
+							<ice:column>
+							<f:facet name="header">
+								<ice:outputText value="#{msgs.lbl_submitted_attachments}"/>
+							</f:facet>
+								<ice:outputText id="nameInput" value="#{attachment.file.name}"/>
+							</ice:column>
+						</ice:dataTable>
+					</tr>
+				</table>			
+			</ice:form>			
+						
+			<ice:form rendered="#{thesisBean.renderMyThesis}">
+			<table>
+				<tr>
+					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
+					<td><ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_submit_thesis}" id="SubmitButton" disabled="#{thesisBean.deadlineForSubmissionForEvalutationReached}"/></td>
+					<td><ice:outputText value="#{msgs.lbl_deadline_for_submission_reached}" rendered="#{thesisBean.deadlineForSubmissionForEvalutationReached}" style="color:red"/></td>
+				</tr>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

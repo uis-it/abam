@@ -1,0 +1,15 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<ice:loadBundle basename="Language" var="msgs"/>
+		<ice:form>
+			<ice:panelGrid columns="1" border="0" width="500" rendered="#{!empty studentService.currentStudent.studentNumber}">
+					<ice:commandLink action="availableAssignment" actionListener="#{studentService.actionPrepareAvailableAssignments}" value="#{msgs.link_available_assignments}" />
+					<ice:commandLink action="myApplications" value="#{msgs.link_my_applications}" rendered="#{!applicationBean.deadlineForApplyingReached}" />
+					<ice:commandLink action="createAssignment" actionListener="#{assignmentBean.actionPrepareCreateCustomAssignment}" value="#{msgs.link_create_custom_assignment}" rendered="#{!applicationBean.deadlineForApplyingReached and empty studentService.currentStudent.assignedThesis}"/>
+					<ice:commandLink action="acceptAssignment" actionListener="#{thesisBean.actionGetInformationForStudent}" value="#{msgs.link_accept_assignment}"/>
+					<ice:commandLink action="myThesis" actionListener="#{thesisBean.actionInitMyThesisPage}" value="#{msgs.link_my_thesis}"/>
+			</ice:panelGrid>
+			<ice:outputText value="#{msgs.not_a_student}" rendered="#{empty studentService.currentStudent.studentNumber}" styleClass="title"/>
+		</ice:form>
+	</ice:portlet>
+</f:view>

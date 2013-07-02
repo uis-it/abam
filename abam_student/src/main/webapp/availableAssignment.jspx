@@ -1,0 +1,68 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<ice:loadBundle basename="Language" var="msgs" />
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
+		<ice:form partialSubmit="true">
+			<ice:panelGrid columns="2" border="0">
+				<ice:outputText value="#{msgs.lbl_department}" />
+				<ice:panelGroup>
+					<ice:outputText id="departmentInput" value="#{studentService.studentInstitute}"/>
+					<ice:message for="departmentInput" showSummary="true" showDetail="false"/>
+				</ice:panelGroup>
+
+				<ice:outputText value="#{msgs.lbl_study_program}" />
+				<ice:panelGroup>
+					<ice:selectOneMenu id="studyProgramInput"
+						value="#{studentService.selectedStudyProgramCode}"
+						valueChangeListener="#{studentService.actionSetDisplayAssignment}"
+						partialSubmit="true"
+					>
+						<f:selectItems id="studyProgramContent"
+							value="#{studentService.studyProgramSelectItemList}" />
+					</ice:selectOneMenu>
+					<ice:message for="studyProgramInput" showSummary="true" showDetail="true"/>
+				</ice:panelGroup>
+			</ice:panelGrid>
+				
+			<ice:dataTable id="departmentTable" var="item"
+				value="#{studentService.assignmentList}"
+				columnClasses="titleColumn, coStudentColumn"
+				rowClasses="oddRow, evenRow" headerClass="headerStyle"
+				styleClass="tableStyle"
+				>
+				<ice:column rendered="#{item.displayAssignment}">
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_title}" />
+					</f:facet>
+					<ice:commandLink 
+						id="itemTitle" 
+						value="#{item.title}"
+						action="assignmentDetails"						
+						actionListener="#{assignmentBean.actionSetSelectedAssignment}" />
+				</ice:column>
+				<ice:column rendered="#{item.displayAssignment}">
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_apply_for_assignment}" />
+					</f:facet>
+					<ice:commandButton id="applyAssignment"
+						value="#{msgs.btn_apply_for_assignment}"
+						actionListener="#{applicationBean.actionSetSelectedAssignmentToApplication}"
+						action="applyForAssignment"
+						rendered="#{!applicationBean.deadlineForApplyingReached and (empty studentService.currentStudent.assignedThesis) and !applicationBean.appliedForThreeAssignments}" />
+				</ice:column>
+			</ice:dataTable>
+
+			<ice:commandButton 
+				type="submit" 
+				action="backToView"
+				value="#{msgs.btn_back}" 
+				id="BackButton" 
+				immediate="true"
+				style="margin-top: 20px;" />
+
+		</ice:form>
+	</ice:portlet>
+</f:view>

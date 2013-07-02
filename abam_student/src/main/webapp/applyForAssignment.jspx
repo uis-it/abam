@@ -1,0 +1,86 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_apply_for_assignment}" styleClass="titleStyle"/>
+		<ice:form partialSubmit="true" >
+			<ice:panelGrid columns="3">
+				<ice:outputText value="#{msgs.lbl_title}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.title}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_description}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.description}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_department}"/>
+				<ice:outputText value="#{applicationBean.currentDepartmentName}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_study_program}"/>
+				<ice:outputText value="#{applicationBean.currentStudyProgram}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_number_of_students}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.numberOfStudents}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.numberOfStudentsError}" rendered="#{studentService.selectedAssignment.type == BACHELOR}"/>
+				
+				<ice:outputText value="#{msgs.lbl_type}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.type}"/>
+				<f:verbatim></f:verbatim>
+
+				<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
+				<ice:outputText value="#{applicationBean.currentAssignment.facultySupervisor.name}"/>
+				<f:verbatim></f:verbatim>
+			</ice:panelGrid>
+			
+			<ice:dataTable var="supervisor" value="#{applicationBean.currentAssignment.supervisorList }" rendered="#{!empty applicationBean.currentAssignment.supervisorList}">
+				<f:facet name="header">
+					<ice:outputText value="#{msgs.lbl_supervisor}"/>
+				</f:facet>
+				<ice:column>
+					<ice:outputText id="nameInput" value="#{supervisor.name}" title="#{msgs.lbl_name}"/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="emailInput" 
+						value="#{supervisor.email}" 
+						rendered="#{supervisor.external and !empty supervisor.email}"
+						title="#{msgs.lbl_email}"
+					/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="phoneNumberInput" 
+						value="#{supervisor.phoneNumber}" 
+						rendered="#{supervisor.external and !empty supervisor.phoneNumber}"
+						title="#{msgs.lbl_phone_number}"
+					/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="companyInput" 
+						value="#{supervisor.companyName}" 
+						rendered="#{supervisor.external and !empty supervisor.companyName}"
+						title="#{msgs.lbl_company}"
+					/>
+				</ice:column>
+			</ice:dataTable>
+
+			<ice:panelGrid columns="1" rendered="#{studentService.currentStudent.type == BACHELOR}">
+				<f:facet name="header">
+					<ice:outputText value="#{msgs.lbl_i_want_to_write_together}"/>
+				</f:facet>
+				
+				<ice:inputText id="studentName1" value="#{applicationBean.currentApplication.coStudentName1}"/>
+				<ice:inputText id="studentName2" value="#{applicationBean.currentApplication.coStudentName2}"/>
+			</ice:panelGrid>
+
+			<ice:panelGrid columns="3">
+				<ice:commandButton type="submit" action="availableAssignment" value="#{msgs.btn_available_assignments}" immediate="true"/>
+				<ice:commandButton type="submit" action="myApplications" actionListener="#{applicationBean.actionSaveApplication}" value="#{msgs.btn_save_application}"/>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" immediate="true"/>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

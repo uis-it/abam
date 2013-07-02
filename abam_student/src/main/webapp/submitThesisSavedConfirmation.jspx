@@ -1,0 +1,40 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />	
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>		
+		<ice:outputText value="#{msgs.lbl_submit_thesis_saved}" styleClass="titleStyle"/>
+		<ice:form>
+			<ice:panelGrid columns="2">
+				<ice:outputText value="#{msgs.lbl_submit_thesis}"/>
+				<ice:outputText value="#{thesisBean.currentAssignment.title}"/>
+
+				<ice:outputText value="#{msgs.lbl_description}"/>
+				<ice:outputText id="description" value="#{thesisBean.currentAssignment.description}"/>					
+			</ice:panelGrid>
+
+			<ice:dataTable var="attachment" value="#{thesisBean.thesisAttachmentResources}">
+				<f:facet name="header">
+					<ice:outputText value="#{msgs.lbl_submitted_attachments}"/>
+				</f:facet>
+				<ice:column>
+					<ice:outputResource 
+						attachment="true" 
+						fileName="#{attachment.fileName}" 
+						type="link" 
+						mimeType="#{attachment.contentType}"
+						resource="#{attachment}"
+					/>
+				</ice:column>
+			</ice:dataTable>
+
+			<ice:panelGrid columns="2">
+				<ice:commandButton type="submit" action="submitThesis" value="#{msgs.btn_back}" immediate="true"/>
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_main_menu}" immediate="true"/>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

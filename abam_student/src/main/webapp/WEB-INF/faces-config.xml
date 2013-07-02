@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN" "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+<faces-config xmlns="http://java.sun.com/JSF/Configuration">
+
+	<application>
+		<locale-config>
+			<default-locale>nb_NO</default-locale>
+			<supported-locale>en_GB</supported-locale>
+			<supported-locale>nb_NO</supported-locale>
+		</locale-config>
+		<message-bundle>Language</message-bundle>
+		<view-handler>no.uis.portal.util.LiferayViewHandler</view-handler>
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+	</application>
+	<factory>
+		<faces-context-factory>com.icesoft.faces.context.FacesContextFactoryImpl</faces-context-factory>
+	</factory>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>createAssignment</from-outcome>
+			<to-view-id>/createCustomAssignment.jspx</to-view-id>
+		</navigation-case>
+	<navigation-case>
+			<from-outcome>availableAssignment</from-outcome>
+			<to-view-id>/availableAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>applyForAssignment</from-outcome>
+			<to-view-id>/applyForAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>acceptAssignment</from-outcome>
+			<to-view-id>/acceptAssignment.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>myThesis</from-outcome>
+			<to-view-id>/myThesis.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>searchArchive</from-outcome>
+			<to-view-id>/searchArchive.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>backToView</from-outcome>
+			<to-view-id>/view.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>assignmentSummary</from-outcome>
+			<to-view-id>/assignmentSummary.jspx</to-view-id>
+		</navigation-case>
+				<navigation-case>
+		<from-outcome>assignmentDetails</from-outcome>
+			<to-view-id>/assignmentDetails.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>myApplications</from-outcome>
+			<to-view-id>/myApplications.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editMyApplications</from-outcome>
+			<to-view-id>/editMyApplications.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>submitThesis</from-outcome>
+			<to-view-id>/submitThesis.jspx</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>submitThesisSavedConfirmation</from-outcome>
+			<to-view-id>/submitThesisSavedConfirmation.jspx</to-view-id>
+		</navigation-case>		
+		
+	</navigation-rule>
+</faces-config>

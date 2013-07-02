@@ -1,0 +1,29 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />	
+	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_my_applications}" styleClass="titleStyle"/>
+		<ice:form>
+			<ice:dataTable var="application" value="#{studentService.currentStudent.applications}" sortColumn="priority" sortAscending="true">
+				<ice:column>
+					<ice:outputText id="priority" value="#{msgs.lbl_priority}"/>
+				</ice:column>
+				<ice:column>
+					<ice:outputText id="priorityOutput" value="#{application.priority}"/>
+				</ice:column>
+				<ice:column>
+					<ice:commandLink value="#{application.assignment.title}" action="applyForAssignment" actionListener="#{applicationBean.actionEditApplication}"/>
+				</ice:column>
+				<f:facet name="footer">
+					<ice:panelGroup>
+						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+						<ice:commandButton type="submit" action="editMyApplications" value="#{msgs.btn_edit_applications}" id="EditButton" immediate="true" actionListener="#{studentService.actionGetApplicationFromStudent}" rendered="#{!empty studentService.currentStudent.assignedThesis}"/>
+					</ice:panelGroup>
+				</f:facet>										
+			</ice:dataTable>
+		</ice:form>
+	</ice:portlet>
+</f:view>
