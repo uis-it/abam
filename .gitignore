@@ -1,0 +1,8 @@
+*~
+*.bak
+/.metadata
+.settings/
+target/
+.project
+.classpath
+
