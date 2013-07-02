@@ -1,0 +1,62 @@
+<f:view xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:portlet="http://java.sun.com/portlet"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />
+		<ice:form>
+			<ice:panelGrid columns="1" border="0" rendered="#{! empty employeeService.loggedInEmployee.employeeId}">
+				<ice:commandLink 
+					id="createAssignment"
+					action="createAssignment" 
+					actionListener="#{assignmentBean.actionCreateNewAssignment}" 
+					value="#{msgs.link_create_assignment}"
+					rendered="#{employeeService.permissions.CREATE_ASSIGNMENTS}"
+				/>
+					
+				<ice:commandLink 
+					action="displayAssignments" 
+					actionListener="#{employeeService.actionPrepareDisplayAssignments}" 
+					value="#{msgs.link_view_assignment}"
+				/>
+
+				<ice:commandLink 
+					action="assignSetDates" 
+					actionListener="#{assignSortableBean.actionPrepareSetDates}" 
+					value="#{msgs.link_assign_assignment}" 
+					rendered="#{employeeService.permissions.ASSIGN_ASSIGNMENTS}"
+				/>
+				
+				<ice:commandLink 
+					action="myStudentTheses" 
+					actionListener="#{thesisBean.actionPrepareMyStudentTheses}"
+					value="#{msgs.link_my_std_assignments}"
+					rendered="#{employeeService.permissions.VIEW_SUPERVISED_THESIS}"
+				/>
+				
+				<ice:commandLink 
+					action="myStudentTheses" 
+					actionListener="#{thesisBean.actionPrepareAllStudentTheses}"
+					value="#{msgs.link_all_std_assignments}"
+					renderedOnUserRole="Abam Administrative Employee"													
+				/>
+
+				<ice:commandLink 
+					action="addExternalExaminer" 
+					actionListener="#{externalExaminerBean.actionPrepareAddExternalExaminer}" 
+					value="#{msgs.link_add_ext_examiner}"
+					rendered="#{employeeService.permissions.VIEW_EXTERNAL_EXAMINER}"
+				/>
+				
+				<ice:commandLink 
+					action="searchArchive" 
+					value="#{msgs.link_archive}"
+					actionListener="#{thesisBean.actionPrepareArchive}"
+				/>
+			</ice:panelGrid>
+			<ice:panelGrid rendered="#{empty employeeService.loggedInEmployee.employeeId}">
+			   <ice:outputText value="#{msgs.not_an_employee}"/>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

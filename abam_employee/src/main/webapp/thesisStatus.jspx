@@ -1,0 +1,57 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:form partialSubmit="true">
+			<ice:dataTable 
+				id="dataSortData"
+                columnClasses="facultySupervisorColumn, titleColumn, studentColumn,   coStudentColumn, coStudentColumn"
+                rowClasses="oddRow, evenRow"
+                headerClass="headerStyle"
+                styleClass="tableStyle"
+                value="#{thesisBean.thesisStatusList}"
+                var="item">
+                
+                <ice:column>
+	                <f:facet name="header">
+	                    <ice:headerRow>
+	                        <ice:outputText value="#{msgs.lbl_date}"/>
+	                    </ice:headerRow>
+	                </f:facet>
+	                <center>
+	                	<ice:outputText id="date" value="#{item.dateAsString}"/>
+	                </center>
+            	</ice:column>
+                
+				<ice:column>
+                <f:facet name="header">
+                    <ice:headerRow>
+                        <ice:outputText value="#{msgs.lbl_status}"/>
+                    </ice:headerRow>
+                </f:facet>
+                <ice:outputText value="#{item.status}"/>
+            </ice:column>
+            
+            <ice:column>
+                <f:facet name="header">
+                    <ice:headerRow>
+                        <ice:outputText value="#{msgs.lbl_responsible}"/>
+                    </ice:headerRow>
+                </f:facet>
+                <ice:outputText value="#{item.responsible}"/>
+            </ice:column>
+                
+			</ice:dataTable>
+			<table border="0">
+				<tr>
+					<td><ice:commandButton type="submit" action="myStudentTheses" value="#{msgs.btn_back}" id="BackButton"/></td>
+				</tr>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

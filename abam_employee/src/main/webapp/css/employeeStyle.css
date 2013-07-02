@@ -1,0 +1,53 @@
+@CHARSET "ISO-8859-1";
+
+table, td {
+	/*border: 1px solid black;*/
+}
+
+td {
+	padding: 3px;
+}
+
+form{
+	margin-top: 10px;
+}
+
+.title {
+	font-size: 18px;	
+}
+
+.selectRadio {
+	border-width: 0px;			 	
+}
+
+.superVisorTable {
+	border: 0px solid silver;
+}
+
+.displayAssignmentsTable {
+	border: 1px solid silver;
+}
+
+.displayAttachmentStyle {
+	padding: 2px;	
+}
+
+.selectBoolean {	
+	vertical-align: middle;	
+}
+
+.selectInputDate {
+    padding: 5px;
+    background: #FFF;
+    border: 2px solid #d9d9d9;
+    display: block;
+    float:left;
+    position: absolute;
+    z-index: 20;
+}
+
+.description {
+	width: 517px; 
+	height: 60px; 
+	padding: 2px;
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!--
+		We don't use the property placeholder configurer, because this is initialized not lazily and we get problems
+		if the portal-impl is initialized after this webapp.
+	-->
+	<bean id="config" class="no.uis.abam.commons.LiferayProperties" lazy-init="true"/>
+    
+    <bean id="abamClient" class="no.uis.abam.ws_abam.AbamWebService" 
+      factory-bean="clientFactory" factory-method="create" lazy-init="true"/>
+    
+	<bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean" lazy-init="true">
+	  <property name="serviceClass" value="no.uis.abam.ws_abam.AbamWebService"/>
+ 	  <property name="address" value="#{config.properties['no.uis.portal.abam.ws.address']}"/>
+ 	  <property name="username" value="#{config.properties['no.uis.portal.abam.ws.username']}"/>
+ 	  <property name="password" value="#{config.properties['no.uis.portal.abam.ws.password']}"/>
+	</bean>
+	  
+	<bean id="employeeService" class="no.uis.portal.employee.EmployeeService" scope="session">
+		<property name="abamClient" ref="abamClient"/>
+	</bean>
+	
+	<bean id="assignmentBean" class="no.uis.portal.employee.EmployeeAssignmentBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="assignSortableBean" class="no.uis.portal.employee.AssignSortableBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="externalExaminerBean" class="no.uis.portal.employee.ExternalExaminerBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+	
+	<bean id="thesisBean" class="no.uis.portal.employee.ThesisBean" scope="session">
+		<property name="employeeService" ref="employeeService"/>
+	</bean>
+</beans>

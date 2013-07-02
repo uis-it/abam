@@ -1,0 +1,121 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"></ice:outputStyle>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>
+		<ice:outputText value="#{msgs.lbl_add_edit_ext_examiner}" styleClass="title"/>
+		
+		<ice:form>
+			<ice:panelGrid columns="2">
+				<ice:outputText value="#{msgs.lbl_department}"/>
+				<ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentCode}" valueChangeListener="#{externalExaminerBean.actionDisplayDepartmentTheses}" 
+					partialSubmit="true" immediate="true"
+				>
+					<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+				</ice:selectOneMenu>
+				
+				<ice:outputText id="examinerName" value="#{msgs.lbl_name}" />
+				<ice:inputText id="examinerNameValue" value="#{externalExaminerBean.externalExaminer.name}" required="true"/>
+				
+				<ice:outputText id="examinerTitle" value="#{msgs.lbl_title}" />
+				<ice:inputText id="examinerTitleValue" value="#{externalExaminerBean.externalExaminer.title}"/>
+				
+				<ice:outputText id="examinerStreetAddress" value="#{msgs.lbl_street_address}" />
+				<ice:inputText id="examinerStreetAddressValue" value="#{externalExaminerBean.externalExaminer.streetAddress}"/>
+				
+				<ice:outputText id="examinerPostalCodeAndPlace" value="#{msgs.lbl_postal_code_and_place}" />
+				<ice:inputText id="examinerPostalCodeAndPlaceValue" value="#{externalExaminerBean.externalExaminer.postalCodeAndPlace}"/>
+				
+				<ice:outputText id="examinerPlaceOfEmployment" value="#{msgs.lbl_place_of_employment}" />
+				<ice:inputText id="examinerPlaceOfEmploymentValue" value="#{externalExaminerBean.externalExaminer.placeOfEmployment}"/>
+				
+				<ice:outputText id="examinerEmail" value="#{msgs.lbl_email}" />
+				<ice:inputText id="examinerEmailValue" value="#{externalExaminerBean.externalExaminer.email}"/>
+
+				<ice:outputText id="examinerPhoneNumber" value="#{msgs.lbl_phone_number}" />
+				<ice:inputText id="examinerPhoneNumberValue" value="#{externalExaminerBean.externalExaminer.phoneNumber}"/>
+
+				<f:facet name="footer">
+					<ice:commandButton id="cleanButton" value="#{msgs.btn_clear}" actionListener="#{externalExaminerBean.actionClearFields}"/>
+				</f:facet>	
+			</ice:panelGrid>					
+			
+			<ice:dataTable
+				id="ThesisTable" 
+				columnClasses="assignColumn, titleColumn, studentColumn, coStudentColumn, coStudentColumn, titleColumn"
+	      		rowClasses="oddRow, evenRow"
+	      		headerClass="headerStyle"
+	      		styleClass="tableStyle"
+				var="item" 
+				value="#{externalExaminerBean.thesisInformationList}"
+			>
+				<f:facet name="header">
+					<ice:outputText value="#{msgs.lbl_thesises}"/>
+				</f:facet>
+				
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_set}"/>
+		      </f:facet>
+		      <ice:selectBooleanCheckbox id="setSelected" value="#{item.selected}"/>
+				</ice:column>
+				
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText id="itemTitleHeader" value="#{msgs.lbl_title}"/>
+					</f:facet>
+		      <ice:outputText id="itemTitle" value="#{item.assignmentTitle}"/>
+				</ice:column>
+				
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_std}"/>
+		      </f:facet>
+		      <ice:outputText id="itemStudentName" value="#{item.student1NameAndStudentNumber}"/>
+				</ice:column>
+					
+				<ice:column>
+		    	<f:facet name="header">
+		    		<ice:outputText value="#{msgs.lbl_co_std}"/>
+		    	</f:facet>
+		      <ice:outputText id="itemCoStudentName1" value="#{item.student2NameAndStudentNumber}"/>
+				</ice:column>
+					
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_co_std}"/>
+					</f:facet>
+					<ice:outputText id="itemCoStudentName2" value="#{item.student3NameAndStudentNumber}"/>
+				</ice:column>
+					
+				<ice:column>
+		    	<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_examiner}"/>
+		      </f:facet>
+		      <ice:commandLink id="itemExaminerName" value="#{item.externalExaminerName}" actionListener="#{externalExaminerBean.actionSetFields}"/>
+				</ice:column>
+			</ice:dataTable>
+		</ice:form>
+		
+		<ice:form>
+			<table>
+				<tr>
+					<td>
+						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+					</td>
+					<td>
+						<ice:commandButton type="submit" action="addExternalExaminer" value="#{msgs.btn_save}" id="SaveButton" immediate="true" actionListener="#{externalExaminerBean.actionSaveExaminerToSelectedRows }"/>
+					</td>
+					<td>
+						<ice:outputText value="#{msgs.lbl_ext_examiner_saved}" rendered="#{externalExaminerBean.showSavedConfirmation}"/>
+					</td>
+				</tr>
+				
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

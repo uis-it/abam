@@ -1,0 +1,110 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />	
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"/>
+		<ice:outputText value="#{msgs.lbl_assignment_summary}" styleClass="title"/>
+		<ice:form partialSubmit="true" >
+			<ice:panelGrid columns="2">
+				<ice:outputText value="#{msgs.lbl_title}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.title}"/>
+
+				<ice:outputText value="#{msgs.lbl_desc}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.description}"/>
+				
+				<ice:outputText value="#{msgs.lbl_department}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignmentDepartmentCode}"/>
+				
+				<ice:outputText value="#{msgs.lbl_std_prg}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignmentStudyProgramCode}"/>
+				
+				<ice:outputText value="#{msgs.lbl_no_of_std}"/>
+				<ice:outputText id="numberOfStudents" value="#{assignmentBean.currentAssignment.numberOfStudents}"/>
+				
+				<ice:outputText value="#{msgs.lbl_type}"/>
+				<ice:outputText value="#{assignmentBean.currentAssignment.type}"/>
+				
+				<ice:outputText value="#{msgs.lbl_faculty_supervisor}"/>
+				<ice:outputText id="facultySupervisor" value="#{assignmentBean.currentAssignment.facultySupervisor.name}"/>
+
+				<f:facet name="footer">
+					<ice:messages/>
+				</f:facet>
+			</ice:panelGrid>
+
+			<ice:dataTable var="supervisor" value="#{assignmentBean.currentAssignment.supervisorList}" 
+				styleClass="assignmentSummaryStyle"
+				rendered="#{!empty assignmentBean.currentAssignment.supervisorList}"
+			>
+				<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_supervisor}"/>
+				</f:facet>
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_name}"/>
+					</f:facet>
+					<ice:outputText value="#{supervisor.name}"/>
+				</ice:column>
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_email}"/>
+					</f:facet>
+					<ice:outputText value="#{supervisor.email}" rendered="#{supervisor.external and !empty supervisor.email}"/>
+				</ice:column>
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_phone_number}"/>
+					</f:facet>
+					<ice:outputText value="#{supervisor.phoneNumber}" rendered="#{supervisor.external and !empty supervisor.phoneNumber}"/>
+				</ice:column>
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_company}"/>
+					</f:facet>
+					<ice:outputText value="#{supervisor.companyName}" rendered="#{supervisor.external and !empty supervisor.companyName}"/>
+					<td><ice:outputText style="color:red" value="#{msgs.lbl_supervisor_not_found}" rendered="#{empty supervisor.name}"/></td>
+				</ice:column>
+			</ice:dataTable>		
+
+			<ice:dataTable var="attachment" value="#{assignmentBean.currentAttachmentResources}" rendered="#{!empty assignmentBean.currentAssignment.attachments}">
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_uploaded_attachments}"/>
+					</f:facet>
+					<ice:outputResource 
+						attachment="true" 
+						fileName="#{attachment.fileName}" 
+						type="link" 
+						mimeType="#{attachment.contentType}"
+						resource="#{attachment}"
+					/>
+				</ice:column>
+			</ice:dataTable>
+		
+			<ice:dataTable var="attachment" value="#{assignmentBean.currentThesis.attachments}" rendered="#{!empty assignmentBean.currentThesis.attachments}">
+				<ice:column>
+					<f:facet name="header">
+						<ice:outputText value="#{msgs.lbl_submitted_attachments}"/>
+					</f:facet>
+					<ice:outputText id="nameInput" value="#{attachment.fileName}"/>
+				</ice:column>
+			</ice:dataTable>
+
+			<ice:panelGrid columns="3">
+				<ice:panelGroup>
+					<ice:commandButton type="submit" action="assignmentAttachment" value="#{msgs.btn_back}" id="BackButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
+					<ice:commandButton type="submit" action="assignAssignment" value="#{msgs.btn_back}" id="BackButtonAssign" immediate="true" rendered="#{assignmentBean.backToAssignAssignment}"/>
+					<ice:commandButton type="submit" action="displayAssignments" value="#{msgs.btn_back}" id="BackButtonDisplay" immediate="true" rendered="#{assignmentBean.backToDisplayAssignments}"/>
+					<ice:commandButton type="submit" action="myStudentTheses" value="#{msgs.btn_back}" id="BackButtonStudentTheses" immediate="true" rendered="#{assignmentBean.backToMyStudentThesis}"/>
+				</ice:panelGroup>						
+				
+				<ice:commandButton type="submit" action="assignmentSavedConfirmation" immediate="true" actionListener="#{assignmentBean.actionSaveAssignment}" value="#{msgs.btn_save}" disabled="#{empty assignmentBean.currentAssignment.facultySupervisor.name}" id="SaveButton" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
+				
+				<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_cancel}" id="CancelButton" immediate="true" rendered="#{assignmentBean.backToAssignmentAttachment}"/>
+			</ice:panelGrid>
+		</ice:form>
+	</ice:portlet>
+</f:view>

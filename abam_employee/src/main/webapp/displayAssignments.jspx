@@ -1,0 +1,148 @@
+
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<f:loadBundle basename="Language" var="msgs" />
+	<ice:portlet>
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"/>
+		<ice:outputStyle href="/css/tableStyle.css" id="tableStyle"/>
+		<ice:outputText value="#{msgs.lbl_assignments}" styleClass="titleStyle"/>
+		<ice:form partialSubmit="true" >
+			<table>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+					<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentCode}" valueChangeListener="#{employeeService.actionUpdateStudyProgramList}" partialSubmit="true" immediate="true">
+						<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+					</ice:selectOneMenu>
+					</td>
+					
+					<td><ice:message for="departmentInput" showSummary="true" showDetail="false"/></td>
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_std_prg}"/> </td>
+					<td><ice:selectOneMenu id="studyProgramInput" value="#{employeeService.selectedStudyProgramCode}" valueChangeListener="#{employeeService.actionSetDisplayAssignment}" partialSubmit="true" immediate="true" binding="#{employeeService.studyProgramMenu}">
+						<f:selectItems id="studyProgramContent" value="#{employeeService.studyProgramSelectItemList}"/>
+					</ice:selectOneMenu></td>
+					
+				</tr>
+				<tr>
+					<td><ice:outputText value="#{msgs.lbl_show_expired_assignments}" /></td>
+					<td><ice:selectBooleanCheckbox value="#{assignmentBean.showExpired}" valueChangeListener="#{assignmentBean.actionShowExpired}" partialSubmit="true"/></td>
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form partialSubmit="true">
+			<table>
+				<tr>
+				<ice:dataTable 
+					id="departmentTable" 
+					var="item" 
+					value="#{employeeService.displayAssignmentSet}" 
+					columnClasses="assignColumn, titleColumn, facultySupervisorColumn, facultySupervisorColumn, facultySupervisorColumn, assignColumn, assignColumn"
+                	rowClasses="oddRow, evenRow"
+                	headerClass="headerStyle"
+                	styleClass="tableStyle">
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_id}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:outputText 
+							id="itemId" 
+							value="#{item.oid}" 
+							/>
+					</ice:column>
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_title}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:commandLink 
+							id="itemTitle" 
+							action="assignmentSummary" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignmentFromDisplayAssignments}" 
+							value="#{item.title}" 
+							/>
+					</ice:column>
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_date_added}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:outputText 
+	                		id="itemAddedDate" 
+	                		value="#{item.addedDateAsString}" 
+	                		/>
+					</ice:column>	
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_expire_date}"/>
+		                    </ice:headerRow>							
+						</f:facet>
+						<ice:outputText 
+							id="itemExpireDate" 
+							value="#{item.expireDateAsString}" 
+							/>
+					</ice:column>		
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_author}"/>
+		                    </ice:headerRow>							
+						</f:facet>
+						<ice:outputText 
+							id="itemAuthor" 
+							value="#{item.author.name}" 
+							/>
+					</ice:column>		
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value=""/>
+		                    </ice:headerRow>
+						</f:facet>
+						<ice:commandButton 
+							id="editAssignment" 
+							value="#{msgs.btn_edit}" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignment}" 
+							action="createAssignment" 
+							rendered="#{item.loggedInUserIsAuthor or employeeService.permissions.EDIT_ASSIGNMENTS}"
+							/>					
+					</ice:column>	
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value=""/>
+		                    </ice:headerRow>
+						</f:facet>
+						<ice:commandButton 
+							id="remove" 
+							value="#{msgs.btn_remove}" 
+							actionListener="#{assignmentBean.actionRemoveAssignment}" 
+							rendered="#{item.loggedInUserIsAuthor or employeeService.permissions.EDIT_ASSIGNMENTS}"
+							/>
+					</ice:column>					
+					
+				</ice:dataTable>
+				</tr>
+			</table>
+		</ice:form>
+		<ice:form>
+			<table>	
+				<tr>					
+					<td>
+						<ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton" immediate="true"/>
+					</td>
+					<td>
+						<ice:commandButton type="submit" action="createAssignment" value="#{msgs.btn_create_new}" actionListener="#{assignmentBean.actionCreateNewAssignment }" id="CreateButton"/>
+					</td>
+				</tr>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>

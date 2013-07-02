@@ -1,0 +1,97 @@
+<f:view 
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ice="http://www.icesoft.com/icefaces/component">
+	<ice:portlet>
+		<f:loadBundle basename="Language" var="msgs" />
+		<ice:outputStyle href="/css/employeeStyle.css" id="employeeStyle"></ice:outputStyle>		
+		<ice:outputText value="#{msgs.lbl_search_archive}" styleClass="titleStyle"/>
+		<ice:form>
+			<table>
+			<tr>
+				<td><ice:outputText value="#{msgs.lbl_department}"/> </td>
+						<td><ice:selectOneMenu id="departmentInput" value="#{employeeService.selectedDepartmentCode}" valueChangeListener="#{thesisBean.actionDisplayDepartmentThesesArchive}" partialSubmit="true" immediate="true">
+							<f:selectItems id="departmentInputContent" value="#{employeeService.departmentSelectItemList}"/>
+						</ice:selectOneMenu>
+				</td>
+			</tr>
+			</table>
+		</ice:form>
+		
+		<ice:form partialSubmit="true" >			
+			<ice:dataTable 
+					id="thesisTable" 
+					var="item" 
+					value="#{thesisBean.thesisInformationList}" 
+					styleClass="displayAssignmentsTable"
+					columnClasses="displayAssignmentsTable"
+					headerClass="displayAssignmentsTable"
+					rowClasses="displayAssignmentsTable">
+
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_title}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:commandLink 
+							id="itemTitle" 
+							action="assignmentSummary" 
+							actionListener="#{assignmentBean.actionSetSelectedAssignmentFromMyStudentTheses}" 
+							value="#{item.assignmentTitle}" 
+							/>
+					</ice:column>
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_std}"/>
+		                    </ice:headerRow>
+		                </f:facet>
+						<ice:outputText
+							id="itemStudents" 
+							value="#{item.allStudents}" 
+							/>
+					</ice:column>
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_evaluation_submission_deadline}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:outputText 
+	                		id="itemAddedDate" 
+	                		value="#{item.evaluationSubmissionDeadlineAsString}" 
+	                		/>
+					</ice:column>	
+					<ice:column>
+		                <f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_status}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:commandLink 
+	                		id="itemStatus" 
+	                		value="#{item.thesis.lastStatus.status}"
+	                		action="thesisStatus"
+	                		actionListener="#{thesisBean.actionPrepareThesisStatusList}"
+	                		/>
+					</ice:column>		
+					<ice:column renderedOnUserRole="Abam Administrative Employee">
+						<f:facet name="header">
+		                    <ice:headerRow>
+		                        <ice:outputText value="#{msgs.lbl_postpone}"/>
+		                    </ice:headerRow>
+	                	</f:facet>
+	                	<ice:commandButton value="#{msgs.lbl_postpone}" action="postponeThesisDeadline" actionListener="#{thesisBean.actionPreparePostponeDeadline}"/>
+					</ice:column>							
+				</ice:dataTable>
+		</ice:form>
+		<ice:form>
+			<table>
+				<tr>				
+					<td><ice:commandButton type="submit" action="backToView" value="#{msgs.btn_back}" id="BackButton"/></td>
+				</tr>
+			</table>
+		</ice:form>
+	</ice:portlet>
+</f:view>
