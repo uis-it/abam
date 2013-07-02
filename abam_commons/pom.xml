@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>no.uis.abam</groupId>
+  <artifactId>abam-commons</artifactId>
+  <version>1.0.2-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>abam-commons</name>
+  <url>http://code.google.com/p/abam/</url>
+
+  <parent>
+    <groupId>no.uis</groupId>
+    <artifactId>parent-pom</artifactId>
+    <version>1.1.25</version>
+  </parent>
+  
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <uis.model.version>2.0.2</uis.model.version>
+    <commons.logging.version>1.1.1</commons.logging.version>
+    <commons.beanutils.version>1.8.2</commons.beanutils.version>
+    <icefaces.version>1.8.2</icefaces.version>
+    <liferay.version>5.2.3</liferay.version>
+  </properties>
+
+  <scm>
+    <connection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</connection>
+    <developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_commons/trunk</developerConnection>
+    <url>https://abam.googlecode.com/svn/abam_commons/trunk</url>
+  </scm>
+  
+  <developers>
+    <developer>
+      <id />
+      <name>Martin Goldhahn</name>
+      <email />
+      <url />
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl />
+      </properties>
+    </developer>
+  </developers>
+  
+  <dependencyManagement>
+    <dependencies>
+        <dependency>
+        	<groupId>no.uis.service.model</groupId>
+        	<artifactId>model-do</artifactId>
+        	<version>${uis.model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${commons.logging.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons.beanutils.version}</version>
+        </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>no.uis.abam</groupId>
+      <artifactId>abam-dom</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>no.uis.service.model</groupId>
+    	<artifactId>model-do</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.icefaces</groupId>
+    	<artifactId>icefaces</artifactId>
+    	<version>${icefaces.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.liferay</groupId>
+    	<artifactId>portal-kernel</artifactId>
+    	<version>${liferay.version}</version>
+    </dependency>
+  </dependencies>
+  
+  <distributionManagement>
+    <site>
+      <id>source01.uis.no</id>
+      <url>
+        dav:https://source01.uis.no/maven-site/${project.groupId}/${project.artifactId}/${project.version}
+      </url>
+    </site>
+  </distributionManagement>
+  
+  
+</project>
