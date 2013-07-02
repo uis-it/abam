@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.uis.no/abam/Person"
+    xmlns:tns="http://www.uis.no/abam/Person"
+    xmlns:base="http://www.uis.no/abam/base"
+    elementFormDefault="qualified"> 
+    
+    <import namespace="http://www.uis.no/abam/base" schemaLocation="base.xsd"/>
+    
+    <complexType name="AbamPersonType">
+        <complexContent>
+            <extension base="base:AbamType">
+                <sequence>
+                    <element name="name" type="string"/>
+                    <element name="email" type="string"/>
+                    <element name="phone" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    
+    <complexType name="AbamEmployeeType">
+        <complexContent>
+            <extension base="tns:AbamPersonType">
+                <sequence>
+                    <element name="employeeId" type="string"/>
+                    <element name="groupMembership" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    
+    <complexType name="AbamExternalExaminerType">
+        <complexContent>
+            <extension base="tns:AbamPersonType">
+                <sequence>
+                    <element name="placeOfEmployment" type="string"/>
+                    <element name="postalCodeAndPlace" type="string"/>
+                    <element name="streetAddress" type="string"/>
+                    <element name="title" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    
+    <complexType name="AbamStudentType">
+        <complexContent>
+            <extension base="tns:AbamPersonType">
+                <sequence>
+                    <element name="application" type="string" minOccurs="0" maxOccurs="unbounded"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+        
+    <element name="AbamPerson" type="tns:AbamPersonType"/>
+</schema>

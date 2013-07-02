@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.uis.no/abam/Application"
+    xmlns:base="http://www.uis.no/abam/base"
+    xmlns:tns="http://www.uis.no/abam/Application" elementFormDefault="qualified"> 
+    
+    <import namespace="http://www.uis.no/abam/base" schemaLocation="base.xsd"/>
+    
+    <complexType name="AbamApplication">
+        <complexContent>
+            <extension base="base:AbamType">
+                <sequence>
+                    <element name="applicantStudentNumber" type="string"/>
+                    <element name="applicationDate" type="date" />
+                    <element name="assigned" type="boolean"/>
+                    <element name="assignment" type="string"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+</schema>

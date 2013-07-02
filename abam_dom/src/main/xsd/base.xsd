@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.uis.no/abam/base"
+    xmlns:tns="http://www.uis.no/abam/base" elementFormDefault="qualified">
+    <complexType name="AbamType">
+        <sequence>
+            <element name="OID" type="long"/>
+        </sequence>
+    </complexType>
+</schema>

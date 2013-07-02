@@ -1,0 +1,124 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>no.uis.abam</groupId>
+	<artifactId>abam-dom</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>no.uis</groupId>
+		<artifactId>parent-pom</artifactId>
+		<version>1.1.25</version>
+	</parent>
+
+	<name>Abam DOM</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.0.6.RELEASE</spring.version>
+		<uis.idm.version>1.0.0-SNAPSHOT</uis.idm.version>
+	</properties>
+
+  <developers>
+    <developer>
+      <id />
+      <name>Bente Cecilie Andorsen</name>
+      <email />
+      <url />
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl />
+      </properties>
+    </developer>
+    <developer>
+      <id />
+      <name>Stig Rune Malterud</name>
+      <email />
+      <url />
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl />
+      </properties>
+    </developer>
+    <developer>
+      <id />
+      <name>Martin Goldhahn</name>
+      <email />
+      <url />
+      <organization>Universitetet i Stavanger</organization>
+      <organizationUrl>http://www.uis.no</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl />
+      </properties>
+    </developer>
+  </developers>
+
+	<scm>
+		<connection>scm:svn:https://abam.googlecode.com/svn/abam_dom/tags/abam-dom-1.0.0</connection>
+		<developerConnection>scm:svn:https://abam.googlecode.com/svn/abam_dom/tags/abam-dom-1.0.0</developerConnection>
+		<url>https://abam.googlecode.com/svn/abam_dom/tags/abam-dom-1.0.0</url>
+	</scm>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.15</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.0-api</artifactId>
+		    <version>1.0.1.Final</version>
+		</dependency>
+	</dependencies>
+
+	<distributionManagement>
+		<site>
+			<id>source01.uis.no</id>
+			<url>
+				dav:https://source01.uis.no/maven-site/${project.groupId}/${project.artifactId}/${project.version}
+			</url>
+		</site>
+	</distributionManagement>
+
+</project>
